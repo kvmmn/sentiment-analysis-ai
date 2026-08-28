@@ -134,6 +134,10 @@ After Kaveh pointed out that his academic background had already been discussed,
 
 The role can be described as master's student; the official department name and the form's available role choices remain unverified. This does not change the unfinalized status of Saintiment's dissertation integration, imply university approval, or establish research-access eligibility. No form was submitted. Future clarification should first use the available project and academic context.
 
+## 17. Prepare the first form fields
+
+On 2026-08-28, the official Arden Berlin campus page was checked for its address and linked in the application worksheet and references. The recommended first step is to enter known identity and student-affiliation details, inspect the Job Title choices, and leave the Article 40(12) eligibility answer unresolved. LinkedIn's current researcher-access guidance was rechecked: an academic project alone does not establish the required systemic-risk fit. Do not submit while that and the research/privacy answers remain unresolved. No live fields were entered, saved, or submitted by the assistant.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.

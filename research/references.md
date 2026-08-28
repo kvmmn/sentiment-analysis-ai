@@ -65,6 +65,10 @@ Relevant sections reviewed on 2026-08-28 for the [privacy-policy review](privacy
 
 Copy the template below for each actual source. Verify bibliographic details against the source; leave unknown information as TODO. Use a stable source ID when referring to a record from notes or drafts.
 
+## Applicant affiliation source
+
+- **AFF-01:** Arden University, [Berlin campus](https://arden.ac.uk/where-to-study/locations/berlin). Accessed 2026-08-28; campus-address section reviewed. Lists Dessauer Str. 3-5, 10963 Berlin, Germany. Supports campus contact details only, not personal enrolment, formal department name, or approval of Saintiment.
+
 ## Source Template
 
 ```text

@@ -10,6 +10,10 @@ The form identifies itself as the Article 40(12) Researcher Access Program appli
 
 ## About You/Research Team
 
+For applicant affiliation at the Berlin campus, the official [Arden campus page](https://arden.ac.uk/where-to-study/locations/berlin), checked 2026-08-28, lists **Dessauer Str. 3-5, 10963 Berlin, Germany**. Suggested organization wording: **Arden University (Berlin campus)**, with Germany as the campus country and the linked official page as its website. These are campus details, not a claim about the university's registered headquarters or research sponsorship. If the live form specifically requires the legal entity's registered address/country, do not substitute campus details.
+
+Practical sequence: fill the known identity and affiliation fields first. Leave the Article 40(12) answer unresolved while eligibility is assessed, and inspect the Job Title menu before choosing a student option. Do not submit until the research and privacy answers are supported. Filling fields is not evidence of saved progress; keep the worksheet as the durable record.
+
 | Form question / field | Known information or preparation needed |
 | --- | --- |
 | Will research be conducted under Article 40(12)? | Unresolved eligibility; do not answer affirmatively solely because the project is academic. |
