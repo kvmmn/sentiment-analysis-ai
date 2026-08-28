@@ -4,11 +4,11 @@
 
 The project is now named **Saintiment**. The symbol contains no text, so the artwork and filename remain unchanged. Earlier names in the generation prompts below are preserved as provenance.
 
-Created on 2026-08-28 using the built-in image-generation tool. Status: proposed app logo; LinkedIn upload by Kaveh is not confirmed. This is a raster PNG, not an editable vector or a trademark clearance.
+Created on 2026-08-28 using the built-in image-generation tool. Status: the symbol is visible beside Saintiment in Kaveh's Products-page PDF, confirming use in the created app. This is a raster PNG, not an editable vector or a trademark clearance.
 
 The current candidate is a minimal symbol made of two opposing geometric quotation/bracket forms, with no text or wordmark. It follows Kaveh's request for a much simpler professional identity and explicit instruction to use only a logo without writing. Earlier architectural-portal and S/dialogue variants were generated; their prompts are preserved below. Those image files are not included in the current project folder.
 
-The current PNG is 1254 × 1254 pixels and fully opaque, exceeding the app form's minimum image dimension. Its bytes match the generated minimal-symbol output; no manual image processing was applied. Upload by Kaveh has not been confirmed.
+The current PNG is 1254 × 1254 pixels and fully opaque, exceeding the app form's minimum image dimension. Its bytes match the generated minimal-symbol output; no manual image processing was applied.
 
 ## Minimal Symbol-Only Prompt
 

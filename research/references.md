@@ -33,6 +33,16 @@ Reviewed on 2026-08-28 for the [access review](linkedin-data-access-review.md). 
 | LI-23 | European Commission — [Data protection explained](https://commission.europa.eu/law/law-topic/data-protection/reform/what-does-general-data-protection-regulation-gdpr-govern_en) | Identifiability and pseudonymization |
 | LI-24 | European Commission — [Principles of the GDPR](https://commission.europa.eu/law/law-topic/data-protection/information-business-and-organisations/principles-gdpr_en) | Research safeguards and privacy by design |
 
+## Created-App Products Review Sources
+
+Relevant sections checked on 2026-08-28 for the Products-page review in [notes](notes.md). LI-01 and LI-13 were also revisited. Kaveh's two-page developer-console PDF is local evidence, excluded from the public repository; its observations are separated from documentation-based guidance.
+
+| ID | Publisher and source | Relevance / limitation |
+| --- | --- | --- |
+| LI-25 | LinkedIn — [Send an app verification request for a LinkedIn Page](https://www.linkedin.com/help/linkedin/answer/a1665329) | Settings, Verify, Generate URL, and Page super-admin approval; distinct from Page badge verification. |
+| LI-26 | LinkedIn / Microsoft Learn — [Sign In with LinkedIn using OpenID Connect](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2) | Authentication and basic profile scopes; not a post-search product. |
+| LI-27 | LinkedIn / Microsoft Learn — [Community Management overview](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/community-management-overview?view=li-lms-2026-04) | Vetted use cases; FAQ 4's initial product restriction and FAQ 6's closed `r_member_social` permission. |
+
 ## Privacy Policy and Publication Sources
 
 Relevant sections reviewed on 2026-08-28 for the [privacy-policy review](privacy-policy-review.md). LI-02 also supports that review. These sources explain requirements and hosting behavior; they do not verify this project's legal compliance or LinkedIn acceptance.

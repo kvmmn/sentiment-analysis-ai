@@ -17,3 +17,7 @@ secrets.yml
 ._*
 Thumbs.db
 Desktop.ini
+
+# Local developer-console evidence and temporary PDF renders.
+/List_Products_AppDetail_Developers_LinkedIn.pdf
+/tmp/pdfs/

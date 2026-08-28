@@ -35,7 +35,7 @@ The data-gathering and keyword-search sections are blank in the original. Collec
 
 ### LinkedIn Access Review — 2026-08-28
 
-The team proposed investigating LinkedIn's official research-access route. Today's focus is reviewing methods, tools, and access conditions before implementation. See the [LinkedIn data access review](linkedin-data-access-review.md) for verified documentation, route comparisons, unresolved permissions, and recommendations. Reviewing this route does not establish eligibility or approve collection; no app or pipeline has been created.
+The team proposed investigating LinkedIn's official research-access route. The initial focus was reviewing methods, tools, and access conditions before implementation. See the [LinkedIn data access review](linkedin-data-access-review.md) for verified documentation, route comparisons, unresolved permissions, and recommendations. At the time of that review, no app or pipeline had been created. Later app creation is recorded below; it does not establish research eligibility or approve collection.
 
 ### Developer Setup Progress — 2026-08-28
 
@@ -43,7 +43,7 @@ After the review, Kaveh requested following the group's proposed developer-app r
 
 The live form requires a LinkedIn Page association and an app logo. It warns that the Page association cannot be changed after saving; a personal member profile cannot substitute for the Page. The privacy-policy URL is displayed without a required marker.
 
-Kaveh manually selected **Chaharsotoon Engineers** as the app's LinkedIn Page; the form confirmed the selection and linked to company ID `17919559`. This records the app association only, not university affiliation or research sponsorship. Three [Sentiment AI logo candidates](../assets/README.md) were generated. The current project asset is the minimal symbol without text. No terms acceptance, app submission, credentials, logo upload, or data collection has been confirmed.
+Kaveh manually selected **Chaharsotoon Engineers** as the app's LinkedIn Page; the form confirmed the selection and linked to company ID `17919559`. This records the app association only, not university affiliation or research sponsorship. Three [Sentiment AI logo candidates](../assets/README.md) were generated. The current project asset is the minimal symbol without text. At this draft-form stage, no terms acceptance, app submission, credentials, logo upload, or data collection had been confirmed.
 
 Kaveh subsequently requested guidance in the conversation only, without further Chrome operation. He performs the remaining LinkedIn form actions manually.
 
@@ -54,6 +54,26 @@ Kaveh requested a concise privacy policy hosted in GitHub, a substantive require
 Kaveh supplied his Gmail and Arden University email addresses for publication as contact channels. Other team emails remain pending. These addresses do not establish institutional approval or determine who will be the research data controller.
 
 The [project log](project-log.md) records the chronological decisions, rationale, progress, and outstanding work across the project.
+
+### Created App: Products PDF Review — 2026-08-28
+
+Source: Kaveh's local `List_Products_AppDetail_Developers_LinkedIn.pdf`, two pages, printed at 15:34 on 2026-08-28. Both pages were extracted and visually inspected. The original PDF and temporary renders are kept local and ignored by Git; the public summary omits developer identifiers. A Client ID is not a Client Secret, but neither identifier is needed in this public record.
+
+Source SHA-256: `3e9739e527353cd026e36ffbd72d22808996ce392307fddde6181ca24db44b12`.
+
+**Observed:** the app header shows **Saintiment**, the selected symbol, a Client ID, creation date 28 August 2026, and type **Standalone app**. This confirms app creation and logo use. The Products tab lists 13 products with **Request access** labels under **Available products**. No approved product is shown. The PDF does not reveal Page-association verification, granted OAuth scopes, redirect settings, token validity, or successful data access. Gray printed labels do not establish the live controls' enabled state or its cause.
+
+| Products visible in the PDF | Relevance to the next decision |
+| --- | --- |
+| Sign In with LinkedIn using OpenID Connect | Could support a narrow, authorized authentication test and basic profile retrieval. It does not provide a discourse corpus. Request only if that test is needed after considering product constraints. [OIDC documentation](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2) |
+| Member Data Portability API (Member); Member Data Portability API (3rd Party) | The printed descriptions distinguish access to one's own data from member-authorized third-party access. Neither description promises unrestricted public-post search. Eligibility and the special setup conditions in the [access review](linkedin-data-access-review.md) still need checking before choosing either route. |
+| Pages Data Portability API | A possible route for an explicitly authorized Page sample, not platform-wide discourse. [LinkedIn's application guide](https://www.linkedin.com/help/linkedin/answer/a6220307) |
+| Community Management API | A vetted product for management and analytics use cases. Its documentation says new Development Tier applications must not already have other API products; it also says `r_member_social` is closed to new requests. Do not enable another product merely to test the interface before making this choice. [Community Management overview, FAQs 4 and 6](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/community-management-overview?view=li-lms-2026-04) |
+| Share on LinkedIn; Advertising API; Lead Sync API; Matched Audiences API; Conversions API; Live Events; Events Management API; LinkedIn Ad Library | Their listed purposes are publishing, advertising/leads, conversions, events, or ad data. None is a reason to request access for the current general-discourse study without a matching use case. |
+
+**Recommended next action:** inspect **Settings** for the Page association's verification status. If unverified, use **Verify → Generate URL**, and have an authorized Page super admin approve the association. The selected company functions as the app publisher; this is not a university endorsement, blue-badge Page verification, or research-access approval. Do not share the generated verification link publicly. [Official app-verification procedure](https://www.linkedin.com/help/linkedin/answer/a1665329)
+
+After that, choose the actual product route before requesting scopes or configuring an OAuth test. No Research Tools product appears in this PDF. LinkedIn documents a separate [research-access application](https://www.linkedin.com/help/linkedin/answer/a1645616), subject to eligibility; none of the displayed products should be treated as its substitute. The current study's eligibility remains unresolved.
 
 ## Decisions
 

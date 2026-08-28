@@ -44,7 +44,7 @@ Kaveh manually selected **Chaharsotoon Engineers**, Page ID `17919559`. The form
 
 Kaveh then instructed the assistant to stop operating Chrome and guide him in the conversation. That preference is recorded in [AGENTS.md](../AGENTS.md). Do not assume subsequent form actions happened without his confirmation.
 
-**Last confirmed status:** no app submission, terms acceptance, credentials, OAuth test, approved API product, or corpus collection is recorded.
+**Status at that stage:** no app submission, terms acceptance, credentials, OAuth test, approved API product, or corpus collection was recorded. The later Products-page evidence in step 9 supersedes the app-creation and Client ID status.
 
 ## 6. Simplify the visual identity
 
@@ -76,10 +76,20 @@ The folder `_saintimental`, repository `kvmmn/sentiment-analysis-ai`, policy URL
 
 Local verification passed: current document headings and the policy use Saintiment, relative Markdown links resolve, and the original research sketch and current logo remain byte-identical to their prior committed versions. Earlier publication hashes below describe the initial policy, before this naming update.
 
+## 9. Inspect the created app's Products page
+
+Kaveh supplied a two-page PDF of the Products tab, printed on 2026-08-28 at 15:34. Both pages were read and visually inspected. The header confirms the created **Saintiment** standalone app, a Client ID, creation date, and the chosen logo. The page lists 13 available products with Request access labels, but no approved product or successful OAuth/data request.
+
+The [setup notes](notes.md) record the product groups and verified guidance. A useful new constraint emerged: Community Management's documented initial Development Tier route requires a new app without other API products. Accordingly, do not automatically request OIDC or Share on LinkedIn just because they are listed. OIDC can test sign-in, not retrieve a research corpus.
+
+The immediate recommendation is to inspect Settings and, if needed, verify the app's association with its Page through an authorized super admin. The PDF cannot establish why the request labels appear gray. Research access remains a separate eligibility/application question.
+
+The raw developer-console PDF was left unchanged and excluded from public Git history, together with temporary page renders. Only the summary and public documentation links are shared. No browser actions, product requests, authorization, or API calls were performed during this review. The README, privacy-policy app description, and asset status now reflect confirmed app creation.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
-- Kaveh: enter the privacy-policy URL and complete the LinkedIn form manually if he accepts its terms and the fixed Page association. Report the resulting screen without secrets.
+- App creation is confirmed. Kaveh: inspect Settings for Page-association verification and report the status without secrets or private verification links. The Products PDF does not show the saved privacy URL; confirm it in Settings as well.
 - Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.
