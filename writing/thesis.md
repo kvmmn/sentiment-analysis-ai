@@ -2,6 +2,8 @@
 
 Status: outline only. The research title, university requirements, and submission format are undecided. Confirm required chapters and front matter before expanding this outline.
 
+Kaveh Momeni intends to use the project as part of his master's dissertation at Arden University. He has not finalized that integration. Exact degree/program, supervisor, approved scope, and institutional requirements remain unconfirmed; this outline does not assert university approval or sponsorship.
+
 Use the shared [research notes](../research/notes.md), [references](../research/references.md), and [experiment records](../experiments/README.md). Coordinate with the [article](article.md) so both outputs report the same underlying evidence consistently.
 
 ## Title and Front Matter

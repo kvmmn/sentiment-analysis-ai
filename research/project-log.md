@@ -122,10 +122,16 @@ Kaveh clarified that Chaharsotoon provides **only its LinkedIn Page** for the ap
 
 Gmail remains the recommended application contact. The remaining affiliation question is whether this research is formally part of Kaveh's Arden studies or currently an independent group effort. Other funding sources, commercial-purpose details, and data-protection responsibility are not inferred from the company's limited role. No form fields or account settings were changed.
 
+## 15. Record intended Arden dissertation use
+
+Kaveh clarified that he wants this research to form part of his dissertation at Arden University, but that this is not yet finalized. The README, thesis outline, and application worksheet now distinguish this intention from institutional approval, sponsorship, or responsibility. The research remains a collaborative project; no new research purpose or eligibility claim was inferred.
+
+The worksheet also refines the earlier organization question: the form's organization fields appear under About You/Research Team, so an applicant's actual student affiliation can be described separately from the project's approval status. Confirm the exact current degree/program and department before specifying the role. Gmail remains the primary contact, and the app's existing company-Page association stays unchanged. No form was submitted.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
-- App creation, Page verification, saved privacy URL, empty OAuth configuration, and the research form's printed fields are confirmed. Kaveh: clarify the actual institutional affiliation/role or independent-project status; use the worksheet to resolve the other missing answers before submission. No product request or authorization test is confirmed yet.
+- App creation, Page verification, saved privacy URL, empty OAuth configuration, and the research form's printed fields are confirmed. Intended Arden dissertation use is not yet finalized. Kaveh: confirm the exact current degree/program and department, then resolve the remaining worksheet fields before submission. No product request or authorization test is confirmed yet.
 - Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.
