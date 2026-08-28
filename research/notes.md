@@ -71,9 +71,15 @@ Source SHA-256: `3e9739e527353cd026e36ffbd72d22808996ce392307fddde6181ca24db44b1
 | Community Management API | A vetted product for management and analytics use cases. Its documentation says new Development Tier applications must not already have other API products; it also says `r_member_social` is closed to new requests. Do not enable another product merely to test the interface before making this choice. [Community Management overview, FAQs 4 and 6](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/community-management-overview?view=li-lms-2026-04) |
 | Share on LinkedIn; Advertising API; Lead Sync API; Matched Audiences API; Conversions API; Live Events; Events Management API; LinkedIn Ad Library | Their listed purposes are publishing, advertising/leads, conversions, events, or ad data. None is a reason to request access for the current general-discourse study without a matching use case. |
 
-**Recommended next action:** inspect **Settings** for the Page association's verification status. If unverified, use **Verify → Generate URL**, and have an authorized Page super admin approve the association. The selected company functions as the app publisher; this is not a university endorsement, blue-badge Page verification, or research-access approval. Do not share the generated verification link publicly. [Official app-verification procedure](https://www.linkedin.com/help/linkedin/answer/a1665329)
+**Recommended next action at the PDF-review stage:** inspect **Settings** for the Page association's verification status. If unverified, use **Verify → Generate URL**, and have an authorized Page super admin approve the association. The selected company functions as the app publisher; this is not a university endorsement, blue-badge Page verification, or research-access approval. Do not share the generated verification link publicly. [Official app-verification procedure](https://www.linkedin.com/help/linkedin/answer/a1665329)
 
 After that, choose the actual product route before requesting scopes or configuring an OAuth test. No Research Tools product appears in this PDF. LinkedIn documents a separate [research-access application](https://www.linkedin.com/help/linkedin/answer/a1645616), subject to eligibility; none of the displayed products should be treated as its substitute. The current study's eligibility remains unresolved.
+
+### Page Association Verified — 2026-08-28
+
+Kaveh's Settings screenshot, supplied at 15:40, shows **Chaharsotoon Engineers — Verified: Aug 28, 2026**, app name **Saintiment**, the chosen logo, and the saved URL `https://github.com/kvmmn/sentiment-analysis-ai/blob/main/PRIVACY.md`. Kaveh states that he is the Page admin and completed the approval himself. This confirms the app-to-Page association and saved privacy URL; it does not establish a substantive privacy review, product approval, or research-data access.
+
+Next: inspect the **Auth** tab's OAuth settings and scopes, with Client Secret and any tokens excluded from shared screenshots. This is a read-only check of the available authorization configuration; do not request a product, create a token, or add a redirect URL before deciding the access route and test design. The Community Management product-selection constraint recorded above still applies. No screenshot was copied into the public repository.
 
 ## Decisions
 

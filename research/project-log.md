@@ -86,10 +86,16 @@ The immediate recommendation is to inspect Settings and, if needed, verify the a
 
 The raw developer-console PDF was left unchanged and excluded from public Git history, together with temporary page renders. Only the summary and public documentation links are shared. No browser actions, product requests, authorization, or API calls were performed during this review. The README, privacy-policy app description, and asset status now reflect confirmed app creation.
 
+## 10. Confirm Page-association verification
+
+Kaveh reports completing verification himself as the Page admin. His Settings screenshot shows **Chaharsotoon Engineers — Verified: Aug 28, 2026**, app name **Saintiment**, the selected logo, and the correct GitHub privacy-policy URL. The app-to-Page association and saved URL are now confirmed. This does not prove product approval, an OAuth test, research eligibility, or substantive review of the policy.
+
+The next suggested step is to inspect the Auth tab's OAuth settings and scopes without sharing secrets or tokens and without changing configuration yet. Product selection remains open. The screenshot itself was not uploaded to GitHub, and no browser action or API call was performed by the assistant.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
-- App creation is confirmed. Kaveh: inspect Settings for Page-association verification and report the status without secrets or private verification links. The Products PDF does not show the saved privacy URL; confirm it in Settings as well.
+- App creation, Page-association verification, and the saved privacy URL are confirmed. Kaveh: share only the relevant OAuth settings/scopes from Auth, excluding Client Secret and tokens. No product request or authorization test is confirmed yet.
 - Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.

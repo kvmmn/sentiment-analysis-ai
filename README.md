@@ -26,7 +26,7 @@ Initial planning stage. The [first scratch document](research/initial-scratch.md
 
 Datasets, models, university requirements, and publication venue remain undecided. No experiments have been run or findings established in this project.
 
-Current focus (2026-08-28): the **Saintiment** LinkedIn app has been created, as confirmed by Kaveh's Products-page PDF. Product access, Page-association verification, and an OAuth test are not yet confirmed. Review the [setup notes](research/notes.md) before requesting products. The [privacy policy](PRIVACY.md), [data-access review](research/linkedin-data-access-review.md), and [privacy-policy review](research/privacy-policy-review.md) remain the shared preparation records. Research access and collection are not yet approved. Kaveh performs LinkedIn setup manually, with guidance in the conversation.
+Current focus (2026-08-28): the **Saintiment** LinkedIn app has been created. Kaveh's Settings screenshot confirms the **Chaharsotoon Engineers** association is **Verified** and the correct public privacy-policy URL is saved. Kaveh reports completing approval as the Page admin. Product access and an OAuth test are not yet confirmed. Review the [setup notes](research/notes.md) before requesting products. The [privacy policy](PRIVACY.md), [data-access review](research/linkedin-data-access-review.md), and [privacy-policy review](research/privacy-policy-review.md) remain the shared preparation records. Research access and collection are not yet approved. Kaveh performs LinkedIn setup manually, with guidance in the conversation.
 
 ## Project Guide
 
