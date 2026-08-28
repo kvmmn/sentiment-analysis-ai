@@ -18,7 +18,7 @@ Practical sequence: fill the known identity and affiliation fields first. Leave 
 | --- | --- |
 | Will research be conducted under Article 40(12)? | Unresolved eligibility; do not answer affirmatively solely because the project is academic. |
 | Full Name | Kaveh Momeni. |
-| Email Contact | Recommended: `kaveh.momeni@gmail.com`, which Kaveh confirmed is his primary, long-term address. The Arden address remains an additional contact. Use one address in this field. No institutional or company-domain requirement was found in the printed form or reviewed public researcher guidance; this is not a guarantee against later verification requests. |
+| Email Contact | Selected by Kaveh on 2026-08-28: `25199053@ardenuniversity.ac.uk`, to align this application with his Arden student affiliation. Gmail remains his primary, long-term project contact. Use the Arden address alone in this field. This supersedes the earlier Gmail recommendation for this application only; no institutional-domain requirement or university approval is implied. Actual entry or submission has not been confirmed. |
 | Organization Name, Address, Country, Website | Arden University; existing academic records identify Kaveh's program as MSc Data Science at Arden University Berlin. Describe this as his student affiliation, with the project's unfinalized dissertation status made clear, not as university sponsorship or approval. Verify the relevant institution/campus address and website before filling them. Chaharsotoon only supplies the app's Page association. |
 | Profile on organization website | TODO: actual institutional profile, if one exists. Do not fabricate a URL or treat a LinkedIn profile as an institutional page. |
 | LinkedIn profile | `https://linkedin.com/in/kvmmn`. |

@@ -138,9 +138,14 @@ The role can be described as master's student; the official department name and 
 
 On 2026-08-28, the official Arden Berlin campus page was checked for its address and linked in the application worksheet and references. The recommended first step is to enter known identity and student-affiliation details, inspect the Job Title choices, and leave the Article 40(12) eligibility answer unresolved. LinkedIn's current researcher-access guidance was rechecked: an academic project alone does not establish the required systemic-risk fit. Do not submit while that and the research/privacy answers remain unresolved. No live fields were entered, saved, or submitted by the assistant.
 
+## 18. Select the academic email for this application
+
+Kaveh agreed to use **25199053@ardenuniversity.ac.uk** in the research form's Email Contact field, matching his Arden student affiliation. This supersedes the earlier Gmail recommendation for this application only. **kaveh.momeni@gmail.com** remains his primary, permanent project contact; the README and privacy-policy contact listings remain unchanged. The choice does not assert a LinkedIn domain requirement, university approval, or a change to the app's Chaharsotoon Page association. The worksheet was updated; no live form entry or submission was performed or confirmed.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
+- Use the Arden email for this research application, as selected in section 18; retain Gmail as the permanent project contact.
 - App creation, Page verification, saved privacy URL, empty OAuth configuration, and the research form's printed fields are confirmed. Kaveh's recorded program is MSc Data Science at Arden University Berlin; intended dissertation use is not yet finalized. Verify the official department and resolve the remaining worksheet fields before submission. No product request or authorization test is confirmed yet.
 - Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
