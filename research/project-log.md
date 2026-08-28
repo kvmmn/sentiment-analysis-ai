@@ -142,6 +142,12 @@ On 2026-08-28, the official Arden Berlin campus page was checked for its address
 
 Kaveh agreed to use **25199053@ardenuniversity.ac.uk** in the research form's Email Contact field, matching his Arden student affiliation. This supersedes the earlier Gmail recommendation for this application only. **kaveh.momeni@gmail.com** remains his primary, permanent project contact; the README and privacy-policy contact listings remain unchanged. The choice does not assert a LinkedIn domain requirement, university approval, or a change to the app's Chaharsotoon Page association. The worksheet was updated; no live form entry or submission was performed or confirmed.
 
+## 19. Clarify the Article 40(12) planning question
+
+Kaveh asked whether to answer Yes or No to the exact question about planning research under Article 40(12). LinkedIn's official researcher guidance was rechecked on 2026-08-28. The question concerns intended research under that framework, not prior university or LinkedIn approval. For the unchanged study, the assistant recommends No if a binary answer is needed and pausing submission: the current sentiment/GenAI/architectural-deskilling purpose has not established the required EU systemic-risk contribution. This is a provisional assessment, not a categorical exclusion of the topic or a user-selected answer.
+
+Yes should follow a genuine research plan satisfying the relevant purpose and conditions, not a fabricated justification for access. LinkedIn's guidance says other public-data research projects are not currently supported, so No must not be presented as an alternative general academic API route. The live form's response to either option is unverified. No form was changed or submitted.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
