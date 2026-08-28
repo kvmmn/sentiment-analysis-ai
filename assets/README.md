@@ -2,7 +2,7 @@
 
 [Current symbol-only PNG](sentiment-ai-logo.png)
 
-Created on 2026-08-28 using the built-in image-generation tool. Status: proposed app logo, awaiting user approval for LinkedIn upload. This is a raster PNG, not an editable vector or a trademark clearance.
+Created on 2026-08-28 using the built-in image-generation tool. Status: proposed app logo; LinkedIn upload by Kaveh is not confirmed. This is a raster PNG, not an editable vector or a trademark clearance.
 
 The current candidate is a minimal symbol made of two opposing geometric quotation/bracket forms, with no text or wordmark. It follows Kaveh's request for a much simpler professional identity and explicit instruction to use only a logo without writing. Earlier architectural-portal and S/dialogue variants were generated; their prompts are preserved below. Those image files are not included in the current project folder.
 
@@ -28,7 +28,7 @@ Use case: logo-brand. Create one finished, high-quality minimalist app icon for 
 
 ## Final Edit Prompt
 
-The first output had a transparent background. The following edit produced the opaque version saved here.
+The first S/dialogue output had a transparent background. The following edit produced its opaque variant, later superseded by the current minimal symbol.
 
 ```text
 Edit this Sentiment AI logo for use as a LinkedIn application icon. Preserve the existing geometric S/dialogue symbol exactly, including its shape, proportions, centered placement, and margins. Change only its rendering: make the symbol a perfectly flat, solid near-black fill, and replace ALL transparent background and transparent negative-space pixels with solid pure WHITE (#FFFFFF). The output must be a fully opaque square image: white visible in all four corners and through the open negative spaces, no transparency anywhere. No drop shadows, no gradients, no lighting, no surface texture, no text. This is a finished flat black mark on an opaque white square canvas, not an isolated transparent logo. Keep sharp clean edges. Output one square PNG.

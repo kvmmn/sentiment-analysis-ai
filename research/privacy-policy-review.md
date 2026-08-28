@@ -37,5 +37,5 @@ GitHub becomes the shared reference for publishable project work. Review changes
 
 - Official documentation reviewed; no LinkedIn browser actions or form submission performed in this task.
 - Public contact addresses: supplied and authorized by Kaveh; inbox delivery not tested.
-- Publication and anonymous URL check: pending.
+- Published in initial commit `7e1f28c1980d60b3ca160bbf36ea4dfca20d0950` on `main`. The [public policy page](https://github.com/kvmmn/sentiment-analysis-ai/blob/main/PRIVACY.md) returned HTTP 200 without authentication or a login redirect; both contacts were present. The public raw file matched the local policy byte for byte. No GitHub Pages site was created.
 - LinkedIn acceptance and research-access approval: not verified.

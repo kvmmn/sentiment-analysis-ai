@@ -68,7 +68,7 @@ Kaveh also requested documentation of all work and the path taken. This log summ
 
 ## Current handoff and open items
 
-- Finish repository publication and anonymously verify the policy URL; record the actual result below.
+- Publication and anonymous policy-URL verification are complete; see the checks below.
 - Kaveh: enter the privacy-policy URL and complete the LinkedIn form manually if he accepts its terms and the fixed Page association. Report the resulting screen without secrets.
 - Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
@@ -76,4 +76,13 @@ Kaveh also requested documentation of all work and the path taken. This log summ
 
 ## Publication verification
 
-Pending first commit/push and anonymous public-URL verification. Do not treat this entry as proof of publication until updated with checked results.
+Completed on 2026-08-28:
+
+- Initialized Git on `main`, connected the existing repository as `origin`, and fetched before publishing. The remote had no existing commits to preserve. No visibility change or force push was used.
+- Reviewed and published 17 files in initial commit `7e1f28c1980d60b3ca160bbf36ea4dfca20d0950`. This included the foundation, original scratch document, research reviews, policy, current logo, and this history. Dataset contents, secrets, and operating-system files were excluded.
+- Checked 14 Markdown files, 52 relative links, 10 representative ignore-rule cases, both policy contact addresses, and the current logo hash. A simple secret-pattern scan found no matches; this is not a comprehensive security audit. Staged whitespace checks passed except for the deliberately excluded, unchanged original scratch document.
+- Verified the [public policy URL](https://github.com/kvmmn/sentiment-analysis-ai/blob/main/PRIVACY.md) without authentication: HTTP 200, no login redirect, and the title and both contacts present. Its raw contents exactly matched the local file. Policy SHA-256: `56233606c253df81f99f25a068a75e6ea77ac001393a52d2e3875ad2f6fe4082`.
+- Verified that local `HEAD` and GitHub `main` matched the initial commit after push. This verification record is saved in a subsequent documentation commit.
+- Tooling issues were resolved without weakening security: restricted network/Git metadata operations used approved escalation; an anonymous Python HTTPS check failed because of its local certificate configuration, then system curl passed with TLS verification enabled.
+
+No LinkedIn acceptance of the policy URL, app creation, access grant, inbox-delivery test, or research collection is implied by these checks. No Chrome actions were performed during the privacy-policy/publication work.
