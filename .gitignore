@@ -1,0 +1,19 @@
+# Local datasets; retain the documentation.
+/data/*
+!/data/README.md
+
+# Local credentials and secrets.
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+secrets.json
+secrets.yaml
+secrets.yml
+
+# Operating-system clutter.
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
