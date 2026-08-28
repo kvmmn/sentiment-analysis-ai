@@ -43,6 +43,8 @@ Relevant sections checked on 2026-08-28 for the Products-page review in [notes](
 | LI-26 | LinkedIn / Microsoft Learn — [Sign In with LinkedIn using OpenID Connect](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2) | Authentication and basic profile scopes; not a post-search product. |
 | LI-27 | LinkedIn / Microsoft Learn — [Community Management overview](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/community-management-overview?view=li-lms-2026-04) | Vetted use cases; FAQ 4's initial product restriction and FAQ 6's closed `r_member_social` permission. |
 
+After the Auth screenshots were supplied, LI-01, LI-05, and LI-07 were rechecked on 2026-08-28. The public research form still exposed only a sign-in page; its actual questions were not inspected. The next-step recommendation in the setup notes is based on the documented permissions and eligibility requirements, not an assumed form layout.
+
 ## Privacy Policy and Publication Sources
 
 Relevant sections reviewed on 2026-08-28 for the [privacy-policy review](privacy-policy-review.md). LI-02 also supports that review. These sources explain requirements and hosting behavior; they do not verify this project's legal compliance or LinkedIn acceptance.

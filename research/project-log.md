@@ -92,10 +92,18 @@ Kaveh reports completing verification himself as the Page admin. His Settings sc
 
 The next suggested step is to inspect the Auth tab's OAuth settings and scopes without sharing secrets or tokens and without changing configuration yet. Product selection remains open. The screenshot itself was not uploaded to GitHub, and no browser action or API call was performed by the assistant.
 
+## 11. Inspect OAuth configuration and prioritize access eligibility
+
+Two Auth screenshots supplied by Kaveh show the Client ID and masked Primary Client Secret field, no authorized redirect URLs, and **No permissions added**. The displayed token lifetime is two months (5,184,000 seconds); it is not evidence of token issuance. No plaintext secret was visible. The screenshots and credential values were not copied into the repository.
+
+The app's registration and Page verification have not provisioned the research permissions. The recommended next step is to inspect the official DSA research-access form without submitting it. The public form URL still requires sign-in, so its questions remain unverified. The original plan's OAuth implementation/test is deferred until the relevant permission route is established; an identity-only test would not validate access to the required discourse data.
+
+The [setup notes](notes.md) link the official documentation rechecked for this decision and preserve the unresolved EU systemic-risk eligibility requirement. No product was requested, secret rotated, redirect set, token generated, or API tested. This is a recommended sequence, not a confirmed eligibility decision or a claim that an application was submitted.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
-- App creation, Page-association verification, and the saved privacy URL are confirmed. Kaveh: share only the relevant OAuth settings/scopes from Auth, excluding Client Secret and tokens. No product request or authorization test is confirmed yet.
+- App creation, Page-association verification, saved privacy URL, and empty OAuth scopes/redirect configuration are confirmed. Kaveh: inspect the official research-access form and share its non-sensitive questions before submission. No product request or authorization test is confirmed yet.
 - Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.

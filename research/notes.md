@@ -79,7 +79,17 @@ After that, choose the actual product route before requesting scopes or configur
 
 Kaveh's Settings screenshot, supplied at 15:40, shows **Chaharsotoon Engineers — Verified: Aug 28, 2026**, app name **Saintiment**, the chosen logo, and the saved URL `https://github.com/kvmmn/sentiment-analysis-ai/blob/main/PRIVACY.md`. Kaveh states that he is the Page admin and completed the approval himself. This confirms the app-to-Page association and saved privacy URL; it does not establish a substantive privacy review, product approval, or research-data access.
 
-Next: inspect the **Auth** tab's OAuth settings and scopes, with Client Secret and any tokens excluded from shared screenshots. This is a read-only check of the available authorization configuration; do not request a product, create a token, or add a redirect URL before deciding the access route and test design. The Community Management product-selection constraint recorded above still applies. No screenshot was copied into the public repository.
+The next action recommended at this stage was to inspect **Auth** without sharing secrets or changing configuration. The resulting observations are recorded below. No screenshot was copied into the public repository.
+
+### Auth Configuration Inspected — 2026-08-28
+
+Kaveh supplied two Auth screenshots. They show a Client ID, a masked Primary Client Secret field, **No redirect URLs added**, and **No permissions added**. The displayed access-token lifetime is **2 months (5,184,000 seconds)**. This is a configured lifetime, not evidence of an issued token or a guarantee that any issued token will remain valid that long. No secret value was exposed in the screenshots, and no credential values or images are copied into this public record.
+
+The app therefore has no displayed OAuth scopes for the proposed data test. Adding a redirect URL or generating a new secret would not grant data permissions. LinkedIn's documentation ties permissions to products/programs and requires authorization and authentication for data access. [Getting access, rechecked 2026-08-28](https://learn.microsoft.com/en-us/linkedin/shared/authentication/getting-access)
+
+**Recommended next step:** Kaveh should open the [official DSA research-access form](https://www.linkedin.com/help/linkedin/ask/DSA) while signed in, inspect the questions, and share only blank/non-sensitive form content before submitting anything. The public web check still exposes only a sign-in page, so the form's actual fields have not been verified. Do not enable an unrelated product just to obtain a token; preserve the existing product-selection options. No new secret, token, or callback configuration is needed for this inspection.
+
+This adjusts the group's proposed order: check access eligibility before implementing the research OAuth/test request. The reason is the study's need for discourse data, not merely a working sign-in flow. LinkedIn's public-data research program requires a contribution to understanding specified systemic risks in the EU; academic status alone does not establish eligibility. The existing GenAI/architectural-deskilling questions have not yet demonstrated that fit. Do not manufacture a risk justification to match the application. [Researcher guidance, rechecked 2026-08-28](https://www.linkedin.com/help/linkedin/answer/a1645616)
 
 ## Decisions
 
