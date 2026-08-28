@@ -108,6 +108,14 @@ The [application worksheet](linkedin-application-worksheet.md) records the quest
 
 The recommendation is to clarify institutional/independent status and research eligibility before drafting submission-ready answers. No funding source, security implementation, storage location, GDPR responsibility, or systemic-risk objective was invented. Existing API/publication intentions are recorded as intentions. No form was submitted. The original account-page PDF and its renders remain local and excluded from Git; only the worksheet and summary are published.
 
+## 13. Clarify the contact email and organization distinction
+
+Kaveh confirmed Gmail as his primary, long-term email, mentioned an additional company-domain mailbox address, and stated that he does not have admin access for the university. He described the app/project as registered under the company, consistent with the verified Page association. This does not yet establish who formally conducts, funds, or takes responsibility for the research.
+
+The recommendation is to use Gmail in **Email Contact**, rather than choose a domain for its appearance. No same-domain or academic-domain requirement was found in the supplied form or reviewed public researcher guidance. Additional evidence could still be requested by LinkedIn. The university address remains an additional published contact; the newly mentioned company address itself was not added to public records.
+
+The worksheet now distinguishes contact email, the verified app publisher, and actual research affiliation. No Page reassociation, change to the live form, or claim of academic sponsorship was made. The open question is the company's actual role in the research, beyond publishing the app.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.

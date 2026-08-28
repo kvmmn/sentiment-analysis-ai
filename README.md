@@ -14,7 +14,7 @@ Project and LinkedIn app display name: **Saintiment**, chosen by Kaveh on 2026-0
 
 Roles and publication authorship are not yet specified. This list does not establish author order or thesis authorship.
 
-Project and privacy contact: Kaveh Momeni — [kaveh.momeni@gmail.com](mailto:kaveh.momeni@gmail.com) or [25199053@ardenuniversity.ac.uk](mailto:25199053@ardenuniversity.ac.uk). Kaveh supplied both for publication. Other members' email addresses will be added when provided and authorized. An email address does not establish institutional sponsorship or an approved research affiliation.
+Project and privacy contact: Kaveh Momeni — [kaveh.momeni@gmail.com](mailto:kaveh.momeni@gmail.com) is his confirmed primary, long-term contact; [25199053@ardenuniversity.ac.uk](mailto:25199053@ardenuniversity.ac.uk) remains an additional contact. Kaveh supplied both for publication. Other members' email addresses will be added when provided and authorized. An email address does not establish institutional sponsorship or an approved research affiliation.
 
 ## Communication
 

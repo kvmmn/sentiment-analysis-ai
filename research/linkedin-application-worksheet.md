@@ -14,7 +14,7 @@ The form identifies itself as the Article 40(12) Researcher Access Program appli
 | --- | --- |
 | Will research be conducted under Article 40(12)? | Unresolved eligibility; do not answer affirmatively solely because the project is academic. |
 | Full Name | Kaveh Momeni. |
-| Email Contact | Kaveh supplied `kaveh.momeni@gmail.com` and `25199053@ardenuniversity.ac.uk`. Use one monitored address in this single contact field. Neither address establishes research sponsorship. |
+| Email Contact | Recommended: `kaveh.momeni@gmail.com`, which Kaveh confirmed is his primary, long-term address. The Arden address remains an additional contact. Use one address in this field. No institutional or company-domain requirement was found in the printed form or reviewed public researcher guidance; this is not a guarantee against later verification requests. |
 | Organization Name, Address, Country, Website | TODO: confirm the actual organization under which this research is conducted. Do not substitute the app's associated company or infer Arden University from the email domain. |
 | Profile on organization website | TODO: actual institutional profile, if one exists. Do not fabricate a URL or treat a LinkedIn profile as an institutional page. |
 | LinkedIn profile | `https://linkedin.com/in/kvmmn`. |
@@ -47,6 +47,10 @@ The form identifies itself as the Article 40(12) Researcher Access Program appli
 | Person responsible for GDPR compliance | TODO: confirm responsibility and relevant institutional arrangements. Being the app admin or public privacy contact does not automatically settle this role. |
 
 ## Submission conditions and readiness
+
+**Email versus affiliation:** Kaveh reports also having a company-domain mailbox address and lacking admin access for the university. Neither fact determines the correct research affiliation. The verified company Page identifies the app publisher; it does not automatically identify the research organization, funder, or GDPR controller. Page-admin approval concerns linking an app to a Page, not choosing a contact email or demonstrating a real academic role. There is no need to change the existing Page association solely to use a university email. [App-verification guidance](https://www.linkedin.com/help/linkedin/answer/a1665329)
+
+The company email was discussed as an alternative contact but has not been added to public contact lists. Whether the study is conducted by the company, through the university, or independently remains to be clarified; email choice must not conceal actual commercial involvement or imply university sponsorship.
 
 The printed declaration covers accuracy, possible requests for further information, and non-confidential treatment of the application. A separate support notice says a representative may need access to account information, including messages/settings, to resolve a request. Read these before submitting; this worksheet does not accept them. The PDF does not establish that account access occurred.
 
