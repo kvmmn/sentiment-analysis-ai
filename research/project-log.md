@@ -128,10 +128,16 @@ Kaveh clarified that he wants this research to form part of his dissertation at 
 
 The worksheet also refines the earlier organization question: the form's organization fields appear under About You/Research Team, so an applicant's actual student affiliation can be described separately from the project's approval status. Confirm the exact current degree/program and department before specifying the role. Gmail remains the primary contact, and the app's existing company-Page association stays unchanged. No form was submitted.
 
+## 16. Recover existing academic context
+
+After Kaveh pointed out that his academic background had already been discussed, the assistant checked existing local academic records. The Assignment Brain README explicitly identifies his studies as **MSc Data Science at Arden University Berlin**. The application worksheet now records this context instead of asking him to repeat it. Private academic records and the student identifier were not copied into this project.
+
+The role can be described as master's student; the official department name and the form's available role choices remain unverified. This does not change the unfinalized status of Saintiment's dissertation integration, imply university approval, or establish research-access eligibility. No form was submitted. Future clarification should first use the available project and academic context.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
-- App creation, Page verification, saved privacy URL, empty OAuth configuration, and the research form's printed fields are confirmed. Intended Arden dissertation use is not yet finalized. Kaveh: confirm the exact current degree/program and department, then resolve the remaining worksheet fields before submission. No product request or authorization test is confirmed yet.
+- App creation, Page verification, saved privacy URL, empty OAuth configuration, and the research form's printed fields are confirmed. Kaveh's recorded program is MSc Data Science at Arden University Berlin; intended dissertation use is not yet finalized. Verify the official department and resolve the remaining worksheet fields before submission. No product request or authorization test is confirmed yet.
 - Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.
