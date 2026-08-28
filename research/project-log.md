@@ -116,6 +116,12 @@ The recommendation is to use Gmail in **Email Contact**, rather than choose a do
 
 The worksheet now distinguishes contact email, the verified app publisher, and actual research affiliation. No Page reassociation, change to the live form, or claim of academic sponsorship was made. The open question is the company's actual role in the research, beyond publishing the app.
 
+## 14. Confirm Chaharsotoon's limited role
+
+Kaveh clarified that Chaharsotoon provides **only its LinkedIn Page** for the app association, rather than conducting or funding the research. The worksheet now records this distinction. The existing verified app association is unchanged; Chaharsotoon should not be named as the research organization solely because it is the app publisher.
+
+Gmail remains the recommended application contact. The remaining affiliation question is whether this research is formally part of Kaveh's Arden studies or currently an independent group effort. Other funding sources, commercial-purpose details, and data-protection responsibility are not inferred from the company's limited role. No form fields or account settings were changed.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.

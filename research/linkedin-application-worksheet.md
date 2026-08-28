@@ -15,12 +15,12 @@ The form identifies itself as the Article 40(12) Researcher Access Program appli
 | Will research be conducted under Article 40(12)? | Unresolved eligibility; do not answer affirmatively solely because the project is academic. |
 | Full Name | Kaveh Momeni. |
 | Email Contact | Recommended: `kaveh.momeni@gmail.com`, which Kaveh confirmed is his primary, long-term address. The Arden address remains an additional contact. Use one address in this field. No institutional or company-domain requirement was found in the printed form or reviewed public researcher guidance; this is not a guarantee against later verification requests. |
-| Organization Name, Address, Country, Website | TODO: confirm the actual organization under which this research is conducted. Do not substitute the app's associated company or infer Arden University from the email domain. |
+| Organization Name, Address, Country, Website | TODO: confirm the actual research affiliation or independent-project status. Kaveh confirmed that Chaharsotoon provides only the Page association; do not list it as the research organization on that basis. Do not infer Arden University from the email domain. |
 | Profile on organization website | TODO: actual institutional profile, if one exists. Do not fabricate a URL or treat a LinkedIn profile as an institutional page. |
 | LinkedIn profile | `https://linkedin.com/in/kvmmn`. |
 | Job Title; Department | TODO: actual role and department. Dropdown title options are not visible. |
 | Other researchers, organizations, and institutional profile links | Iman Sheikhansari and Morteza Hazbei are known team members; their research affiliations and institutional profile links remain TODO. |
-| Who funds the research? | TODO: confirm funding, including self-funding or in-kind/commercial support if relevant. Do not assume no funding. |
+| Who funds the research? | Kaveh confirmed Chaharsotoon's role is limited to the Page association, not conducting or funding the research. Other funding, self-funding, and relevant in-kind support still need confirmation; do not assume the whole project has no funding. |
 | Previous LinkedIn research-access applications | TODO: ask Kaveh; no earlier application in this conversation does not establish that none exists. |
 
 ## About the Research
@@ -50,7 +50,7 @@ The form identifies itself as the Article 40(12) Researcher Access Program appli
 
 **Email versus affiliation:** Kaveh reports also having a company-domain mailbox address and lacking admin access for the university. Neither fact determines the correct research affiliation. The verified company Page identifies the app publisher; it does not automatically identify the research organization, funder, or GDPR controller. Page-admin approval concerns linking an app to a Page, not choosing a contact email or demonstrating a real academic role. There is no need to change the existing Page association solely to use a university email. [App-verification guidance](https://www.linkedin.com/help/linkedin/answer/a1665329)
 
-The company email was discussed as an alternative contact but has not been added to public contact lists. Whether the study is conducted by the company, through the university, or independently remains to be clarified; email choice must not conceal actual commercial involvement or imply university sponsorship.
+The company email was discussed as an alternative contact but has not been added to public contact lists. Kaveh subsequently clarified that Chaharsotoon only provides the Page for the app association; it is not conducting or funding this research. Whether the work is formally through the university or currently independent remains to be clarified. This clarification alone does not establish every funding source or exclude every potential commercial purpose.
 
 The printed declaration covers accuracy, possible requests for further information, and non-confidential treatment of the application. A separate support notice says a representative may need access to account information, including messages/settings, to resolve a request. Read these before submitting; this worksheet does not accept them. The PDF does not establish that account access occurred.
 
