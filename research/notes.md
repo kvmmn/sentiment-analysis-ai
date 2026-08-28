@@ -2,6 +2,8 @@
 
 Status: initial research direction proposed, not a finalized study design. No data have been collected or findings established in this project.
 
+Latest access status (2026-08-28): Kaveh submitted the LinkedIn research form. The case receipt shows **Open** and an automated acknowledgement, not approval. The submitted **3 Months** is expected storage duration, not a confirmed collection window. See the [application record](linkedin-application-worksheet.md) for evidenced answers and remaining gaps. Earlier setup notes below describe their historical stages.
+
 Source: [initial scratch document](initial-scratch.md), supplied by Kaveh Momeni on 2026-08-28 and preserved unchanged. Supplying the document does not establish its authorship. The working summary below lightly edits wording for clarity; the original remains the source for the initial ideas.
 
 ## Problem

@@ -28,7 +28,7 @@ Initial planning stage. The [first scratch document](research/initial-scratch.md
 
 Datasets, models, university requirements, and publication venue remain undecided. No experiments have been run or findings established in this project.
 
-Current focus (2026-08-28): the **Saintiment** LinkedIn app is created, its Page association is **Verified**, and the correct privacy-policy URL is saved. Auth shows **no OAuth permissions** or **redirect URLs**. The actual research-access form has now been reviewed from Kaveh's PDF. The [application worksheet](research/linkedin-application-worksheet.md) separates known answers from unresolved affiliation, systemic-risk eligibility, funding, timeline, and privacy arrangements. The application is not ready to submit; research access and collection are not approved. Kaveh performs LinkedIn setup manually, with guidance in the conversation. See the [setup notes](research/notes.md) and [access review](research/linkedin-data-access-review.md) for the sequence and alternatives.
+Current focus (2026-08-28): Kaveh submitted the LinkedIn research-access form. His case receipt shows **Open** and an automated acknowledgement, not research/API approval. The [application record](research/linkedin-application-worksheet.md) captures the submitted answers, including Arden email, Article 40(12): No, and expected data storage of **3 Months in Germany**. This is a declared storage period, not an approved retention exception or a confirmed collection window. Await a substantive support response. The **Saintiment** app and verified Page association remain in place; the last Auth evidence showed **no OAuth permissions** or **redirect URLs**, with no later authorization test confirmed. Kaveh operates LinkedIn manually. See the [setup notes](research/notes.md) and [access review](research/linkedin-data-access-review.md).
 
 ## Project Guide
 
@@ -37,7 +37,7 @@ Current focus (2026-08-28): the **Saintiment** LinkedIn app is created, its Page
 | [AGENTS.md](AGENTS.md) | Working principles for contributors and coding agents |
 | [Privacy policy](PRIVACY.md) | Preparation-stage privacy notice for the project and proposed LinkedIn app |
 | [Privacy-policy review](research/privacy-policy-review.md) | Requirements, drafting rationale, and publication status |
-| [Research application worksheet](research/linkedin-application-worksheet.md) | Actual form questions, known facts, and information needed before submission |
+| [Research application record](research/linkedin-application-worksheet.md) | Submitted answers, receipt status, evidence limits, and follow-up needs |
 | [Logo](assets/README.md) | Current project logo and generation record |
 | [Project log](research/project-log.md) | Chronology, decisions, rationale, completed work, and open questions |
 | [Initial scratch document](research/initial-scratch.md) | Original first draft, preserved unchanged |

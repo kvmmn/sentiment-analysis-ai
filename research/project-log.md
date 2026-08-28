@@ -152,11 +152,19 @@ Yes should follow a genuine research plan satisfying the relevant purpose and co
 
 Kaveh asked to continue through the rest of the form. The worksheet now includes conditional guidance for the remaining team, funding, research, and privacy questions and a provisional 237-character research summary. The summary explicitly leaves timeline and data scope unresolved and is not a complete proposal for submission. No durations, funding sources, commercial-purpose declarations, storage locations, implemented security controls, or responsible persons were invented. API access and publication remain known intentions. No user selection, form entry, or submission is implied by this preparation.
 
+## 21. Record the submitted case and correct the duration interpretation
+
+Kaveh reported selecting three months because a selection was required and submitting the form. His one-page case-details PDF, printed on 2026-08-28 at 16:19, was extracted and visually reviewed. It confirms a DSA Researcher Access (Beta) case with status **Open**, the submitted answers, and an automated acknowledgement. It is not a human eligibility decision or API approval. The raw PDF, case number, and account-specific case URL remain local and are excluded from public Git; the original PDF is unchanged.
+
+The receipt shows **3 Months** under expected data **storage**, not collection. The assistant's initial response to the upload incorrectly described this as a collection duration; the receipt corrects that interpretation. The earlier blank-form PDF does contain a separate collection-duration field, but no value for it appears in this case receipt. Do not infer a three-month collection window, a fixed deletion date, or permission to retain personal data for three months from this selection. Kaveh's report also corrects the practical suggestion to leave the relevant duration selection blank.
+
+The submitted answers include Article 40(12): No; Arden student affiliation and email; API and publication: Yes; self-funded with no external funding; commercial purpose: No; storage country: Germany; external access beyond the identified researchers: No; and no previous applications. These are evidenced declarations, not independent verification of infrastructure or all eligibility conditions. The submitted proposal is the earlier 237-character summary with timeline and data scope still unfinalized. The application record now replaces obsolete preparation-only status with the receipt evidence and remaining follow-up needs. Form submission with No produced a case; it does not establish an alternative access entitlement. No follow-up message, closure, browser action, or automated monitoring was performed by the assistant.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
-- Use the Arden email for this research application, as selected in section 18; retain Gmail as the permanent project contact.
-- App creation, Page verification, saved privacy URL, empty OAuth configuration, and the research form's printed fields are confirmed. Kaveh's recorded program is MSc Data Science at Arden University Berlin; intended dissertation use is not yet finalized. Verify the official department and resolve the remaining worksheet fields before submission. No product request or authorization test is confirmed yet.
+- The submitted application uses the Arden email; retain Gmail as the permanent project contact.
+- The case is Open in the supplied receipt with an automated acknowledgement. Await a substantive support response through the same case and academic mailbox; no response deadline, access grant, or authorization test is confirmed. Read the application record before preparing any reply.
 - Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.
