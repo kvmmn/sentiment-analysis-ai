@@ -91,6 +91,14 @@ The app therefore has no displayed OAuth scopes for the proposed data test. Addi
 
 This adjusts the group's proposed order: check access eligibility before implementing the research OAuth/test request. The reason is the study's need for discourse data, not merely a working sign-in flow. LinkedIn's public-data research program requires a contribution to understanding specified systemic risks in the EU; academic status alone does not establish eligibility. The existing GenAI/architectural-deskilling questions have not yet demonstrated that fit. Do not manufacture a risk justification to match the application. [Researcher guidance, rechecked 2026-08-28](https://www.linkedin.com/help/linkedin/answer/a1645616)
 
+### Research Application Form Inspected — 2026-08-28
+
+Kaveh supplied the three-page `Contact_form_LinkedIn_Help.pdf`, printed at 15:46. The actual form is now visible, superseding the earlier sign-in-only inspection limit. See the [application worksheet](linkedin-application-worksheet.md) for the full field inventory, source hash, and known-versus-missing answers.
+
+The form asks about the team/organization, research and EU systemic-risk contribution, and privacy/security arrangements. Its project proposal and systemic-risk explanation each allow **250 characters**, not words. Dropdown choices remain uninspected. No supervisor-specific field is visible. Name, contact details, team names, and intentions to use an API and publish are known; organization/role, funding and commercial-purpose details, prior applications, timeline, storage locations/retention, external access, and GDPR responsibility need confirmation.
+
+The current study's systemic-risk fit remains unresolved. Do not submit invented institutional or security claims, or invent a new research objective to satisfy this field. First clarify whether the work is formally through an institution or currently an independent group effort, then prepare truthful answers and a feasible data-handling plan. The PDF remains local and unchanged; no form was filled or submitted.
+
 ## Decisions
 
 On 2026-08-28, Kaveh chose **Saintiment** as the project and LinkedIn app display name. It supersedes **Sentiment AI** and the earlier proposed app name **GenAI Architecture Discourse Research**. This changes naming only; the research direction, repository URL, `_saintimental` folder, and Telegram group name are unchanged. See the [project log](project-log.md) for the form screenshot's observed status.

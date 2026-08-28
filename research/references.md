@@ -4,7 +4,7 @@ Shared source records for the [article](../writing/article.md) and [thesis](../w
 
 ## LinkedIn Data Access Review Sources
 
-Reviewed on 2026-08-28 for the [access review](linkedin-data-access-review.md). Reading status: relevant sections reviewed, except the application form, where only the sign-in requirement was visible. Publication dates are not recorded unless confirmed in the review. Vendor documentation establishes advertised capabilities only.
+Reviewed on 2026-08-28 for the [access review](linkedin-data-access-review.md). Initially, relevant sections were reviewed except the sign-in-only application form. Its printed fields were inspected later from Kaveh's PDF, as recorded below. Publication dates are not recorded unless confirmed in the review. Vendor documentation establishes advertised capabilities only.
 
 | ID | Publisher and source | Relevance / limitation |
 | --- | --- | --- |
@@ -12,7 +12,7 @@ Reviewed on 2026-08-28 for the [access review](linkedin-data-access-review.md). 
 | LI-02 | LinkedIn — [Research Tools Program terms](https://www.linkedin.com/legal/l/research-api-terms) | Research-use, retention, and publication conditions; requires institutional interpretation |
 | LI-03 | European Commission — [DSA researcher FAQ](https://algorithmic-transparency.ec.europa.eu/news/faqs-dsa-data-access-researchers-2025-07-03_en) | Distinction between Articles 40(12) and 40(4) |
 | LI-04 | European Commission — [DSA Data Access Portal: About](https://data-access.dsa.ec.europa.eu/public/about) | Vetted-access application mechanism |
-| LI-05 | LinkedIn — [Research application form](https://www.linkedin.com/help/linkedin/ask/DSA) | Official destination; full fields not inspected |
+| LI-05 | LinkedIn — [Research application form](https://www.linkedin.com/help/linkedin/ask/DSA) | Full printed fields later inspected in Kaveh's three-page PDF; dropdown choices and conditional behavior not inspected. See the application worksheet. |
 | LI-06 | LinkedIn — [Accessing LinkedIn APIs](https://www.linkedin.com/help/linkedin/answer/a526048) | Normal developer-app process |
 | LI-07 | LinkedIn / Microsoft Learn — [Getting Access to LinkedIn APIs](https://learn.microsoft.com/en-us/linkedin/shared/authentication/getting-access) | OAuth and open/restricted permissions |
 | LI-08 | LinkedIn / Microsoft Learn — [Posts API](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/posts-api?view=li-lms-2026-04) | Scoped social-content access |
@@ -44,6 +44,10 @@ Relevant sections checked on 2026-08-28 for the Products-page review in [notes](
 | LI-27 | LinkedIn / Microsoft Learn — [Community Management overview](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/community-management-overview?view=li-lms-2026-04) | Vetted use cases; FAQ 4's initial product restriction and FAQ 6's closed `r_member_social` permission. |
 
 After the Auth screenshots were supplied, LI-01, LI-05, and LI-07 were rechecked on 2026-08-28. The public research form still exposed only a sign-in page; its actual questions were not inspected. The next-step recommendation in the setup notes is based on the documented permissions and eligibility requirements, not an assumed form layout.
+
+## Research Application Form Evidence
+
+LI-05's actual fields were subsequently inspected on 2026-08-28 from Kaveh's local `Contact_form_LinkedIn_Help.pdf`. The [worksheet](linkedin-application-worksheet.md) preserves the field inventory, print time, evidence hash, and inspection limits. LI-01, LI-02, and LI-03 were revisited to distinguish eligibility, storage requirements, and the Article 40(12)/40(4) affiliation conditions. The raw account-page PDF is not published.
 
 ## Privacy Policy and Publication Sources
 

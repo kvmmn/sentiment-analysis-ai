@@ -100,10 +100,18 @@ The app's registration and Page verification have not provisioned the research p
 
 The [setup notes](notes.md) link the official documentation rechecked for this decision and preserve the unresolved EU systemic-risk eligibility requirement. No product was requested, secret rotated, redirect set, token generated, or API tested. This is a recommended sequence, not a confirmed eligibility decision or a claim that an application was submitted.
 
+## 12. Read the actual research application
+
+Kaveh provided the three-page research contact-form PDF, printed at 15:46 on 2026-08-28. All pages were extracted and visually inspected. Unlike the earlier public sign-in page, this shows the actual Article 40(12) application questions. The closed dropdown choices and conditional behavior remain unknown.
+
+The [application worksheet](linkedin-application-worksheet.md) records the questions, known answers, missing facts, declaration, and source hash. Two key answers have a **250-character** limit. No supervisor-specific field is visible, although organization, department, role, and organizational profile information are requested. Existing email and company-Page details must not be mistaken for research sponsorship.
+
+The recommendation is to clarify institutional/independent status and research eligibility before drafting submission-ready answers. No funding source, security implementation, storage location, GDPR responsibility, or systemic-risk objective was invented. Existing API/publication intentions are recorded as intentions. No form was submitted. The original account-page PDF and its renders remain local and excluded from Git; only the worksheet and summary are published.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
-- App creation, Page-association verification, saved privacy URL, and empty OAuth scopes/redirect configuration are confirmed. Kaveh: inspect the official research-access form and share its non-sensitive questions before submission. No product request or authorization test is confirmed yet.
+- App creation, Page verification, saved privacy URL, empty OAuth configuration, and the research form's printed fields are confirmed. Kaveh: clarify the actual institutional affiliation/role or independent-project status; use the worksheet to resolve the other missing answers before submission. No product request or authorization test is confirmed yet.
 - Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.

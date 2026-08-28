@@ -124,4 +124,6 @@ Before implementation, the team needs to confirm: university/supervisor and ethi
 
 ## Evidence and Review Limits
 
+Later on 2026-08-28, Kaveh created and verified the app and supplied the full printed research-application form. The [setup notes](notes.md) and [application worksheet](linkedin-application-worksheet.md) record that subsequent evidence. Statements below about uninspected form fields describe the initial review stage; dropdown options and any granted research interface remain unverified.
+
 Primary-source links are attached to the relevant claims above and indexed in [references](references.md). Documentation was reviewed on the date at the top; URLs and terms should be checked again before applying or collecting. Vendor claims were not independently benchmarked. The sign-in-only form and granted research interface were not inspected, and no live API behavior was verified. A limited search of dataset repositories did not establish a suitable licensed corpus; this is not proof that none exists.

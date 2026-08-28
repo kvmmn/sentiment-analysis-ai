@@ -1,0 +1,57 @@
+# LinkedIn Research Application Worksheet
+
+Status: preparation only; not ready to submit. Reviewed on 2026-08-28. No form fields were entered or submitted by the assistant.
+
+## Evidence and limits
+
+Source: Kaveh's local `Contact_form_LinkedIn_Help.pdf`, three pages, printed at 15:46 on 2026-08-28. All pages were extracted and visually reviewed. SHA-256: `fb165cd1dbf96b1bdc0ab6bf89e667be9a9b3301e6fbfe6bb89e3c319bcc44ea`. The original and temporary renders remain local and excluded from Git. This worksheet records the questions without publishing the account-page capture.
+
+The form identifies itself as the Article 40(12) Researcher Access Program application. Its three sections are **About You/Research Team**, **About the Research**, and **Privacy and Security**. The proposal and systemic-risk explanation each have a printed maximum of **250 characters**, not words. Dropdown choices are closed in the PDF; available values, conditional behavior, and full submission validation have not been checked. The organization-country and storage-country labels show required markers; absence of a marker elsewhere is not proof a field can be omitted. No supervisor-specific field is visible.
+
+## About You/Research Team
+
+| Form question / field | Known information or preparation needed |
+| --- | --- |
+| Will research be conducted under Article 40(12)? | Unresolved eligibility; do not answer affirmatively solely because the project is academic. |
+| Full Name | Kaveh Momeni. |
+| Email Contact | Kaveh supplied `kaveh.momeni@gmail.com` and `25199053@ardenuniversity.ac.uk`. Use one monitored address in this single contact field. Neither address establishes research sponsorship. |
+| Organization Name, Address, Country, Website | TODO: confirm the actual organization under which this research is conducted. Do not substitute the app's associated company or infer Arden University from the email domain. |
+| Profile on organization website | TODO: actual institutional profile, if one exists. Do not fabricate a URL or treat a LinkedIn profile as an institutional page. |
+| LinkedIn profile | `https://linkedin.com/in/kvmmn`. |
+| Job Title; Department | TODO: actual role and department. Dropdown title options are not visible. |
+| Other researchers, organizations, and institutional profile links | Iman Sheikhansari and Morteza Hazbei are known team members; their research affiliations and institutional profile links remain TODO. |
+| Who funds the research? | TODO: confirm funding, including self-funding or in-kind/commercial support if relevant. Do not assume no funding. |
+| Previous LinkedIn research-access applications | TODO: ask Kaveh; no earlier application in this conversation does not establish that none exists. |
+
+## About the Research
+
+| Form question / field | Known information or preparation needed |
+| --- | --- |
+| Research Title | Suggested working title: **Sentiment Analysis of GenAI and Deskilling in Architectural Discourse**. Based on the original sketch; not a finalized title. Saintiment is the project/app name. |
+| Project proposal: problem, data, timeline, milestones, outcomes | **250 characters maximum.** Discourse/sentiment topic and article/thesis intentions are known. Exact data scope, dates, milestones, and methods remain TODO; no submission-ready paragraph is provided. |
+| Contribution to Article 34(1) systemic risks in the EU / Article 40(12) requirements | **250 characters maximum.** Critical unresolved question. A valid, evidence-supported link to the current study has not been established. Do not manufacture a misinformation, discrimination, or mental-health objective to fit the form. |
+| Duration of public-data gathering | TODO: justified collection window. This is different from the publication timeline and data-retention period. Menu choices are not visible. |
+| API access wanted? | Yes in intent: Kaveh requested an API-based research pipeline. This does not establish entitlement or the API/interface LinkedIn would provide. |
+| Publication planned? | Yes in intent: scientific article and master's thesis are intended outputs, not completed work. |
+| Any commercial purpose? | TODO: confirm the intended uses with the team. Academic outputs alone do not rule out a commercial purpose; Page association alone does not establish one. |
+
+## Privacy and Security
+
+| Form question / field | Known information or preparation needed |
+| --- | --- |
+| Expected storage duration | TODO: select only after reconciling actual needs with permitted retention. Do not default to the thesis duration. |
+| Storage country | TODO: actual locations of storage and relevant providers/backups; do not infer from university email, organization country, or computer timezone. |
+| Access by people beyond those already identified | TODO: confirm authorized people and processors. The form references “Question 11”; its numbering is not displayed, so check that cross-reference in the live form rather than guessing. |
+| If yes, people/categories and purpose | TODO: disclose actual external access, including relevant annotation or service providers, rather than promising unrestricted third-party sharing. |
+| Technical and organizational protection mechanisms | TODO: confirm concrete measures that will actually be used. Existing policy describes intended controls; no deployed research-storage system or tested deletion procedure has been verified. |
+| Person responsible for GDPR compliance | TODO: confirm responsibility and relevant institutional arrangements. Being the app admin or public privacy contact does not automatically settle this role. |
+
+## Submission conditions and readiness
+
+The printed declaration covers accuracy, possible requests for further information, and non-confidential treatment of the application. A separate support notice says a representative may need access to account information, including messages/settings, to resolve a request. Read these before submitting; this worksheet does not accept them. The PDF does not establish that account access occurred.
+
+LinkedIn's [researcher guidance](https://www.linkedin.com/help/linkedin/answer/a1645616) ties the program to specified EU systemic risks. The [Commission FAQ](https://algorithmic-transparency.ec.europa.eu/news/faqs-dsa-data-access-researchers-2025-07-03_en) distinguishes Article 40(12) from the additional research-institution affiliation requirement for vetted access under Article 40(4). Do not invent a university requirement for every Article 40(12) applicant or assume the current form accepts an independent-applicant option that has not been seen.
+
+The [Research Terms](https://www.linkedin.com/legal/l/research-api-terms), §4.1, set default storage ceilings of 24 hours for individual personal data and one year for other Research Data, subject to their stated exceptions. A form selection is not by itself an exception. Planned collection, analysis, storage, and disclosure need a feasible permitted design before submission.
+
+Immediate clarification: is this study formally conducted through a university/organization, or is it currently an independent team project? Confirm the applicant's actual role and affiliation. Then resolve the research-eligibility fit, funding/purpose, timeline, and privacy responsibility before writing the two final short answers. If the existing research question does not fit, revisit the [alternative access routes](linkedin-data-access-review.md) instead of changing its stated purpose merely to gain access.
