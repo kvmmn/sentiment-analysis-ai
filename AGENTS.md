@@ -1,6 +1,6 @@
 # Working Principles
 
-- Use **Sentiment AI** as the project name and English for project documentation.
+- Use **Saintiment** as the project and LinkedIn app display name, as chosen by Kaveh on 2026-08-28. Use English for project documentation. Preserve earlier names in historical records and original prompts; keep the `_saintimental` folder, repository URL, and Telegram group name unchanged unless explicitly requested.
 - Treat the project as a group effort by the team listed in `README.md`. Do not infer individual roles, contributions, publication author order, or thesis authorship; record these when explicitly confirmed.
 - Keep work simple. Add files, dependencies, and tooling only when required by the current task.
 - Support both the scientific article and master's thesis using shared research and experiment records.

@@ -1,6 +1,8 @@
-# Sentiment AI Logo
+# Saintiment Logo
 
 [Current symbol-only PNG](sentiment-ai-logo.png)
+
+The project is now named **Saintiment**. The symbol contains no text, so the artwork and filename remain unchanged. Earlier names in the generation prompts below are preserved as provenance.
 
 Created on 2026-08-28 using the built-in image-generation tool. Status: proposed app logo; LinkedIn upload by Kaveh is not confirmed. This is a raster PNG, not an editable vector or a trademark clearance.
 

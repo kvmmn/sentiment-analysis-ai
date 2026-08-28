@@ -66,6 +66,16 @@ Kaveh authorized publishing both `kaveh.momeni@gmail.com` and `25199053@ardenuni
 
 Kaveh also requested documentation of all work and the path taken. This log summarizes decisions and alternatives; topic-specific reviews hold the detailed evidence. GitHub synchronization is a working practice, not an unattended automation.
 
+## 8. Choose the name Saintiment
+
+Kaveh chose **Saintiment** as the project and LinkedIn app display name on 2026-08-28. This supersedes **Sentiment AI** and the earlier app-name suggestion **GenAI Architecture Discourse Research**. The current README, privacy policy, writing outlines, asset guide, and contributor instructions were aligned with the new name. Historical entries, original image prompts, and the original research sketch retain their earlier wording.
+
+The supplied form screenshot still displays the earlier app name and the validation message “You must provide a name for your app.” It does not show Saintiment saved or establish why the error occurred. Guidance was to enter `Saintiment` in the App name field manually. No browser actions or successful registration are claimed.
+
+The folder `_saintimental`, repository `kvmmn/sentiment-analysis-ai`, policy URL, Telegram group **Sentiment Analysis AI**, and existing text-free logo remain unchanged. This is a naming decision, not a change to the research scope or evidence of trademark/domain availability.
+
+Local verification passed: current document headings and the policy use Saintiment, relative Markdown links resolve, and the original research sketch and current logo remain byte-identical to their prior committed versions. Earlier publication hashes below describe the initial policy, before this naming update.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.

@@ -1,4 +1,4 @@
-# Sentiment AI — Master's Thesis
+# Saintiment — Master's Thesis
 
 Status: outline only. The research title, university requirements, and submission format are undecided. Confirm required chapters and front matter before expanding this outline.
 

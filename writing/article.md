@@ -1,4 +1,4 @@
-# Sentiment AI — Scientific Article
+# Saintiment — Scientific Article
 
 Status: outline only. The research title, target venue, and submission requirements are undecided. These headings are provisional, not a venue-specific format.
 

@@ -1,10 +1,10 @@
-# Sentiment AI — Privacy Policy
+# Saintiment — Privacy Policy
 
 Last updated: 28 August 2026.
 
 ## Project and contact
 
-Sentiment AI is a research collaboration by Iman Sheikhansari, Morteza Hazbei, and Kaveh Momeni. Its proposed LinkedIn application is **GenAI Architecture Discourse Research**. The project studies discourse about generative AI and architectural skills, with a scientific article and a master's thesis as intended outputs.
+Saintiment is a research collaboration by Iman Sheikhansari, Morteza Hazbei, and Kaveh Momeni. Its LinkedIn application is being registered under the same name, **Saintiment**. The project studies discourse about generative AI and architectural skills, with a scientific article and a master's thesis as intended outputs.
 
 Kaveh Momeni manages project inquiries and privacy requests through these contact addresses:
 

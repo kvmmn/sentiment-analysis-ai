@@ -57,6 +57,8 @@ The [project log](project-log.md) records the chronological decisions, rationale
 
 ## Decisions
 
+On 2026-08-28, Kaveh chose **Saintiment** as the project and LinkedIn app display name. It supersedes **Sentiment AI** and the earlier proposed app name **GenAI Architecture Discourse Research**. This changes naming only; the research direction, repository URL, `_saintimental` folder, and Telegram group name are unchanged. See the [project log](project-log.md) for the form screenshot's observed status.
+
 No research-design decisions have been confirmed. The questions and source areas above remain proposals for team discussion.
 
 ## Open Questions

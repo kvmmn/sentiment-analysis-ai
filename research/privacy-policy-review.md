@@ -1,6 +1,6 @@
 # Privacy Policy Review
 
-Reviewed: 2026-08-28. Scope: the privacy-policy URL for the proposed **GenAI Architecture Discourse Research** application, not approval to collect a corpus. This is implementation research, not a legal opinion or an institutional ethics determination.
+Reviewed: 2026-08-28. Scope: the privacy-policy URL for the **Saintiment** application, initially proposed as **GenAI Architecture Discourse Research**, not approval to collect a corpus. This is implementation research, not a legal opinion or an institutional ethics determination.
 
 ## What the official sources establish
 
