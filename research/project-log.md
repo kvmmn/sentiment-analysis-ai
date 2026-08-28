@@ -148,6 +148,10 @@ Kaveh asked whether to answer Yes or No to the exact question about planning res
 
 Yes should follow a genuine research plan satisfying the relevant purpose and conditions, not a fabricated justification for access. LinkedIn's guidance says other public-data research projects are not currently supported, so No must not be presented as an alternative general academic API route. The live form's response to either option is unverified. No form was changed or submitted.
 
+## 20. Draft the remaining form guidance
+
+Kaveh asked to continue through the rest of the form. The worksheet now includes conditional guidance for the remaining team, funding, research, and privacy questions and a provisional 237-character research summary. The summary explicitly leaves timeline and data scope unresolved and is not a complete proposal for submission. No durations, funding sources, commercial-purpose declarations, storage locations, implemented security controls, or responsible persons were invented. API access and publication remain known intentions. No user selection, form entry, or submission is implied by this preparation.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.

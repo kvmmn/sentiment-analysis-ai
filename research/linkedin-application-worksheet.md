@@ -32,12 +32,33 @@ Practical sequence: fill the known identity and affiliation fields first, and in
 | Form question / field | Known information or preparation needed |
 | --- | --- |
 | Research Title | Suggested working title: **Sentiment Analysis of GenAI and Deskilling in Architectural Discourse**. Based on the original sketch; not a finalized title. Saintiment is the project/app name. |
-| Project proposal: problem, data, timeline, milestones, outcomes | **250 characters maximum.** Discourse/sentiment topic and article/thesis intentions are known. Exact data scope, dates, milestones, and methods remain TODO; no submission-ready paragraph is provided. |
+| Project proposal: problem, data, timeline, milestones, outcomes | **250 characters maximum.** See the provisional summary below. Exact data scope, dates, milestones, and methods remain TODO; the summary is not a complete submission-ready proposal. |
 | Contribution to Article 34(1) systemic risks in the EU / Article 40(12) requirements | **250 characters maximum.** Critical unresolved question. A valid, evidence-supported link to the current study has not been established. Do not manufacture a misinformation, discrimination, or mental-health objective to fit the form. |
 | Duration of public-data gathering | TODO: justified collection window. This is different from the publication timeline and data-retention period. Menu choices are not visible. |
 | API access wanted? | Yes in intent: Kaveh requested an API-based research pipeline. This does not establish entitlement or the API/interface LinkedIn would provide. |
 | Publication planned? | Yes in intent: scientific article and master's thesis are intended outputs, not completed work. |
 | Any commercial purpose? | TODO: confirm the intended uses with the team. Academic outputs alone do not rule out a commercial purpose; Page association alone does not establish one. |
+
+### Provisional proposal summary
+
+The following is an assistant-proposed draft, not a finalized team decision or submission-ready answer. It contains **237 characters**, including spaces and punctuation, and explicitly preserves the unknown timeline and data scope. It must be revised with the actual timeline and milestones before submission.
+
+```text
+Study public LinkedIn discussions of generative AI and architectural deskilling through sentiment analysis. Planned outputs: a scientific article and potential MSc dissertation contribution. Timeline and data scope are not yet finalized.
+```
+
+### Conditional answers for the remaining fields
+
+- Other researchers: Iman Sheikhansari and Morteza Hazbei. Their institutional affiliations and profile links still need confirmation; personal LinkedIn profiles are not institutional profiles.
+- Funding: use "Self-funded by the research team; no external funding" only if the team confirms both statements. No funding declaration has yet been selected.
+- Previous applications: answer No only if Kaveh has not previously applied; the current conversation does not establish his full application history.
+- API access and publication: Yes reflects the known intentions. Publication means an intended article and possible dissertation contribution, not a promise of acceptance or finalized university approval.
+- Commercial purpose: answer No only after confirming there is no commercial purpose; academic outputs and the company Page association do not settle this independently.
+- Data collection and retention: do not invent a duration or assume these periods are identical. The available dropdown choices have not been inspected.
+- Storage country and external sharing: account for actual hosting, backups, team access, and any external service providers. Germany cannot be inferred from the applicant's campus.
+- Security measures and GDPR responsibility: do not claim unimplemented controls or name the university or a responsible person without confirming the actual arrangements. Raw research data must not be added to the public GitHub repository.
+
+An unresolved field may be left blank during preparation; this is not a claim that LinkedIn permits its omission at submission.
 
 ## Privacy and Security
 
