@@ -2,6 +2,8 @@
 
 Status: **working proposal for team review**, drafted 2026-08-29. This answers the Telegram-group questions about search terms, search limits, and how to store posts and comments. It is not a finalized protocol, a literature-validated lexicon, or permission to collect.
 
+**Printable lexicon:** [keyword-lexicon.pdf](keyword-lexicon.pdf) — minimal black-on-white PDF (one category per page; essential terms highlighted). Regenerate with `python3 scripts/generate_keyword_lexicon_pdf.py` after `pip install reportlab`.
+
 No corpus has been collected. Do not start harvesting from LinkedIn, X, or other platforms on the basis of this list. The [LinkedIn case](linkedin-application-worksheet.md) is still **Open**; ordinary visibility of a post is not a licence to retain it.
 
 Related records: [research notes](notes.md), [access review](linkedin-data-access-review.md), [privacy policy](../PRIVACY.md), [data guide](../data/README.md).

@@ -43,6 +43,7 @@ Current focus (2026-08-29): a [working keyword, search-limit, and storage propos
 | [Initial scratch document](research/initial-scratch.md) | Original first draft, preserved unchanged |
 | [Research notes](research/notes.md) | Problem definition, questions, ideas, and decisions |
 | [Keywords, search scope, and storage](research/keywords-search-storage.md) | Working lexicon, search limits, and local JSONL storage plan (not a collection licence) |
+| [Keyword lexicon PDF](research/keyword-lexicon.pdf) | Printable category sheets with essential terms highlighted |
 | [LinkedIn access review](research/linkedin-data-access-review.md) | Sourced comparison of access routes, tools, restrictions, and next steps |
 | [References](research/references.md) | Shared source records and reading notes |
 | [Source code](src/) | Reserved for future implementation |

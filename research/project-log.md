@@ -170,6 +170,14 @@ Kaveh asked to work on the Telegram-group questions: which keywords to search, h
 
 **Reason for not collecting:** the LinkedIn case remains Open; this lexicon is not a harvest plan. No scraper, API call, or dataset file was added.
 
+## 23. Publish a printable keyword lexicon PDF
+
+Kaveh requested a minimal PDF of the keyword inventory: one page for category codes and search rules, one page per category with all terms listed, and essential seed terms highlighted. A generator script and the rendered file were added.
+
+**Design:** white background, black text, Inter (Latin) and Noto Sans (Persian), light gray fill on essential terms only. Fourteen pages: cover, categories, pilot query sketch, ten lexicon sections (Layer A/B EN, stakeholders, exclusions, FA, DE), and optional hashtags.
+
+**Files:** [keyword-lexicon.pdf](keyword-lexicon.pdf), [scripts/generate_keyword_lexicon_pdf.py](../scripts/generate_keyword_lexicon_pdf.py). Regeneration requires `reportlab` (not added as a project dependency). The PDF reflects the 2026-08-29 lexicon draft; edit the markdown source and regenerate after team changes.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
