@@ -33,7 +33,7 @@ These questions are provisional. The skill groupings and terms come from the scr
 
 The scratch document lists LinkedIn, X, ResearchGate, podcasts, and YouTube as candidate search areas. These are not confirmed datasets or approved collection methods.
 
-The data-gathering and keyword-search sections are blank in the original. A working lexicon, search-limit proposal, and storage plan are now in [keywords-search-storage.md](keywords-search-storage.md). Those are team-review drafts, not approved collection procedures. Sampling, labeling, models, and evaluation remain TODO. No research-corpus collection has been initiated.
+The data-gathering and keyword-search sections are blank in the original. The categorized keyword catalog is [keyword-lexicon.md](keyword-lexicon.md). Search limits and storage are in [keywords-search-storage.md](keywords-search-storage.md). Those are team-review drafts, not approved collection procedures. Sampling, labeling, models, and evaluation remain TODO. No research-corpus collection has been initiated.
 
 ### LinkedIn Access Review — 2026-08-28
 
@@ -114,6 +114,6 @@ The following are planning questions added while organizing the draft, not decis
 - How will deskilling, soft skills, hard skills, and the proposed subcategories be defined and supported by literature?
 - What will sentiment refer to: GenAI generally, its effect on a specific skill, or deskilling? How will sentiment be distinguished from agreement with a deskilling claim?
 - Which source areas are feasible, and what access, privacy, ethical, and reuse requirements must be checked before collection?
-- What languages, time period, search terms, sampling approach, and unit of analysis will define the dataset? Will audio or video sources require transcripts? A working proposal (English first, 2022-11-30 onward, two-layer queries, JSONL storage) is in [keywords-search-storage.md](keywords-search-storage.md); the team has not accepted it.
+- What languages, time period, search terms, sampling approach, and unit of analysis will define the dataset? Will audio or video sources require transcripts? A categorized lexicon is in [keyword-lexicon.md](keyword-lexicon.md); scope and storage remain in [keywords-search-storage.md](keywords-search-storage.md). The team has not accepted either.
 - How will stakeholder groups be identified from sufficient evidence, including overlapping or unknown roles?
 - What labeling approach, baseline methods, and evaluation criteria will be used?

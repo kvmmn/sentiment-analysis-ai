@@ -170,12 +170,16 @@ Kaveh asked to work on the Telegram-group questions: which keywords to search, h
 
 **Reason for not collecting:** the LinkedIn case remains Open; this lexicon is not a harvest plan. No scraper, API call, or dataset file was added.
 
+## 23. Organize the full keyword catalog
+
+Kaveh asked for a complete, categorized, sorted keyword list aimed at the project questions. The seed tables in the earlier search note were replaced by [keyword-lexicon.md](keyword-lexicon.md): a core set plus full English sections for architecture, GenAI, RQ1–RQ4, exclusions, and optional Persian/German/hashtag lists. Terms are sorted inside each category. This remains a working catalog, not a validated retrieval study or a collection licence.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
 - The submitted application uses the Arden email; retain Gmail as the permanent project contact.
 - The case is Open in the supplied receipt with an automated acknowledgement. Await a substantive support response through the same case and academic mailbox; no response deadline, access grant, or authorization test is confirmed. Read the application record before preparing any reply.
-- Team: review the [keyword, scope, and storage draft](keywords-search-storage.md); confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
+- Team: review the [keyword lexicon](keyword-lexicon.md) and the [scope and storage draft](keywords-search-storage.md); confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.
 
