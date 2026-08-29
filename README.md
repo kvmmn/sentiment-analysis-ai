@@ -28,7 +28,7 @@ Initial planning stage. The [first scratch document](research/initial-scratch.md
 
 Datasets, models, university requirements, and publication venue remain undecided. No experiments have been run or findings established in this project.
 
-Current focus (2026-08-28): Kaveh submitted the LinkedIn research-access form. His case receipt shows **Open** and an automated acknowledgement, not research/API approval. The [application record](research/linkedin-application-worksheet.md) captures the submitted answers, including Arden email, Article 40(12): No, and expected data storage of **3 Months in Germany**. This is a declared storage period, not an approved retention exception or a confirmed collection window. Await a substantive support response. The **Saintiment** app and verified Page association remain in place; the last Auth evidence showed **no OAuth permissions** or **redirect URLs**, with no later authorization test confirmed. Kaveh operates LinkedIn manually. See the [setup notes](research/notes.md) and [access review](research/linkedin-data-access-review.md).
+Current focus (2026-08-29): a [working keyword, search-limit, and storage proposal](research/keywords-search-storage.md) is ready for team edit. It does not authorize collection. Kaveh submitted the LinkedIn research-access form on 2026-08-28. His case receipt shows **Open** and an automated acknowledgement, not research/API approval. The [application record](research/linkedin-application-worksheet.md) captures the submitted answers, including Arden email, Article 40(12): No, and expected data storage of **3 Months in Germany**. This is a declared storage period, not an approved retention exception or a confirmed collection window. Await a substantive support response. The **Saintiment** app and verified Page association remain in place; the last Auth evidence showed **no OAuth permissions** or **redirect URLs**, with no later authorization test confirmed. Kaveh operates LinkedIn manually. See the [setup notes](research/notes.md) and [access review](research/linkedin-data-access-review.md).
 
 ## Project Guide
 
@@ -42,6 +42,7 @@ Current focus (2026-08-28): Kaveh submitted the LinkedIn research-access form. H
 | [Project log](research/project-log.md) | Chronology, decisions, rationale, completed work, and open questions |
 | [Initial scratch document](research/initial-scratch.md) | Original first draft, preserved unchanged |
 | [Research notes](research/notes.md) | Problem definition, questions, ideas, and decisions |
+| [Keywords, search scope, and storage](research/keywords-search-storage.md) | Working lexicon, search limits, and local JSONL storage plan (not a collection licence) |
 | [LinkedIn access review](research/linkedin-data-access-review.md) | Sourced comparison of access routes, tools, restrictions, and next steps |
 | [References](research/references.md) | Shared source records and reading notes |
 | [Source code](src/) | Reserved for future implementation |
@@ -53,10 +54,11 @@ Current focus (2026-08-28): Kaveh submitted the LinkedIn research-access form. H
 ## Next Steps
 
 1. Review and refine the proposed research problem and questions with the team.
-2. Confirm university requirements and explore publication requirements.
-3. Read relevant literature and record verified sources.
-4. Identify suitable datasets, access conditions, and evaluation approaches.
-5. Plan a first baseline experiment before choosing implementation tools.
+2. Edit the [working keyword and storage proposal](research/keywords-search-storage.md); freeze query version 1 only after that pass.
+3. Confirm university requirements and explore publication requirements.
+4. Read relevant literature and record verified sources.
+5. Identify suitable datasets, access conditions, and evaluation approaches.
+6. Plan a first baseline experiment before choosing implementation tools. Do not collect a corpus until a source is permitted.
 
 ## Working Format
 

@@ -2,6 +2,8 @@
 
 No datasets have been selected or downloaded. This directory is reserved for local data; its contents are ignored by version control except for this guide.
 
+A proposed raw layout (`data/local/raw/{platform}/{batch_id}/`), item schema, and retention rules are in [keywords-search-storage.md](../research/keywords-search-storage.md). That document does not authorize collection. When a permitted batch exists, record only non-sensitive metadata below and keep the JSONL locally.
+
 Record each dataset below when selected. Keep only non-sensitive metadata here. Confirm permitted access, use, and sharing before acquiring data. Never place credentials or personal records in this document.
 
 ## Dataset Template

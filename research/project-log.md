@@ -160,12 +160,22 @@ The receipt shows **3 Months** under expected data **storage**, not collection. 
 
 The submitted answers include Article 40(12): No; Arden student affiliation and email; API and publication: Yes; self-funded with no external funding; commercial purpose: No; storage country: Germany; external access beyond the identified researchers: No; and no previous applications. These are evidenced declarations, not independent verification of infrastructure or all eligibility conditions. The submitted proposal is the earlier 237-character summary with timeline and data scope still unfinalized. The application record now replaces obsolete preparation-only status with the receipt evidence and remaining follow-up needs. Form submission with No produced a case; it does not establish an alternative access entitlement. No follow-up message, closure, browser action, or automated monitoring was performed by the assistant.
 
+## 22. Draft keywords, search limits, and storage
+
+Kaveh asked to work on the Telegram-group questions: which keywords to search, how far to search, and how to store posts and comments. A working proposal is in [keywords-search-storage.md](keywords-search-storage.md).
+
+**Decision recorded as a draft, not a team vote:** use two query layers (architecture + GenAI discovery, then skill terms) so deskilling language does not select the sample; keep English, Persian, and German lists separate; propose a first time window from 30 November 2022; store one JSONL record per item under gitignored `data/local/`. Sentiment words are for later coding, not retrieval.
+
+**Not decided:** which terms to keep, whether Persian or German runs proceed, first permitted platform, comment depth, and the retention clock if LinkedIn access is offered (form: three months in Germany; Research Tools default for personal data can be 24 hours).
+
+**Reason for not collecting:** the LinkedIn case remains Open; this lexicon is not a harvest plan. No scraper, API call, or dataset file was added.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
 - The submitted application uses the Arden email; retain Gmail as the permanent project contact.
 - The case is Open in the supplied receipt with an automated acknowledgement. Await a substantive support response through the same case and academic mailbox; no response deadline, access grant, or authorization test is confirmed. Read the application record before preparing any reply.
-- Team: confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
+- Team: review the [keyword, scope, and storage draft](keywords-search-storage.md); confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.
 
