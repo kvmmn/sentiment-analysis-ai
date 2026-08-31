@@ -196,6 +196,10 @@ On 2026-08-31 the project recorded a keyword-systems expansion **on this reposit
 
 **Verification:** Remote `main` fetched before branch; secret-pattern scan before commit; PR against `main`; no force push.
 
+## 25. Public HTML keyword catalog (2026-08-31)
+
+Added a static browser catalog at [docs/index.html](../docs/index.html) (with [docs/.nojekyll](../docs/.nojekyll) for GitHub Pages). The page presents current EN/FA/DE keywords and English coding lists from the existing markdown sources for team review before the next decision. Query version 1 remains **not frozen**. No collection authorised. The 71-comments figure is **not cited** as a published fact.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
