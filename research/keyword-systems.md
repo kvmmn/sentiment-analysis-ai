@@ -4,6 +4,8 @@ Date: 2026-08-31 (Europe/Berlin)
 Status: academic evaluation of a sourced keyword pack. Not a collection licence. Not frozen query version 1 (no live database counts).
 Object: sentiment about GenAI and deskilling in architectural discourse (profession, studio, education), with soft/hard skills and stakeholder differences.
 
+**Lexicon note:** Two **03 lexicon drafts** existed and were **not silently merged** (see [Lexicon draft conflict](#lexicon-draft-conflict--two-03-drafts-2026-08-31) below).
+
 Decisions accepted:
 1. Three instruments, never mixed: (a) literature retrieval (Scopus/WoS/IEEE/Scholar); (b) discourse-retrieval catalog; (c) sentiment/stance coding lexicon. Using excited/hype/threat as search terms is query bias, not measurement (Grimmer, Roberts and Stewart 2022 ch.4; Loughran and McDonald 2011; van Atteveldt et al. 2021).
 2. Two layers. Layer A = architecture AND GenAI. Layer B = skill/deskilling as a second filter.
@@ -35,6 +37,13 @@ Two **03 lexicon drafts** existed for FA/DE/EN discourse lemmas. They were **not
 | 7 | FA deskilling | Persian equivalent sought | `مهارت‌زدایی` rejected | **`مهارت‌زدایی` remains GAP** as Braverman equivalent. Keep **English** `deskilling` in mixed FA scholarly queries. |
 
 Full lemma tables: [keyword-discourse-catalog.md](keyword-discourse-catalog.md).
+
+### Host ruling details (03 conflict)
+
+- **`دفتر مهندسی`** is the **INBR** legal office term; do **not** invent **`دفتر معماری`** as Nezam terminology.
+- **BIM (FA):** keep **both** INSO 23198-1 **`مدلسازی اطلاعات ساخت`** and INSO 12690-1 **`مدل سازی اطلاعات ساختمان`**; **not Layer A**.
+- **`هوش مصنوعی مولد`** is sourced to https://jfaup.ut.ac.ir/p_generative-ai and IRCEO LMS course **1180313** syllabus (**`آشنایی با هوش مصنوعی مولد`** — https://lmsiriceo.ir/course/show/470/d98d61b1b9f19d88849096542a221190); **not** Farhangestan-approved; **not** an invented calque.
+- Two **03 lexicon drafts** existed and were **not silently merged** (this section records the conflict; the later conservative pass is not automatic truth).
 
 ## Related files
 
