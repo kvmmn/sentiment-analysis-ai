@@ -111,7 +111,7 @@ Records support search-method design and source identification. They are **not**
 | --- | --- | --- |
 | KS-30 | Farhangestan — memar / memari | FA architecture lemmas |
 | KS-31 | IRCEO; 1374 Law — mohandes-e memar, reshte-ye memari, daftar-e mohandesi-ye tarrahi-ye sakhteman | FA professional terms |
-| KS-32 | Honar-ha-ye Ziba + IRCEO — hush-e masnui-ye movalled | Preferred FA GenAI lemma |
+| KS-32 | Honar-ha-ye Ziba (*Me'mari va Shahrsazi*) — `هوش مصنوعی مولد` on [generative-AI policy page](https://jfaup.ut.ac.ir/p_generative-ai); IRCEO LMS 1180313 `آشنایی با هوش مصنوعی مولد` — [course syllabus](https://lmsiriceo.ir/course/show/470/d98d61b1b9f19d88849096542a221190) (+ Nezam Qom news 1796). **Sourced** journal/CPD discourse; **not** Farhangestan-approved equivalent. Host ruling 2026-08-31 vs later conservative GAP. | Verified URLs on research pass |
 | KS-33 | Mehr 1405 — hushvare/humas **not approved** for GenAI | FA exclusion |
 | KS-34 | BAK/AKNW — Gebäudevisualisierungen, KI-Bildgeneratoren | DE visualisation / GenAI |
 | KS-35 | DIN EN ISO 19650 — Bauwerksinformationsmodellierung | DE BIM term |
