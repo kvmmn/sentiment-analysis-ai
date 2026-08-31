@@ -6,11 +6,21 @@ Status: **sourced retrieval catalog**, 2026-08-31. Terms for **permitted** disco
 
 Host decisions: [keyword-systems.md](keyword-systems.md) (includes **lexicon draft conflict** ruling). Scope and storage: [keywords-search-storage.md](keywords-search-storage.md).
 
+**Lexicon note:** Two **03 lexicon drafts** existed and were **not silently merged**; host rulings below.
+
 ---
 
 ## Draft conflict — two 03 lexicon drafts (not silently merged)
 
-Two **03 lexicon drafts** proposed FA/DE/EN discourse lemmas. They **conflicted**; the **later conservative pass is not automatic truth**. Host rulings (2026-08-31) are recorded in [keyword-systems.md](keyword-systems.md#lexicon-draft-conflict--two-03-drafts-2026-08-31). Summary:
+Two **03 lexicon drafts** proposed FA/DE/EN discourse lemmas. They **conflicted** and were **not silently merged**; the **later conservative pass is not automatic truth**. Host rulings (2026-08-31) are recorded in [keyword-systems.md](keyword-systems.md#lexicon-draft-conflict--two-03-drafts-2026-08-31).
+
+### Host ruling details (03 conflict)
+
+- **`دفتر مهندسی`** is the **INBR** legal office term; do **not** invent **`دفتر معماری`** as Nezam terminology.
+- **BIM (FA):** keep **both** INSO 23198-1 **`مدلسازی اطلاعات ساخت`** and INSO 12690-1 **`مدل سازی اطلاعات ساختمان`**; **not Layer A**.
+- **`هوش مصنوعی مولد`** is sourced to https://jfaup.ut.ac.ir/p_generative-ai and IRCEO LMS course **1180313** syllabus (**`آشنایی با هوش مصنوعی مولد`** — https://lmsiriceo.ir/course/show/470/d98d61b1b9f19d88849096542a221190); **not** Farhangestan-approved; **not** an invented calque.
+
+Summary:
 
 | Ruling | Outcome |
 | --- | --- |
@@ -106,8 +116,8 @@ Also exclude:
 | معمار / معماری | memar / memari | Farhangestan | A | Architecture / architect |
 | مهندس معمار | mohandes-e memar | IRCEO (1374 Law) | A | Licensed architect engineer |
 | رشته معمار | reshte-ye memari | IRCEO | A | Architecture discipline |
-| دفتر مهندسی | daftar-e mohandesi | INBR | A | Legal/engineering office — **not** `دفتر معماری` |
-| هوش مصنوعی مولد | hush-e masnui-ye movalled | Honar-ha-ye Ziba; IRCEO LMS | A | **Sourced** journal/CPD discourse — see URLs below; **not** Farhangestan-approved equivalent |
+| دفتر مهندسی | daftar-e mohandesi | INBR | A | **INBR legal office term** — do **not** invent `دفتر معماری` as Nezam terminology |
+| هوش مصنوعی مولد | hush-e masnui-ye movalled | Honar-ha-ye Ziba; IRCEO LMS 1180313 | A | Sourced — https://jfaup.ut.ac.ir/p_generative-ai ; syllabus `آشنایی با هوش مصنوعی مولد` — **not** Farhangestan-approved; **not** invented calque |
 | پرامپت‌نویسی + ChatGPT | prompt-nevisi | IRCEO | A | Prompt-writing with ChatGPT |
 | نویسندگی | nevisandegi | IRCEO / discourse | B | Writing / authorship |
 | تفکر نقادانه | tafakkur-e naqqadane | Architecture education | B | Critical thinking |
@@ -125,10 +135,12 @@ Later conservative pass marked **GAP** because it required Academy/INSO/Nezam *l
 
 ### FA — BIM (both INSO wordings; not Layer A)
 
+Keep **both** standards; neither is Layer A:
+
 | Lemma (Persian) | Standard | Layer | Notes |
 | --- | --- | --- | --- |
-| مدلسازی اطلاعات ساخت | INSO 23198-1 | — | **Not Layer A** |
-| مدل سازی اطلاعات ساختمان | INSO 12690-1 | — | **Not Layer A** — keep **both** wordings |
+| مدلسازی اطلاعات ساخت | **INSO 23198-1** | — | **Not Layer A** |
+| مدل سازی اطلاعات ساختمان | **INSO 12690-1** | — | **Not Layer A** — keep **both** wordings |
 
 ### FA — NOT approved / GAP
 
