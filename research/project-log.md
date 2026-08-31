@@ -200,6 +200,10 @@ On 2026-08-31 the project recorded a keyword-systems expansion **on this reposit
 
 Added a static browser catalog at [docs/index.html](../docs/index.html) (with [docs/.nojekyll](../docs/.nojekyll) for GitHub Pages). The page presents current EN/FA/DE keywords and English coding lists from the existing markdown sources for team review before the next decision. Query version 1 remains **not frozen**. No collection authorised. The 71-comments figure is **not cited** as a published fact.
 
+## 26. Catalog HTML simplified for teammate reading (2026-08-31)
+
+Replaced the public [docs/index.html](../docs/index.html) layout with a quieter single-column page (cream paper, no color legend, no duplicate EN discourse block). Visible sections show search / screen / do-not-search lemmas once; full IT exclusions, construction/AEC strings, Scopus S-A1, and lexicon §1–7 / §10 remain in closed `<details>`. **Lemmas unchanged** — keyword markdown sources not edited.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.

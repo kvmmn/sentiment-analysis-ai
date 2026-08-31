@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Saintiment · Keyword catalog</title>
+<title>Saintiment · کلمات فعلی</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=Vazirmatn:wght@400;500;600&display=swap" rel="stylesheet">
@@ -15,339 +15,531 @@
   --line: #d9d0c3;
   --chip: #fffcf7;
   --chip-edge: #cfc5b6;
-  --mark: #8d3f28;
-  --a-edge: #7a8b7e;
-  --b-edge: #c4a882;
-  --x-edge: #9a8f86;
-  --gap-edge: #c9a227;
-  --w-edge: #8a9aab;
 }
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
   font-family: "Instrument Sans", system-ui, sans-serif;
-  font-size: 16.5px;
+  font-size: 18px;
   line-height: 1.55;
 }
-h1, h2, h3, h4 { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; }
+h1, h2, h3 {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+}
 h1 {
-  font-size: clamp(2.4rem, 5vw, 3.4rem);
-  line-height: 1.12;
-  margin: 0 0 0.5rem;
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  line-height: 1.15;
+  margin: 0 0 0.75rem;
 }
-h1 em { font-style: italic; color: var(--mark); }
-h2 { font-size: 1.65rem; margin: 0 0 0.75rem; border-bottom: 1px solid var(--line); padding-bottom: 0.35rem; }
-h3 { font-size: 1.2rem; margin: 1.25rem 0 0.5rem; }
-h4 { font-size: 0.95rem; margin: 0.85rem 0 0.35rem; color: var(--mute); font-family: "Instrument Sans", sans-serif; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; }
-a { color: var(--mark); }
-.wrap { max-width: 920px; margin: 0 auto; padding: 0 1.25rem 4rem; }
-nav {
-  position: sticky; top: 0; z-index: 10;
-  background: rgba(244, 239, 230, 0.92);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--line);
-  padding: 0.65rem 0;
-  margin-bottom: 2rem;
+h2 {
+  font-size: 1.35rem;
+  margin: 2rem 0 0.5rem;
 }
-nav .inner { max-width: 920px; margin: 0 auto; padding: 0 1.25rem; display: flex; flex-wrap: wrap; gap: 0.35rem 0.85rem; font-size: 0.82rem; }
-nav a { text-decoration: none; color: var(--mute); }
-nav a:hover { color: var(--mark); }
-.eyebrow { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mute); margin-bottom: 0.35rem; }
-.lede { max-width: 42rem; color: var(--ink); margin-bottom: 0.75rem; }
-.lede-fa {
-  direction: rtl; text-align: right;
+h3 {
+  font-size: 0.95rem;
+  margin: 1rem 0 0.35rem;
+  color: var(--mute);
+  font-family: "Instrument Sans", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.wrap {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+}
+.eyebrow {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mute);
+  margin: 0 0 1.25rem;
+  text-align: right;
+}
+header {
+  direction: rtl;
+  text-align: right;
   font-family: "Vazirmatn", "Instrument Sans", sans-serif;
-  max-width: 42rem; margin-bottom: 1rem;
 }
-.pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 1rem 0 2rem; }
-.pill {
-  font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
-  padding: 0.22rem 0.55rem; border: 1px solid var(--line); border-radius: 999px;
-  background: var(--chip); color: var(--mute);
+header .en-line {
+  direction: ltr;
+  text-align: left;
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 0.95rem;
+  color: var(--mute);
+  margin: 0.75rem 0 0;
 }
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1rem 0 1.5rem; }
-.card {
-  background: var(--chip); border: 1px solid var(--line);
-  padding: 1rem 1.1rem; border-radius: 2px;
+header .meta {
+  font-size: 0.88rem;
+  color: var(--mute);
+  margin-top: 1rem;
 }
-.card h3 { margin-top: 0; font-size: 1.05rem; }
-.card p { margin: 0; font-size: 0.92rem; color: var(--mute); }
-.note { font-size: 0.88rem; color: var(--mute); margin: 0.75rem 0 1.5rem; }
-section { margin-bottom: 2.5rem; }
-.chip-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0.4rem 0 0.85rem; }
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 2rem 0;
+}
+.rules {
+  direction: rtl;
+  text-align: right;
+  font-family: "Vazirmatn", "Instrument Sans", sans-serif;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+}
+.rules li {
+  margin-bottom: 1.1rem;
+}
+.rules .num {
+  color: var(--mute);
+  margin-left: 0.35rem;
+}
+.rules .en {
+  direction: ltr;
+  text-align: left;
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 0.88rem;
+  color: var(--mute);
+  margin-top: 0.2rem;
+}
+.section-note {
+  direction: rtl;
+  text-align: right;
+  font-family: "Vazirmatn", sans-serif;
+  font-size: 0.82rem;
+  color: var(--mute);
+  margin: -0.25rem 0 0.75rem;
+}
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.35rem 0 0.85rem;
+}
 .k {
   display: inline-block;
   padding: 0.28rem 0.58rem;
   background: var(--chip);
+  border: 1px solid var(--chip-edge);
   border-radius: 2px;
   font-size: 0.88rem;
   line-height: 1.3;
-  box-shadow: 0 0 0 1px var(--chip-edge);
 }
-.k[data-k="A"] { box-shadow: 0 0 0 1px var(--a-edge); }
-.k[data-k="B"] { box-shadow: 0 0 0 1px var(--b-edge); }
-.k[data-k="X"] { text-decoration: line-through; box-shadow: 0 0 0 1px var(--x-edge); color: var(--mute); }
-.k[data-k="GAP"] { box-shadow: 0 0 0 1px var(--gap-edge); background: #fff9e8; }
-.k[data-k="RW"] { opacity: 0.78; box-shadow: 0 0 0 1px var(--chip-edge); }
-.k[data-k="W"] { box-shadow: 0 0 0 1px var(--w-edge); }
-.k[data-k="opt"] { box-shadow: 0 0 0 1px var(--chip-edge); border-style: dashed; }
-.fa-block { direction: rtl; text-align: right; font-family: "Vazirmatn", sans-serif; }
-details.query {
-  margin: 1rem 0; border: 1px solid var(--line); background: var(--chip);
+.fa-block {
+  direction: rtl;
+  text-align: right;
+  font-family: "Vazirmatn", sans-serif;
 }
-details.query summary {
-  cursor: pointer; padding: 0.75rem 1rem; font-weight: 500;
-  list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+.fa-block h2 { font-family: "Vazirmatn", "Instrument Serif", serif; }
+.de-block .warn {
+  font-size: 0.88rem;
+  color: var(--mute);
+  margin-bottom: 0.75rem;
 }
-details.query summary::-webkit-details-marker { display: none; }
-details.query summary::after { content: "+"; color: var(--mute); }
-details.query[open] summary::after { content: "−"; }
-.query-body { padding: 0 1rem 1rem; }
+details.fold {
+  margin: 1.25rem 0;
+  border: 1px solid var(--line);
+  background: var(--chip);
+}
+details.fold summary {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  font-size: 0.92rem;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+details.fold summary::-webkit-details-marker { display: none; }
+details.fold summary::after { content: "+"; color: var(--mute); font-weight: 400; }
+details.fold[open] summary::after { content: "−"; }
+.fold-body { padding: 0 1rem 1rem; }
 .query-pre {
   font-family: ui-monospace, "Cascadia Code", monospace;
-  font-size: 0.72rem; line-height: 1.45;
-  white-space: pre-wrap; word-break: break-word;
-  background: var(--paper); border: 1px solid var(--line);
-  padding: 0.75rem; margin: 0 0 0.65rem;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  padding: 0.75rem;
+  margin: 0 0 0.65rem;
 }
 .copy-btn {
   font-family: "Instrument Sans", sans-serif;
-  font-size: 0.82rem; padding: 0.35rem 0.75rem;
-  background: var(--mark); color: var(--chip); border: none; cursor: pointer;
+  font-size: 0.82rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--ink);
+  color: var(--chip);
+  border: none;
+  cursor: pointer;
   border-radius: 2px;
 }
-.copy-btn:hover { opacity: 0.9; }
-.legend { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; font-size: 0.78rem; color: var(--mute); margin-bottom: 0.75rem; }
-.legend span { display: inline-flex; align-items: center; gap: 0.3rem; }
+.copy-btn:hover { opacity: 0.85; }
+.lex-block { margin-bottom: 1.25rem; }
+.lex-block h3 {
+  font-size: 1.05rem;
+  color: var(--ink);
+  font-family: "Instrument Serif", serif;
+  font-weight: 400;
+  margin: 1rem 0 0.5rem;
+}
+.lex-block h4 {
+  font-size: 0.82rem;
+  margin: 0.75rem 0 0.3rem;
+  color: var(--mute);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
 footer {
-  margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
-  font-size: 0.88rem; color: var(--mute);
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.88rem;
+  color: var(--mute);
 }
 footer ul { padding-left: 1.1rem; }
-.lex-block { margin-bottom: 1.5rem; }
+footer a { color: var(--ink); }
 </style>
 </head>
 <body>
 <div class="wrap">
-<nav aria-label="Sections">
-  <div class="inner">
-    <a href="#how">How to read</a>
-    <a href="#literature">Literature S-A1</a>
-    <a href="#en">English discourse</a>
-    <a href="#fa">Persian</a>
-    <a href="#de">German</a>
-    <a href="#dns">Do not search</a>
-    <a href="#lexicon">English coding lists</a>
-    <a href="#sources">Sources</a>
-  </div>
-</nav>
 
 <header>
-  <p class="eyebrow">Saintiment · Academia</p>
-  <h1>Keyword catalog / <em>current words</em></h1>
-  <p class="lede">Working catalog for team review before the next decision. Query version 1 is <strong>not frozen</strong>. No live database counts. No collection authorised.</p>
-  <p class="lede-fa">فهرست فعلی کلمات، قبل از تصمیم بعدی تیم. قفل نشده.</p>
-  <div class="pills">
-    <span class="pill">31 Aug 2026</span>
-    <span class="pill">EN</span>
-    <span class="pill">FA</span>
-    <span class="pill">DE</span>
-    <span class="pill">query v1 not frozen</span>
-    <span class="pill">71 comments not cited</span>
-  </div>
+  <p class="eyebrow">Saintiment</p>
+  <h1>کلمات فعلی</h1>
+  <p>فهرست کار برای نشان دادن به تیم، قبل از تصمیم بعدی. قفل نشده. هنوز سرچ زنده نزده‌ایم.</p>
+  <p class="en-line">Working list. Query v1 is not frozen. No LinkedIn harvest.</p>
+  <p class="meta">۳۱ اوت ۲۰۲۶ · انگلیسی، فارسی، آلمانی</p>
 </header>
 
-<section id="how">
-  <h2>How to read</h2>
-  <div class="legend">
-    <span><span class="k" data-k="A">A</span> Layer A — architecture + GenAI</span>
-    <span><span class="k" data-k="B">B</span> Layer B — second filter</span>
-    <span><span class="k" data-k="X">X</span> Exclude</span>
-    <span><span class="k" data-k="GAP">GAP</span> Not approved / missing</span>
-    <span><span class="k" data-k="RW">RW</span> Related-work only</span>
-    <span><span class="k" data-k="W">W</span> Stakeholder coding</span>
+<hr>
+
+<ol class="rules">
+  <li>
+    <span class="num">۱</span> اول این را می‌گردیم: معماری و هوش مصنوعی مولد.
+    <p class="en">Search first: architecture AND generative AI. Deskilling is not in this query.</p>
+  </li>
+  <li>
+    <span class="num">۲</span> بعد روی همان نتایج غربال: مهارت، deskilling، نویسندگی، قضاوت.
+    <p class="en">Then screen those hits for skill talk.</p>
+  </li>
+  <li>
+    <span class="num">۳</span> این‌ها را سرچ نمی‌کنیم: هیجان، تهدید، hype، ترس.
+    <p class="en">Tone is coded later, on texts already found.</p>
+  </li>
+</ol>
+
+<section>
+  <h2>۱ · Search</h2>
+  <p class="section-note">Pilot A1 — صنعت ساخت اینجا نیست.</p>
+
+  <h3>Architecture</h3>
+  <div class="chip-row">
+    <span class="k">architect</span>
+    <span class="k">architectural</span>
+    <span class="k">architecture firm</span>
+    <span class="k">architecture student</span>
+    <span class="k">architectural education</span>
+    <span class="k">architectural design</span>
+    <span class="k">design studio</span>
+    <span class="k">architectural practice</span>
+    <span class="k">architecture practice</span>
+    <span class="k">archviz</span>
   </div>
-  <div class="cards">
-    <div class="card">
-      <h3>Search first</h3>
-      <p>Architecture <strong>AND</strong> GenAI = Pilot A1 (S-A1 / W-A1). No deskilling in Layer A. No LIMIT-TO Engineering alone.</p>
-    </div>
-    <div class="card">
-      <h3>Then screen</h3>
-      <p>Layer B skill terms (deskilling, authorship, judgment) as a second filter on Layer A hits — not as sample selectors.</p>
-    </div>
-    <div class="card">
-      <h3>Do not search</h3>
-      <p>Sentiment stance words (hype, threat, fear, optimism) — code after sampling, not retrieve.</p>
-    </div>
+
+  <h3>Generative AI</h3>
+  <div class="chip-row">
+    <span class="k">generative AI</span>
+    <span class="k">GenAI</span>
+    <span class="k">generative artificial intelligence</span>
+    <span class="k">Midjourney</span>
+    <span class="k">AI rendering</span>
+    <span class="k">ChatGPT</span>
+    <span class="k">DALL-E</span>
+    <span class="k">DALL-E 2</span>
+    <span class="k">DALL-E 3</span>
+    <span class="k">Stable Diffusion</span>
+    <span class="k">text-to-image</span>
+    <span class="k">text to image</span>
+    <span class="k">large language model</span>
+    <span class="k">large language models</span>
+    <span class="k">LLM</span>
   </div>
-  <p class="note">Construction / AEC / built-environment strings are <strong>related-work only</strong> (S-RW1). French and Spanish are not on this list.</p>
+
+  <h3>Also useful on platforms</h3>
+  <div class="chip-row">
+    <span class="k">architectural visualization</span>
+    <span class="k">architectural visualisation</span>
+  </div>
 </section>
 
-<section id="literature">
-  <h2>Literature — Pilot S-A1</h2>
-  <p class="note">Instrument: literature retrieval only. Copy-paste protocol from <code>keyword-literature-strings.md</code>.</p>
-  <h3>Architecture object (Layer A)</h3>
-  <div class="chip-row"><span class="k" data-k="A">architect</span> <span class="k" data-k="A">architectural</span> <span class="k" data-k="A">architecture firm</span> <span class="k" data-k="A">architecture student</span> <span class="k" data-k="A">architectural education</span> <span class="k" data-k="A">architectural design</span> <span class="k" data-k="A">design studio</span> <span class="k" data-k="A">architectural practice</span> <span class="k" data-k="A">architecture practice</span> <span class="k" data-k="A">archviz</span></div>
-  <h3>GenAI cue (Layer A)</h3>
-  <div class="chip-row"><span class="k" data-k="A">generative AI</span> <span class="k" data-k="A">GenAI</span> <span class="k" data-k="A">generative artificial intelligence</span> <span class="k" data-k="A">Midjourney</span> <span class="k" data-k="A">AI rendering</span> <span class="k" data-k="A">ChatGPT</span> <span class="k" data-k="A">DALL-E</span> <span class="k" data-k="A">DALL-E 2</span> <span class="k" data-k="A">DALL-E 3</span> <span class="k" data-k="A">Stable Diffusion</span> <span class="k" data-k="A">text-to-image</span> <span class="k" data-k="A">text to image</span> <span class="k" data-k="A">large language model</span> <span class="k" data-k="A">large language models</span> <span class="k" data-k="A">LLM</span></div>
-  <h3>Exclusions (IT architecture)</h3>
-  <div class="chip-row"><span class="k" data-k="X">software architect</span> <span class="k" data-k="X">software architecture</span> <span class="k" data-k="X">solutions architect</span> <span class="k" data-k="X">enterprise architecture</span> <span class="k" data-k="X">cloud architect</span> <span class="k" data-k="X">computer architecture</span> <span class="k" data-k="X">IT architect</span> <span class="k" data-k="X">data architect</span> <span class="k" data-k="X">network architect</span> <span class="k" data-k="X">security architect</span> <span class="k" data-k="X">systems architect</span></div>
-  <h3>Related-work only — S-RW1 / Ghimire</h3>
-  <div class="chip-row"><span class="k" data-k="RW">built environment</span> <span class="k" data-k="RW">AEC</span> <span class="k" data-k="RW">AECO</span> <span class="k" data-k="RW">construction</span> <span class="k" data-k="RW">construction industry</span> <span class="k" data-k="RW">BIM</span> <span class="k" data-k="RW">sociotechnical</span> <span class="k" data-k="RW">socio-technical</span> <span class="k" data-k="RW">Generative AI AND Construction</span> <span class="k" data-k="RW">Generative AI</span> <span class="k" data-k="RW">Large Language Models AND Construction</span></div>
-  <h3>Layer B — after retrieval</h3>
-  <div class="chip-row"><span class="k" data-k="B">deskilling</span> <span class="k" data-k="B">de-skilling</span> <span class="k" data-k="B">dequalification</span> <span class="k" data-k="B">skill loss</span> <span class="k" data-k="B">authorship</span> <span class="k" data-k="B">professional judgment</span> <span class="k" data-k="B">Urheberrecht</span> <span class="k" data-k="B">critical thinking</span></div>
-
-  <details class="query" id="sa1-query">
-    <summary>Full Scopus S-A1 string</summary>
-    <div class="query-body">
-      <pre class="query-pre" id="sa1-text">TITLE-ABS-KEY( ( architect OR architectural OR &quot;architecture firm&quot; OR &quot;architecture student&quot; OR &quot;architectural education&quot; OR &quot;architectural design&quot; OR &quot;design studio&quot; OR &quot;architectural practice&quot; OR &quot;architecture practice&quot; OR archviz ) AND ( &quot;generative AI&quot; OR GenAI OR &quot;generative artificial intelligence&quot; OR Midjourney OR &quot;AI rendering&quot; OR ChatGPT OR &quot;DALL-E&quot; OR &quot;DALL-E 2&quot; OR &quot;DALL-E 3&quot; OR &quot;Stable Diffusion&quot; OR &quot;text-to-image&quot; OR &quot;text to image&quot; OR &quot;large language model&quot; OR &quot;large language models&quot; OR LLM ) ) AND NOT TITLE-ABS-KEY( &quot;software architect&quot; OR &quot;software architecture&quot; OR &quot;solutions architect&quot; OR &quot;enterprise architecture&quot; OR &quot;cloud architect&quot; OR &quot;computer architecture&quot; OR &quot;IT architect&quot; OR &quot;data architect&quot; OR &quot;network architect&quot; OR &quot;security architect&quot; OR &quot;systems architect&quot; )</pre>
-      <button type="button" class="copy-btn" id="copy-sa1">Copy S-A1</button>
-    </div>
-  </details>
+<section>
+  <h2>۲ · Then screen</h2>
+  <p class="section-note">فقط بعد از جستجوی اول.</p>
+  <div class="chip-row">
+    <span class="k">deskilling</span>
+    <span class="k">de-skilling</span>
+    <span class="k">dequalification</span>
+    <span class="k">skill loss</span>
+    <span class="k">upskilling</span>
+    <span class="k">reskilling</span>
+    <span class="k">authorship</span>
+    <span class="k">professional judgment</span>
+    <span class="k">creativity</span>
+    <span class="k">critical thinking</span>
+    <span class="k">design thinking</span>
+    <span class="k">computational design</span>
+    <span class="k">hand drawing</span>
+  </div>
 </section>
 
-<section id="en">
-  <h2>English discourse</h2>
-  <h3>Layer A — controlled core</h3>
-  <div class="chip-row"><span class="k" data-k="A">architect</span> <span class="k" data-k="A">architectural</span> <span class="k" data-k="A">architectural design</span> <span class="k" data-k="A">architecture firm</span> <span class="k" data-k="A">architecture student</span> <span class="k" data-k="A">architectural education</span> <span class="k" data-k="A">design studio</span> <span class="k" data-k="A">architectural practice</span> <span class="k" data-k="A">architecture practice</span> <span class="k" data-k="A">generative AI</span> <span class="k" data-k="A">GenAI</span> <span class="k" data-k="A">Midjourney</span> <span class="k" data-k="A">ChatGPT</span> <span class="k" data-k="A">DALL-E</span> <span class="k" data-k="A">Stable Diffusion</span> <span class="k" data-k="A">text-to-image</span> <span class="k" data-k="A">LLM</span></div>
-  <h3>Optional Layer A recall (DISCOURSE-NOT-CONTROLLED)</h3>
-  <div class="chip-row"><span class="k" data-k="A" title="optional recall">archviz</span> <span class="k" data-k="A" title="optional recall">AI rendering</span> <span class="k" data-k="A" title="optional recall">architectural visualization</span> <span class="k" data-k="A" title="optional recall">architectural visualisation</span></div>
-  <h3>Not Layer A — optional Layer B only</h3>
-  <div class="chip-row"><span class="k" data-k="B" title="only if sourced paper uses term">design thinking</span> <span class="k" data-k="B" title="only if sourced paper uses term">computational design</span> <span class="k" data-k="B" title="only if sourced paper uses term">hand drawing</span></div>
-  <h3>Layer B — inside Layer A only</h3>
-  <div class="chip-row"><span class="k" data-k="B">deskilling</span> <span class="k" data-k="B">de-skilling</span> <span class="k" data-k="B">upskilling</span> <span class="k" data-k="B">reskilling</span> <span class="k" data-k="B">authorship</span> <span class="k" data-k="B">professional judgment</span> <span class="k" data-k="B">creativity</span> <span class="k" data-k="B">critical thinking</span> <span class="k" data-k="B">Urheberrecht</span> <span class="k" data-k="B">skill loss</span></div>
-  <h3>Hashtags — high noise</h3>
-  <div class="chip-row"><span class="k" data-k="RW">#constructionAI</span> <span class="k" data-k="RW">#GenAIandBuiltEnvironment</span> <span class="k" data-k="RW">#GenerativeAI</span> <span class="k" data-k="RW">#GenAi</span></div>
-  <h3>Industry leader</h3>
-  <div class="chip-row"><span class="k" data-k="GAP" title="code role after retrieval — RQ4">industry leader</span></div>
-  <h3>Exclusions</h3>
-  <div class="chip-row"><span class="k" data-k="X">software architect</span> <span class="k" data-k="X">software architecture</span> <span class="k" data-k="X">solutions architect</span> <span class="k" data-k="X">enterprise architecture</span> <span class="k" data-k="X">cloud architect</span> <span class="k" data-k="X">computer architecture</span> <span class="k" data-k="X">IT architect</span> <span class="k" data-k="X">data architect</span> <span class="k" data-k="X">network architect</span> <span class="k" data-k="X">security architect</span> <span class="k" data-k="X">systems architect</span></div>
+<section>
+  <h2>۳ · Do not search</h2>
+  <p class="section-note">لحن را بعداً روی همان متن‌ها می‌خوانیم.</p>
+  <div class="chip-row">
+    <span class="k">excited</span>
+    <span class="k">terrified</span>
+    <span class="k">hype</span>
+    <span class="k">threat</span>
+    <span class="k">fear</span>
+    <span class="k">optimism</span>
+    <span class="k">positive sentiment</span>
+    <span class="k">negative sentiment</span>
+    <span class="k">stance markers</span>
+    <span class="k">emotion lexicons</span>
+  </div>
 </section>
 
-<section id="fa" class="fa-block">
-  <h2>فارسی — host catalog</h2>
-  <p class="note" style="direction:ltr;text-align:left;">Host rulings from <code>keyword-discourse-catalog.md</code> — not old lexicon §8. <code>هوش مصنوعی مولد</code> KEEP (sourced, not Farhangestan). <code>دفتر مهندسی</code> not <code>دفتر معماری</code>.</p>
+<section class="fa-block">
+  <h2>فارسی</h2>
+
   <h3>لایه A</h3>
-  <div class="chip-row"><span class="k" data-k="A">معمار</span> <span class="k" data-k="A">معماری</span> <span class="k" data-k="A">مهندس معمار</span> <span class="k" data-k="A">رشته معمار</span> <span class="k" data-k="A">دفتر مهندسی</span> <span class="k" data-k="A">هوش مصنوعی مولد</span> <span class="k" data-k="A">پرامپت‌نویسی</span> <span class="k" data-k="A">ChatGPT</span> <span class="k" data-k="A">استودیو</span></div>
-  <h3>اختیاری — Layer A optional</h3>
-  <div class="chip-row"><span class="k" data-k="opt" title="not required in Layer A">دانشجوی معماری</span></div>
-  <h3>لایه B</h3>
-  <div class="chip-row"><span class="k" data-k="B">نویسندگی</span> <span class="k" data-k="B">تفکر نقادانه</span> <span class="k" data-k="B">deskilling</span></div>
-  <h3>BIM — not Layer A (both INSO)</h3>
-  <div class="chip-row"><span class="k" data-k="opt" title="not Layer A">مدلسازی اطلاعات ساخت</span> <span class="k" data-k="opt" title="not Layer A">مدل سازی اطلاعات ساختمان</span></div>
-  <h3>GAP — not approved</h3>
-  <div class="chip-row"><span class="k" data-k="GAP">hushvare</span> <span class="k" data-k="GAP">humas</span> <span class="k" data-k="GAP">مهارت‌زدایی</span> <span class="k" data-k="GAP">دفتر معماری</span></div>
+  <div class="chip-row">
+    <span class="k">معمار</span>
+    <span class="k">معماری</span>
+    <span class="k">مهندس معمار</span>
+    <span class="k">رشته معمار</span>
+    <span class="k">دفتر مهندسی</span>
+    <span class="k">هوش مصنوعی مولد</span>
+    <span class="k">پرامپت‌نویسی</span>
+    <span class="k">ChatGPT</span>
+    <span class="k">استودیو</span>
+  </div>
+
+  <h3>غربال</h3>
+  <div class="chip-row">
+    <span class="k">نویسندگی</span>
+    <span class="k">تفکر نقادانه</span>
+    <span class="k">deskilling</span>
+  </div>
+
+  <h3>استفاده نشده</h3>
+  <div class="chip-row">
+    <span class="k">دفتر معماری</span>
+    <span class="k">مهارت‌زدایی</span>
+    <span class="k">hushvare</span>
+    <span class="k">humas</span>
+  </div>
 </section>
 
-<section id="de">
-  <h2>German discourse</h2>
-  <p class="note"><strong>Architektur</strong> alone hits IT / software architecture — always <strong>AND</strong> with <strong>KI</strong> or <strong>Architekt*</strong> + exclusion set.</p>
-  <h3>Layer A</h3>
-  <div class="chip-row"><span class="k" data-k="A">Künstliche Intelligenz</span> <span class="k" data-k="A">generative KI</span> <span class="k" data-k="A">KI-Bildgeneratoren</span> <span class="k" data-k="A">Prompts</span> <span class="k" data-k="A">ChatGPT</span> <span class="k" data-k="A">Architekturbüro</span> <span class="k" data-k="A">Architektinnen und Architekten</span> <span class="k" data-k="A">Architektenschaft</span> <span class="k" data-k="A">Planende</span> <span class="k" data-k="A">Entwerfen</span> <span class="k" data-k="A">Gebäudevisualisierungen</span></div>
-  <h3>BIM — not Layer A</h3>
-  <div class="chip-row"><span class="k" data-k="opt" title="not Layer A unless paired with GenAI">Bauwerksinformationsmodellierung</span></div>
-  <h3>Layer B only</h3>
-  <div class="chip-row"><span class="k" data-k="B">Deskilling</span> <span class="k" data-k="B">Dequalifizierung</span> <span class="k" data-k="B">Kompetenzverlust</span> <span class="k" data-k="B">Urheberrecht</span> <span class="k" data-k="B">Autorschaft</span> <span class="k" data-k="B">Verantwortung</span> <span class="k" data-k="B">Berufsbild</span></div>
+<section class="de-block">
+  <h2>German</h2>
+  <p class="warn"><strong>Architektur</strong> alone hits IT / software architecture — always <strong>AND</strong> with <strong>KI</strong> or <strong>Architekt*</strong> + exclusion set.</p>
+
+  <h3>Search</h3>
+  <div class="chip-row">
+    <span class="k">Künstliche Intelligenz</span>
+    <span class="k">generative KI</span>
+    <span class="k">KI-Bildgeneratoren</span>
+    <span class="k">Prompts</span>
+    <span class="k">ChatGPT</span>
+    <span class="k">Architekturbüro</span>
+    <span class="k">Architektinnen und Architekten</span>
+    <span class="k">Architektenschaft</span>
+    <span class="k">Planende</span>
+    <span class="k">Entwerfen</span>
+    <span class="k">Gebäudevisualisierungen</span>
+  </div>
+
+  <h3>Then screen</h3>
+  <div class="chip-row">
+    <span class="k">Deskilling</span>
+    <span class="k">Dequalifizierung</span>
+    <span class="k">Kompetenzverlust</span>
+    <span class="k">Urheberrecht</span>
+    <span class="k">Autorschaft</span>
+    <span class="k">Verantwortung</span>
+    <span class="k">Berufsbild</span>
+  </div>
 </section>
 
-<section id="dns">
-  <h2>Do not search</h2>
-  <p class="note">Sentiment and stance coding terms — annotate after sampling only. From <code>keyword-discourse-catalog.md</code> and <code>keyword-lexicon.md</code>.</p>
-  <h3>Sentiment lemmas</h3>
-  <div class="chip-row"><span class="k" data-k="X">excited</span> <span class="k" data-k="X">terrified</span> <span class="k" data-k="X">hype</span> <span class="k" data-k="X">threat</span> <span class="k" data-k="X">fear</span> <span class="k" data-k="X">optimism</span></div>
-  <h3>Core coding — also do not retrieve</h3>
-  <div class="chip-row"><span class="k" data-k="X">positive sentiment</span> <span class="k" data-k="X">negative sentiment</span> <span class="k" data-k="X">stance markers</span> <span class="k" data-k="X">emotion lexicons</span></div>
-</section>
+<details class="fold">
+  <summary>IT architecture exclusions</summary>
+  <div class="fold-body">
+    <div class="chip-row">
+      <span class="k">software architect</span>
+      <span class="k">software architecture</span>
+      <span class="k">solutions architect</span>
+      <span class="k">enterprise architecture</span>
+      <span class="k">cloud architect</span>
+      <span class="k">computer architecture</span>
+      <span class="k">IT architect</span>
+      <span class="k">data architect</span>
+      <span class="k">network architect</span>
+      <span class="k">security architect</span>
+      <span class="k">systems architect</span>
+      <span class="k">application architect</span>
+      <span class="k">AWS architect</span>
+      <span class="k">chip architecture</span>
+      <span class="k">CPU architecture</span>
+      <span class="k">enterprise architect</span>
+      <span class="k">GitHub Copilot</span>
+      <span class="k">information architect</span>
+      <span class="k">instruction set</span>
+      <span class="k">microservices</span>
+      <span class="k">naval architect</span>
+      <span class="k">Salesforce architect</span>
+      <span class="k">solution architect</span>
+      <span class="k">TOGAF</span>
+    </div>
+  </div>
+</details>
 
-<section id="lexicon">
-  <h2>Full English coding lists</h2>
-  <p class="note">From <code>keyword-lexicon.md</code> sections 1–7 and 10. Post-sample sentiment / stance coding — not retrieval strings.</p>
-  <div class="lex-block" id="lex-1">
-<h3>1. Architecture discourse</h3>
-<h4>1.1 Profession and titles</h4>
-<div class="chip-row"><span class="k" data-k="A">architect</span> <span class="k" data-k="A">architect of record</span> <span class="k" data-k="A">architectural</span> <span class="k" data-k="A">architectural design</span> <span class="k" data-k="A">architectural designer</span> <span class="k" data-k="A">architectural rendering</span> <span class="k" data-k="A">architectural visualization</span> <span class="k" data-k="A">archviz</span> <span class="k" data-k="A">architectural intern</span> <span class="k" data-k="A">associate architect</span> <span class="k" data-k="A">chartered architect</span> <span class="k" data-k="A">design architect</span> <span class="k" data-k="A">design principal</span> <span class="k" data-k="A">intern architect</span> <span class="k" data-k="A">junior architect</span> <span class="k" data-k="A">licensed architect</span> <span class="k" data-k="A">principal architect</span> <span class="k" data-k="A">project architect</span> <span class="k" data-k="A">registered architect</span> <span class="k" data-k="A">senior architect</span> <span class="k" data-k="A">starchitect</span> <span class="k" data-k="A">supervising architect</span></div>
-<h4>1.2 Practice and workplaces</h4>
-<div class="chip-row"><span class="k" data-k="A">architectural discourse</span> <span class="k" data-k="A">architectural office</span> <span class="k" data-k="A">architectural practice</span> <span class="k" data-k="A">architecture firm</span> <span class="k" data-k="A">architecture studio</span> <span class="k" data-k="A">atelier</span> <span class="k" data-k="A">boutique practice</span> <span class="k" data-k="A">professional practice</span></div>
-<h4>1.3 Education</h4>
-<div class="chip-row"><span class="k" data-k="A">architectural education</span> <span class="k" data-k="A">architecture school</span> <span class="k" data-k="A">architecture student</span> <span class="k" data-k="A">BArch</span> <span class="k" data-k="A">design crit</span> <span class="k" data-k="A">design jury</span> <span class="k" data-k="A">design studio</span> <span class="k" data-k="A">MArch</span> <span class="k" data-k="A">Part 1</span> <span class="k" data-k="A">Part 2</span> <span class="k" data-k="A">Part 3</span> <span class="k" data-k="A">studio culture</span> <span class="k" data-k="A">year-out</span></div>
-<h4>1.4 Institutions</h4>
-<div class="chip-row"><span class="k" data-k="A">ACSA</span> <span class="k" data-k="A">AIA</span> <span class="k" data-k="A">ARB</span> <span class="k" data-k="A">NAAB</span> <span class="k" data-k="A">RAIA</span> <span class="k" data-k="A">RAIC</span> <span class="k" data-k="A">RIBA</span> <span class="k" data-k="A">UIA</span></div>
-<h4>1.5 Design process</h4>
-<div class="chip-row"><span class="k" data-k="A">as-built</span> <span class="k" data-k="A">concept design</span> <span class="k" data-k="A">construction administration</span> <span class="k" data-k="A">construction documentation</span> <span class="k" data-k="A">design development</span> <span class="k" data-k="A">feasibility</span> <span class="k" data-k="A">pre-design</span> <span class="k" data-k="A">programming</span> <span class="k" data-k="A">schematic design</span> <span class="k" data-k="A">site analysis</span></div>
-<h4>1.6 Built-environment adjacent — optional scope</h4>
-<div class="chip-row"><span class="k" data-k="A">building design</span> <span class="k" data-k="A">built environment</span> <span class="k" data-k="A">interior architecture</span> <span class="k" data-k="A">interior design</span> <span class="k" data-k="A">landscape architecture</span> <span class="k" data-k="A">urban design</span> <span class="k" data-k="A">urban planning</span> <span class="k" data-k="A">urbanism</span></div>
-</div>
-<div class="lex-block" id="lex-2">
-<h3>2. Generative AI</h3>
-<h4>2.1 Generic names</h4>
-<div class="chip-row"><span class="k" data-k="A">AI design</span> <span class="k" data-k="A">AI-aided design</span> <span class="k" data-k="A">AI-assisted design</span> <span class="k" data-k="A">AI-generated</span> <span class="k" data-k="A">artificial intelligence</span> <span class="k" data-k="A">gen AI</span> <span class="k" data-k="A">GenAI</span> <span class="k" data-k="A">generative AI</span> <span class="k" data-k="A">generative artificial intelligence</span> <span class="k" data-k="A">machine learning</span></div>
-<h4>2.2 Visual and spatial generation</h4>
-<div class="chip-row"><span class="k" data-k="A">AI rendering</span> <span class="k" data-k="A">AI visualization</span> <span class="k" data-k="A">diffusion model</span> <span class="k" data-k="A">image generation</span> <span class="k" data-k="A">text-to-3D</span> <span class="k" data-k="A">text-to-BIM</span> <span class="k" data-k="A">text-to-image</span></div>
-<h4>2.3 Language models and copilots</h4>
-<div class="chip-row"><span class="k" data-k="A">ChatGPT</span> <span class="k" data-k="A">Claude</span> <span class="k" data-k="A">Copilot</span> <span class="k" data-k="A">Gemini</span> <span class="k" data-k="A">GPT</span> <span class="k" data-k="A">large language model</span> <span class="k" data-k="A">LLM</span> <span class="k" data-k="A">OpenAI</span> <span class="k" data-k="A">prompt</span> <span class="k" data-k="A">prompt engineering</span> <span class="k" data-k="A">prompting</span></div>
-<h4>2.4 Named tools used in design practice</h4>
-<div class="chip-row"><span class="k" data-k="A">Adobe Firefly</span> <span class="k" data-k="A">Autodesk Forma</span> <span class="k" data-k="A">ComfyUI</span> <span class="k" data-k="A">DALL-E</span> <span class="k" data-k="A">Finch</span> <span class="k" data-k="A">Flux</span> <span class="k" data-k="A">Hypar</span> <span class="k" data-k="A">Ideogram</span> <span class="k" data-k="A">Leonardo AI</span> <span class="k" data-k="A">LookX</span> <span class="k" data-k="A">Maket</span> <span class="k" data-k="A">Midjourney</span> <span class="k" data-k="A">mnml</span> <span class="k" data-k="A">Runway</span> <span class="k" data-k="A">SketchUp Diffusion</span> <span class="k" data-k="A">Snaptrude</span> <span class="k" data-k="A">Sora</span> <span class="k" data-k="A">Spacemaker</span> <span class="k" data-k="A">Stable Diffusion</span> <span class="k" data-k="A">TestFit</span> <span class="k" data-k="A">Veras</span> <span class="k" data-k="A">Visoid</span></div>
-<h4>2.5 Older “generative design” — keep separate</h4>
-<div class="chip-row"><span class="k" data-k="A">algorithmic design</span> <span class="k" data-k="A">generative design</span> <span class="k" data-k="A">topology optimization</span></div>
-</div>
-<div class="lex-block" id="lex-3">
-<h3>3. Deskilling and labour — RQ1</h3>
-<h4>3.1 Skill loss and deskilling</h4>
-<div class="chip-row"><span class="k" data-k="B">de-skilling</span> <span class="k" data-k="B">deskill</span> <span class="k" data-k="B">deskilling</span> <span class="k" data-k="B">dumbing down</span> <span class="k" data-k="B">skill atrophy</span> <span class="k" data-k="B">skill degradation</span> <span class="k" data-k="B">skill erosion</span> <span class="k" data-k="B">skill loss</span> <span class="k" data-k="B">losing skills</span> <span class="k" data-k="B">unskilled</span></div>
-<h4>3.2 Replacement and automation</h4>
-<div class="chip-row"><span class="k" data-k="B">AI will replace</span> <span class="k" data-k="B">architect replacement</span> <span class="k" data-k="B">automate architecture</span> <span class="k" data-k="B">automated design</span> <span class="k" data-k="B">automation of design</span> <span class="k" data-k="B">cheaper design</span> <span class="k" data-k="B">job displacement</span> <span class="k" data-k="B">job loss</span> <span class="k" data-k="B">replace architects</span> <span class="k" data-k="B">redundant</span></div>
-<h4>3.3 Training pipeline and craft</h4>
-<div class="chip-row"><span class="k" data-k="B">apprenticeship</span> <span class="k" data-k="B">commodification</span> <span class="k" data-k="B">craft</span> <span class="k" data-k="B">craftsmanship</span> <span class="k" data-k="B">fewer juniors</span> <span class="k" data-k="B">junior pipeline</span> <span class="k" data-k="B">professional autonomy</span> <span class="k" data-k="B">professional expertise</span> <span class="k" data-k="B">tacit knowledge</span> <span class="k" data-k="B">training pipeline</span></div>
-<h4>3.4 Skill change and the profession’s future</h4>
-<div class="chip-row"><span class="k" data-k="B">future of architects</span> <span class="k" data-k="B">future of architecture</span> <span class="k" data-k="B">future of the profession</span> <span class="k" data-k="B">future skills</span> <span class="k" data-k="B">human in the loop</span> <span class="k" data-k="B">new skills</span> <span class="k" data-k="B">obsolescence</span> <span class="k" data-k="B">reskilling</span> <span class="k" data-k="B">skill shift</span> <span class="k" data-k="B">skill transformation</span> <span class="k" data-k="B">upskilling</span></div>
-</div>
-<div class="lex-block" id="lex-4">
-<h3>4. Soft skills — RQ2</h3>
-<h4>4.1 Creativity and design thinking — RQ2a</h4>
-<div class="chip-row"><span class="k" data-k="B">aesthetic</span> <span class="k" data-k="B">artistic</span> <span class="k" data-k="B">authorship</span> <span class="k" data-k="B">conceptual thinking</span> <span class="k" data-k="B">creative process</span> <span class="k" data-k="B">creative thinking</span> <span class="k" data-k="B">creativity</span> <span class="k" data-k="B">design thinking</span> <span class="k" data-k="B">idea generation</span> <span class="k" data-k="B">imagination</span> <span class="k" data-k="B">innovation</span> <span class="k" data-k="B">inspiration</span> <span class="k" data-k="B">originality</span> <span class="k" data-k="B">taste</span> <span class="k" data-k="B">vision</span></div>
-<h4>4.2 Cognitive skills and judgment — RQ2b</h4>
-<div class="chip-row"><span class="k" data-k="B">cognitive skills</span> <span class="k" data-k="B">critical judgment</span> <span class="k" data-k="B">critical thinking</span> <span class="k" data-k="B">decision-making</span> <span class="k" data-k="B">design evaluation</span> <span class="k" data-k="B">design intuition</span> <span class="k" data-k="B">design judgment</span> <span class="k" data-k="B">discernment</span> <span class="k" data-k="B">evaluation</span> <span class="k" data-k="B">expertise</span> <span class="k" data-k="B">intuition</span> <span class="k" data-k="B">judgement</span> <span class="k" data-k="B">judgment</span> <span class="k" data-k="B">problem-solving</span> <span class="k" data-k="B">professional judgment</span> <span class="k" data-k="B">professional responsibility</span> <span class="k" data-k="B">reasoning</span> <span class="k" data-k="B">spatial reasoning</span> <span class="k" data-k="B">wisdom</span></div>
-<h4>4.3 Other professional soft skills — optional under RQ2</h4>
-<div class="chip-row"><span class="k" data-k="B">client communication</span> <span class="k" data-k="B">collaboration</span> <span class="k" data-k="B">communication</span> <span class="k" data-k="B">empathy</span> <span class="k" data-k="B">leadership</span> <span class="k" data-k="B">narrative</span> <span class="k" data-k="B">negotiation</span> <span class="k" data-k="B">presentation skills</span> <span class="k" data-k="B">soft skills</span> <span class="k" data-k="B">storytelling</span> <span class="k" data-k="B">teamwork</span></div>
-</div>
-<div class="lex-block" id="lex-5">
-<h3>5. Hard skills — RQ3</h3>
-<h4>5.1 Technical and environmental — RQ3a</h4>
-<div class="chip-row"><span class="k" data-k="B">accessibility</span> <span class="k" data-k="B">buildability</span> <span class="k" data-k="B">building codes</span> <span class="k" data-k="B">building envelope</span> <span class="k" data-k="B">building performance</span> <span class="k" data-k="B">building physics</span> <span class="k" data-k="B">building regulations</span> <span class="k" data-k="B">building science</span> <span class="k" data-k="B">carbon</span> <span class="k" data-k="B">code compliance</span> <span class="k" data-k="B">construction detailing</span> <span class="k" data-k="B">construction knowledge</span> <span class="k" data-k="B">daylighting</span> <span class="k" data-k="B">detailing</span> <span class="k" data-k="B">energy analysis</span> <span class="k" data-k="B">energy modeling</span> <span class="k" data-k="B">environmental design</span> <span class="k" data-k="B">environmental performance</span> <span class="k" data-k="B">fire safety</span> <span class="k" data-k="B">hard skills</span> <span class="k" data-k="B">HVAC</span> <span class="k" data-k="B">LCA</span> <span class="k" data-k="B">materials knowledge</span> <span class="k" data-k="B">MEP</span> <span class="k" data-k="B">net zero</span> <span class="k" data-k="B">passive design</span> <span class="k" data-k="B">specification</span> <span class="k" data-k="B">structural design</span> <span class="k" data-k="B">sustainability</span> <span class="k" data-k="B">technical competence</span> <span class="k" data-k="B">technical drawing</span> <span class="k" data-k="B">technical knowledge</span> <span class="k" data-k="B">technical skills</span> <span class="k" data-k="B">thermal comfort</span> <span class="k" data-k="B">working drawings</span> <span class="k" data-k="B">zoning</span></div>
-<h4>5.2 Representation, digital, computational — RQ3b</h4>
-<div class="chip-row"><span class="k" data-k="B">2D drawing</span> <span class="k" data-k="B">3D modeling</span> <span class="k" data-k="B">algorithmic design</span> <span class="k" data-k="B">architectural representation</span> <span class="k" data-k="B">CAD</span> <span class="k" data-k="B">collage</span> <span class="k" data-k="B">computational design</span> <span class="k" data-k="B">diagram</span> <span class="k" data-k="B">digital fabrication</span> <span class="k" data-k="B">digital skills</span> <span class="k" data-k="B">drafting</span> <span class="k" data-k="B">drawing</span> <span class="k" data-k="B">elevation</span> <span class="k" data-k="B">hand drawing</span> <span class="k" data-k="B">orthographic</span> <span class="k" data-k="B">parametric design</span> <span class="k" data-k="B">perspective</span> <span class="k" data-k="B">post-production</span> <span class="k" data-k="B">rendering</span> <span class="k" data-k="B">representation</span> <span class="k" data-k="B">scripting</span> <span class="k" data-k="B">section</span> <span class="k" data-k="B">sketch</span> <span class="k" data-k="B">visual programming</span> <span class="k" data-k="B">visualization</span></div>
-<h4>5.3 Software used as skill proxies — RQ3b</h4>
-<div class="chip-row"><span class="k" data-k="B">ArchiCAD</span> <span class="k" data-k="B">AutoCAD</span> <span class="k" data-k="B">Blender</span> <span class="k" data-k="B">Enscape</span> <span class="k" data-k="B">Grasshopper</span> <span class="k" data-k="B">Illustrator</span> <span class="k" data-k="B">InDesign</span> <span class="k" data-k="B">Lumion</span> <span class="k" data-k="B">Photoshop</span> <span class="k" data-k="B">Revit</span> <span class="k" data-k="B">Rhino</span> <span class="k" data-k="B">SketchUp</span> <span class="k" data-k="B">Twinmotion</span> <span class="k" data-k="B">Unreal Engine</span> <span class="k" data-k="B">V-Ray</span> <span class="k" data-k="B">Vectorworks</span></div>
-</div>
-<div class="lex-block" id="lex-6">
-<h3>6. Stakeholders — RQ4</h3>
-<h4>6.1 Practitioners</h4>
-<div class="chip-row"><span class="k" data-k="W">practitioner</span> <span class="k" data-k="W">practicing architect</span> <span class="k" data-k="W">professional practice</span></div>
-<h4>6.2 Academics</h4>
-<div class="chip-row"><span class="k" data-k="W">academic</span> <span class="k" data-k="W">educator</span> <span class="k" data-k="W">faculty</span> <span class="k" data-k="W">lecturer</span> <span class="k" data-k="W">professor</span> <span class="k" data-k="W">researcher</span> <span class="k" data-k="W">scholar</span> <span class="k" data-k="W">studio tutor</span> <span class="k" data-k="W">Dean</span></div>
-<h4>6.3 Students and early career</h4>
-<div class="chip-row"><span class="k" data-k="W">architecture student</span> <span class="k" data-k="W">early career</span> <span class="k" data-k="W">graduate student</span> <span class="k" data-k="W">intern</span> <span class="k" data-k="W">student</span> <span class="k" data-k="W">undergraduate</span> <span class="k" data-k="W">year-out</span></div>
-<h4>6.4 Industry leaders and practice leads</h4>
-<div class="chip-row"><span class="k" data-k="W">director</span> <span class="k" data-k="W">firm owner</span> <span class="k" data-k="W">industry leader</span> <span class="k" data-k="W">partner</span> <span class="k" data-k="W">principal</span> <span class="k" data-k="W">thought leader</span></div>
-<h4>6.5 Adjacent — usually not RQ4 as written</h4>
-<div class="chip-row"><span class="k" data-k="W">client</span> <span class="k" data-k="W">critic</span> <span class="k" data-k="W">developer</span> <span class="k" data-k="W">journalist</span></div>
-</div>
-<div class="lex-block" id="lex-7">
-<h3>7. Exclusions</h3>
-<div class="chip-row"><span class="k" data-k="X">application architect</span> <span class="k" data-k="X">AWS architect</span> <span class="k" data-k="X">chip architecture</span> <span class="k" data-k="X">cloud architect</span> <span class="k" data-k="X">computer architecture</span> <span class="k" data-k="X">CPU architecture</span> <span class="k" data-k="X">data architect</span> <span class="k" data-k="X">enterprise architect</span> <span class="k" data-k="X">GitHub Copilot</span> <span class="k" data-k="X">information architect</span> <span class="k" data-k="X">instruction set</span> <span class="k" data-k="X">IT architect</span> <span class="k" data-k="X">microservices</span> <span class="k" data-k="X">naval architect</span> <span class="k" data-k="X">network architect</span> <span class="k" data-k="X">Salesforce architect</span> <span class="k" data-k="X">security architect</span> <span class="k" data-k="X">software architect</span> <span class="k" data-k="X">solution architect</span> <span class="k" data-k="X">systems architect</span> <span class="k" data-k="X">TOGAF</span></div>
-</div>
-<div class="lex-block" id="lex-10">
-<h3>10. Hashtags</h3>
-<div class="chip-row"><span class="k" data-k="RW">#AIarchitecture</span> <span class="k" data-k="RW">#AIA</span> <span class="k" data-k="RW">#ArchViz</span> <span class="k" data-k="RW">#architect</span> <span class="k" data-k="RW">#architecture</span> <span class="k" data-k="RW">#architecturestudent</span> <span class="k" data-k="RW">#GenerativeAI</span> <span class="k" data-k="RW">#LookX</span> <span class="k" data-k="RW">#Midjourney</span> <span class="k" data-k="RW">#RIBA</span> <span class="k" data-k="RW">#StableDiffusion</span></div>
-</div>
-</section>
+<details class="fold">
+  <summary>Construction / AEC — related work only (S-RW1)</summary>
+  <div class="fold-body">
+    <div class="chip-row">
+      <span class="k">built environment</span>
+      <span class="k">AEC</span>
+      <span class="k">AECO</span>
+      <span class="k">construction</span>
+      <span class="k">construction industry</span>
+      <span class="k">BIM</span>
+      <span class="k">sociotechnical</span>
+      <span class="k">socio-technical</span>
+      <span class="k">Generative AI AND Construction</span>
+      <span class="k">Generative AI</span>
+      <span class="k">Large Language Models AND Construction</span>
+      <span class="k">#constructionAI</span>
+      <span class="k">#GenAIandBuiltEnvironment</span>
+      <span class="k">#GenerativeAI</span>
+      <span class="k">#GenAi</span>
+    </div>
+  </div>
+</details>
 
-<footer id="sources">
-  <p><strong>Saintiment</strong> · sentiment-analysis-ai · Team (no author order): Iman Sheikhansari, Morteza Hazbei, Kaveh Momeni</p>
+<details class="fold" id="sa1-query">
+  <summary>Full Scopus S-A1 string</summary>
+  <div class="fold-body">
+    <pre class="query-pre" id="sa1-text">TITLE-ABS-KEY( ( architect OR architectural OR &quot;architecture firm&quot; OR &quot;architecture student&quot; OR &quot;architectural education&quot; OR &quot;architectural design&quot; OR &quot;design studio&quot; OR &quot;architectural practice&quot; OR &quot;architecture practice&quot; OR archviz ) AND ( &quot;generative AI&quot; OR GenAI OR &quot;generative artificial intelligence&quot; OR Midjourney OR &quot;AI rendering&quot; OR ChatGPT OR &quot;DALL-E&quot; OR &quot;DALL-E 2&quot; OR &quot;DALL-E 3&quot; OR &quot;Stable Diffusion&quot; OR &quot;text-to-image&quot; OR &quot;text to image&quot; OR &quot;large language model&quot; OR &quot;large language models&quot; OR LLM ) ) AND NOT TITLE-ABS-KEY( &quot;software architect&quot; OR &quot;software architecture&quot; OR &quot;solutions architect&quot; OR &quot;enterprise architecture&quot; OR &quot;cloud architect&quot; OR &quot;computer architecture&quot; OR &quot;IT architect&quot; OR &quot;data architect&quot; OR &quot;network architect&quot; OR &quot;security architect&quot; OR &quot;systems architect&quot; )</pre>
+    <button type="button" class="copy-btn" id="copy-sa1">Copy S-A1</button>
+  </div>
+</details>
+
+<details class="fold">
+  <summary>Full English coding lists (lexicon §1–7, §10)</summary>
+  <div class="fold-body">
+    <p style="font-size:0.88rem;color:var(--mute);margin:0 0 1rem;">Post-sample sentiment / stance coding — not retrieval strings. From <code>keyword-lexicon.md</code>.</p>
+
+    <div class="lex-block">
+      <h3>1. Architecture discourse</h3>
+      <h4>1.1 Profession and titles</h4>
+      <div class="chip-row"><span class="k">architect</span> <span class="k">architect of record</span> <span class="k">architectural</span> <span class="k">architectural design</span> <span class="k">architectural designer</span> <span class="k">architectural rendering</span> <span class="k">architectural visualization</span> <span class="k">archviz</span> <span class="k">architectural intern</span> <span class="k">associate architect</span> <span class="k">chartered architect</span> <span class="k">design architect</span> <span class="k">design principal</span> <span class="k">intern architect</span> <span class="k">junior architect</span> <span class="k">licensed architect</span> <span class="k">principal architect</span> <span class="k">project architect</span> <span class="k">registered architect</span> <span class="k">senior architect</span> <span class="k">starchitect</span> <span class="k">supervising architect</span></div>
+      <h4>1.2 Practice and workplaces</h4>
+      <div class="chip-row"><span class="k">architectural discourse</span> <span class="k">architectural office</span> <span class="k">architectural practice</span> <span class="k">architecture firm</span> <span class="k">architecture studio</span> <span class="k">atelier</span> <span class="k">boutique practice</span> <span class="k">professional practice</span></div>
+      <h4>1.3 Education</h4>
+      <div class="chip-row"><span class="k">architectural education</span> <span class="k">architecture school</span> <span class="k">architecture student</span> <span class="k">BArch</span> <span class="k">design crit</span> <span class="k">design jury</span> <span class="k">design studio</span> <span class="k">MArch</span> <span class="k">Part 1</span> <span class="k">Part 2</span> <span class="k">Part 3</span> <span class="k">studio culture</span> <span class="k">year-out</span></div>
+      <h4>1.4 Institutions</h4>
+      <div class="chip-row"><span class="k">ACSA</span> <span class="k">AIA</span> <span class="k">ARB</span> <span class="k">NAAB</span> <span class="k">RAIA</span> <span class="k">RAIC</span> <span class="k">RIBA</span> <span class="k">UIA</span></div>
+      <h4>1.5 Design process</h4>
+      <div class="chip-row"><span class="k">as-built</span> <span class="k">concept design</span> <span class="k">construction administration</span> <span class="k">construction documentation</span> <span class="k">design development</span> <span class="k">feasibility</span> <span class="k">pre-design</span> <span class="k">programming</span> <span class="k">schematic design</span> <span class="k">site analysis</span></div>
+      <h4>1.6 Built-environment adjacent — optional scope</h4>
+      <div class="chip-row"><span class="k">building design</span> <span class="k">built environment</span> <span class="k">interior architecture</span> <span class="k">interior design</span> <span class="k">landscape architecture</span> <span class="k">urban design</span> <span class="k">urban planning</span> <span class="k">urbanism</span></div>
+    </div>
+
+    <div class="lex-block">
+      <h3>2. Generative AI</h3>
+      <h4>2.1 Generic names</h4>
+      <div class="chip-row"><span class="k">AI design</span> <span class="k">AI-aided design</span> <span class="k">AI-assisted design</span> <span class="k">AI-generated</span> <span class="k">artificial intelligence</span> <span class="k">gen AI</span> <span class="k">GenAI</span> <span class="k">generative AI</span> <span class="k">generative artificial intelligence</span> <span class="k">machine learning</span></div>
+      <h4>2.2 Visual and spatial generation</h4>
+      <div class="chip-row"><span class="k">AI rendering</span> <span class="k">AI visualization</span> <span class="k">diffusion model</span> <span class="k">image generation</span> <span class="k">text-to-3D</span> <span class="k">text-to-BIM</span> <span class="k">text-to-image</span></div>
+      <h4>2.3 Language models and copilots</h4>
+      <div class="chip-row"><span class="k">ChatGPT</span> <span class="k">Claude</span> <span class="k">Copilot</span> <span class="k">Gemini</span> <span class="k">GPT</span> <span class="k">large language model</span> <span class="k">LLM</span> <span class="k">OpenAI</span> <span class="k">prompt</span> <span class="k">prompt engineering</span> <span class="k">prompting</span></div>
+      <h4>2.4 Named tools used in design practice</h4>
+      <div class="chip-row"><span class="k">Adobe Firefly</span> <span class="k">Autodesk Forma</span> <span class="k">ComfyUI</span> <span class="k">DALL-E</span> <span class="k">Finch</span> <span class="k">Flux</span> <span class="k">Hypar</span> <span class="k">Ideogram</span> <span class="k">Leonardo AI</span> <span class="k">LookX</span> <span class="k">Maket</span> <span class="k">Midjourney</span> <span class="k">mnml</span> <span class="k">Runway</span> <span class="k">SketchUp Diffusion</span> <span class="k">Snaptrude</span> <span class="k">Sora</span> <span class="k">Spacemaker</span> <span class="k">Stable Diffusion</span> <span class="k">TestFit</span> <span class="k">Veras</span> <span class="k">Visoid</span></div>
+      <h4>2.5 Older “generative design” — keep separate</h4>
+      <div class="chip-row"><span class="k">algorithmic design</span> <span class="k">generative design</span> <span class="k">topology optimization</span></div>
+    </div>
+
+    <div class="lex-block">
+      <h3>3. Deskilling and labour — RQ1</h3>
+      <h4>3.1 Skill loss and deskilling</h4>
+      <div class="chip-row"><span class="k">de-skilling</span> <span class="k">deskill</span> <span class="k">deskilling</span> <span class="k">dumbing down</span> <span class="k">skill atrophy</span> <span class="k">skill degradation</span> <span class="k">skill erosion</span> <span class="k">skill loss</span> <span class="k">losing skills</span> <span class="k">unskilled</span></div>
+      <h4>3.2 Replacement and automation</h4>
+      <div class="chip-row"><span class="k">AI will replace</span> <span class="k">architect replacement</span> <span class="k">automate architecture</span> <span class="k">automated design</span> <span class="k">automation of design</span> <span class="k">cheaper design</span> <span class="k">job displacement</span> <span class="k">job loss</span> <span class="k">replace architects</span> <span class="k">redundant</span></div>
+      <h4>3.3 Training pipeline and craft</h4>
+      <div class="chip-row"><span class="k">apprenticeship</span> <span class="k">commodification</span> <span class="k">craft</span> <span class="k">craftsmanship</span> <span class="k">fewer juniors</span> <span class="k">junior pipeline</span> <span class="k">professional autonomy</span> <span class="k">professional expertise</span> <span class="k">tacit knowledge</span> <span class="k">training pipeline</span></div>
+      <h4>3.4 Skill change and the profession’s future</h4>
+      <div class="chip-row"><span class="k">future of architects</span> <span class="k">future of architecture</span> <span class="k">future of the profession</span> <span class="k">future skills</span> <span class="k">human in the loop</span> <span class="k">new skills</span> <span class="k">obsolescence</span> <span class="k">reskilling</span> <span class="k">skill shift</span> <span class="k">skill transformation</span> <span class="k">upskilling</span></div>
+    </div>
+
+    <div class="lex-block">
+      <h3>4. Soft skills — RQ2</h3>
+      <h4>4.1 Creativity and design thinking — RQ2a</h4>
+      <div class="chip-row"><span class="k">aesthetic</span> <span class="k">artistic</span> <span class="k">authorship</span> <span class="k">conceptual thinking</span> <span class="k">creative process</span> <span class="k">creative thinking</span> <span class="k">creativity</span> <span class="k">design thinking</span> <span class="k">idea generation</span> <span class="k">imagination</span> <span class="k">innovation</span> <span class="k">inspiration</span> <span class="k">originality</span> <span class="k">taste</span> <span class="k">vision</span></div>
+      <h4>4.2 Cognitive skills and judgment — RQ2b</h4>
+      <div class="chip-row"><span class="k">cognitive skills</span> <span class="k">critical judgment</span> <span class="k">critical thinking</span> <span class="k">decision-making</span> <span class="k">design evaluation</span> <span class="k">design intuition</span> <span class="k">design judgment</span> <span class="k">discernment</span> <span class="k">evaluation</span> <span class="k">expertise</span> <span class="k">intuition</span> <span class="k">judgement</span> <span class="k">judgment</span> <span class="k">problem-solving</span> <span class="k">professional judgment</span> <span class="k">professional responsibility</span> <span class="k">reasoning</span> <span class="k">spatial reasoning</span> <span class="k">wisdom</span></div>
+      <h4>4.3 Other professional soft skills — optional under RQ2</h4>
+      <div class="chip-row"><span class="k">client communication</span> <span class="k">collaboration</span> <span class="k">communication</span> <span class="k">empathy</span> <span class="k">leadership</span> <span class="k">narrative</span> <span class="k">negotiation</span> <span class="k">presentation skills</span> <span class="k">soft skills</span> <span class="k">storytelling</span> <span class="k">teamwork</span></div>
+    </div>
+
+    <div class="lex-block">
+      <h3>5. Hard skills — RQ3</h3>
+      <h4>5.1 Technical and environmental — RQ3a</h4>
+      <div class="chip-row"><span class="k">accessibility</span> <span class="k">buildability</span> <span class="k">building codes</span> <span class="k">building envelope</span> <span class="k">building performance</span> <span class="k">building physics</span> <span class="k">building regulations</span> <span class="k">building science</span> <span class="k">carbon</span> <span class="k">code compliance</span> <span class="k">construction detailing</span> <span class="k">construction knowledge</span> <span class="k">daylighting</span> <span class="k">detailing</span> <span class="k">energy analysis</span> <span class="k">energy modeling</span> <span class="k">environmental design</span> <span class="k">environmental performance</span> <span class="k">fire safety</span> <span class="k">hard skills</span> <span class="k">HVAC</span> <span class="k">LCA</span> <span class="k">materials knowledge</span> <span class="k">MEP</span> <span class="k">net zero</span> <span class="k">passive design</span> <span class="k">specification</span> <span class="k">structural design</span> <span class="k">sustainability</span> <span class="k">technical competence</span> <span class="k">technical drawing</span> <span class="k">technical knowledge</span> <span class="k">technical skills</span> <span class="k">thermal comfort</span> <span class="k">working drawings</span> <span class="k">zoning</span></div>
+      <h4>5.2 Representation, digital, computational — RQ3b</h4>
+      <div class="chip-row"><span class="k">2D drawing</span> <span class="k">3D modeling</span> <span class="k">algorithmic design</span> <span class="k">architectural representation</span> <span class="k">CAD</span> <span class="k">collage</span> <span class="k">computational design</span> <span class="k">diagram</span> <span class="k">digital fabrication</span> <span class="k">digital skills</span> <span class="k">drafting</span> <span class="k">drawing</span> <span class="k">elevation</span> <span class="k">hand drawing</span> <span class="k">orthographic</span> <span class="k">parametric design</span> <span class="k">perspective</span> <span class="k">post-production</span> <span class="k">rendering</span> <span class="k">representation</span> <span class="k">scripting</span> <span class="k">section</span> <span class="k">sketch</span> <span class="k">visual programming</span> <span class="k">visualization</span></div>
+      <h4>5.3 Software used as skill proxies — RQ3b</h4>
+      <div class="chip-row"><span class="k">ArchiCAD</span> <span class="k">AutoCAD</span> <span class="k">Blender</span> <span class="k">Enscape</span> <span class="k">Grasshopper</span> <span class="k">Illustrator</span> <span class="k">InDesign</span> <span class="k">Lumion</span> <span class="k">Photoshop</span> <span class="k">Revit</span> <span class="k">Rhino</span> <span class="k">SketchUp</span> <span class="k">Twinmotion</span> <span class="k">Unreal Engine</span> <span class="k">V-Ray</span> <span class="k">Vectorworks</span></div>
+    </div>
+
+    <div class="lex-block">
+      <h3>6. Stakeholders — RQ4</h3>
+      <h4>6.1 Practitioners</h4>
+      <div class="chip-row"><span class="k">practitioner</span> <span class="k">practicing architect</span> <span class="k">professional practice</span></div>
+      <h4>6.2 Academics</h4>
+      <div class="chip-row"><span class="k">academic</span> <span class="k">educator</span> <span class="k">faculty</span> <span class="k">lecturer</span> <span class="k">professor</span> <span class="k">researcher</span> <span class="k">scholar</span> <span class="k">studio tutor</span> <span class="k">Dean</span></div>
+      <h4>6.3 Students and early career</h4>
+      <div class="chip-row"><span class="k">architecture student</span> <span class="k">early career</span> <span class="k">graduate student</span> <span class="k">intern</span> <span class="k">student</span> <span class="k">undergraduate</span> <span class="k">year-out</span></div>
+      <h4>6.4 Industry leaders and practice leads</h4>
+      <div class="chip-row"><span class="k">director</span> <span class="k">firm owner</span> <span class="k">industry leader</span> <span class="k">partner</span> <span class="k">principal</span> <span class="k">thought leader</span></div>
+      <h4>6.5 Adjacent — usually not RQ4 as written</h4>
+      <div class="chip-row"><span class="k">client</span> <span class="k">critic</span> <span class="k">developer</span> <span class="k">journalist</span></div>
+    </div>
+
+    <div class="lex-block">
+      <h3>7. Exclusions</h3>
+      <div class="chip-row"><span class="k">application architect</span> <span class="k">AWS architect</span> <span class="k">chip architecture</span> <span class="k">cloud architect</span> <span class="k">computer architecture</span> <span class="k">CPU architecture</span> <span class="k">data architect</span> <span class="k">enterprise architect</span> <span class="k">GitHub Copilot</span> <span class="k">information architect</span> <span class="k">instruction set</span> <span class="k">IT architect</span> <span class="k">microservices</span> <span class="k">naval architect</span> <span class="k">network architect</span> <span class="k">Salesforce architect</span> <span class="k">security architect</span> <span class="k">software architect</span> <span class="k">solution architect</span> <span class="k">systems architect</span> <span class="k">TOGAF</span></div>
+    </div>
+
+    <div class="lex-block">
+      <h3>10. Hashtags</h3>
+      <div class="chip-row"><span class="k">#AIarchitecture</span> <span class="k">#AIA</span> <span class="k">#ArchViz</span> <span class="k">#architect</span> <span class="k">#architecture</span> <span class="k">#architecturestudent</span> <span class="k">#GenerativeAI</span> <span class="k">#LookX</span> <span class="k">#Midjourney</span> <span class="k">#RIBA</span> <span class="k">#StableDiffusion</span></div>
+    </div>
+
+    <p style="font-size:0.88rem;color:var(--mute);margin-top:1rem;">Persian optional / not Layer A: <span class="k">دانشجوی معماری</span> · <span class="k">مدلسازی اطلاعات ساخت</span> · <span class="k">مدل سازی اطلاعات ساختمان</span> · German BIM: <span class="k">Bauwerksinformationsmodellierung</span> · EN discourse GAP: <span class="k">industry leader</span> · Layer B in literature: <span class="k">Urheberrecht</span></p>
+  </div>
+</details>
+
+<footer>
+  <p><strong>Saintiment</strong> · sentiment-analysis-ai</p>
   <p>Source markdown on <code>main</code>:</p>
   <ul>
     <li><a href="https://github.com/kvmmn/sentiment-analysis-ai/blob/main/research/keyword-systems.md">keyword-systems.md</a></li>
@@ -355,8 +547,8 @@ footer ul { padding-left: 1.1rem; }
     <li><a href="https://github.com/kvmmn/sentiment-analysis-ai/blob/main/research/keyword-discourse-catalog.md">keyword-discourse-catalog.md</a></li>
     <li><a href="https://github.com/kvmmn/sentiment-analysis-ai/blob/main/research/keyword-lexicon.md">keyword-lexicon.md</a></li>
   </ul>
-  <p>Status: query v1 not frozen · no collection authorised · 71 comments not cited as published fact</p>
 </footer>
+
 </div>
 <script>
 document.getElementById('copy-sa1').addEventListener('click', function() {
