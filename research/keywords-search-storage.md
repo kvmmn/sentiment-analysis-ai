@@ -4,7 +4,9 @@ Status: **working proposal for team review**, drafted 2026-08-29. This answers t
 
 No corpus has been collected. Do not start harvesting from LinkedIn, X, or other platforms on the basis of this list. The [LinkedIn case](linkedin-application-worksheet.md) is still **Open**; ordinary visibility of a post is not a licence to retain it.
 
-Related records: [keyword lexicon](keyword-lexicon.md), [research notes](notes.md), [access review](linkedin-data-access-review.md), [privacy policy](../PRIVACY.md), [data guide](../data/README.md).
+Related records: [keyword systems map](keyword-systems.md), [literature strings](keyword-literature-strings.md), [discourse catalog](keyword-discourse-catalog.md), [keyword lexicon](keyword-lexicon.md), [research notes](notes.md), [access review](linkedin-data-access-review.md), [privacy policy](../PRIVACY.md), [data guide](../data/README.md).
+
+**Still not a collection licence.** The 2026-08-31 keyword-systems expansion separates literature retrieval, discourse catalog, and coding lexicon; see [keyword-systems.md](keyword-systems.md).
 
 ## Answers for the group
 

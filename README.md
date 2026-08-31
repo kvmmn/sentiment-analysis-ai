@@ -28,7 +28,7 @@ Initial planning stage. The [first scratch document](research/initial-scratch.md
 
 Datasets, models, university requirements, and publication venue remain undecided. No experiments have been run or findings established in this project.
 
-Current focus (2026-08-29): the [keyword lexicon](research/keyword-lexicon.md) is the categorized search-term catalog. Search limits and storage stay in the [scope note](research/keywords-search-storage.md). Neither authorizes collection. Kaveh submitted the LinkedIn research-access form on 2026-08-28. His case receipt shows **Open** and an automated acknowledgement, not research/API approval. The [application record](research/linkedin-application-worksheet.md) captures the submitted answers, including Arden email, Article 40(12): No, and expected data storage of **3 Months in Germany**. This is a declared storage period, not an approved retention exception or a confirmed collection window. Await a substantive support response. The **Saintiment** app and verified Page association remain in place; the last Auth evidence showed **no OAuth permissions** or **redirect URLs**, with no later authorization test confirmed. Kaveh operates LinkedIn manually. See the [setup notes](research/notes.md) and [access review](research/linkedin-data-access-review.md).
+Current focus (2026-08-31): the [keyword systems map](research/keyword-systems.md) separates literature retrieval ([strings](research/keyword-literature-strings.md)), discourse catalog ([EN/FA/DE](research/keyword-discourse-catalog.md)), and sentiment coding ([lexicon](research/keyword-lexicon.md)). [Source identification](research/keyword-source-identification.md) compares teammate strings with verified analogues (Ghimire 2024: 32 opinions; Larbi 2026 methods unread). Query version 1 is **not** frozen; no live database counts or social corpus were collected. Search limits and storage stay in the [scope note](research/keywords-search-storage.md) — still not a collection licence. Kaveh submitted the LinkedIn research-access form on 2026-08-28. His case receipt shows **Open** and an automated acknowledgement, not research/API approval. The [application record](research/linkedin-application-worksheet.md) captures the submitted answers, including Arden email, Article 40(12): No, and expected data storage of **3 Months in Germany**. This is a declared storage period, not an approved retention exception or a confirmed collection window. Await a substantive support response. The **Saintiment** app and verified Page association remain in place; the last Auth evidence showed **no OAuth permissions** or **redirect URLs**, with no later authorization test confirmed. Kaveh operates LinkedIn manually. See the [setup notes](research/notes.md) and [access review](research/linkedin-data-access-review.md).
 
 ## Project Guide
 
@@ -42,7 +42,11 @@ Current focus (2026-08-29): the [keyword lexicon](research/keyword-lexicon.md) i
 | [Project log](research/project-log.md) | Chronology, decisions, rationale, completed work, and open questions |
 | [Initial scratch document](research/initial-scratch.md) | Original first draft, preserved unchanged |
 | [Research notes](research/notes.md) | Problem definition, questions, ideas, and decisions |
-| [Keyword lexicon](research/keyword-lexicon.md) | Categorized, sorted search terms mapped to the research questions |
+| [Keyword systems map](research/keyword-systems.md) | Host decisions: three instruments, two layers, gaps |
+| [Keyword literature strings](research/keyword-literature-strings.md) | Scopus S-A1, WoS W-A1, IEEE/ Scholar supplements — copy-paste protocol |
+| [Keyword discourse catalog](research/keyword-discourse-catalog.md) | Sourced EN/FA/DE discourse retrieval terms (not a harvest plan) |
+| [Keyword source identification](research/keyword-source-identification.md) | Teammate strings vs Ghimire, Larbi, and adjacent papers |
+| [Keyword lexicon](research/keyword-lexicon.md) | English sentiment/stance coding tables mapped to research questions |
 | [Keywords, search scope, and storage](research/keywords-search-storage.md) | Search limits and local JSONL storage plan (not a collection licence) |
 | [LinkedIn access review](research/linkedin-data-access-review.md) | Sourced comparison of access routes, tools, restrictions, and next steps |
 | [References](research/references.md) | Shared source records and reading notes |
@@ -55,7 +59,7 @@ Current focus (2026-08-29): the [keyword lexicon](research/keyword-lexicon.md) i
 ## Next Steps
 
 1. Review and refine the proposed research problem and questions with the team.
-2. Edit the [keyword lexicon](research/keyword-lexicon.md); freeze query version 1 only after that pass.
+2. Review the [keyword systems map](research/keyword-systems.md) and linked strings/catalog; freeze query version 1 only after team pass.
 3. Confirm university requirements and explore publication requirements.
 4. Read relevant literature and record verified sources.
 5. Identify suitable datasets, access conditions, and evaluation approaches.
