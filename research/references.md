@@ -69,6 +69,54 @@ Copy the template below for each actual source. Verify bibliographic details aga
 
 - **AFF-01:** Arden University, [Berlin campus](https://arden.ac.uk/where-to-study/locations/berlin). Accessed 2026-08-28; campus-address section reviewed. Lists Dessauer Str. 3-5, 10963 Berlin, Germany. Supports campus contact details only, not personal enrolment, formal department name, or approval of Saintiment.
 
+## Keyword Systems and Literature Warrants — 2026-08-31
+
+Records support search-method design and source identification. They are **not** Saintiment experiment results. Live database counts were not run on 2026-08-31.
+
+### Verified discourse analogue (LinkedIn)
+
+| ID | Record | Reading status |
+| --- | --- | --- |
+| KS-01 | Ghimire, S.; Kim, S.; Acharya, M. Generative AI in Construction: Exploring the Potentials and Limitations of ChatGPT. *Buildings* **2024**, *14*(1), 220. DOI: [10.3390/buildings14010220](https://doi.org/10.3390/buildings14010220). OA: [MDPI](https://www.mdpi.com/2075-5309/14/1/220), [arXiv:2310.04427](https://arxiv.org/abs/2310.04427). **32 opinions / 63,778 words**; construction professionals; LinkedIn; keywords *Generative AI in construction*; hashtags `#generativai #construction`, `#generativeai #aec`; window to 20 Aug 2023. | Verified from OA full text |
+| KS-02 | Larbi, D.; et al. GenAI, built environment, sentiments, socioeconomic implications (title-level). *Technological Forecasting and Social Change* **2026**, *228*, 124689. DOI: [10.1016/j.techfore.2026.124689](https://doi.org/10.1016/j.techfore.2026.124689). Closed OA. **71/6173 unverified**; methods unread 2026-08-31; cites KS-01. Author post 76% positive is not a sample-size claim. | Unread — closed OA |
+| KS-03 | Van Tam, et al. Construction / built environment GenAI review. *Building and Environment* **2025**, *284*, 113526. **71/6173 not confirmed** in identification pass. | TODO — bibliographic record only |
+| KS-04 | Xiong, et al. Survey *n* = 162 (not LinkedIn). *Automation in Engineering Informatics* (AEI) **2026**, *71*, 104392. Volume 71 is bibliographic coincidence, not opinion count. | TODO |
+
+### Search-method warrants
+
+| ID | Record | Relevance |
+| --- | --- | --- |
+| KS-10 | Page, M.J.; et al. PRISMA 2020 elaboration item 7. *BMJ* **2021**. DOI: [10.1136/bmj.n160](https://doi.org/10.1136/bmj.n160). | Document search strategy |
+| KS-11 | Booth, A. (2008). Unsystematic reviews and from anecdote to metaphor. In *Cochrane Handbook* context — successive fractions for sensitivity. | String sensitivity analysis |
+| KS-12 | Rethlefsen, M.L.; et al. PRISMA-S. **2021**. DOI: [10.31222/osf.io/7rgy3](https://doi.org/10.31222/osf.io/7rgy3). | Report search methods |
+| KS-13 | McGowan, J.; et al. PRESS peer review of electronic search strategies. *Journal of Clinical Epidemiology* **2016**. | Peer-review search strategy |
+| KS-14 | Chen, et al. *Architecture* **2026**, *6*(2), 60. No subject-area restriction at search; Stage-2 + umbrella AI too broad/narrow for Saintiment primary. | Comparator — not adopted wholesale |
+| KS-15 | Stanimirovic (2026). ANDs education/creativity at retrieval — A+B-soft sensitivity only for Saintiment. | Too-narrow sensitivity |
+| KS-16 | Yiannoudes (2025). Full string upon request — not recorded here. | TODO |
+| KS-17 | Memon, et al. (2025) AECO focus — related-work (`S-RW1`), not primary RQ1. | Related-work scope |
+
+### Professional / regulatory warrants (discourse Layer B context)
+
+| ID | Record | Relevance |
+| --- | --- | --- |
+| KS-20 | RIBA AI Report 2025 | Professional judgment, human creativity |
+| KS-21 | AIA AI Firm Toolkit | Firm GenAI guidance |
+| KS-22 | ARB competency outcomes | Regulatory skill framing |
+| KS-23 | BAK KI FAQ | German chamber AI guidance |
+| KS-24 | Braverman; SBTC | Layer 2 labour lemmas — not retrieval |
+
+### Persian / German source notes (discourse catalog)
+
+| ID | Record | Relevance |
+| --- | --- | --- |
+| KS-30 | Farhangestan — memar / memari | FA architecture lemmas |
+| KS-31 | IRCEO; 1374 Law — mohandes-e memar, reshte-ye memari, daftar-e mohandesi-ye tarrahi-ye sakhteman | FA professional terms |
+| KS-32 | Honar-ha-ye Ziba + IRCEO — hush-e masnui-ye movalled | Preferred FA GenAI lemma |
+| KS-33 | Mehr 1405 — hushvare/humas **not approved** for GenAI | FA exclusion |
+| KS-34 | BAK/AKNW — Gebäudevisualisierungen, KI-Bildgeneratoren | DE visualisation / GenAI |
+| KS-35 | DIN EN ISO 19650 — Bauwerksinformationsmodellierung | DE BIM term |
+| KS-36 | Duden — Dequalifizierung, Kompetenzverlust | DE Layer 2 deskilling |
+
 ## Source Template
 
 ```text

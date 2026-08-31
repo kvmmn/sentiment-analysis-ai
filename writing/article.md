@@ -18,7 +18,7 @@ TODO: establish the problem, research questions, and intended contribution.
 
 ## Related Work
 
-TODO: synthesize verified literature and identify the research gap.
+TODO: synthesize verified literature and identify the research gap. Keyword and retrieval methodology for literature vs discourse is documented in [keyword-systems.md](../research/keyword-systems.md) and [keyword-source-identification.md](../research/keyword-source-identification.md); do not cite unverified 71/6173 sample claims.
 
 ## Methodology
 
