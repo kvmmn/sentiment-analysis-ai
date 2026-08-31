@@ -174,12 +174,34 @@ Kaveh asked to work on the Telegram-group questions: which keywords to search, h
 
 Kaveh asked for a complete, categorized, sorted keyword list aimed at the project questions. The seed tables in the earlier search note were replaced by [keyword-lexicon.md](keyword-lexicon.md): a core set plus full English sections for architecture, GenAI, RQ1–RQ4, exclusions, and optional Persian/German/hashtag lists. Terms are sorted inside each category. This remains a working catalog, not a validated retrieval study or a collection licence.
 
+## 24. Keyword-systems expansion — three instruments, two layers
+
+On 2026-08-31 the project recorded a keyword-systems expansion **on this repository only** (no social corpus scraped, no live database counts run, no new dependencies).
+
+**Decisions:**
+
+1. **Three instruments never mixed:** literature retrieval ([keyword-literature-strings.md](keyword-literature-strings.md)), discourse-retrieval catalog ([keyword-discourse-catalog.md](keyword-discourse-catalog.md)), sentiment/stance coding lexicon ([keyword-lexicon.md](keyword-lexicon.md) English tables preserved).
+2. **Two layers:** Layer A = architecture AND GenAI (RQ1 sampling frame); Layer B = skill/deskilling/authorship/judgment as second filter. Deskilling must **not** select the sample.
+3. Construction/AEC/built environment/sociotechnical strings = **related-work only** (`S-RW1`), not primary RQ1.
+4. **Do not cite 71 opinions / 6173 words as published** until a PDF is verified. Exact dual match of teammates' Scopus four-block plus LinkedIn *n* was **not** identified in open full text on 2026-08-31.
+5. **Verified analogue:** Ghimire, Kim and Acharya (2024) *Buildings* 14(1):220 — 32 opinions / 63,778 words, construction professionals, LinkedIn (KS-01).
+6. **Closest unread:** Larbi et al. (2026) TFSC 228:124689 — closed OA; 71/6173 unverified; author 76% positive is not a sample-size claim (KS-02).
+7. Primary literature strings: **S-A1** (Scopus), **W-A1** (WoS); no LIMIT-TO Engineering; I-A1 (IEEE) and G-A1a–c (Scholar) are supplements.
+8. EN/FA/DE lists separate; GAPs marked; no invented translations or hashtags.
+9. Query version 1 is **NOT frozen**.
+
+**New files:** [keyword-systems.md](keyword-systems.md), [keyword-source-identification.md](keyword-source-identification.md), [keyword-literature-strings.md](keyword-literature-strings.md), [keyword-discourse-catalog.md](keyword-discourse-catalog.md).
+
+**Updated:** README current status, keyword-lexicon top map (pointers only), keywords-search-storage pointer, references KS-* records, notes methodology pointer, article Related Work pointer. [initial-scratch.md](initial-scratch.md) bytes preserved.
+
+**Verification:** Remote `main` fetched before branch; secret-pattern scan before commit; PR against `main`; no force push.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
 - The submitted application uses the Arden email; retain Gmail as the permanent project contact.
 - The case is Open in the supplied receipt with an automated acknowledgement. Await a substantive support response through the same case and academic mailbox; no response deadline, access grant, or authorization test is confirmed. Read the application record before preparing any reply.
-- Team: review the [keyword lexicon](keyword-lexicon.md) and the [scope and storage draft](keywords-search-storage.md); confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
+- Team: review the [keyword systems map](keyword-systems.md), [literature strings](keyword-literature-strings.md), [discourse catalog](keyword-discourse-catalog.md), and [keyword lexicon](keyword-lexicon.md); confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.
 
