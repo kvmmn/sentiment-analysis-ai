@@ -204,6 +204,10 @@ Added a static browser catalog at [docs/index.html](../docs/index.html) (with [d
 
 Replaced the public [docs/index.html](../docs/index.html) layout with a quieter single-column page (cream paper, no color legend, no duplicate EN discourse block). Visible sections show search / screen / do-not-search lemmas once; full IT exclusions, construction/AEC strings, Scopus S-A1, and lexicon §1–7 / §10 remain in closed `<details>`. **Lemmas unchanged** — keyword markdown sources not edited.
 
+## 27. Catalog HTML English UI (2026-08-31)
+
+Public [docs/index.html](../docs/index.html) interface copy is English-only LTR; Persian and German keyword chips unchanged.
+
 ## Current handoff and open items
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
