@@ -33,7 +33,7 @@ These questions are provisional. The skill groupings and terms come from the scr
 
 The scratch document lists LinkedIn, X, ResearchGate, podcasts, and YouTube as candidate search areas. These are not confirmed datasets or approved collection methods.
 
-The data-gathering and keyword-search sections are blank in the original. The categorized keyword catalog is [keyword-lexicon.md](keyword-lexicon.md). Search limits and storage are in [keywords-search-storage.md](keywords-search-storage.md). Those are team-review drafts, not approved collection procedures. Sampling, labeling, models, and evaluation remain TODO. No research-corpus collection has been initiated.
+The data-gathering and keyword-search sections are blank in the original. Methodology keyword work is split across four linked records (2026-08-31): [keyword-systems.md](keyword-systems.md) (host decisions), [keyword-literature-strings.md](keyword-literature-strings.md) (Scopus/WoS protocol), [keyword-discourse-catalog.md](keyword-discourse-catalog.md) (EN/FA/DE discourse terms), and [keyword-lexicon.md](keyword-lexicon.md) (English coding tables). Search limits and storage are in [keywords-search-storage.md](keywords-search-storage.md). Those are team-review drafts, not approved collection procedures. Query version 1 is **not** frozen. Sampling, labeling, models, and evaluation remain TODO. No research-corpus collection has been initiated.
 
 ### LinkedIn Access Review — 2026-08-28
 

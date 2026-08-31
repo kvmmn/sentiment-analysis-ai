@@ -1,6 +1,18 @@
 # Keyword Lexicon
 
-Status: **working catalog**, 2026-08-29. This is the project keyword list: categorized to match the research questions, sorted inside each category. It is not a literature-validated thesaurus and not permission to collect.
+Status: **working catalog**, 2026-08-29 (English tables unchanged 2026-08-31). This is the **sentiment / stance coding lexicon**: categorized to match the research questions, sorted inside each category. It is not a literature-validated thesaurus and not permission to collect.
+
+## Keyword systems map (2026-08-31)
+
+Saintiment maintains **three separate instruments** — do not mix them:
+
+| Instrument | File | Role |
+| --- | --- | --- |
+| Literature retrieval | [keyword-literature-strings.md](keyword-literature-strings.md) | Scopus S-A1, WoS W-A1, supplements — copy-paste protocol |
+| Discourse-retrieval catalog | [keyword-discourse-catalog.md](keyword-discourse-catalog.md) | EN/FA/DE platform search terms (not a harvest plan) |
+| Sentiment / stance coding | **this file** | Post-sample coding; **sentiment lemmas are DO-NOT-RETRIEVE** |
+
+Host decisions and evaluation map: [keyword-systems.md](keyword-systems.md). Teammate vs published analogues: [keyword-source-identification.md](keyword-source-identification.md).
 
 Use with the [search-scope and storage note](keywords-search-storage.md). Search **architecture context AND generative-AI cue** first. Add a skill category only as a second filter. Do not search sentiment words (*excited*, *hype*, *threat*).
 
