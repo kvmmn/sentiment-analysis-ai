@@ -4,7 +4,23 @@ Status: **sourced retrieval catalog**, 2026-08-31. Terms for **permitted** disco
 
 **Critical rule:** **Sentiment lemmas belong in DO-NOT-RETRIEVE** — use [keyword-lexicon.md](keyword-lexicon.md) for post-sample coding only.
 
-Host decisions: [keyword-systems.md](keyword-systems.md). Scope and storage: [keywords-search-storage.md](keywords-search-storage.md).
+Host decisions: [keyword-systems.md](keyword-systems.md) (includes **lexicon draft conflict** ruling). Scope and storage: [keywords-search-storage.md](keywords-search-storage.md).
+
+---
+
+## Draft conflict — two 03 lexicon drafts (not silently merged)
+
+Two **03 lexicon drafts** proposed FA/DE/EN discourse lemmas. They **conflicted**; the **later conservative pass is not automatic truth**. Host rulings (2026-08-31) are recorded in [keyword-systems.md](keyword-systems.md#lexicon-draft-conflict--two-03-drafts-2026-08-31). Summary:
+
+| Ruling | Outcome |
+| --- | --- |
+| FA `هوش مصنوعی مولد` | **KEEP** — sourced journal/CPD use; not Farhangestan-approved; not invented calque |
+| FA legal office | **دفتر مهندسی** (INBR) — not `دفتر معماری` |
+| FA BIM (both INSO) | **Not Layer A** |
+| DE `Dequalifizierung`, `Architektur`+KI | Layer B / pairing rules per host |
+| EN `archviz`, `AI rendering`, skill terms | DISCOURSE-NOT-CONTROLLED or Layer B rules per host |
+| FA `دانشجوی معماری` | Optional collocation — not required Layer A |
+| FA `مهارت‌زدایی` | **GAP** (Braverman) — English `deskilling` in mixed FA scholarly queries |
 
 ---
 
@@ -21,20 +37,42 @@ Construction/AEC adjacent terms and teammate hashtags (`constructionAI`, `GenAIa
 
 ## English (EN)
 
-### Layer A — architecture + GenAI
+### Layer A — architecture + GenAI (controlled core)
 
 Use pairs from [keyword-lexicon.md](keyword-lexicon.md) §1 and §2. Core lemmas:
 
-- architect, architectural, architectural design, architecture firm, architecture student, architectural education, design studio, architectural practice, architecture practice, archviz
-- generative AI, GenAI, Midjourney, ChatGPT, DALL-E, Stable Diffusion, text-to-image, AI rendering, LLM
+- architect, architectural, architectural design, architecture firm, architecture student, architectural education, design studio, architectural practice, architecture practice
+- generative AI, GenAI, Midjourney, ChatGPT, DALL-E, Stable Diffusion, text-to-image, LLM
 
-**archviz** stays **EN** — do not invent FA/DE calques.
+### DISCOURSE-NOT-CONTROLLED — optional Layer A recall
+
+High-recall platform terms; expand where useful:
+
+| Term | Layer | Notes |
+| --- | --- | --- |
+| archviz | A (optional) | EN only — no FA/DE calque |
+| AI rendering | A (optional) | Pair with architecture object |
+| architectural visualization | A (optional) | US spelling variant |
+| architectural visualisation | A (optional) | UK spelling variant |
+
+### Not Layer A — optional Layer B only
+
+Use **only if a sourced paper** employs the term in architectural GenAI discourse:
+
+- design thinking
+- computational design
+- hand drawing
 
 ### Layer B — inside Layer A only
 
-Deskilling, de-skilling, skill loss, upskilling, reskilling, authorship, professional judgment, creativity, design thinking, critical thinking, Urheberrecht (when DE cross-pass), competency / ARB outcomes language.
+Deskilling, de-skilling, upskilling, reskilling, authorship, professional judgment, creativity, critical thinking, Urheberrecht (when DE cross-pass), competency / ARB outcomes language.
 
-Professional warrants: RIBA AI Report 2025; AIA AI Firm Toolkit; ARB competency outcomes; BAK KI FAQ; Braverman / SBTC as **Layer 2 labour lemmas only**.
+| Term | Layer | Notes |
+| --- | --- | --- |
+| skill loss | B | Plain-language variant — **not** Braverman's technical lemma |
+| industry leader | — | **GAP** as controlled retrieval vocab — **code role after retrieval** (RQ4) |
+
+Professional warrants: RIBA AI Report 2025; AIA AI Firm Toolkit; ARB competency outcomes; BAK KI FAQ; Braverman / SBTC as **Layer 2 labour lemmas only** (do not equate `skill loss` with Braverman deskilling).
 
 ### Hashtags (EN) — high noise
 
@@ -63,31 +101,47 @@ Also exclude:
 
 **Separate pass** — require explicit `language: fa` in storage schema. Do **not** mix with EN hits.
 
-| Lemma (transliteration) | Source | Layer | Notes |
+| Lemma (Persian) | Transliteration | Source | Layer | Notes |
+| --- | --- | --- | --- | --- |
+| معمار / معماری | memar / memari | Farhangestan | A | Architecture / architect |
+| مهندس معمار | mohandes-e memar | IRCEO (1374 Law) | A | Licensed architect engineer |
+| رشته معمار | reshte-ye memari | IRCEO | A | Architecture discipline |
+| دفتر مهندسی | daftar-e mohandesi | INBR | A | Legal/engineering office — **not** `دفتر معماری` |
+| هوش مصنوعی مولد | hush-e masnui-ye movalled | Honar-ha-ye Ziba; IRCEO LMS | A | **Sourced** journal/CPD discourse — see URLs below; **not** Farhangestan-approved equivalent |
+| پرامپت‌نویسی + ChatGPT | prompt-nevisi | IRCEO | A | Prompt-writing with ChatGPT |
+| نویسندگی | nevisandegi | IRCEO / discourse | B | Writing / authorship |
+| تفکر نقادانه | tafakkur-e naqqadane | Architecture education | B | Critical thinking |
+| استودیو | ostudiyo | Studio context | A | Weak alone — pair with memari |
+| دانشجوی معماری | daneshjoo-ye memari | Discourse collocation | A (optional) | **Not** Academy controlled vocab — do **not** require in Layer A |
+
+### FA — GenAI lemma sources (`هوش مصنوعی مولد`)
+
+Re-verified 2026-08-31. **Sourced professional/journal use** — do **not** claim Farhangestan or Academy *approval*:
+
+- Honar-ha-ye Ziba (*Me'mari va Shahrsazi*): generative-AI policy page — heading and body use `هوش مصنوعی مولد` — https://jfaup.ut.ac.ir/p_generative-ai
+- IRCEO LMS course 1180313 syllabus: `آشنایی با هوش مصنوعی مولد` — https://lmsiriceo.ir/course/show/470/d98d61b1b9f19d88849096542a221190 (same syllabus on Nezam Qom news 1796)
+
+Later conservative pass marked **GAP** because it required Academy/INSO/Nezam *lemma* registration and missed journal/CPD *use*. **Host:** keep as sourced; conservative GAP rejected for this lemma.
+
+### FA — BIM (both INSO wordings; not Layer A)
+
+| Lemma (Persian) | Standard | Layer | Notes |
 | --- | --- | --- | --- |
-| memar / memari | Farhangestan | A | Architecture / architect |
-| mohandes-e memar | IRCEO (1374 Law) | A | Licensed architect engineer |
-| reshte-ye memari | IRCEO | A | Architecture discipline |
-| daftar-e mohandesi-ye tarrahi-ye sakhteman | 1374 Law / IRCEO | A | Architectural design office |
-| hush-e masnui-ye movalled | Honar-ha-ye Ziba + IRCEO | A | **Preferred GenAI lemma** |
-| prompt-nevisi + ChatGPT | IRCEO | A | Prompt-writing with ChatGPT |
-| nevisandegi | IRCEO / discourse | B | Writing / authorship |
-| tafakkur-e naqqadane | Architecture education discourse | B | Critical thinking |
-| ostudiyo | Studio (design studio context) | A | Weak alone — pair with memari |
-| ettelaat-e sakhteman | BIM wording A | A | Keep **both** BIM Persian wordings |
-| ettelaat-e sakht | BIM wording B | A | Variant — do not collapse without team decision |
+| مدلسازی اطلاعات ساخت | INSO 23198-1 | — | **Not Layer A** |
+| مدل سازی اطلاعات ساختمان | INSO 12690-1 | — | **Not Layer A** — keep **both** wordings |
 
 ### FA — NOT approved / GAP
 
 | Item | Status |
 | --- | --- |
 | hushvare / humas for GenAI | **NOT approved** (Mehr 1405) — do not retrieve |
-| maharat-zedayi as architecture-journal jargon | **GAP** — dictionary-only; **do not retrieve** as architecture jargon |
-| deskilling lemma | **GAP** |
+| مهارت‌زدایی | **GAP** as Braverman deskilling equivalent — use **English** `deskilling` in mixed FA scholarly queries |
+| deskilling (FA lemma) | **GAP** |
 | hashtag set | **GAP** — do not invent |
 | validated FA architecture sentiment dictionary | **GAP** |
 | ISO 6707 FA | **GAP** |
 | UNESCO FA architecture terms | **GAP** |
+| `دفتر معماری` as Nezam terminology | **Do not invent** — use `دفتر مهندسی` (INBR) |
 
 ---
 
@@ -101,28 +155,34 @@ Also exclude:
 | generative KI | Standard / BAK | A | GenAI |
 | KI-Bildgeneratoren | BAK/AKNW | A | Image generators |
 | Prompts | BAK | A | Prompt engineering |
+| ChatGPT | Duden | A | Proper noun in Duden |
 | Architekturbüro | Professional | A | Architecture office |
 | Architektinnen und Architekten | Professional | A | Gender-inclusive profession |
 | Architektenschaft | Professional | A | Profession collective |
 | Planende | BAK | A | Planning professionals |
 | Entwerfen | Design process | A | Designing |
 | Gebäudevisualisierungen | BAK/AKNW | A | Building visualizations |
-| Bauwerksinformationsmodellierung | DIN EN ISO 19650 | A | BIM — preferred DE BIM term |
-| Deskilling (loanword) | Layer 2 | B | English loan in DE discourse |
-| Dequalifizierung | Duden | B | Deskilling |
-| Kompetenzverlust | Duden | B | Skill loss |
-| Urheberrecht | Legal | B | Copyright |
-| Autorschaft | Legal/professional | B | Authorship |
-| Verantwortung | Professional ethics | B | Responsibility |
-| Berufsbild | Professional identity | B | Professional profile |
+| Bauwerksinformationsmodellierung | DIN EN ISO 19650 | — | BIM — **not Layer A** unless paired with GenAI |
+
+### DE — Layer B only
+
+| Lemma | Source | Notes |
+| --- | --- | --- |
+| Deskilling (loanword) | Discourse | English loan |
+| Dequalifizierung | Duden | **Layer B only** — host ruling |
+| Kompetenzverlust | Duden | Skill loss |
+| Urheberrecht | Legal | Copyright |
+| Autorschaft | Legal/professional | Authorship |
+| Verantwortung | Professional ethics | Responsibility |
+| Berufsbild | Professional identity | Professional profile |
 
 ### DE — warnings
 
 | Item | Rule |
 | --- | --- |
-| **Architektur** alone | Hits IT / software architecture — always pair with GenAI + exclusion set |
+| **Architektur** alone | Hits IT / software architecture — always **AND** with **KI** or **`Architekt*`** + exclusion set |
 | **archviz** | Stay **EN**; no FA/DE calque |
-| Deskilling lemmas | **Layer 2 only** — inside Layer A, never as sample selector |
+| Dequalifizierung / deskilling lemmas | **Layer B only** — never sample selector |
 | Hashtag set | **GAP** — do not invent |
 | validated DE architecture sentiment dictionary | **GAP** |
 
@@ -152,8 +212,10 @@ Full English tables remain in [keyword-lexicon.md](keyword-lexicon.md); do not a
 
 ## Gaps summary
 
+- Two 03 drafts recorded; conflicts resolved per host — not silent merge
 - Larbi (2026) methods unread — no import of their discourse lemmas
 - Teammate LinkedIn 71/6173 unpublished
-- FA deskilling, FA/DE hashtags, ISO 6707 FA/DE, UNESCO FA
+- FA `مهارت‌زدایی`, FA/DE hashtags, ISO 6707 FA/DE, UNESCO FA
+- EN `industry leader` as controlled retrieval vocab
 - No live platform query tests on 2026-08-31
 - No validated FA/DE sentiment dictionaries for architecture discourse
