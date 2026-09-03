@@ -23,3 +23,13 @@ Desktop.ini
 /Contact_form_LinkedIn_Help.pdf
 /case_details_linkedin_saintiment.pdf
 /tmp/pdfs/
+
+# Local-only workspace (everything except this README).
+/_local/*
+!/_local/README.md
+
+# LinkedIn scraper runtime artifacts (do not commit).
+/linkedin-scraper/linkedin_session/
+/linkedin-scraper/linkedin_posts.db
+/linkedin-scraper/scraper.log
+/linkedin-scraper/debug/
