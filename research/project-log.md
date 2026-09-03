@@ -183,8 +183,8 @@ On 2026-08-31 the project recorded a keyword-systems expansion **on this reposit
 1. **Three instruments never mixed:** literature retrieval ([keyword-literature-strings.md](keyword-literature-strings.md)), discourse-retrieval catalog ([keyword-discourse-catalog.md](keyword-discourse-catalog.md)), sentiment/stance coding lexicon ([keyword-lexicon.md](keyword-lexicon.md) English tables preserved).
 2. **Two layers:** Layer A = architecture AND GenAI (RQ1 sampling frame); Layer B = skill/deskilling/authorship/judgment as second filter. Deskilling must **not** select the sample.
 3. Construction/AEC/built environment/sociotechnical strings = **related-work only** (`S-RW1`), not primary RQ1.
-4. **Do not cite 71 opinions / 6173 words as published** until a PDF is verified. Exact dual match of teammates' Scopus four-block plus LinkedIn *n* was **not** identified in open full text on 2026-08-31.
-5. **Verified analogue:** Ghimire, Kim and Acharya (2024) *Buildings* 14(1):220 — 32 opinions / 63,778 words, construction professionals, LinkedIn (KS-01).
+4. **Do not cite 71 opinions / 6173 words as published** until a PDF is verified. Exact dual match of teammates' Scopus four-block plus LinkedIn _n_ was **not** identified in open full text on 2026-08-31.
+5. **Verified analogue:** Ghimire, Kim and Acharya (2024) _Buildings_ 14(1):220 — 32 opinions / 63,778 words, construction professionals, LinkedIn (KS-01).
 6. **Closest unread:** Larbi et al. (2026) TFSC 228:124689 — closed OA; 71/6173 unverified; author 76% positive is not a sample-size claim (KS-02).
 7. Primary literature strings: **S-A1** (Scopus), **W-A1** (WoS); no LIMIT-TO Engineering; I-A1 (IEEE) and G-A1a–c (Scholar) are supplements.
 8. EN/FA/DE lists separate; GAPs marked; no invented translations or hashtags.
@@ -192,7 +192,7 @@ On 2026-08-31 the project recorded a keyword-systems expansion **on this reposit
 
 **New files:** [keyword-systems.md](keyword-systems.md), [keyword-source-identification.md](keyword-source-identification.md), [keyword-literature-strings.md](keyword-literature-strings.md), [keyword-discourse-catalog.md](keyword-discourse-catalog.md).
 
-**Updated:** README current status, keyword-lexicon top map (pointers only), keywords-search-storage pointer, references KS-* records, notes methodology pointer, article Related Work pointer. [initial-scratch.md](initial-scratch.md) bytes preserved.
+**Updated:** README current status, keyword-lexicon top map (pointers only), keywords-search-storage pointer, references KS-\* records, notes methodology pointer, article Related Work pointer. [initial-scratch.md](initial-scratch.md) bytes preserved.
 
 **Verification:** Remote `main` fetched before branch; secret-pattern scan before commit; PR against `main`; no force push.
 
@@ -229,3 +229,33 @@ Completed on 2026-08-28:
 - Tooling issues were resolved without weakening security: restricted network/Git metadata operations used approved escalation; an anonymous Python HTTPS check failed because of its local certificate configuration, then system curl passed with TLS verification enabled.
 
 No LinkedIn acceptance of the policy URL, app creation, access grant, inbox-delivery test, or research collection is implied by these checks. No Chrome actions were performed during the privacy-policy/publication work.
+
+## 24. Integrate team scraper and run first controlled test (2026-09-03)
+
+**Context:** a team member contributed a Playwright-based LinkedIn post scraper in `linkedin-scraper/` (scraper.py, keywords.txt, linkedin_posts.csv with 67 posts from a prior run). The LinkedIn DSA Researcher Access case remains Open; this is a pre-API-access exploration.
+
+**Completed:**
+
+- **Repository preparation:** pulled 12 remote commits (keyword catalog work from 2026-08-31), created `_local/` folder for local-only work (git-ignored except README), updated `.gitignore` to protect scraper runtime artifacts (`linkedin_session/`, `linkedin_posts.db`, `scraper.log`, `debug/`).
+- **Documentation:** added `linkedin-scraper/README.md` (purpose, setup, usage, security, limitations) and `requirements.txt` (playwright>=1.40.0).
+- **Commit and push:** `be67e98` — 7 files, 4103 insertions. Verified sync: local and remote both at `be67e98`.
+- **Environment setup:** installed Playwright 1.62.0 and Chromium 151.0.7922.34 on macOS ARM64 with Python 3.12.8.
+- **Test run:** executed with `MAX_POSTS_PER_KEYWORD=5`, `MAX_SCROLLS=10` (reduced from 30/35 for quick trial). All 7 keywords processed in ~2.5 minutes. 41 new posts collected. Parameters reverted to original values after test.
+- **Test documentation:** `_local/scraper-test-log.md` records configuration, environment, per-keyword results, data quality analysis, and 6 identified issues.
+
+**Issues found in test:**
+
+1. 🔴 Metric extraction (`reactions`, `comments`, `reposts`) returned `None` for all 41 new posts — LinkedIn DOM may have changed since the prior run (which captured metrics correctly).
+2. 🔴 `posted_relative` extraction never worked — 0/168 posts have a timestamp.
+3. 🔴 DB path is relative to CWD, not script location — DB was created in project root instead of `linkedin-scraper/`.
+4. 🟡 `load_keywords()` log message says "Created" even when file exists.
+5. 🟡 CSV keyword quoting uses triple quotes (`"""future of architects"""`).
+6. 🟢 `author_headline` extraction inconsistent.
+
+**What worked:** login flow, search URL construction, post text extraction, dedup/merge across keywords, incremental CSV export, session persistence across keywords.
+
+**Not decided:** whether to fix the scraper issues now or wait for API access; whether the CSV data should remain in the public repository long-term.
+
+**Open:** the 67 posts from the prior run (2026-09-02) were in the committed CSV but the DB from that run was not preserved. The test run created a fresh DB with only the 41 new posts. The combined CSV (168 rows) includes both runs with overlap handled by dedup.
+
+**Decision (2026-09-03):** before modifying code, run a second test with longer wait times and more scrolls (`INITIAL_WAIT_MS=10000`, `SCROLL_WAIT_MS=4000`, `MAX_SCROLLS=15`) to determine whether the metric extraction failure is a timing issue or a DOM change requiring code fixes. Document both runs in `_local/scraper-test-log.md`. Only fix code if the parameter variation confirms the extraction logic itself is broken.
