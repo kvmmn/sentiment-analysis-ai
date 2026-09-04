@@ -14,12 +14,13 @@ from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeo
 # ============================================================
 
 BASE_URL = "https://www.linkedin.com"
-SESSION_DIR = Path("linkedin_session")
-DB_PATH = Path("linkedin_posts.db")
-CSV_PATH = Path("linkedin_posts.csv")
-LOG_PATH = Path("scraper.log")
-DEBUG_DIR = Path("debug")
-KEYWORDS_FILE = Path("keywords.txt")
+SCRIPT_DIR = Path(__file__).parent.resolve()
+SESSION_DIR = SCRIPT_DIR / "linkedin_session"
+DB_PATH = SCRIPT_DIR / "linkedin_posts.db"
+CSV_PATH = SCRIPT_DIR / "linkedin_posts.csv"
+LOG_PATH = SCRIPT_DIR / "scraper.log"
+DEBUG_DIR = SCRIPT_DIR / "debug"
+KEYWORDS_FILE = SCRIPT_DIR / "keywords.txt"
 
 MAX_POSTS_PER_KEYWORD = 30
 MAX_SCROLLS = 35
@@ -253,6 +254,8 @@ def load_keywords():
     if not KEYWORDS_FILE.exists():
         KEYWORDS_FILE.write_text("\n".join(DEFAULT_KEYWORDS), encoding="utf-8")
         logger.info("Created %s with default keywords.", KEYWORDS_FILE)
+    else:
+        logger.info("Loaded keywords from %s.", KEYWORDS_FILE)
 
     keywords = []
     for line in KEYWORDS_FILE.read_text(encoding="utf-8").splitlines():
@@ -416,16 +419,49 @@ EXTRACT_JS = r"""
     };
 
     const extractMetric = (text, kind) => {
-        const patterns = {
-            reactions: [/(\d[\d,.]*\s*[km]?)\s+reactions?/i],
-            comments: [/(\d[\d,.]*\s*[km]?)\s+comments?/i],
-            reposts: [/(\d[\d,.]*\s*[km]?)\s+reposts?/i]
+        // Strategy 1: LinkedIn social-action buttons with aria-label
+        // e.g., "Like 123", "Comment 45", "Repost 7"
+        const ariaPatterns = {
+            reactions: [/like\s+(\d[\d,.]*)/i, /(\d[\d,.]*)\s+likes?/i, /(\d[\d,.]*)\s+reactions?/i],
+            comments: [/comment\s+(\d[\d,.]*)/i, /(\d[\d,.]*)\s+comments?/i],
+            reposts: [/repost\s+(\d[\d,.]*)/i, /(\d[\d,.]*)\s+reposts?/i]
         };
 
-        for (const pattern of (patterns[kind] || [])) {
+        // Try aria-label patterns first
+        for (const pattern of (ariaPatterns[kind] || [])) {
             const match = text.match(pattern);
             if (match) return parseNumber(match[1]);
         }
+
+        // Strategy 2: LinkedIn 2026 DOM — last 3 standalone numbers are reactions, comments, reposts
+        // Cards end with lines like: "164", "31", "5" (no labels)
+        const lines = text.split(/\n+/).map(l => l.trim()).filter(Boolean);
+        const numberLines = [];
+        for (let i = lines.length - 1; i >= 0 && numberLines.length < 3; i--) {
+            const line = lines[i];
+            if (/^\d[\d,]*$/.test(line)) {
+                numberLines.unshift(line);
+            }
+        }
+
+        if (numberLines.length >= 3) {
+            if (kind === 'reactions') return parseNumber(numberLines[0]);
+            if (kind === 'comments') return parseNumber(numberLines[1]);
+            if (kind === 'reposts') return parseNumber(numberLines[2]);
+        }
+
+        // Strategy 3: Classic regex on full text (fallback)
+        const textPatterns = {
+            reactions: [/(\d[\d,.]*\s*[km]?)\s+reactions?/i, /(\d[\d,.]*\s*[km]?)\s+likes?/i],
+            comments: [/(\d[\d,.]*\s*[km]?)\s+comments?/i],
+            reposts: [/(\d[\d,.]*\s*[km]?)\s+reposts?/i, /(\d[\d,.]*\s*[km]?)\s+shares?/i]
+        };
+
+        for (const pattern of (textPatterns[kind] || [])) {
+            const match = text.match(pattern);
+            if (match) return parseNumber(match[1]);
+        }
+
         return null;
     };
 
@@ -480,18 +516,25 @@ EXTRACT_JS = r"""
         return match ? match[1] : "";
     };
 
-    const getPostedRelative = (headerLines) => {
-        const patterns = [
-            /^\d+\s*(?:mo|yr|s|m|h|d|w|y)$/i,
-            /^\d+\s*(?:secs?|mins?|hours?|days?|weeks?|months?|years?)$/i
-        ];
+    const getPostedRelative = (headerLines, fullCardText) => {
+        // LinkedIn 2026 format: "2d •", "16h •", "3w •", "1mo •"
+        const shortPattern = /^(\d+\s*[smhdwy]|\d+\s*mo)\b/i;
 
+        // Search header lines first
         for (const line of headerLines) {
             const value = clean(line);
-            for (const pattern of patterns) {
-                if (pattern.test(value)) return value;
-            }
+            if (!value || value.length > 30) continue;
+            const match = value.match(shortPattern);
+            if (match) return match[1];
         }
+
+        // Fallback: search full card text for relative time near the top
+        if (fullCardText) {
+            const topPortion = fullCardText.split('\n').slice(0, 15).join(' ');
+            const match = topPortion.match(shortPattern);
+            if (match) return match[1];
+        }
+
         return "";
     };
 
@@ -598,7 +641,7 @@ EXTRACT_JS = r"""
             author_url: authorUrl,
             author_headline: getHeadline(headerLines, author),
             connection_degree: getDegree(headerLines, fullText),
-            posted_relative: getPostedRelative(headerLines),
+            posted_relative: getPostedRelative(headerLines, fullText),
             is_edited: /\bEdited\b/i.test(fullText) ? 1 : 0,
             url: postUrl,
             post_type: postType,
