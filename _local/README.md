@@ -16,6 +16,7 @@ Scratch scripts can sit under `scraper/scripts/` until they graduate to `src/` o
 
 | Folder | Contents |
 | --- | --- |
+| `archive/2026-09-10-csv-history-purge/` | Local backup of the LinkedIn test CSV after it was purged from git history |
 | `archive/2026-09-10-quality-review/` | Critique memo; meeting brief; file01–03 one-pagers; **whole Iman-package summary**; OpenResearch note |
 | `archive/2026-09-08-telegram-team-update/` | Telegram discussion summary (`saintiment-update-Sep8.md`) plus provenance |
 | `archive/2026-09-06-iman-protocol-drafts/` | Iman’s Drive folder snapshot (protocol, query matrix, codebook, manifest, collector/analysis scripts). Review copies in `working-copies/`. Not run. |
