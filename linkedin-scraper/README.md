@@ -53,7 +53,7 @@ Edit the `CONFIG` section in `scraper.py`:
 | File                 | Description                         |
 | -------------------- | ----------------------------------- |
 | `linkedin_posts.db`  | SQLite database (git-ignored)       |
-| `linkedin_posts.csv` | CSV export for sharing and analysis |
+| `linkedin_posts.csv` | CSV export (git-ignored since 2026-09-10: contains personal data) |
 | `scraper.log`        | Execution log (git-ignored)         |
 | `debug/`             | Screenshots on errors (git-ignored) |
 

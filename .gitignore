@@ -30,8 +30,11 @@ Desktop.ini
 /_local/*
 !/_local/README.md
 
-# LinkedIn scraper runtime artifacts (do not commit).
+# LinkedIn scraper runtime artifacts (do not commit; exports contain personal data).
 /linkedin-scraper/linkedin_session/
 /linkedin-scraper/linkedin_posts.db
+/linkedin-scraper/linkedin_posts.csv
+/linkedin-scraper/*.csv
+/linkedin-scraper/*.db
 /linkedin-scraper/scraper.log
 /linkedin-scraper/debug/
