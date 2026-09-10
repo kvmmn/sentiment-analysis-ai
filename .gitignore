@@ -1,3 +1,6 @@
+# Local Python environment.
+.venv/
+
 # Local datasets; retain the documentation.
 /data/*
 !/data/README.md
@@ -19,10 +22,9 @@ Thumbs.db
 Desktop.ini
 
 # Local developer-console evidence and temporary PDF renders.
-/List_Products_AppDetail_Developers_LinkedIn.pdf
-/Contact_form_LinkedIn_Help.pdf
-/case_details_linkedin_saintiment.pdf
 /tmp/pdfs/
+/scraper.log
+/debug/
 
 # Local-only workspace (everything except this README).
 /_local/*

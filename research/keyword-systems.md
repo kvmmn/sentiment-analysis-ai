@@ -4,6 +4,8 @@ Date: 2026-08-31 (Europe/Berlin)
 Status: academic evaluation of a sourced keyword pack. Not a collection licence. Not frozen query version 1 (no live database counts).
 Object: sentiment about GenAI and deskilling in architectural discourse (profession, studio, education), with soft/hard skills and stakeholder differences.
 
+**Working retrieval choice (2026-09-10, Kaveh):** use Iman’s three-pillar combinatorial search (`Domain ∧ Technology ∧ Labor/Competency`) as the sampling frame to review, not the two-layer “A then B” rule below. That two-layer list remains the 2026-08-31 host evaluation. Lemma lists, LinkedIn vectors, AEC-as-primary, and query version 1 are **still not frozen**. Source: `_local/archive/2026-09-06-iman-protocol-drafts/` file `02_SEARCH_QUERY_MATRIX_AND_TAXONOMY`.
+
 **Lexicon note:** Two **03 lexicon drafts** existed and were **not silently merged** (see [Lexicon draft conflict](#lexicon-draft-conflict--two-03-drafts-2026-08-31) below).
 
 Decisions accepted:

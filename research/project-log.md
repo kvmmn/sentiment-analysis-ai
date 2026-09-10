@@ -210,6 +210,8 @@ Public [docs/index.html](../docs/index.html) interface copy is English-only LTR;
 
 ## Current handoff and open items
 
+Superseded for current desk status by [section 28](#28-local-workspace-tidy-and-8-september-team-update-2026-09-09). Historical items below were current as of late August 2026.
+
 - Publication and anonymous policy-URL verification are complete; see the checks below.
 - The submitted application uses the Arden email; retain Gmail as the permanent project contact.
 - The case is Open in the supplied receipt with an automated acknowledgement. Await a substantive support response through the same case and academic mailbox; no response deadline, access grant, or authorization test is confirmed. Read the application record before preparing any reply.
@@ -266,4 +268,77 @@ No LinkedIn acceptance of the policy URL, app creation, access grant, inbox-deli
 
 **Run #3 — code fix verification (2026-09-04):** Four fixes applied after live DOM inspection. Metric extraction now uses a 3-strategy approach (aria-label → last-3-numbers → regex fallback), matching LinkedIn's 2026 DOM where engagement counts appear as unlabeled numbers at the end of post cards. `posted_relative` now matches the `2d •` / `16h •` format. DB path fixed to `Path(__file__).parent`. `load_keywords()` log corrected. **Results: reactions fill rate improved from 0% to 41%, posted_relative from 0% to 95%.** Remaining None metrics are from article posts and company pages (different DOM). All parameters reverted to original. Fixes committed in `linkedin-scraper/scraper.py`.
 
-**Run #4 — full execution (2026-09-04):** Ran the corrected scraper with original parameters (`MAX_POSTS_PER_KEYWORD=30`, `MAX_SCROLLS=35`) across all 7 keywords. The run completed end-to-end in approximately 4 minutes 22 seconds and produced 197 fresh rows. `posted_relative` was present for 185/197 rows (93.9%); reactions and comments each remained empty for 104/197 rows (52.8%), reflecting different card structures and missing visible metrics rather than zero engagement. The output contained 127 feed posts and 70 articles. A simple headline heuristic flagged 9/197 (4.6%) as likely software-architecture noise; this is not a validated relevance classification. The run confirms operational stability and improved date extraction, but the output remains exploratory and requires deduplication/relevance screening before any research analysis. Detailed results are in `_local/full-run-2026-09-04.md` and the narrative report.
+**Run #4 — full execution (2026-09-04):** Ran the corrected scraper with original parameters (`MAX_POSTS_PER_KEYWORD=30`, `MAX_SCROLLS=35`) across all 7 keywords. The run completed end-to-end in approximately 4 minutes 22 seconds and produced 197 fresh rows. `posted_relative` was present for 185/197 rows (93.9%); reactions and comments each remained empty for 104/197 rows (52.8%), reflecting different card structures and missing visible metrics rather than zero engagement. The output contained 127 feed posts and 70 articles. A simple headline heuristic flagged 9/197 (4.6%) as likely software-architecture noise; this is not a validated relevance classification. The run confirms operational stability and improved date extraction, but the output remains exploratory and requires deduplication/relevance screening before any research analysis. Detailed results are in `_local/archive/2026-09-04-scraper-reports/full-run-2026-09-04.md` and the narrative report.
+
+## 28. Local workspace tidy and 8 September team update (2026-09-09)
+
+Kaveh asked to archive the latest Telegram-group summary and to make the local folder readable, without rushing a next research step.
+
+**Archived (local only):** `_local/archive/2026-09-08-telegram-team-update/saintiment-update-Sep8.md`, copied from `Downloads/saintiment-update-Sep8.md`. Provenance is in `SOURCE.md` in the same folder. The file is a working summary of voice notes among Iman, Morteza, and Kaveh. It is not a signed minute and was not treated as a freeze of the public keyword files.
+
+**What the summary reports (team chat, not independently verified here):**
+
+- Iman circulated three drafts: (1) study protocol, (2) three-pillar keywords, (3) inclusion/exclusion. Those files are **not** in this repository as of 2026-09-09.
+- Morteza questioned leftover PRISMA / literature-review framing, uneven pillar substructure, the shift from deskilling to Labor Dynamics, missing Downskilling/Reskilling, and hard technology exclusions (e.g. rule-based CAD) that could drop GenAI comparison papers.
+- Reported working agreement: keyword list confirmation (Kaveh, then Morteza) before another code run; protocol and inclusion/exclusion later; Labor Dynamics as a broader umbrella; do not apply those hard technology exclusions in a first filter.
+- Reported action items still open: Kaveh’s keyword review; Iman to add Reskilling/Downskilling and align scripts; then collection; then protocol rewrite.
+
+**Workspace moves (no collection, no keyword freeze):**
+
+- `_local/` split into `archive/`, `scraper/`, and `out-of-scope/`.
+- LinkedIn evidence PDFs moved to `tmp/pdfs/linkedin-developer/`.
+- A Maison Sarah learning-workflow file that had been dropped at the repo root moved to `_local/out-of-scope/`.
+- `.gitignore` now ignores `.venv/` and root `scraper.log` / `debug/`.
+
+**Still true:** query version 1 in this repo is not frozen; the LinkedIn research case remains Open on last evidence; scraper output is exploratory; no findings.
+
+## 29. Archive Iman’s Drive review set (2026-09-09)
+
+Kaveh supplied the shared folder [Deskilling_GenAI_Architecture_Sentiment_Study](https://drive.google.com/drive/folders/1hh6Oz9qJk7vUTs1mgGHH9KmMePBIcm1r) as Iman’s version for team review.
+
+**Archived (local only):** `_local/archive/2026-09-06-iman-protocol-drafts/`. Six Google Docs were downloaded as `.docx`, plus plain-text working copies. The folder is owned by a teammate’s personal Google account (recorded in the local `SOURCE.md`, not here). Folder created 2026-09-06; shared with Kaveh 2026-09-09.
+
+| Title | Role in the folder (from the manifest title) |
+| --- | --- |
+| `01_STUDY_PROTOCOL_AND_METHODOLOGY` | Protocol / methods draft |
+| `02_SEARCH_QUERY_MATRIX_AND_TAXONOMY` | Search strings / pillars draft |
+| `03_ANNOTATION_CODEBOOK_AND_GUIDELINES` | Coding / inclusion draft |
+| `README_PROJECT_MANIFEST` | Folder map and run order |
+| `collector.py` | Playwright harvest script (stored as a Google Doc) |
+| `analysis_pipeline.py` | Analysis script (stored as a Google Doc) |
+
+**Not done in this session:** no merge into `research/` or `src/`; no keyword freeze; **scripts were not executed**. This set is the missing counterpart to the 8 September Telegram summary.
+
+## 30. Retrieval model: Iman’s three pillars (2026-09-10)
+
+After comparing Iman’s file 02 with the 2026-08-31 two-layer catalog, Kaveh chose **Iman’s model**: each retrieval query combines Domain ∧ Technology ∧ Labor/Competency. He did not freeze lemmas, vectors, or query version 1, and did not authorise a new harvest.
+
+The 2026-08-31 two-layer rule (Layer A selects the sample; Layer B must not) remains on record as the earlier host evaluation. AEC-as-primary, missing `downskilling`, and whether every LinkedIn vector is kept are still open inside Iman’s list.
+
+## 31. Quality critique documented; meeting brief kept ready (2026-09-10)
+
+After choosing Iman’s three-pillar frame and walking Pillar 3, Kaveh asked for a meticulous quality review, then for full documentation and a living meeting document.
+
+**Archived (local only):** `_local/archive/2026-09-10-quality-review/`
+
+| File | Role |
+| --- | --- |
+| `critique-memo.md` | Full critique (retrieval, protocol, codebook, scripts, process) with prioritised suggestions |
+| `meeting-brief-draft.md` | Single pack for the later team meeting: decision board, compressed critiques, ongoing review log |
+| `SOURCE.md` | Provenance |
+
+**Main findings recorded there (not decided by the team yet):** LinkedIn vectors omit Adaptation while taxonomy includes it; retrieval lemmas overlap analysis lexicons; several vectors are not true Domain ∧ GenAI ∧ Labor; ungrouped `OR` is unsafe on LinkedIn; Loss conflates skill degradation and job replacement; education+deskilling vectors risk preloading H4; docs/code disagree on length, stance, and vector counts; untested `collector.py` lacks post dates and is behind the tested scraper on metrics; PRISMA-S “compliant” claims for social harvest are overstated.
+
+**Still open:** Pillar 3 search policy (all branches vs Loss-only); no keyword freeze; no harvest.
+
+**Tooling note (2026-09-10):** Kaveh asked to record [alphaXiv/OpenResearch](https://github.com/alphaXiv/OpenResearch) as an optional suggestion for the team (local research-agent workspace). Written up in `_local/archive/2026-09-10-quality-review/tooling-openresearch-alphaxiv.md` and listed on the meeting brief. Does not change the keyword-confirmation path.
+
+**Onboarding complete (2026-09-10):** Full walk of Iman’s files 01–03 with per-section critiques; one-pagers for each file plus `iman-package-whole-summary.md` for the team meeting pack (local archive only).
+
+**Feedback letter (2026-09-10):** Kaveh asked for a concise, friendly Persian document in his voice for Iman and Morteza, consolidating strengths, critiques, proposed fixes, and open decisions. Written as `_local/archive/2026-09-10-quality-review/final-feedback-to-team-FA.md`. Position stated there: keyword direction confirmed conditional on four pre-run fixes (OR parentheses, Adaptation + downskilling vectors, education-vector adjustment, GenAI-less vectors clarified); other items before any reported result. Sending is Kaveh’s action; nothing was sent from this desk.
+
+**Letter v2 with vector audit (2026-09-10):** On Kaveh’s request the 24 LinkedIn strings were counted by third leg (Loss 7, Agency 7, Adaptation 0, competency topic 8, other 2), by valence of the search word (negative-leaning 7, positive-leaning 0, neutral 17), by technology term (bare `AI` 6; no ChatGPT/SD/DALL·E/LLM) and by domain term (bare `architecture` 15; no NOT). Counts are design intent, not corpus shares; yield requires a pilot. The letter was rewritten to include this audit, concrete keyword suggestions (vernacular Loss/Adaptation strings, ChatGPT, plural `architects`, NOT clause to test), and conceptual critiques (discourse vs actual deskilling; polarity target; LinkedIn positivity and ranking bias; missing time window; H1 not testable with the listed statistics). Detail: critique-memo Appendix A.
+
+## Current desk (2026-09-10)
+
+Iman package onboarded; feedback letter drafted for Kaveh to send. Next: Kaveh reviews/sends; then Morteza’s check and a 2–3 vector pilot per the letter. No harvest run here; no query freeze.

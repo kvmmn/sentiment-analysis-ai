@@ -105,7 +105,11 @@ The current study's systemic-risk fit remains unresolved. Do not submit invented
 
 On 2026-08-28, Kaveh chose **Saintiment** as the project and LinkedIn app display name. It supersedes **Sentiment AI** and the earlier proposed app name **GenAI Architecture Discourse Research**. This changes naming only; the research direction, repository URL, `_saintimental` folder, and Telegram group name are unchanged. See the [project log](project-log.md) for the form screenshot's observed status.
 
-No research-design decisions have been confirmed. The questions and source areas above remain proposals for team discussion.
+No research-design decisions have been confirmed in the shared files. The questions and source areas above remain proposals for team discussion.
+
+On 2026-09-09 Kaveh archived a Telegram-group summary dated 8 September 2026 in local `_local/archive/2026-09-08-telegram-team-update/` (git-ignored except the `_local` README). That summary reports a working priority: confirm keywords, then run collection code, then revise protocol and inclusion/exclusion. It also reports Labor Dynamics as a broader frame than deskilling alone, and a wish to avoid early exclusion of rule-based CAD when the text compares it with GenAI. Those points are **not** yet written into the public keyword instruments in this repository. Iman’s Drive folder (protocol, query matrix, codebook, scripts) was archived locally on 2026-09-09 in `_local/archive/2026-09-06-iman-protocol-drafts/`; it is not merged into the shared files.
+
+On 2026-09-10 Kaveh chose Iman’s **three-pillar search** (architecture domain ∧ GenAI ∧ labor/competency inside the query) over the repository’s two-layer model for the keyword-review pass. This is a sampling-strategy choice, not a freeze of individual terms, not permission to collect, and not a rewrite of the 2026-08-31 catalog files.
 
 ## Open Questions
 
