@@ -345,6 +345,10 @@ Kaveh asked for GitHub to be brought up to date and for the repository structure
 
 **Decision (2026-09-10, Kaveh):** stop tracking the CSV, then purge it from history. First step: `git rm --cached`, `.gitignore` excludes `linkedin-scraper/*.csv` and `*.db`, scraper README updated. Second step (same day, Kaveh authorized alone — no teammate coordination required): `git filter-repo --path linkedin-scraper/linkedin_posts.csv --invert-paths` rewrote all commits; `origin/main` force-pushed. Local CSV kept on disk and copied under `_local/archive/2026-09-10-csv-history-purge/` (git-ignored). Commit SHAs before the rewrite no longer apply. Cached views on GitHub may linger briefly; if a public URL still shows the old file, ask GitHub Support to clear cache.
 
-## Current desk (2026-09-10)
+## 33. Publish feedback letter on GitHub (2026-09-11)
 
-Iman package onboarded; feedback letter drafted for Kaveh to send; test CSV removed from tracking and history. Next: Kaveh reviews/sends the letter; Morteza’s check; a 2–3 vector pilot per the letter. No harvest run here; no query freeze.
+Kaveh asked for the send-ready Persian feedback letter on GitHub (not only the local `_local/archive/` path). The letter was recovered from the prior desk session and published as tracked file `research/team-feedback-iman-package-2026-09-10-FA.md`. README Project Guide and desk update now link to it. Local archive copy may remain; the shared reference is the `research/` path.
+
+## Current desk (2026-09-11)
+
+Iman package onboarded; feedback letter published on GitHub for sending; test CSV removed from tracking and history. Next: Kaveh sends the letter; Morteza’s check; a 2–3 vector pilot per the letter. No harvest run here; no query freeze.
