@@ -365,6 +365,7 @@ A send-ready Persian draft dated 2026-09-10 was opened as [pull request #6](http
 - Closed pull request #6 without merging the 2026-09-10 draft. README and this log now point to the sent file.
 - Extended [experiments/README.md](../experiments/README.md) so the next code run uses one git branch per experiment and the existing provenance template (question, dataset version and split, code version, configuration, execution, results, limitations). No new CI, agent workspace, or experiment database was added. The letter’s [OpenResearch](https://github.com/alphaXiv/OpenResearch) note remains an optional later suggestion, not an adopted tool.
 - Staged files reviewed for secrets and private data before commit. The Google Doc sharing URL is included because Kaveh asked to keep it findable.
+- Merged [pull request #7](https://github.com/kvmmn/sentiment-analysis-ai/pull/7) onto `main` at [`1793584`](https://github.com/kvmmn/sentiment-analysis-ai/commit/1793584e54757b2329652a2b63a040a7edf41443) (GitHub merge by kvmmn, 2026-09-17 09:18:46 UTC).
 
 **Not completed (next work, not done):** Morteza’s keyword check; a substantive LinkedIn DSA support reply; article and thesis beyond their outlines; query version 1 freeze; permitted research-corpus collection; a recorded professional experiment run. Do not treat the letter’s proposed query fixes or pilot as already executed.
 
