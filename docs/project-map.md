@@ -36,9 +36,11 @@ Only `_local/README.md` is tracked under `_local/`. Local-only links are availab
 - **Read or test Iman’s submission:** [code index](../src/README.md#imans-submission-local-only); open the preserved script, then plan a test. Do not execute a submission in place.
 - **Find the current retrieval decision:** [research index](../research/README.md), not the historical HTML catalog.
 - **Find what was actually sent:** [15 September letter](../research/team/team-feedback-to-team-2026-09-15-FA.md); the September 10 local letter is a superseded draft.
-- **Start a run:** [experiment guide](../experiments/README.md). No run is implied by creating a folder or plan.
+- **Start a run:** [experiment guide](../experiments/README.md), [per-invocation run guide](../experiments/runs/README.md), and [current live-pilot plan](../experiments/2026-09-17-iman-live-pilot.md). No run is implied by creating a folder or plan; user authorization is not platform permission.
 - **Locate earlier September scraper results:** [local archive index](../_local/README.md). These are engineering reports, not findings from an approved corpus.
 - **Check access status:** [application record](../research/access/linkedin-application-worksheet.md). Last evidence is not a live inbox check.
+
+Current pilot private roots are `_local/work/2026-09-17-iman-live-pilot/runs/001-collector/` and `002-analysis/` under the same `runs/` directory. Public records are `experiments/runs/2026-09-17-iman-live-pilot/001-collector.md` and `002-analysis.md`; each invocation gets its own record and workspace. Collector 001 was interrupted; its original `manifest.json` is preserved with stale `running` status and a separate `interruption-note.md`, not silently finalized. Analysis remains blocked and not run pending a reviewed nonempty, consistent snapshot. The separate [offline collector record](../experiments/2026-09-17-iman-collector-offline.md) points to existing ignored `_local/work/2026-09-17-iman-collector-offline/runs/001-integration/` artifacts; it is not live-run validation. See the linked records for outcomes and evidence gaps.
 
 ## Source → code → experiment → writing
 
