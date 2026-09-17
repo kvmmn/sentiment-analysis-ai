@@ -30,8 +30,10 @@ Scratch scripts can sit under `scraper/scripts/` until they graduate to `src/` o
 | `tmp/pdfs/` | Git-ignored | LinkedIn form/app evidence PDFs and one-off renders |
 | `data/` | Git-ignored contents | Structured datasets (`data/README.md`) |
 | `linkedin-scraper/` | Mixed | Shared script/README/keywords; session, DB, and logs ignored |
-| `experiments/` | Tracked | Reproducible experiment records |
+| `experiments/` | Tracked | Reproducible experiment records (one git branch per run; see that README) |
 | `src/` | Tracked | Project source code |
+
+The sent 15 September team letter is in `research/team-feedback-to-team-2026-09-15-FA.md`, not in this local archive. A 2026-09-10 draft may remain under `archive/2026-09-10-quality-review/`; it is not the registered sent text.
 
 ## Rules
 

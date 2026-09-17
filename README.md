@@ -30,7 +30,7 @@ Datasets, models, university requirements, and publication venue remain undecide
 
 Current focus (2026-08-31): the [keyword systems map](research/keyword-systems.md) separates literature retrieval ([strings](research/keyword-literature-strings.md)), discourse catalog ([EN/FA/DE](research/keyword-discourse-catalog.md)), and sentiment coding ([lexicon](research/keyword-lexicon.md)). **Keyword catalog (browser):** [docs/index.html](docs/index.html) — once GitHub Pages is enabled from `/docs`, also at [https://kvmmn.github.io/sentiment-analysis-ai/](https://kvmmn.github.io/sentiment-analysis-ai/). [Source identification](research/keyword-source-identification.md) compares teammate strings with verified analogues (Ghimire 2024: 32 opinions; Larbi 2026 methods unread). Query version 1 is **not** frozen; no live database counts or social corpus were collected. Search limits and storage stay in the [scope note](research/keywords-search-storage.md) — still not a collection licence. Kaveh submitted the LinkedIn research-access form on 2026-08-28. His case receipt shows **Open** and an automated acknowledgement, not research/API approval. The [application record](research/linkedin-application-worksheet.md) captures the submitted answers, including Arden email, Article 40(12): No, and expected data storage of **3 Months in Germany**. This is a declared storage period, not an approved retention exception or a confirmed collection window. Await a substantive support response. The **Saintiment** app and verified Page association remain in place; the last Auth evidence showed **no OAuth permissions** or **redirect URLs**, with no later authorization test confirmed. Kaveh operates LinkedIn manually. See the [setup notes](research/notes.md) and [access review](research/linkedin-data-access-review.md).
 
-Desk update (2026-09-10): the team is reviewing Iman’s draft package (study protocol, three-pillar search matrix `Domain ∧ GenAI ∧ Labor Dynamics`, annotation codebook, harvest/analysis scripts). Kaveh adopted the **three-pillar model as the working sampling frame** for the keyword-review pass; individual terms, the LinkedIn vector list, and query version 1 are still **not frozen**, and no new collection was run. Team order agreed on 8 September: keyword confirmation (Kaveh → Morteza) → pilot/collection → protocol and inclusion/exclusion rewrite. The drafts, the Telegram summary, the desk critique, and Kaveh’s feedback letter to the team live only under `_local/archive/` (git-ignored). The 4 September Playwright scrape produced an exploratory CSV; since 2026-09-10 it is kept locally only (git-ignored) and is not an approved research corpus. See the [project log](research/project-log.md) sections 28–31.
+Desk update (2026-09-17): Kaveh prepared and sent his Persian feedback letter on Iman’s package (dated 15 September). The sent text is registered at [research/team-feedback-to-team-2026-09-15-FA.md](research/team-feedback-to-team-2026-09-15-FA.md), with the [Google Doc](https://docs.google.com/document/d/1Ou2smjsdwrfqOho4OnsP7Bg9Hs2cb3XMgS327nf1OoA/edit?usp=sharing) as source of truth. It does **not** freeze keywords or report results. Iman’s drafts, the Telegram summary, and the desk critique remain under `_local/archive/` (git-ignored). The three-pillar model stays the working sampling frame; query version 1 is still **not frozen**; no new collection was run. Team order from 8 September still stands after the letter’s four pre-run query fixes: keyword confirmation (Kaveh → **Morteza, not yet done**) → small pilot on a new experiment branch → protocol rewrite. The 4 September Playwright scrape remains local-only and is not an approved research corpus. See the [project log](research/project-log.md) section 34.
 
 ## Project Guide
 
@@ -53,21 +53,22 @@ Desk update (2026-09-10): the team is reviewing Iman’s draft package (study pr
 | [Keywords, search scope, and storage](research/keywords-search-storage.md) | Search limits and local JSONL storage plan (not a collection licence) |
 | [LinkedIn access review](research/linkedin-data-access-review.md) | Sourced comparison of access routes, tools, restrictions, and next steps |
 | [References](research/references.md) | Shared source records and reading notes |
+| [Team feedback letter, sent 15 September (FA)](research/team-feedback-to-team-2026-09-15-FA.md) | Kaveh’s sent Persian letter; Google Doc linked in the file |
 | [LinkedIn scraper](linkedin-scraper/README.md) | Exploratory Playwright scraper and keywords (engineering test; outputs are git-ignored) |
 | [Source code](src/) | Reserved for future implementation |
 | [Data guide](data/README.md) | Dataset documentation and handling guidance |
-| [Experiments](experiments/README.md) | Template for reproducible experiment records |
+| [Experiments](experiments/README.md) | One git branch per experiment; provenance template (no runs yet) |
 | [Article](writing/article.md) | Scientific article outline |
 | [Thesis](writing/thesis.md) | Master's thesis outline |
 
 ## Next Steps
 
 1. Review and refine the proposed research problem and questions with the team.
-2. Confirm the keyword list on Iman’s three-pillar matrix (Kaveh, then Morteza); run a small pilot before any full harvest; freeze query version 1 only after that pass. The [keyword systems map](research/keyword-systems.md) records the earlier host evaluation.
-3. Confirm university requirements and explore publication requirements.
-4. Read relevant literature and record verified sources.
-5. Identify suitable datasets, access conditions, and evaluation approaches.
-6. Plan a first baseline experiment before choosing implementation tools. Do not collect a corpus until a source is permitted.
+2. **Morteza’s keyword check** (not done). Then apply the four pre-run query fixes in the [sent letter](research/team-feedback-to-team-2026-09-15-FA.md) if the team agrees (OR parentheses; Adaptation + downskilling; education/H4; three-pillar labels). Freeze query version 1 only after that pass.
+3. First **professional experiment** (not done): a 2–3 vector pilot on a **new git branch**, with a filled record in [experiments/](experiments/README.md). Do not collect a corpus until a source is permitted. The 4 September scraper output is not that corpus.
+4. **LinkedIn DSA case:** still Open on last evidence; await a substantive support response (not done). Read the [application record](research/linkedin-application-worksheet.md) before any reply.
+5. Confirm university requirements and explore publication requirements. Article and thesis remain outlines (not done).
+6. Read relevant literature and record verified sources. Identify suitable datasets, access conditions, and evaluation approaches.
 
 ## Working Format
 
