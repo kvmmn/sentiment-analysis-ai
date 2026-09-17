@@ -6,17 +6,18 @@ Use one Markdown file per experiment, named `YYYY-MM-DD-short-name.md`, adding a
 
 ## How to start a professional experiment
 
-Keep this path small: git + this template. Do not add CI, experiment databases, or research-agent workspaces unless the team later adopts them. [OpenResearch](https://github.com/alphaXiv/OpenResearch) is only an optional later suggestion in Kaveh’s [sent letter](../research/team-feedback-to-team-2026-09-15-FA.md); it is not required here.
+Keep this path small: git + this template. Do not add CI, experiment databases, or research-agent workspaces unless the team later adopts them. [OpenResearch](https://github.com/alphaXiv/OpenResearch) is only an optional later suggestion in Kaveh’s [sent letter](../research/team/team-feedback-to-team-2026-09-15-FA.md); it is not required here. See the [code index and submission-review path](../src/README.md) and [project migration map](../docs/project-map.md).
 
-1. **Update `main`.** Fetch and check out the latest `origin/main` so the run is not based on a stale letter draft or an old scraper commit.
+1. **Update `main`.** With a clean working tree, fetch remote changes, switch to local `main`, and fast-forward it to `origin/main`. Stop and reconcile if the branches have diverged; do not discard local changes or check out `origin/main` as a detached HEAD. This keeps the run based on the current shared record.
 2. **New branch per experiment.** Create `experiment/YYYY-MM-DD-short-name` from that `main`. Do not mix two experimental questions on one branch. Do not commit results onto `main` until the record is filled and reviewed.
-3. **Record before you run.** Copy the template into `experiments/YYYY-MM-DD-short-name.md`. Fill **Question or Hypothesis**, **Data** (planned dataset ID, version, split), and **Configuration and Execution** (method, parameters, commands) while they are still plans. Link `../data/README.md` if a dataset entry exists.
-4. **Code version.** After the branch exists, record the commit that will be executed (`git rev-parse HEAD`). If you change code on the branch, record the commit you actually ran, not an earlier one. Point at files under `src/` or `linkedin-scraper/` rather than inventing a new tree.
-5. **Run only what is permitted.** A query list is not a collection licence. The LinkedIn DSA case remains Open on last evidence. Exploratory scraper CSVs stay git-ignored and are not an approved research corpus.
-6. **Record after you run.** Fill actual execution details, results, and limitations. Leave unmeasured values as TODO. If the run fails, keep the record with status `failed` and link a follow-up file; do not overwrite the failed record with a later success.
-7. **Private data stays out.** Credentials, session files, and personal post dumps do not belong in the record or in git. Describe paths and row counts without pasting profile text.
+3. **Record before you run.** Copy the template into `experiments/YYYY-MM-DD-short-name.md`. Fill **Question or Hypothesis**, **Data** (planned dataset ID, version, split), and **Configuration and Execution** (method, parameters, commands) while they are still plans. Link the [data guide](../data/README.md) and any dataset entry.
+4. **Review submissions before adoption.** Iman’s package is now at `_local/submissions/2026-09-06-iman-protocol-drafts/`; follow the review path in the [code index](../src/README.md). Treat archived/submitted extracts, including folders named `working-copies/`, as immutable evidence: never edit or run them in place. Use `_local/work/<experiment-id>/` as the editable **LOCAL** workspace convention for a reviewed copy; record its source path, source SHA-256, changes, and resulting code hash. Local copies are not automatically adopted code under `src/`.
+5. **Code version.** After the branch exists, record the commit that will be executed (`git rev-parse HEAD`). If you change code on the branch, record the commit you actually ran, not an earlier one. Point at adopted files under `src/` (legacy scraper: `src/linkedin-scraper/`) or explicitly identified local working copies. A repository commit alone does not identify ignored local code; record exact file SHA-256 hashes too.
+6. **Separate test plans and permissions.** Plan offline synthetic tests separately from any live collection, with separate records, inputs, and outputs. Offline tests must not log in, access live platforms, or use personal post dumps, and cannot establish live retrieval quality or access permission. A query list is not a collection licence. The LinkedIn DSA case remains Open on last evidence. Exploratory scraper CSVs stay git-ignored and are not an approved research corpus. Any live pilot requires a separately reviewed plan and permitted access; this guide authorizes no collection or execution.
+7. **Record after a permitted run.** Fill actual execution details, input/output hashes and artifact paths, results, and limitations. Leave unmeasured values as TODO. If the run fails, keep the record with status `failed` and link a follow-up file; do not overwrite the failed record with a later success. Planned per-experiment output location: `data/local/experiments/<id>/`; no directories or artifacts are created by this guide.
+8. **Private data stays out.** Credentials, session files, and personal post dumps do not belong in the record or in git. Describe paths and row counts without pasting profile text.
 
-The 2026-09-03/04 scraper sessions in `research/project-log.md` section 24 are engineering tests. If a similar run is repeated as a professional experiment, start a **new** branch and a **new** file here; do not silently replace those log notes.
+The 2026-09-03/04 scraper sessions in the [project log](../research/project-log.md), under **“24. Integrate team scraper and run first controlled test (2026-09-03)”**, are engineering tests. The log retains another historical section numbered 24, so use the full heading to identify this record. If a similar run is repeated as a professional experiment, start a **new** branch and a **new** file here; do not silently replace those log notes.
 
 Both the [article](../writing/article.md) and [thesis](../writing/thesis.md) should reference these records when reporting results.
 
@@ -39,17 +40,27 @@ TODO: what this experiment is intended to test.
 TODO: dataset ID, exact version, preprocessing, and train/validation/test splits.
 Link to the dataset documentation in ../data/README.md.
 If no permitted dataset exists yet, say so; do not invent one.
+TODO: offline synthetic inputs or separately permitted live collection;
+input artifact paths and SHA-256 hashes; source provenance and access conditions.
 
 ## Code Version
 TODO: commit ID of the code that ran, plus the files/scripts used.
+TODO: original submission/archive source path and source SHA-256, if applicable;
+editable local copy path (_local/work/<experiment-id>/), changes from source,
+and SHA-256 of each executed file (including code not tracked by git).
 
 ## Configuration and Execution
 TODO: method, parameters, random seeds, evaluation metrics, command or steps,
-software versions, and relevant hardware.
+launch working directory, actual start/end time and execution outcome.
+TODO: environment identifier/path, OS and architecture, interpreter/runtime version,
+exact dependency versions and dependency manifest/lockfile path and SHA-256
+(or a version inventory if no lockfile exists), and relevant hardware.
 
 ## Results
 TODO: actual measurements and links to supporting artifacts.
-Leave unmeasured results as TODO; do not substitute expected values.
+TODO: output artifact paths and SHA-256 hashes, including logs and failure artifacts;
+planned local output directory: data/local/experiments/<id>/.
+Leave unmeasured results and hashes as TODO; do not substitute expected values.
 
 ## Interpretation and Limitations
 TODO: observations, uncertainty, failures, and limits on conclusions.

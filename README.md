@@ -22,53 +22,44 @@ Project and privacy contact: Kaveh Momeni — [kaveh.momeni@gmail.com](mailto:ka
 
 The Telegram group **Sentiment Analysis AI** is the team's main communication channel for now.
 
-## Current Status
+## Start Here
 
-Initial planning stage. The [first scratch document](research/initial-scratch.md) proposes studying sentiment about GenAI and deskilling in architectural discourse, including soft skills, hard skills, and stakeholder differences. The [research notes](research/notes.md) organize this proposal; the topic and questions are not yet finalized.
+**[Project map and filing rules](docs/project-map.md)** · **[Research index](research/README.md)** · **[Code index](src/README.md)** · **[Experiment workflow](experiments/README.md)**
 
-Datasets, models, university requirements, and publication venue remain undecided. No experiments have been run or findings established in this project.
+Looking for Iman’s code? Open the [code index](src/README.md#imans-submission-local-only). The complete source package now lives in `_local/submissions/2026-09-06-iman-protocol-drafts/`, not the historical archive. It is local-only and unrun; the index links directly to both Python extracts.
 
-Current focus (2026-08-31): the [keyword systems map](research/keyword-systems.md) separates literature retrieval ([strings](research/keyword-literature-strings.md)), discourse catalog ([EN/FA/DE](research/keyword-discourse-catalog.md)), and sentiment coding ([lexicon](research/keyword-lexicon.md)). **Keyword catalog (browser):** [docs/index.html](docs/index.html) — once GitHub Pages is enabled from `/docs`, also at [https://kvmmn.github.io/sentiment-analysis-ai/](https://kvmmn.github.io/sentiment-analysis-ai/). [Source identification](research/keyword-source-identification.md) compares teammate strings with verified analogues (Ghimire 2024: 32 opinions; Larbi 2026 methods unread). Query version 1 is **not** frozen; no live database counts or social corpus were collected. Search limits and storage stay in the [scope note](research/keywords-search-storage.md) — still not a collection licence. Kaveh submitted the LinkedIn research-access form on 2026-08-28. His case receipt shows **Open** and an automated acknowledgement, not research/API approval. The [application record](research/linkedin-application-worksheet.md) captures the submitted answers, including Arden email, Article 40(12): No, and expected data storage of **3 Months in Germany**. This is a declared storage period, not an approved retention exception or a confirmed collection window. Await a substantive support response. The **Saintiment** app and verified Page association remain in place; the last Auth evidence showed **no OAuth permissions** or **redirect URLs**, with no later authorization test confirmed. Kaveh operates LinkedIn manually. See the [setup notes](research/notes.md) and [access review](research/linkedin-data-access-review.md).
+## Current Status — 17 September 2026
 
-Desk update (2026-09-17): Kaveh prepared and sent his Persian feedback letter on Iman’s package (dated 15 September). The sent text is registered at [research/team-feedback-to-team-2026-09-15-FA.md](research/team-feedback-to-team-2026-09-15-FA.md), with the [Google Doc](https://docs.google.com/document/d/1Ou2smjsdwrfqOho4OnsP7Bg9Hs2cb3XMgS327nf1OoA/edit?usp=sharing) as source of truth. It does **not** freeze keywords or report results. Iman’s drafts, the Telegram summary, and the desk critique remain under `_local/archive/` (git-ignored). The three-pillar model stays the working sampling frame; query version 1 is still **not frozen**; no new collection was run. Team order from 8 September still stands after the letter’s four pre-run query fixes: keyword confirmation (Kaveh → **Morteza, not yet done**) → small pilot on a new experiment branch → protocol rewrite. The 4 September Playwright scrape remains local-only and is not an approved research corpus. See the [project log](research/project-log.md) section 34.
+- **Study:** sentiment about GenAI and skills in architectural discourse. Questions and methods remain provisional; see [research notes](research/notes.md).
+- **Working retrieval frame:** Domain ∧ Technology ∧ Labor/Competency, adopted for review on 10 September. Query version 1 is **not frozen**. The August two-layer catalog is a historical alternative, not the current sampling instruction.
+- **Latest team record:** [Kaveh’s sent 15 September feedback](research/team/team-feedback-to-team-2026-09-15-FA.md), including its Google Doc source. Proposed fixes are not yet implemented results. Morteza’s keyword check remains unconfirmed.
+- **Code and data:** earlier September scraper engineering tests occurred. Outputs remain private and are not an approved research corpus. No completed formal experiment record or established research findings exist.
+- **Access:** LinkedIn DSA case Open on the last receipt (28 August); no substantive response or research/API approval recorded. The submitted three months concerns expected storage, not an approved retention exception or collection window. App creation and Page verification are confirmed; last Auth evidence shows no permissions or redirect URLs. Kaveh operates LinkedIn manually. See [application record](research/access/linkedin-application-worksheet.md).
+- **Outputs:** article and thesis remain outlines. Dataset selection, models, university requirements and publication venue remain open.
+- **Organization:** files grouped by purpose on 17 September; see the [old → new location map](docs/project-map.md#relocations--17-september-2026). No research scripts were run during reorganization.
 
 ## Project Guide
 
-| Location | Purpose |
-| --- | --- |
-| [AGENTS.md](AGENTS.md) | Working principles for contributors and coding agents |
-| [Privacy policy](PRIVACY.md) | Preparation-stage privacy notice for the project and proposed LinkedIn app |
-| [Privacy-policy review](research/privacy-policy-review.md) | Requirements, drafting rationale, and publication status |
-| [Research application record](research/linkedin-application-worksheet.md) | Submitted answers, receipt status, evidence limits, and follow-up needs |
-| [Logo](assets/README.md) | Current project logo and generation record |
-| [Project log](research/project-log.md) | Chronology, decisions, rationale, completed work, and open questions |
-| [Local workspace](_local/README.md) | Machine-only archive and scratch (`archive/`, `scraper/`); contents git-ignored except this README |
-| [Initial scratch document](research/initial-scratch.md) | Original first draft, preserved unchanged |
-| [Research notes](research/notes.md) | Problem definition, questions, ideas, and decisions |
-| [Keyword systems map](research/keyword-systems.md) | Host decisions: three instruments, two layers, gaps |
-| [Keyword literature strings](research/keyword-literature-strings.md) | Scopus S-A1, WoS W-A1, IEEE/ Scholar supplements — copy-paste protocol |
-| [Keyword discourse catalog](research/keyword-discourse-catalog.md) | Sourced EN/FA/DE discourse retrieval terms (not a harvest plan) |
-| [Keyword source identification](research/keyword-source-identification.md) | Teammate strings vs Ghimire, Larbi, and adjacent papers |
-| [Keyword lexicon](research/keyword-lexicon.md) | English sentiment/stance coding tables mapped to research questions |
-| [Keywords, search scope, and storage](research/keywords-search-storage.md) | Search limits and local JSONL storage plan (not a collection licence) |
-| [LinkedIn access review](research/linkedin-data-access-review.md) | Sourced comparison of access routes, tools, restrictions, and next steps |
-| [References](research/references.md) | Shared source records and reading notes |
-| [Team feedback letter, sent 15 September (FA)](research/team-feedback-to-team-2026-09-15-FA.md) | Kaveh’s sent Persian letter; Google Doc linked in the file |
-| [LinkedIn scraper](linkedin-scraper/README.md) | Exploratory Playwright scraper and keywords (engineering test; outputs are git-ignored) |
-| [Source code](src/) | Reserved for future implementation |
-| [Data guide](data/README.md) | Dataset documentation and handling guidance |
-| [Experiments](experiments/README.md) | One git branch per experiment; provenance template (no runs yet) |
-| [Article](writing/article.md) | Scientific article outline |
-| [Thesis](writing/thesis.md) | Master's thesis outline |
+| Location                                                       | Purpose                                                                              |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [Project map](docs/project-map.md)                             | Where files belong, stable IDs, source-to-result traceability, relocation map        |
+| [Research](research/README.md)                                 | Questions, keyword work, access/privacy evidence, team correspondence and references |
+| [Code](src/README.md)                                          | Shared implementations and links to preserved local submissions, with status labels  |
+| [Experiments](experiments/README.md)                           | Plans and run records, provenance template, one branch per experiment                |
+| [Data](data/README.md)                                         | Public-safe dataset metadata; private versioned inputs and outputs                   |
+| [Article](writing/article.md) / [Thesis](writing/thesis.md)    | Separate outputs using shared research and experiment evidence                       |
+| [Local workspace](_local/README.md)                            | Private submissions, historical reports, editable work and helper scripts            |
+| [Assets](assets/README.md)                                     | Public logo and its provenance                                                       |
+| [Project log](research/project-log.md)                         | Dated decisions, actions, verification and unresolved issues                         |
+| [Working principles](AGENTS.md) / [Privacy policy](PRIVACY.md) | Collaboration rules and preparation-stage public notice                              |
 
 ## Next Steps
 
-1. Review and refine the proposed research problem and questions with the team.
-2. **Morteza’s keyword check** (not done). Then apply the four pre-run query fixes in the [sent letter](research/team-feedback-to-team-2026-09-15-FA.md) if the team agrees (OR parentheses; Adaptation + downskilling; education/H4; three-pillar labels). Freeze query version 1 only after that pass.
-3. First **professional experiment** (not done): a 2–3 vector pilot on a **new git branch**, with a filled record in [experiments/](experiments/README.md). Do not collect a corpus until a source is permitted. The 4 September scraper output is not that corpus.
-4. **LinkedIn DSA case:** still Open on last evidence; await a substantive support response (not done). Read the [application record](research/linkedin-application-worksheet.md) before any reply.
-5. Confirm university requirements and explore publication requirements. Article and thesis remain outlines (not done).
-6. Read relevant literature and record verified sources. Identify suitable datasets, access conditions, and evaluation approaches.
+1. Complete Morteza’s keyword check and agree the four pre-run fixes in the [sent letter](research/team/team-feedback-to-team-2026-09-15-FA.md): OR parentheses; Adaptation + downskilling; education/H4; three-pillar labels. Do not silently freeze query version 1.
+2. For a code test, start at the [code index](src/README.md) and [experiment workflow](experiments/README.md). Prepare a separate offline synthetic check before considering live collection. Preserve submission originals and record exact source hashes and changes.
+3. A proposed 2–3-vector pilot needs an experiment branch, a plan and permitted inputs/access. The old scraper output is not an approved corpus. Await a substantive LinkedIn response or establish another permitted source.
+4. Refine protocol, annotation, evaluation and research questions with the team. Record verified literature in [references](research/references.md).
+5. Confirm university and publication requirements; develop article and thesis from shared evidence, not planned results.
 
 ## Working Format
 

@@ -4,7 +4,7 @@ Status: **working retrieval protocol v0**, 2026-08-31. Copy-paste strings for li
 
 **Instrument:** literature retrieval only — not discourse harvest, not sentiment coding.
 
-Host decisions: [keyword-systems.md](keyword-systems.md). Warrants: [references.md](references.md).
+Host decisions: [keyword-systems.md](keyword-systems.md). Warrants: [references.md](../references.md).
 
 ---
 
@@ -83,19 +83,19 @@ TITLE-ABS-KEY( ("built environment" OR AEC OR AECO OR construction OR "construct
 
 ### Ghimire 2024 — published construction strings (related-work only)
 
-Source: Ghimire, Kim and Acharya (2024), [arXiv:2310.04427](https://arxiv.org/abs/2310.04427) / *Buildings* 14(1):220, [doi:10.3390/buildings14010220](https://doi.org/10.3390/buildings14010220). Verified LinkedIn discourse study (32 opinions / 63,778 words). These are **construction-industry retrieval strings from that paper** — label **RELATED-WORK**, not Layer A:
+Source: Ghimire, Kim and Acharya (2024), [arXiv:2310.04427](https://arxiv.org/abs/2310.04427) / _Buildings_ 14(1):220, [doi:10.3390/buildings14010220](https://doi.org/10.3390/buildings14010220). Verified LinkedIn discourse study (32 opinions / 63,778 words). These are **construction-industry retrieval strings from that paper** — label **RELATED-WORK**, not Layer A:
 
-| String ID | Published string | Label |
-| --- | --- | --- |
-| RW-GH-1 | `"Generative AI AND Construction"` | **RELATED-WORK only** |
-| RW-GH-2 | `"Generative AI"` | **RELATED-WORK only** (over-broad alone; Ghimire paired with construction context) |
-| RW-GH-3 | `"Large Language Models AND Construction"` | **RELATED-WORK only** |
+| String ID | Published string                           | Label                                                                              |
+| --------- | ------------------------------------------ | ---------------------------------------------------------------------------------- |
+| RW-GH-1   | `"Generative AI AND Construction"`         | **RELATED-WORK only**                                                              |
+| RW-GH-2   | `"Generative AI"`                          | **RELATED-WORK only** (over-broad alone; Ghimire paired with construction context) |
+| RW-GH-3   | `"Large Language Models AND Construction"` | **RELATED-WORK only**                                                              |
 
 Use for comparator / related-work passes alongside `S-RW1`. **Do not** fold into `S-A1` or `W-A1`.
 
 ### Van Tam 2025 — Boolean not recovered
 
-Van Tam et al. (2025), *Building and Environment* 284:113526 — construction / built-environment GenAI review. **Boolean search string was not recovered** (full text blocked on 2026-08-31). **Do not invent it.** Mark TODO until PDF access.
+Van Tam et al. (2025), _Building and Environment_ 284:113526 — construction / built-environment GenAI review. **Boolean search string was not recovered** (full text blocked on 2026-08-31). **Do not invent it.** Mark TODO until PDF access.
 
 ---
 
@@ -105,13 +105,13 @@ Van Tam et al. (2025), *Building and Environment* 284:113526 — construction / 
 
 If a subject-area refine is required, use a **union**, with Engineering only as one member — **never the sole filter**:
 
-| ASJC code | Subject area |
-| --- | --- |
-| 2216 | Architecture |
-| 3304 | Education |
-| 3322 | Urban Studies |
-| 1709 | Human–Computer Interaction |
-| ENGI | Engineering — **one member of the union only** |
+| ASJC code | Subject area                                   |
+| --------- | ---------------------------------------------- |
+| 2216      | Architecture                                   |
+| 3304      | Education                                      |
+| 3322      | Urban Studies                                  |
+| 1709      | Human–Computer Interaction                     |
+| ENGI      | Engineering — **one member of the union only** |
 
 Example refine intent (adapt syntax to Scopus UI at run time): union of 2216 + 3304 + 3322 + 1709 + ENGI. **Not** Engineering alone.
 
@@ -121,13 +121,13 @@ Example refine intent (adapt syntax to Scopus UI at run time): union of 2216 + 3
 
 Use only in **successive-fractions** or sensitivity passes (Booth 2008; see [keyword-systems.md](keyword-systems.md)):
 
-| Variant | Pattern | Label |
-| --- | --- | --- |
-| Deskilling in A | Add deskilling/de-skilling to Layer A AND | **TOO-NARROW for RQ1 primary** |
-| Deskilling AND into A | Require deskilling terms inside Layer A boolean | **TOO-NARROW for RQ1 primary** |
-| Sentiment in title | `TITLE(sentiment*)` or require sentiment in TITLE | **TOO-NARROW for RQ1 primary** |
-| Engineering limit | `LIMIT-TO Engineering` on Scopus (sole filter) | **TOO-NARROW / wrong subject scope** |
-| Education ∧ creativity | AND education AND creativity at retrieval (Stanimirovic 2026 pattern) | **A+B-soft sensitivity only** |
+| Variant                | Pattern                                                               | Label                                |
+| ---------------------- | --------------------------------------------------------------------- | ------------------------------------ |
+| Deskilling in A        | Add deskilling/de-skilling to Layer A AND                             | **TOO-NARROW for RQ1 primary**       |
+| Deskilling AND into A  | Require deskilling terms inside Layer A boolean                       | **TOO-NARROW for RQ1 primary**       |
+| Sentiment in title     | `TITLE(sentiment*)` or require sentiment in TITLE                     | **TOO-NARROW for RQ1 primary**       |
+| Engineering limit      | `LIMIT-TO Engineering` on Scopus (sole filter)                        | **TOO-NARROW / wrong subject scope** |
+| Education ∧ creativity | AND education AND creativity at retrieval (Stanimirovic 2026 pattern) | **A+B-soft sensitivity only**        |
 
 `TITLE(sentiment*)` and deskilling-AND-into-A remain **too-narrow for RQ1** — keep labelled here; do not adopt as primary sample frame.
 
@@ -151,7 +151,7 @@ AND ( deskilling OR de-skilling OR dequalification OR "skill loss" OR authorship
 - [ ] Export RIS/BibTeX with query note in research log
 - [ ] Do **not** report counts from this file without a dated run
 - [ ] Peer-review strategy with PRESS (McGowan et al. 2016) before locking any version
-- [ ] Document deviations in [project-log.md](project-log.md)
+- [ ] Document deviations in [project-log.md](../project-log.md)
 
 ---
 

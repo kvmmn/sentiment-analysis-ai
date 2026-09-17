@@ -3,6 +3,7 @@
 - Use **Saintiment** as the project and LinkedIn app display name, as chosen by Kaveh on 2026-08-28. Use English for project documentation. Preserve earlier names in historical records and original prompts; keep the `_saintimental` folder, repository URL, and Telegram group name unchanged unless explicitly requested.
 - Treat the project as a group effort by the team listed in `README.md`. Do not infer individual roles, contributions, publication author order, or thesis authorship; record these when explicitly confirmed.
 - Keep work simple. Add files, dependencies, and tooling only when required by the current task.
+- Follow `docs/project-map.md` for stable locations and provenance. Start at `README.md`, `research/README.md`, and `src/README.md`; keep indexes current. Preserve local submission baselines under `_local/submissions/`, prepare experiment-specific derivatives separately, and do not run or edit originals in place. Record moves instead of leaving duplicate current copies.
 - Support both the scientific article and master's thesis using shared research and experiment records.
 - Leave undecided research and technology choices explicit; do not silently fill them in.
 - Distinguish ideas, hypotheses, planned experiments, observations, and verified findings.

@@ -1,6 +1,8 @@
 # Project Log
 
-This is the shared record of actions, decisions, rationale, and open questions. All entries below concern work discussed on 2026-08-28. It summarizes the project conversation and file/tool checks; it is not a verbatim transcript or evidence that planned actions occurred. Keep earlier decisions visible when a later decision supersedes them.
+This is the shared record of actions, decisions, rationale, and open questions. Entries begin with the work discussed on 2026-08-28 and continue chronologically through September 2026; the current desk status is in [section 34](#34-register-sent-team-letter-and-close-this-wrap-up-2026-09-17) and [Current desk (2026-09-17)](#current-desk-2026-09-17). It summarizes the project conversation and file/tool checks; it is not a verbatim transcript or evidence that planned actions occurred. Keep earlier decisions visible when a later decision supersedes them.
+
+Paths inside dated entries are historical: files have since been reorganized (keyword notes into `research/keywords/`, access reviews into `research/access/`, the sent team letter into `research/team/`, the scraper into `src/linkedin-scraper/`, and Iman's draft package into `_local/submissions/`). See the migration map in [docs/project-map.md](../docs/project-map.md) for the current locations.
 
 ## 1. Establish a minimal academic project
 
@@ -30,7 +32,7 @@ Kaveh provided the first scratch document and asked for it to be restored in the
 
 The team message proposed: create a developer app; configure OAuth and obtain credentials; send a test request; then apply for academic research access with institution/supervisor, research questions, required data, and privacy information.
 
-Kaveh asked for a broad review before implementation. The [LinkedIn access review](linkedin-data-access-review.md) compares ordinary APIs, Research Tools/DSA routes, member and Page portability, own-data exports and participant contributions, institutional collaborations, existing datasets, manual collection, commercial scraping tools, and workflow tools. Sources are indexed in [references](references.md).
+Kaveh asked for a broad review before implementation. The [LinkedIn access review](access/linkedin-data-access-review.md) compares ordinary APIs, Research Tools/DSA routes, member and Page portability, own-data exports and participant contributions, institutional collaborations, existing datasets, manual collection, commercial scraping tools, and workflow tools. Sources are indexed in [references](references.md).
 
 **Result:** app creation and OAuth do not establish broad post-search access or permission to build a research corpus. Eligibility, permitted use, retention, publication, and AI-training restrictions depend on the route. Vendor capability claims do not establish permission, coverage, or scientific validity. No scraper was run or purchased, and no suitable licensed corpus was verified.
 
@@ -56,7 +58,7 @@ The current [PNG](../assets/sentiment-ai-logo.png) uses two opposing geometric q
 
 Kaveh requested a short privacy-policy file in GitHub, permission to make the repository public if needed, a careful official-source review, and ongoing synchronization of project work. The repository was checked and was already **public and empty**, so no visibility change was needed. This request supersedes the foundation's earlier decision to defer Git.
 
-The [privacy-policy review](privacy-policy-review.md) records why the pasted Lead Gen explanation is not the governing research-access procedure. It also distinguishes the general API policy obligation from the Research Tools exception and its continuing transparency/contact requirements.
+The [privacy-policy review](access/privacy-policy-review.md) records why the pasted Lead Gen explanation is not the governing research-access procedure. It also distinguishes the general API policy obligation from the Research Tools exception and its continuing transparency/contact requirements.
 
 **Drafting choice:** publish an accurate preparation-stage policy. Do not invent a university sponsor, controller, active data collection, storage implementation, or granted permissions. Do not add arbitrary platform/model/retention constraints. Existing contractual and legal requirements still apply. A public policy cannot obtain access by itself.
 
@@ -104,7 +106,7 @@ The [setup notes](notes.md) link the official documentation rechecked for this d
 
 Kaveh provided the three-page research contact-form PDF, printed at 15:46 on 2026-08-28. All pages were extracted and visually inspected. Unlike the earlier public sign-in page, this shows the actual Article 40(12) application questions. The closed dropdown choices and conditional behavior remain unknown.
 
-The [application worksheet](linkedin-application-worksheet.md) records the questions, known answers, missing facts, declaration, and source hash. Two key answers have a **250-character** limit. No supervisor-specific field is visible, although organization, department, role, and organizational profile information are requested. Existing email and company-Page details must not be mistaken for research sponsorship.
+The [application worksheet](access/linkedin-application-worksheet.md) records the questions, known answers, missing facts, declaration, and source hash. Two key answers have a **250-character** limit. No supervisor-specific field is visible, although organization, department, role, and organizational profile information are requested. Existing email and company-Page details must not be mistaken for research sponsorship.
 
 The recommendation is to clarify institutional/independent status and research eligibility before drafting submission-ready answers. No funding source, security implementation, storage location, GDPR responsibility, or systemic-risk objective was invented. Existing API/publication intentions are recorded as intentions. No form was submitted. The original account-page PDF and its renders remain local and excluded from Git; only the worksheet and summary are published.
 
@@ -162,7 +164,7 @@ The submitted answers include Article 40(12): No; Arden student affiliation and 
 
 ## 22. Draft keywords, search limits, and storage
 
-Kaveh asked to work on the Telegram-group questions: which keywords to search, how far to search, and how to store posts and comments. A working proposal is in [keywords-search-storage.md](keywords-search-storage.md).
+Kaveh asked to work on the Telegram-group questions: which keywords to search, how far to search, and how to store posts and comments. A working proposal is in [keywords-search-storage.md](keywords/keywords-search-storage.md).
 
 **Decision recorded as a draft, not a team vote:** use two query layers (architecture + GenAI discovery, then skill terms) so deskilling language does not select the sample; keep English, Persian, and German lists separate; propose a first time window from 30 November 2022; store one JSONL record per item under gitignored `data/local/`. Sentiment words are for later coding, not retrieval.
 
@@ -172,7 +174,7 @@ Kaveh asked to work on the Telegram-group questions: which keywords to search, h
 
 ## 23. Organize the full keyword catalog
 
-Kaveh asked for a complete, categorized, sorted keyword list aimed at the project questions. The seed tables in the earlier search note were replaced by [keyword-lexicon.md](keyword-lexicon.md): a core set plus full English sections for architecture, GenAI, RQ1–RQ4, exclusions, and optional Persian/German/hashtag lists. Terms are sorted inside each category. This remains a working catalog, not a validated retrieval study or a collection licence.
+Kaveh asked for a complete, categorized, sorted keyword list aimed at the project questions. The seed tables in the earlier search note were replaced by [keyword-lexicon.md](keywords/keyword-lexicon.md): a core set plus full English sections for architecture, GenAI, RQ1–RQ4, exclusions, and optional Persian/German/hashtag lists. Terms are sorted inside each category. This remains a working catalog, not a validated retrieval study or a collection licence.
 
 ## 24. Keyword-systems expansion — three instruments, two layers
 
@@ -180,7 +182,7 @@ On 2026-08-31 the project recorded a keyword-systems expansion **on this reposit
 
 **Decisions:**
 
-1. **Three instruments never mixed:** literature retrieval ([keyword-literature-strings.md](keyword-literature-strings.md)), discourse-retrieval catalog ([keyword-discourse-catalog.md](keyword-discourse-catalog.md)), sentiment/stance coding lexicon ([keyword-lexicon.md](keyword-lexicon.md) English tables preserved).
+1. **Three instruments never mixed:** literature retrieval ([keyword-literature-strings.md](keywords/keyword-literature-strings.md)), discourse-retrieval catalog ([keyword-discourse-catalog.md](keywords/keyword-discourse-catalog.md)), sentiment/stance coding lexicon ([keyword-lexicon.md](keywords/keyword-lexicon.md) English tables preserved).
 2. **Two layers:** Layer A = architecture AND GenAI (RQ1 sampling frame); Layer B = skill/deskilling/authorship/judgment as second filter. Deskilling must **not** select the sample.
 3. Construction/AEC/built environment/sociotechnical strings = **related-work only** (`S-RW1`), not primary RQ1.
 4. **Do not cite 71 opinions / 6173 words as published** until a PDF is verified. Exact dual match of teammates' Scopus four-block plus LinkedIn _n_ was **not** identified in open full text on 2026-08-31.
@@ -190,7 +192,7 @@ On 2026-08-31 the project recorded a keyword-systems expansion **on this reposit
 8. EN/FA/DE lists separate; GAPs marked; no invented translations or hashtags.
 9. Query version 1 is **NOT frozen**.
 
-**New files:** [keyword-systems.md](keyword-systems.md), [keyword-source-identification.md](keyword-source-identification.md), [keyword-literature-strings.md](keyword-literature-strings.md), [keyword-discourse-catalog.md](keyword-discourse-catalog.md).
+**New files:** [keyword-systems.md](keywords/keyword-systems.md), [keyword-source-identification.md](keywords/keyword-source-identification.md), [keyword-literature-strings.md](keywords/keyword-literature-strings.md), [keyword-discourse-catalog.md](keywords/keyword-discourse-catalog.md).
 
 **Updated:** README current status, keyword-lexicon top map (pointers only), keywords-search-storage pointer, references KS-\* records, notes methodology pointer, article Related Work pointer. [initial-scratch.md](initial-scratch.md) bytes preserved.
 
@@ -210,12 +212,12 @@ Public [docs/index.html](../docs/index.html) interface copy is English-only LTR;
 
 ## Current handoff and open items
 
-Superseded for current desk status by [section 28](#28-local-workspace-tidy-and-8-september-team-update-2026-09-09). Historical items below were current as of late August 2026.
+Superseded for current desk status by [section 34](#34-register-sent-team-letter-and-close-this-wrap-up-2026-09-17) and [Current desk (2026-09-17)](#current-desk-2026-09-17). Historical items below were current as of late August 2026.
 
 - Publication and anonymous policy-URL verification are complete; see the checks below.
 - The submitted application uses the Arden email; retain Gmail as the permanent project contact.
 - The case is Open in the supplied receipt with an automated acknowledgement. Await a substantive support response through the same case and academic mailbox; no response deadline, access grant, or authorization test is confirmed. Read the application record before preparing any reply.
-- Team: review the [keyword systems map](keyword-systems.md), [literature strings](keyword-literature-strings.md), [discourse catalog](keyword-discourse-catalog.md), and [keyword lexicon](keyword-lexicon.md); confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
+- Team: review the [keyword systems map](keywords/keyword-systems.md), [literature strings](keywords/keyword-literature-strings.md), [discourse catalog](keywords/keyword-discourse-catalog.md), and [keyword lexicon](keywords/keyword-lexicon.md); confirm institution/supervisor, study responsibility and legal basis, research eligibility, allowed data/fields, sampling and analysis versus training, retention, processors, and publication conditions before collection.
 - Add other members' authorized contact details and confirmed roles when available.
 - Preserve undecided university/venue requirements; there are no experiments or findings to report yet.
 
@@ -298,14 +300,14 @@ Kaveh supplied the shared folder [Deskilling_GenAI_Architecture_Sentiment_Study]
 
 **Archived (local only):** `_local/archive/2026-09-06-iman-protocol-drafts/`. Six Google Docs were downloaded as `.docx`, plus plain-text working copies. The folder is owned by a teammate’s personal Google account (recorded in the local `SOURCE.md`, not here). Folder created 2026-09-06; shared with Kaveh 2026-09-09.
 
-| Title | Role in the folder (from the manifest title) |
-| --- | --- |
-| `01_STUDY_PROTOCOL_AND_METHODOLOGY` | Protocol / methods draft |
-| `02_SEARCH_QUERY_MATRIX_AND_TAXONOMY` | Search strings / pillars draft |
-| `03_ANNOTATION_CODEBOOK_AND_GUIDELINES` | Coding / inclusion draft |
-| `README_PROJECT_MANIFEST` | Folder map and run order |
-| `collector.py` | Playwright harvest script (stored as a Google Doc) |
-| `analysis_pipeline.py` | Analysis script (stored as a Google Doc) |
+| Title                                   | Role in the folder (from the manifest title)       |
+| --------------------------------------- | -------------------------------------------------- |
+| `01_STUDY_PROTOCOL_AND_METHODOLOGY`     | Protocol / methods draft                           |
+| `02_SEARCH_QUERY_MATRIX_AND_TAXONOMY`   | Search strings / pillars draft                     |
+| `03_ANNOTATION_CODEBOOK_AND_GUIDELINES` | Coding / inclusion draft                           |
+| `README_PROJECT_MANIFEST`               | Folder map and run order                           |
+| `collector.py`                          | Playwright harvest script (stored as a Google Doc) |
+| `analysis_pipeline.py`                  | Analysis script (stored as a Google Doc)           |
 
 **Not done in this session:** no merge into `research/` or `src/`; no keyword freeze; **scripts were not executed**. This set is the missing counterpart to the 8 September Telegram summary.
 
@@ -321,11 +323,11 @@ After choosing Iman’s three-pillar frame and walking Pillar 3, Kaveh asked for
 
 **Archived (local only):** `_local/archive/2026-09-10-quality-review/`
 
-| File | Role |
-| --- | --- |
-| `critique-memo.md` | Full critique (retrieval, protocol, codebook, scripts, process) with prioritised suggestions |
+| File                     | Role                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------ |
+| `critique-memo.md`       | Full critique (retrieval, protocol, codebook, scripts, process) with prioritised suggestions     |
 | `meeting-brief-draft.md` | Single pack for the later team meeting: decision board, compressed critiques, ongoing review log |
-| `SOURCE.md` | Provenance |
+| `SOURCE.md`              | Provenance                                                                                       |
 
 **Main findings recorded there (not decided by the team yet):** LinkedIn vectors omit Adaptation while taxonomy includes it; retrieval lemmas overlap analysis lexicons; several vectors are not true Domain ∧ GenAI ∧ Labor; ungrouped `OR` is unsafe on LinkedIn; Loss conflates skill degradation and job replacement; education+deskilling vectors risk preloading H4; docs/code disagree on length, stance, and vector counts; untested `collector.py` lacks post dates and is behind the tested scraper on metrics; PRISMA-S “compliant” claims for social harvest are overstated.
 
@@ -361,7 +363,7 @@ A send-ready Persian draft dated 2026-09-10 was opened as [pull request #6](http
 
 **Completed:**
 
-- Registered the sent Persian letter as [team-feedback-to-team-2026-09-15-FA.md](team-feedback-to-team-2026-09-15-FA.md), with the Google Doc link in the English provenance header.
+- Registered the sent Persian letter as [team-feedback-to-team-2026-09-15-FA.md](team/team-feedback-to-team-2026-09-15-FA.md), with the Google Doc link in the English provenance header.
 - Closed pull request #6 without merging the 2026-09-10 draft. README and this log now point to the sent file.
 - Extended [experiments/README.md](../experiments/README.md) so the next code run uses one git branch per experiment and the existing provenance template (question, dataset version and split, code version, configuration, execution, results, limitations). No new CI, agent workspace, or experiment database was added. The letter’s [OpenResearch](https://github.com/alphaXiv/OpenResearch) note remains an optional later suggestion, not an adopted tool.
 - Staged files reviewed for secrets and private data before commit. The Google Doc sharing URL is included because Kaveh asked to keep it findable.
@@ -374,3 +376,24 @@ A send-ready Persian draft dated 2026-09-10 was opened as [pull request #6](http
 ## Current desk (2026-09-17)
 
 Sent 15 September letter registered. Query version 1 is **not** frozen. No experiment record in `experiments/` has been filled. LinkedIn DSA case remains Open on last evidence (2026-08-28). Next: Morteza’s keyword check; apply the four pre-run query fixes if the team agrees; then a small pilot on a new experiment branch with a provenance record. Await a substantive LinkedIn support response before treating research access as granted. Article, thesis, and university/venue requirements remain open.
+
+## 35. Establish stable project locations and provenance (2026-09-17)
+
+**Request and acceptance:** Kaveh found the folder crowded and difficult to navigate, especially when locating Iman’s submitted scripts for a future test. He requested a stable, traceable structure across research, code, documentation and assets, then accepted the proposed reorganization. This did not authorize accepting an operating-system licence or executing collection code.
+
+**Completed organization:**
+
+- Added [project map](../docs/project-map.md), [research index](README.md) and [code index](../src/README.md). Root README now acts as the short current dashboard, with direct navigation instead of a long mixed list. Contributor rules require maintaining these locations and preserving submitted originals.
+- Moved six keyword records to `research/keywords/`, three access/privacy records to `research/access/`, and the sent letter to `research/team/`. Updated links and marked the August two-layer catalog as a historical alternative to the September three-pillar working frame. No terms were frozen or results asserted.
+- Moved the complete existing scraper package to `src/linkedin-scraper/`, including its ignored local runtime artifacts. Code, keywords and requirements were not changed. Keeping runtime files beside the legacy script is a documented exception; new work should use the planned private data boundary.
+- Moved the complete Iman package from `_local/archive/` to `_local/submissions/2026-09-06-iman-protocol-drafts/`. Original exports, extracts and `SOURCE.md` were preserved. A separate ignored `RELOCATION.md` records the old/new roots and all 13 pre-move SHA-256 values. No private submission was promoted into public source code.
+- Updated the local index and experiment/data guides: separate preserved sources from future editable `_local/work/<experiment-id>/` derivatives; record source and code hashes, environment, working directory, permitted inputs and output artifacts. No derivative, experiment record or new tooling was created merely to populate the structure.
+- Updated ignore rules for the moved scraper outputs/session and CWD-relative `corpus_data/` outputs. Historical reports retain paths at the time; the project map records old → new locations rather than leaving duplicate current copies.
+
+**Verification before publication:** 28 shared Markdown/HTML documents checked; 225 local file-link targets resolve on this machine. All 13 original submission hashes match the pre-move baseline. The scraper script, keyword file and requirements match Git HEAD byte-for-byte; independent system SHA-256 checks agree. The initial scratch and complete sent letter also match their original Git bytes. `git diff --check` passed. Representative relocated session/CSV/DB, submission and `corpus_data/` paths are ignored. File-link checks do not verify remote URLs or heading fragments; local-only links will not resolve in a fresh public clone. These are integrity checks, not proof of scientific correctness or data-access permission.
+
+**Limits:** no existing test suite/configuration was found under `src/` or `experiments/`. No research script was imported or executed; no dependency was installed; no browser, inbox or private data contents were inspected. Legacy helper scripts may retain stale path assumptions and need separate review before reuse. The Xcode licence was not accepted; installed Homebrew Git was used. HTML/docs formatting changed alongside navigation/status edits; no keyword-content rewrite was intended.
+
+**Publication:** staged review, commit and normal push are the final step of this organization task; synchronization outcome is reported in the conversation. The source baseline was `d039649` with local and fetched remote main equal. Research next steps in the current desk above are unchanged. Start a future test from the code index and record it separately; this restructuring is not a completed experiment.
+
+**Guide review (2026-09-17, after the moves):** a read-only pass over the root README, project map, research/code/local indexes, experiment/data/scraper guides and the latest log section found three concrete fixes, all applied: the experiment guide now explains updating local `main` from `origin/main` without a detached HEAD; its historical reference now names the full log heading “24. Integrate team scraper and run first controlled test (2026-09-03)” because the log contains two section-24 headings; and the scraper guide now states the CSV contains personal data and must not be committed or published. A navigation test confirmed the root README reaches both preserved Iman scripts in two clicks without executing anything. No further guide inconsistencies were identified in that review; academic outputs remain outlines.

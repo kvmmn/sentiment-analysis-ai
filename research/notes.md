@@ -1,10 +1,10 @@
 # Research Notes
 
-Status: initial research direction proposed, not a finalized study design. No data have been collected or findings established in this project.
+Status (2026-09-17): the three-pillar working frame was adopted for review on 2026-09-10; study design and queries are not finalized. Prior engineering scraper runs collected material, but do not establish an approved research corpus or verified research findings. Engineering documentation now lives in [src/linkedin-scraper/](../src/linkedin-scraper/README.md); no research code or private data was inspected for this documentation update.
 
-Latest desk (2026-09-17): Kaveh’s sent 15 September feedback letter is registered in [team-feedback-to-team-2026-09-15-FA.md](team-feedback-to-team-2026-09-15-FA.md). Query version 1 is still not frozen. No `experiments/` record has been filled. See [project log](project-log.md) section 34.
+Latest desk (2026-09-17): Kaveh’s sent 15 September feedback letter is registered in [team-feedback-to-team-2026-09-15-FA.md](team/team-feedback-to-team-2026-09-15-FA.md). Query version 1 is still not frozen. No `experiments/` record has been filled. See [project log](project-log.md) section 34 and the [research index](README.md).
 
-Latest access status (2026-08-28): Kaveh submitted the LinkedIn research form. The case receipt shows **Open** and an automated acknowledgement, not approval. The submitted **3 Months** is expected storage duration, not a confirmed collection window. See the [application record](linkedin-application-worksheet.md) for evidenced answers and remaining gaps. Earlier setup notes below describe their historical stages.
+Latest recorded access status (2026-08-28): Kaveh submitted the LinkedIn research form. The case receipt shows **Open** and an automated acknowledgement, not approval. The submitted **3 Months** is expected storage duration, not a confirmed collection window. See the [application record](access/linkedin-application-worksheet.md) for evidenced answers and remaining gaps. Earlier setup notes below describe their historical stages.
 
 Source: [initial scratch document](initial-scratch.md), supplied by Kaveh Momeni on 2026-08-28 and preserved unchanged. Supplying the document does not establish its authorship. The working summary below lightly edits wording for clarity; the original remains the source for the initial ideas.
 
@@ -20,26 +20,26 @@ This is a proposed investigation of discourse and perceptions. It does not estab
 
 These questions are provisional. The skill groupings and terms come from the scratch document and require clarification and literature support.
 
-| ID | Working question |
-| --- | --- |
-| RQ1 | What are the overarching sentiments in discussions of GenAI and deskilling in architectural discourse? |
-| RQ2 | What sentiments concern soft skills in architectural discourse around the emergence of GenAI? |
-| RQ2a | What sentiments concern creativity and design thinking? |
-| RQ2b | What sentiments concern cognitive skills and judgment? |
-| RQ3 | What sentiments concern hard skills in architectural discourse around the emergence of GenAI? |
-| RQ3a | What sentiments concern technical skills, including environmental design skills? |
-| RQ3b | What sentiments concern representation, including digital and computational skills? |
-| RQ4 | Does sentiment about deskilling differ between practitioners, academics, students, and industry leaders? |
+| ID   | Working question                                                                                         |
+| ---- | -------------------------------------------------------------------------------------------------------- |
+| RQ1  | What are the overarching sentiments in discussions of GenAI and deskilling in architectural discourse?   |
+| RQ2  | What sentiments concern soft skills in architectural discourse around the emergence of GenAI?            |
+| RQ2a | What sentiments concern creativity and design thinking?                                                  |
+| RQ2b | What sentiments concern cognitive skills and judgment?                                                   |
+| RQ3  | What sentiments concern hard skills in architectural discourse around the emergence of GenAI?            |
+| RQ3a | What sentiments concern technical skills, including environmental design skills?                         |
+| RQ3b | What sentiments concern representation, including digital and computational skills?                      |
+| RQ4  | Does sentiment about deskilling differ between practitioners, academics, students, and industry leaders? |
 
 ## Methodology Ideas
 
 The scratch document lists LinkedIn, X, ResearchGate, podcasts, and YouTube as candidate search areas. These are not confirmed datasets or approved collection methods.
 
-The data-gathering and keyword-search sections are blank in the original. Methodology keyword work is split across four linked records (2026-08-31): [keyword-systems.md](keyword-systems.md) (host decisions), [keyword-literature-strings.md](keyword-literature-strings.md) (Scopus/WoS protocol), [keyword-discourse-catalog.md](keyword-discourse-catalog.md) (EN/FA/DE discourse terms), and [keyword-lexicon.md](keyword-lexicon.md) (English coding tables). Search limits and storage are in [keywords-search-storage.md](keywords-search-storage.md). Those are team-review drafts, not approved collection procedures. Query version 1 is **not** frozen. Sampling, labeling, models, and evaluation remain TODO. No research-corpus collection has been initiated.
+The data-gathering and keyword-search sections are blank in the original. The August methodology records are preserved in [keyword-systems.md](keywords/keyword-systems.md) (host evaluation and later working-frame decision), [keyword-literature-strings.md](keywords/keyword-literature-strings.md) (Scopus/WoS protocol), [keyword-discourse-catalog.md](keywords/keyword-discourse-catalog.md) (EN/FA/DE discourse terms), and [keyword-lexicon.md](keywords/keyword-lexicon.md) (English coding tables). Historical search limits and storage proposals are in [keywords-search-storage.md](keywords/keywords-search-storage.md). These are not approved collection procedures. The current review uses **Domain ∧ Technology ∧ Labor/Competency**, adopted on 2026-09-10, rather than August’s two-layer sampling proposal. Query version 1 is **not** frozen; exact sampling rules, labeling, models, and evaluation remain unresolved. Prior engineering captures are not an approved research corpus.
 
 ### LinkedIn Access Review — 2026-08-28
 
-The team proposed investigating LinkedIn's official research-access route. The initial focus was reviewing methods, tools, and access conditions before implementation. See the [LinkedIn data access review](linkedin-data-access-review.md) for verified documentation, route comparisons, unresolved permissions, and recommendations. At the time of that review, no app or pipeline had been created. Later app creation is recorded below; it does not establish research eligibility or approve collection.
+The team proposed investigating LinkedIn's official research-access route. The initial focus was reviewing methods, tools, and access conditions before implementation. See the [LinkedIn data access review](access/linkedin-data-access-review.md) for verified documentation, route comparisons, unresolved permissions, and recommendations. At the time of that review, no app or pipeline had been created. Later app creation is recorded below; it does not establish research eligibility or approve collection.
 
 ### Developer Setup Progress — 2026-08-28
 
@@ -53,7 +53,7 @@ Kaveh subsequently requested guidance in the conversation only, without further 
 
 ### Privacy Policy and Shared Repository — 2026-08-28
 
-Kaveh requested a concise privacy policy hosted in GitHub, a substantive requirements review, and GitHub as the shared reference for ongoing work. The repository was verified public and initially empty. See the [privacy-policy review](privacy-policy-review.md) for the distinction between ordinary API, research, and Lead Gen obligations, and the [policy](../PRIVACY.md) for the preparation-stage notice. Its future-research provisions do not assert granted access or a finalized study protocol.
+Kaveh requested a concise privacy policy hosted in GitHub, a substantive requirements review, and GitHub as the shared reference for ongoing work. The repository was verified public and initially empty. See the [privacy-policy review](access/privacy-policy-review.md) for the distinction between ordinary API, research, and Lead Gen obligations, and the [policy](../PRIVACY.md) for the preparation-stage notice. Its future-research provisions do not assert granted access or a finalized study protocol.
 
 Kaveh supplied his Gmail and Arden University email addresses for publication as contact channels. Other team emails remain pending. These addresses do not establish institutional approval or determine who will be the research data controller.
 
@@ -67,13 +67,13 @@ Source SHA-256: `3e9739e527353cd026e36ffbd72d22808996ce392307fddde6181ca24db44b1
 
 **Observed:** the app header shows **Saintiment**, the selected symbol, a Client ID, creation date 28 August 2026, and type **Standalone app**. This confirms app creation and logo use. The Products tab lists 13 products with **Request access** labels under **Available products**. No approved product is shown. The PDF does not reveal Page-association verification, granted OAuth scopes, redirect settings, token validity, or successful data access. Gray printed labels do not establish the live controls' enabled state or its cause.
 
-| Products visible in the PDF | Relevance to the next decision |
-| --- | --- |
-| Sign In with LinkedIn using OpenID Connect | Could support a narrow, authorized authentication test and basic profile retrieval. It does not provide a discourse corpus. Request only if that test is needed after considering product constraints. [OIDC documentation](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2) |
-| Member Data Portability API (Member); Member Data Portability API (3rd Party) | The printed descriptions distinguish access to one's own data from member-authorized third-party access. Neither description promises unrestricted public-post search. Eligibility and the special setup conditions in the [access review](linkedin-data-access-review.md) still need checking before choosing either route. |
-| Pages Data Portability API | A possible route for an explicitly authorized Page sample, not platform-wide discourse. [LinkedIn's application guide](https://www.linkedin.com/help/linkedin/answer/a6220307) |
-| Community Management API | A vetted product for management and analytics use cases. Its documentation says new Development Tier applications must not already have other API products; it also says `r_member_social` is closed to new requests. Do not enable another product merely to test the interface before making this choice. [Community Management overview, FAQs 4 and 6](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/community-management-overview?view=li-lms-2026-04) |
-| Share on LinkedIn; Advertising API; Lead Sync API; Matched Audiences API; Conversions API; Live Events; Events Management API; LinkedIn Ad Library | Their listed purposes are publishing, advertising/leads, conversions, events, or ad data. None is a reason to request access for the current general-discourse study without a matching use case. |
+| Products visible in the PDF                                                                                                                        | Relevance to the next decision                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sign In with LinkedIn using OpenID Connect                                                                                                         | Could support a narrow, authorized authentication test and basic profile retrieval. It does not provide a discourse corpus. Request only if that test is needed after considering product constraints. [OIDC documentation](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2)                                                                                                                                                      |
+| Member Data Portability API (Member); Member Data Portability API (3rd Party)                                                                      | The printed descriptions distinguish access to one's own data from member-authorized third-party access. Neither description promises unrestricted public-post search. Eligibility and the special setup conditions in the [access review](access/linkedin-data-access-review.md) still need checking before choosing either route.                                                                                                                                                    |
+| Pages Data Portability API                                                                                                                         | A possible route for an explicitly authorized Page sample, not platform-wide discourse. [LinkedIn's application guide](https://www.linkedin.com/help/linkedin/answer/a6220307)                                                                                                                                                                                                                                                                                                         |
+| Community Management API                                                                                                                           | A vetted product for management and analytics use cases. Its documentation says new Development Tier applications must not already have other API products; it also says `r_member_social` is closed to new requests. Do not enable another product merely to test the interface before making this choice. [Community Management overview, FAQs 4 and 6](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/community-management-overview?view=li-lms-2026-04) |
+| Share on LinkedIn; Advertising API; Lead Sync API; Matched Audiences API; Conversions API; Live Events; Events Management API; LinkedIn Ad Library | Their listed purposes are publishing, advertising/leads, conversions, events, or ad data. None is a reason to request access for the current general-discourse study without a matching use case.                                                                                                                                                                                                                                                                                      |
 
 **Recommended next action at the PDF-review stage:** inspect **Settings** for the Page association's verification status. If unverified, use **Verify → Generate URL**, and have an authorized Page super admin approve the association. The selected company functions as the app publisher; this is not a university endorsement, blue-badge Page verification, or research-access approval. Do not share the generated verification link publicly. [Official app-verification procedure](https://www.linkedin.com/help/linkedin/answer/a1665329)
 
@@ -97,7 +97,7 @@ This adjusts the group's proposed order: check access eligibility before impleme
 
 ### Research Application Form Inspected — 2026-08-28
 
-Kaveh supplied the three-page `Contact_form_LinkedIn_Help.pdf`, printed at 15:46. The actual form is now visible, superseding the earlier sign-in-only inspection limit. See the [application worksheet](linkedin-application-worksheet.md) for the full field inventory, source hash, and known-versus-missing answers.
+Kaveh supplied the three-page `Contact_form_LinkedIn_Help.pdf`, printed at 15:46. The actual form is now visible, superseding the earlier sign-in-only inspection limit. See the [application worksheet](access/linkedin-application-worksheet.md) for the full field inventory, source hash, and known-versus-missing answers.
 
 The form asks about the team/organization, research and EU systemic-risk contribution, and privacy/security arrangements. Its project proposal and systemic-risk explanation each allow **250 characters**, not words. Dropdown choices remain uninspected. No supervisor-specific field is visible. Name, contact details, team names, and intentions to use an API and publish are known; organization/role, funding and commercial-purpose details, prior applications, timeline, storage locations/retention, external access, and GDPR responsibility need confirmation.
 
@@ -107,9 +107,9 @@ The current study's systemic-risk fit remains unresolved. Do not submit invented
 
 On 2026-08-28, Kaveh chose **Saintiment** as the project and LinkedIn app display name. It supersedes **Sentiment AI** and the earlier proposed app name **GenAI Architecture Discourse Research**. This changes naming only; the research direction, repository URL, `_saintimental` folder, and Telegram group name are unchanged. See the [project log](project-log.md) for the form screenshot's observed status.
 
-No research-design decisions have been confirmed in the shared files. The questions and source areas above remain proposals for team discussion.
+The August questions and source areas remain provisional, but a working sampling-frame decision was subsequently recorded on 2026-09-10; it is not a finalized study design.
 
-On 2026-09-09 Kaveh archived a Telegram-group summary dated 8 September 2026 in local `_local/archive/2026-09-08-telegram-team-update/` (git-ignored except the `_local` README). That summary reports a working priority: confirm keywords, then run collection code, then revise protocol and inclusion/exclusion. It also reports Labor Dynamics as a broader frame than deskilling alone, and a wish to avoid early exclusion of rule-based CAD when the text compares it with GenAI. Those points are **not** yet written into the public keyword instruments in this repository. Iman’s Drive folder (protocol, query matrix, codebook, scripts) was archived locally on 2026-09-09 in `_local/archive/2026-09-06-iman-protocol-drafts/`; it is not merged into the shared files.
+On 2026-09-09 Kaveh archived a Telegram-group summary dated 8 September 2026 in local `_local/archive/2026-09-08-telegram-team-update/` (git-ignored except the `_local` README). That summary reports a working priority: confirm keywords, then run collection code, then revise protocol and inclusion/exclusion. It also reports Labor Dynamics as a broader frame than deskilling alone, and a wish to avoid early exclusion of rule-based CAD when the text compares it with GenAI. Those points are **not** yet written into the public keyword instruments in this repository. Iman’s Drive folder (protocol, query matrix, codebook, scripts) was archived locally on 2026-09-09 in `_local/archive/2026-09-06-iman-protocol-drafts/`; its current location is [the local submission folder](../_local/submissions/2026-09-06-iman-protocol-drafts/), not a merged or approved public protocol.
 
 On 2026-09-10 Kaveh chose Iman’s **three-pillar search** (architecture domain ∧ GenAI ∧ labor/competency inside the query) over the repository’s two-layer model for the keyword-review pass. This is a sampling-strategy choice, not a freeze of individual terms, not permission to collect, and not a rewrite of the 2026-08-31 catalog files.
 
@@ -120,6 +120,6 @@ The following are planning questions added while organizing the draft, not decis
 - How will deskilling, soft skills, hard skills, and the proposed subcategories be defined and supported by literature?
 - What will sentiment refer to: GenAI generally, its effect on a specific skill, or deskilling? How will sentiment be distinguished from agreement with a deskilling claim?
 - Which source areas are feasible, and what access, privacy, ethical, and reuse requirements must be checked before collection?
-- What languages, time period, search terms, sampling approach, and unit of analysis will define the dataset? Will audio or video sources require transcripts? A categorized lexicon is in [keyword-lexicon.md](keyword-lexicon.md); scope and storage remain in [keywords-search-storage.md](keywords-search-storage.md). The team has not accepted either.
+- Within the adopted three-pillar working frame, what languages, time period, exact queries, sampling rules, and unit of analysis will define the dataset? Will audio or video sources require transcripts? The historical [keyword lexicon](keywords/keyword-lexicon.md) and [scope and storage proposal](keywords/keywords-search-storage.md) remain review material, not a frozen protocol.
 - How will stakeholder groups be identified from sufficient evidence, including overlapping or unknown roles?
 - What labeling approach, baseline methods, and evaluation criteria will be used?

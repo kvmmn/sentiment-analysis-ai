@@ -31,10 +31,18 @@ Desktop.ini
 !/_local/README.md
 
 # LinkedIn scraper runtime artifacts (do not commit; exports contain personal data).
+/src/linkedin-scraper/linkedin_session/
+/src/linkedin-scraper/*.csv
+/src/linkedin-scraper/*.db
+/src/linkedin-scraper/*.db-*
+/src/linkedin-scraper/scraper.log
+/src/linkedin-scraper/debug/
+# Protect legacy paths in older checkouts and CWD-relative submission outputs.
 /linkedin-scraper/linkedin_session/
-/linkedin-scraper/linkedin_posts.db
-/linkedin-scraper/linkedin_posts.csv
 /linkedin-scraper/*.csv
 /linkedin-scraper/*.db
 /linkedin-scraper/scraper.log
 /linkedin-scraper/debug/
+corpus_data/
+__pycache__/
+*.py[cod]
