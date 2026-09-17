@@ -348,3 +348,28 @@ Kaveh asked for GitHub to be brought up to date and for the repository structure
 ## Current desk (2026-09-10)
 
 Iman package onboarded; feedback letter drafted for Kaveh to send; test CSV removed from tracking and history. Next: Kaveh reviews/sends the letter; Morteza’s check; a 2–3 vector pilot per the letter. No harvest run here; no query freeze.
+
+## 33. Unpublished 2026-09-10 letter draft (not merged)
+
+A send-ready Persian draft dated 2026-09-10 was opened as [pull request #6](https://github.com/kvmmn/sentiment-analysis-ai/pull/6) on branch `cursor/publish-team-feedback-letter-ca27`. Kaveh later prepared and sent his own file. That pull request is closed without merge; the sent 15 September letter in section 34 is the registered text.
+
+## 34. Register sent team letter and close this wrap-up (2026-09-17)
+
+**Request:** Kaveh said he prepared the feedback file himself and that it was the last thing he sent. Register it; study it as the latest update; put the Google Doc link in the registered letter; close previous open wrap-up work (letter send, messy letter PR, repo hygiene); update GitHub; prepare the next professional experiment path without inventing a heavy toolchain.
+
+**Source of truth:** Google Doc [بررسی و فیدبک کاوه - ۱۵ سپتامبر](https://docs.google.com/document/d/1Ou2smjsdwrfqOho4OnsP7Bg9Hs2cb3XMgS327nf1OoA/edit?usp=sharing), fetched 2026-09-17. Local Mac filename recorded for his reference: `final-feedback-to-team-FA.md` (Downloads). That path was not readable from this environment.
+
+**Completed:**
+
+- Registered the sent Persian letter as [team-feedback-to-team-2026-09-15-FA.md](team-feedback-to-team-2026-09-15-FA.md), with the Google Doc link in the English provenance header.
+- Closed pull request #6 without merging the 2026-09-10 draft. README and this log now point to the sent file.
+- Extended [experiments/README.md](../experiments/README.md) so the next code run uses one git branch per experiment and the existing provenance template (question, dataset version and split, code version, configuration, execution, results, limitations). No new CI, agent workspace, or experiment database was added. The letter’s [OpenResearch](https://github.com/alphaXiv/OpenResearch) note remains an optional later suggestion, not an adopted tool.
+- Staged files reviewed for secrets and private data before commit. The Google Doc sharing URL is included because Kaveh asked to keep it findable.
+
+**Not completed (next work, not done):** Morteza’s keyword check; a substantive LinkedIn DSA support reply; article and thesis beyond their outlines; query version 1 freeze; permitted research-corpus collection; a recorded professional experiment run. Do not treat the letter’s proposed query fixes or pilot as already executed.
+
+**Letter content (as sent; not new findings):** Kaveh counted 24 LinkedIn strings from Iman’s file 02 by design (word presence in queries, not corpus yield). Third-leg shares: Loss 7 (29%), Agency 7 (29%), Adaptation 0, neutral technical-skill terms 8 (33%), education/other 2 (8%). Search-word valence: negative-leaning 7, positive-leaning 0, topical/neutral 17. He argues this risks sampling bias, undermines H1, leaves Adaptation untestable, and cannot be fixed later by coding. He also notes missing named tools (ChatGPT, Stable Diffusion, DALL·E, LLM) and bare `architecture` in 15/24 strings. Four pre-run query fixes: LinkedIn OR parentheses; Adaptation + downskilling vectors; education vector / H4; label incomplete three-pillar strings. Further items (deskilling vs replacement; search/lexicon circularity; threshold/stance mismatches; PRISMA-S and a non-existent “LinkedIn Content Search API”; Scopus NOT block; named-tool list; vernacular vs academic layers; discourse vs actual skill change; polarity target; LinkedIn self-promotion and ranking bias; time window; H1 bimodality) are methodological, not executed. collector.py notes: no post date; engagement regex likely zeros; fragile DOM. Proposed next code step in the letter: a 2–3 vector pilot after those query fixes, not a full harvest. analysis_pipeline.py is described as a lexicon prototype; ABSA/DeBERTa as planned.
+
+## Current desk (2026-09-17)
+
+Sent 15 September letter registered. Query version 1 is **not** frozen. No experiment record in `experiments/` has been filled. LinkedIn DSA case remains Open on last evidence (2026-08-28). Next: Morteza’s keyword check; apply the four pre-run query fixes if the team agrees; then a small pilot on a new experiment branch with a provenance record. Await a substantive LinkedIn support response before treating research access as granted. Article, thesis, and university/venue requirements remain open.
