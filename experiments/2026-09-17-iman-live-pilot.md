@@ -4,7 +4,7 @@
 
 Experiment `2026-09-17-iman-live-pilot` was registered on 17 September (exact registration time unavailable). Question: can the collector produce a usable local database, and can analysis process a separate consistent snapshot? **Collection resume and guarded analysis completed as engineering runs, with missing metadata; no stakeholder inference, scientific findings or access approval.** All execution timestamps below are **2026-09-17 UTC**, corresponding to local September 18 for these events.
 
-Workflow: [per-invocation guide](runs/README.md), [experiment guide](README.md), [data handling](../data/README.md).
+Workflow: [per-invocation guide](runs/README.md), [experiment guide](README.md), [data handling](../data/README.md). **📘 Full technical report:** [Iman Live Pilot — Complete Technical Report](../docs/iman-live-pilot-technical-report.md).
 
 ## Current invocation results
 
