@@ -24,7 +24,7 @@ The Telegram group **Sentiment Analysis AI** is the team's main communication ch
 
 ## Start Here
 
-**[Project map and filing rules](docs/project-map.md)** · **[Research index](research/README.md)** · **[Code index](src/README.md)** · **[Experiment workflow](experiments/README.md)** · **[Per-invocation run guide](experiments/runs/README.md)** · **[Live-pilot plan](experiments/2026-09-17-iman-live-pilot.md)** · **[📘 Full Technical Report](docs/iman-live-pilot-technical-report.md)**
+**[Project map and filing rules](docs/project-map.md)** · **[Research index](research/README.md)** · **[Code index](src/README.md)** · **[Experiment workflow](experiments/README.md)** · **[Per-invocation run guide](experiments/runs/README.md)** · **[Live-pilot plan](experiments/2026-09-17-iman-live-pilot.md)** · **[📘 Full Technical Report](docs/iman-live-pilot-technical-report.md)** · **[📋 Team Meeting Brief](docs/team-meeting-brief-2026-09-18.md)**
 
 Looking for Iman’s code? Open the [code index](src/README.md#imans-submission-local-only). The complete source package now lives in `_local/submissions/2026-09-06-iman-protocol-drafts/`, not the historical archive. Baseline extracts remain local-only and must not be run in place; separate pilot snapshots are prepared.
 
