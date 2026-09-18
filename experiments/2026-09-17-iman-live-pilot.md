@@ -16,6 +16,8 @@ Workflow: [per-invocation guide](runs/README.md), [experiment guide](README.md),
 | [002-analysis](runs/2026-09-17-iman-live-pilot/002-analysis.md)                         | Separate snapshot from 007, not 001; 22:44:09.999–22:44:54.104Z, exit 1: empty contingency ValueError; enriched CSV/Parquet 1,237 preserved, input unchanged |
 | [008-analysis-guarded](runs/2026-09-17-iman-live-pilot/008-analysis-guarded.md)         | Separate guarded derivative, same logical/hash input; 22:54:15.663–22:54:20.167Z, exit 0; CSV/Parquet 1,237, unique matching IDs, all `Unclassified`         |
 | [009-analysis-guard-tests](runs/2026-09-17-iman-live-pilot/009-analysis-guard-tests.md) | Synthetic guards 8/8 pass; no live collection                                                                                                                |
+| [010-collector-headline-fix](runs/2026-09-17-iman-live-pilot/010-collector-headline-fix.md) | 3/3 synthetic headline fix tests passed; no live collection                                                                                                  |
+| [011-collector-second-run](runs/2026-09-17-iman-live-pilot/011-collector-second-run.md)     | Second full collection, original code; 09:41–10:37 UTC, exit 0; DB/CSV 1,043, 0 headlines — **confirms bug is reproducible**                                 |
 
 003 failed on the old selector with zero rows; 004 was prepared but not run; 006 diagnosed a signed-in feed with changed navigation classes. Session copies are explicit deviations from the original fresh-profile plan, not changes to the default policy. Upstream artifact hashes validated; parent 005 hash remained unchanged. The actual 007 database increase is **+56**, not the inflated “new 62” upsert counter. Stored-ID uniqueness does not establish semantic deduplication.
 
@@ -23,7 +25,7 @@ Workflow: [per-invocation guide](runs/README.md), [experiment guide](README.md),
 
 ## Metadata limitation and next action
 
-All **1,237 `author_headline` values are empty**. CSV `author_name` is nonempty in 189 rows, including 138 `Unknown`; profile URL is nonempty in 1,099 rows. These fields do not rescue stakeholder inference: all 1,237 rows are `Unclassified`.
+All **1,237 `author_headline` values are empty** in the first collection (005+007). A **second independent full collection (011)** using the same original code produced **1,043 rows with 0 headlines** — confirming the bug is reproducible and not a one-time anomaly. CSV `author_name` is nonempty in 186 rows (18%), including 140 `Unknown`; profile URL is nonempty in 903 rows (87%). These fields do not rescue stakeholder inference.
 
 Source diagnosis: whitespace is normalized before splitting on newline, preventing next-line headline extraction. An isolated synthetic Node expression reproduced the defect **ad hoc, not as a full DOM test**. Recommend a **separate tested collector derivative before any recollection**. No metadata collector fix, checkpoint implementation or further live run was made; prior assistant proposals are not completed work. The earlier 005 readiness change is distinct from this unimplemented metadata fix.
 
