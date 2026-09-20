@@ -10,18 +10,18 @@ Status: **completed; confirms headline bug is reproducible**. Local date 2026-09
 
 ## Results
 
-| Metric | Run 011 | First run (005+007) |
-|--------|---------|---------------------|
-| DB rows | **1,043** | 1,237 |
-| Unique IDs | 1,043 | 1,237 |
-| SQLite quick_check | ok | ok |
-| CSV rows | 1,043 | 1,237 |
-| Headlines populated | **0** | **0** |
-| Author names populated | 186 (18%) | 189 (15%) |
-| Unknown author names | 140 | 138 |
-| Profile URLs populated | 903 (87%) | 1,099 (89%) |
-| All 24 queries completed | ✅ | ✅ (005 partial + 007 resume) |
-| "New records" counter | 1,084 (inflated) | 62 (inflated) |
+| Metric                   | Run 011          | First run (005+007)           |
+| ------------------------ | ---------------- | ----------------------------- |
+| DB rows                  | **1,043**        | 1,237                         |
+| Unique IDs               | 1,043            | 1,237                         |
+| SQLite quick_check       | ok               | ok                            |
+| CSV rows                 | 1,043            | 1,237                         |
+| Headlines populated      | **0**            | **0**                         |
+| Author names populated   | 186 (18%)        | 189 (15%)                     |
+| Unknown author names     | 140              | 138                           |
+| Profile URLs populated   | 903 (87%)        | 1,099 (89%)                   |
+| All 24 queries completed | ✅               | ✅ (005 partial + 007 resume) |
+| "New records" counter    | 1,084 (inflated) | 62 (inflated)                 |
 
 ## Key findings
 

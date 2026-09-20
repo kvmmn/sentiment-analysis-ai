@@ -10,20 +10,20 @@ Status: **completed but rate-limited; headline fix not verified on real LinkedIn
 
 ## Results
 
-| Metric | Run 012 (fixed) | Run 011 (original) |
-|--------|----------------|---------------------|
-| DB rows | **257** | 1,043 |
-| Unique IDs | 257 | 1,043 |
-| SQLite quick_check | ok | ok |
-| Headlines populated | **0** | 0 |
-| Author names populated | 22 (9%) | 186 (18%) |
-| Queries with results | **5 of 24** | ~20 of 24 |
+| Metric                 | Run 012 (fixed) | Run 011 (original) |
+| ---------------------- | --------------- | ------------------ |
+| DB rows                | **257**         | 1,043              |
+| Unique IDs             | 257             | 1,043              |
+| SQLite quick_check     | ok              | ok                 |
+| Headlines populated    | **0**           | 0                  |
+| Author names populated | 22 (9%)         | 186 (18%)          |
+| Queries with results   | **5 of 24**     | ~20 of 24          |
 
 ## Rate limit discovered
 
 After run 012 completed, a diagnostic browser inspection of the same session revealed:
 
-> *"Our systems have detected unusual search traffic coming from your account. To protect member privacy and system security, search activity on your account has been paused. Try again later."*
+> _"Our systems have detected unusual search traffic coming from your account. To protect member privacy and system security, search activity on your account has been paused. Try again later."_
 
 LinkedIn blocked search on this account after three back-to-back collection runs (011 at ~09:41 UTC, then 012 at ~12:42 UTC). The first 5 queries returned 257 posts; queries 6–24 returned zero because search was paused mid-run.
 
