@@ -4,6 +4,8 @@
 # Local datasets; retain the documentation.
 /data/*
 !/data/README.md
+!/data/linkedin_genai_architecture_discourse_*.csv
+!/data/linkedin_genai_architecture_discourse_*.db
 
 # Local credentials and secrets.
 .env
