@@ -6,6 +6,7 @@ Updated: 2026-09-17. This index separates the current working method from histor
 
 - **Working frame adopted 2026-09-10:** Domain ∧ Technology ∧ Labor/Competency, using Iman’s three-pillar search for the review pass. See the dated decision in [keyword systems](keywords/keyword-systems.md) and [research notes](notes.md#decisions).
 - **Queries are not frozen.** Individual terms, query balance, exact sampling rules, annotation, evaluation, and access conditions still require resolution. The adopted frame is not approval of every submitted query or script.
+- **Pilot analysis & independent methodology (2026-09-25):** completed pilot on Run 013 (1,076 posts); see [team meeting guide](../docs/team-meeting-guide-2026-09-25.html), [technical benchmark report](../docs/team-meeting-analysis-2026-09-25.html), and [Kaveh's independent methodology draft](../docs/kaveh-independent-methodology.md).
 - [Sent team feedback — 15 September](team/team-feedback-to-team-2026-09-15-FA.md): registered Persian letter, with its original Google Doc source. Sent feedback is not a record of implemented changes or verified findings.
 - [Iman’s submission](../_local/submissions/2026-09-06-iman-protocol-drafts/): local-only protocol, matrix, codebook, and scripts; not published or merged as an approved protocol.
 - [Engineering scraper documentation](../src/linkedin-scraper/README.md): prior engineering runs collected material, but that does not establish an approved research corpus or verified research results. This organization task did not inspect private data or run research code.

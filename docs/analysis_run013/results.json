@@ -1,0 +1,1737 @@
+{
+ "sample_flow": {
+  "collected": 1076,
+  "after_duplicates": 1057,
+  "after_english_only": 1024,
+  "after_min_length_80": 1021,
+  "after_domain_relevance": 286,
+  "domain_strict_nli_agrees": 256
+ },
+ "authors": {
+  "n_posts": 286,
+  "n_authors": 195,
+  "max_posts_one_author": 52,
+  "share_top10_authors": 0.3427,
+  "authors_with_1_post": 182
+ },
+ "method_agreement": {
+  "sentence_roberta_vader": 0.537,
+  "post_roberta_vader": 0.253,
+  "sentence_roberta_lexicon": 0.168,
+  "post_roberta_lexicon": 0.3,
+  "sentence_vader_lexicon": 0.185,
+  "post_vader_lexicon": 0.26
+ },
+ "aspect_detection": [
+  {
+   "aspect": "RQ1_Deskilling",
+   "keyword": 34,
+   "candidates": 913,
+   "verified": 20,
+   "keyword_confirmed_share": 0.059,
+   "verified_without_keyword": 18
+  },
+  {
+   "aspect": "RQ2a_Creativity",
+   "keyword": 242,
+   "candidates": 1200,
+   "verified": 333,
+   "keyword_confirmed_share": 0.417,
+   "verified_without_keyword": 232
+  },
+  {
+   "aspect": "RQ2b_CognitiveJudgment",
+   "keyword": 40,
+   "candidates": 1021,
+   "verified": 52,
+   "keyword_confirmed_share": 0.525,
+   "verified_without_keyword": 31
+  },
+  {
+   "aspect": "RQ3a_TechnicalEnvironmental",
+   "keyword": 129,
+   "candidates": 602,
+   "verified": 103,
+   "keyword_confirmed_share": 0.349,
+   "verified_without_keyword": 58
+  },
+  {
+   "aspect": "RQ3b_RepresentationBIM",
+   "keyword": 474,
+   "candidates": 937,
+   "verified": 547,
+   "keyword_confirmed_share": 0.81,
+   "verified_without_keyword": 163
+  }
+ ],
+ "h1": {
+  "roberta": {
+   "n": 286,
+   "mean": 0.4276,
+   "median": 0.4819,
+   "bc": 0.5155,
+   "dip": 0.0226,
+   "dip_p": 0.4055,
+   "near_neutral_share": 0.0524,
+   "gmm_bic_1_2_3": [
+    317.4,
+    253.5,
+    269.7
+   ],
+   "best_k": 2,
+   "hist": [
+    0,
+    0,
+    1,
+    2,
+    2,
+    6,
+    4,
+    6,
+    12,
+    10,
+    19,
+    30,
+    21,
+    17,
+    18,
+    17,
+    22,
+    25,
+    33,
+    41
+   ]
+  },
+  "vader": {
+   "n": 286,
+   "mean": 0.783,
+   "median": 0.9341,
+   "bc": 0.7772,
+   "dip": 0.0126,
+   "dip_p": 0.993,
+   "near_neutral_share": 0.014,
+   "gmm_bic_1_2_3": [
+    223.7,
+    -297.9,
+    -313.8
+   ],
+   "best_k": 3,
+   "hist": [
+    0,
+    2,
+    0,
+    0,
+    3,
+    1,
+    4,
+    0,
+    2,
+    0,
+    5,
+    6,
+    7,
+    5,
+    5,
+    11,
+    9,
+    19,
+    28,
+    179
+   ]
+  },
+  "lexicon": {
+   "n": 286,
+   "mean": 0.2294,
+   "median": 0.0,
+   "bc": 0.4108,
+   "dip": 0.1049,
+   "dip_p": 0.0,
+   "near_neutral_share": 0.528,
+   "gmm_bic_1_2_3": [
+    411.8,
+    394.5,
+    -1312.3
+   ],
+   "best_k": 3,
+   "hist": [
+    1,
+    4,
+    12,
+    5,
+    1,
+    0,
+    1,
+    1,
+    2,
+    0,
+    152,
+    0,
+    2,
+    1,
+    3,
+    7,
+    14,
+    6,
+    63,
+    11
+   ]
+  }
+ },
+ "aspect_profile": [
+  {
+   "aspect": "RQ1_Deskilling",
+   "method": "roberta",
+   "n": 16,
+   "prevalence": 0.0559,
+   "mean": -0.2845,
+   "ci": [
+    -0.459,
+    -0.095
+   ],
+   "zero_share": 0.0
+  },
+  {
+   "aspect": "RQ1_Deskilling",
+   "method": "vader",
+   "n": 16,
+   "prevalence": 0.0559,
+   "mean": -0.0761,
+   "ci": [
+    -0.2635,
+    0.1218
+   ],
+   "zero_share": 0.1875
+  },
+  {
+   "aspect": "RQ1_Deskilling",
+   "method": "lexicon",
+   "n": 16,
+   "prevalence": 0.0559,
+   "mean": -0.0802,
+   "ci": [
+    -0.2604,
+    0.1
+   ],
+   "zero_share": 0.75
+  },
+  {
+   "aspect": "RQ2a_Creativity",
+   "method": "roberta",
+   "n": 152,
+   "prevalence": 0.5315,
+   "mean": 0.3495,
+   "ci": [
+    0.2886,
+    0.4118
+   ],
+   "zero_share": 0.0
+  },
+  {
+   "aspect": "RQ2a_Creativity",
+   "method": "vader",
+   "n": 152,
+   "prevalence": 0.5315,
+   "mean": 0.3311,
+   "ci": [
+    0.2836,
+    0.3796
+   ],
+   "zero_share": 0.1382
+  },
+  {
+   "aspect": "RQ2a_Creativity",
+   "method": "lexicon",
+   "n": 152,
+   "prevalence": 0.5315,
+   "mean": 0.0884,
+   "ci": [
+    0.0513,
+    0.1286
+   ],
+   "zero_share": 0.7434
+  },
+  {
+   "aspect": "RQ2b_CognitiveJudgment",
+   "method": "roberta",
+   "n": 37,
+   "prevalence": 0.1294,
+   "mean": 0.0913,
+   "ci": [
+    -0.046,
+    0.2225
+   ],
+   "zero_share": 0.0
+  },
+  {
+   "aspect": "RQ2b_CognitiveJudgment",
+   "method": "vader",
+   "n": 37,
+   "prevalence": 0.1294,
+   "mean": 0.2765,
+   "ci": [
+    0.1553,
+    0.3922
+   ],
+   "zero_share": 0.1622
+  },
+  {
+   "aspect": "RQ2b_CognitiveJudgment",
+   "method": "lexicon",
+   "n": 37,
+   "prevalence": 0.1294,
+   "mean": 0.1176,
+   "ci": [
+    -0.0176,
+    0.2527
+   ],
+   "zero_share": 0.6486
+  },
+  {
+   "aspect": "RQ3a_TechnicalEnvironmental",
+   "method": "roberta",
+   "n": 73,
+   "prevalence": 0.2552,
+   "mean": 0.3752,
+   "ci": [
+    0.289,
+    0.4616
+   ],
+   "zero_share": 0.0
+  },
+  {
+   "aspect": "RQ3a_TechnicalEnvironmental",
+   "method": "vader",
+   "n": 73,
+   "prevalence": 0.2552,
+   "mean": 0.2927,
+   "ci": [
+    0.2185,
+    0.3675
+   ],
+   "zero_share": 0.2877
+  },
+  {
+   "aspect": "RQ3a_TechnicalEnvironmental",
+   "method": "lexicon",
+   "n": 73,
+   "prevalence": 0.2552,
+   "mean": 0.0568,
+   "ci": [
+    0.0026,
+    0.1174
+   ],
+   "zero_share": 0.8493
+  },
+  {
+   "aspect": "RQ3b_RepresentationBIM",
+   "method": "roberta",
+   "n": 190,
+   "prevalence": 0.6643,
+   "mean": 0.3425,
+   "ci": [
+    0.2966,
+    0.3852
+   ],
+   "zero_share": 0.0
+  },
+  {
+   "aspect": "RQ3b_RepresentationBIM",
+   "method": "vader",
+   "n": 190,
+   "prevalence": 0.6643,
+   "mean": 0.3089,
+   "ci": [
+    0.2677,
+    0.3506
+   ],
+   "zero_share": 0.1632
+  },
+  {
+   "aspect": "RQ3b_RepresentationBIM",
+   "method": "lexicon",
+   "n": 190,
+   "prevalence": 0.6643,
+   "mean": 0.0901,
+   "ci": [
+    0.0583,
+    0.1241
+   ],
+   "zero_share": 0.7053
+  }
+ ],
+ "h2_creativity_vs_judgment": {
+  "roberta": {
+   "paired_n": 21,
+   "paired_mean_diff": 0.0074,
+   "paired_ci": [
+    -0.2403,
+    0.2658
+   ],
+   "wilcoxon_p": 0.717218,
+   "indep_n": [
+    131,
+    16
+   ],
+   "indep_means": [
+    0.392,
+    0.1101
+   ],
+   "mwu_p": 0.017654,
+   "cliffs_delta": 0.3645
+  },
+  "vader": {
+   "paired_n": 21,
+   "paired_mean_diff": 0.0086,
+   "paired_ci": [
+    -0.2187,
+    0.2459
+   ],
+   "wilcoxon_p": 1.0,
+   "indep_n": [
+    131,
+    16
+   ],
+   "indep_means": [
+    0.3423,
+    0.3075
+   ],
+   "mwu_p": 0.58574,
+   "cliffs_delta": 0.084
+  },
+  "lexicon": {
+   "paired_n": 21,
+   "paired_mean_diff": -0.0007,
+   "paired_ci": [
+    -0.1498,
+    0.1525
+   ],
+   "wilcoxon_p": 0.944114,
+   "indep_n": [
+    131,
+    16
+   ],
+   "indep_means": [
+    0.0962,
+    0.2188
+   ],
+   "mwu_p": 0.173507,
+   "cliffs_delta": -0.1656
+  },
+  "robust_direction": false
+ },
+ "h3_technical_vs_representation": {
+  "roberta": {
+   "paired_n": 48,
+   "paired_mean_diff": 0.0119,
+   "paired_ci": [
+    -0.0838,
+    0.1152
+   ],
+   "wilcoxon_p": 0.95949,
+   "indep_n": [
+    25,
+    142
+   ],
+   "indep_means": [
+    0.5084,
+    0.3589
+   ],
+   "mwu_p": 0.026546,
+   "cliffs_delta": 0.2789
+  },
+  "vader": {
+   "paired_n": 48,
+   "paired_mean_diff": 0.0045,
+   "paired_ci": [
+    -0.0998,
+    0.1132
+   ],
+   "wilcoxon_p": 0.827936,
+   "indep_n": [
+    25,
+    142
+   ],
+   "indep_means": [
+    0.3824,
+    0.3316
+   ],
+   "mwu_p": 0.430052,
+   "cliffs_delta": 0.0992
+  },
+  "lexicon": {
+   "paired_n": 48,
+   "paired_mean_diff": 0.0063,
+   "paired_ci": [
+    -0.0689,
+    0.0916
+   ],
+   "wilcoxon_p": 0.657944,
+   "indep_n": [
+    25,
+    142
+   ],
+   "indep_means": [
+    0.0053,
+    0.0945
+   ],
+   "mwu_p": 0.076487,
+   "cliffs_delta": -0.1727
+  },
+  "robust_direction": true
+ },
+ "deskilling_vs_creativity": {
+  "roberta": {
+   "paired_n": 11,
+   "paired_mean_diff": -0.476,
+   "paired_ci": [
+    -0.6932,
+    -0.273
+   ],
+   "wilcoxon_p": 0.001953,
+   "indep_n": [
+    5,
+    141
+   ],
+   "indep_means": [
+    -0.09,
+    0.3687
+   ],
+   "mwu_p": null,
+   "cliffs_delta": null
+  },
+  "vader": {
+   "paired_n": 11,
+   "paired_mean_diff": -0.3441,
+   "paired_ci": [
+    -0.6011,
+    -0.1289
+   ],
+   "wilcoxon_p": 0.019531,
+   "indep_n": [
+    5,
+    141
+   ],
+   "indep_means": [
+    0.0219,
+    0.3395
+   ],
+   "mwu_p": null,
+   "cliffs_delta": null
+  },
+  "lexicon": {
+   "paired_n": 11,
+   "paired_mean_diff": -0.108,
+   "paired_ci": [
+    -0.3135,
+    0.0839
+   ],
+   "wilcoxon_p": 0.3125,
+   "indep_n": [
+    5,
+    141
+   ],
+   "indep_means": [
+    -0.1667,
+    0.0901
+   ],
+   "mwu_p": null,
+   "cliffs_delta": null
+  },
+  "robust_direction": true
+ },
+ "h2_query_adjusted": {
+  "roberta": {
+   "n": 147,
+   "diff_raw": 0.2818,
+   "diff_adj": 0.201,
+   "ci_adj": [
+    -0.0649,
+    0.4669
+   ],
+   "p_adj": 0.13849,
+   "share_explained_by_query": 0.2868
+  },
+  "vader": {
+   "n": 147,
+   "diff_raw": 0.0348,
+   "diff_adj": -0.0388,
+   "ci_adj": [
+    -0.2378,
+    0.1602
+   ],
+   "p_adj": 0.70224,
+   "share_explained_by_query": 2.1165
+  },
+  "lexicon": {
+   "n": 147,
+   "diff_raw": -0.1226,
+   "diff_adj": -0.1671,
+   "ci_adj": [
+    -0.4454,
+    0.1112
+   ],
+   "p_adj": 0.23939,
+   "share_explained_by_query": -0.363
+  }
+ },
+ "h2_one_post_per_author": {
+  "roberta": {
+   "paired_n": 17,
+   "paired_mean_diff": 0.1152,
+   "paired_ci": [
+    -0.1188,
+    0.3596
+   ],
+   "wilcoxon_p": 0.351979,
+   "indep_n": [
+    90,
+    14
+   ],
+   "indep_means": [
+    0.3619,
+    0.1051
+   ],
+   "mwu_p": 0.052611,
+   "cliffs_delta": 0.3238
+  },
+  "vader": {
+   "paired_n": 17,
+   "paired_mean_diff": 0.0872,
+   "paired_ci": [
+    -0.1535,
+    0.3687
+   ],
+   "wilcoxon_p": 0.569494,
+   "indep_n": [
+    90,
+    14
+   ],
+   "indep_means": [
+    0.3115,
+    0.3213
+   ],
+   "mwu_p": 0.94297,
+   "cliffs_delta": 0.0127
+  },
+  "lexicon": {
+   "paired_n": 17,
+   "paired_mean_diff": -0.0568,
+   "paired_ci": [
+    -0.162,
+    0.0119
+   ],
+   "wilcoxon_p": 0.224916,
+   "indep_n": [
+    90,
+    14
+   ],
+   "indep_means": [
+    0.0791,
+    0.25
+   ],
+   "mwu_p": 0.069807,
+   "cliffs_delta": -0.2397
+  },
+  "robust_direction": false
+ },
+ "h2_english_all_domains": {
+  "roberta": {
+   "paired_n": 56,
+   "paired_mean_diff": 0.0006,
+   "paired_ci": [
+    -0.1325,
+    0.1283
+   ],
+   "wilcoxon_p": 0.947063,
+   "indep_n": [
+    179,
+    215
+   ],
+   "indep_means": [
+    0.3433,
+    -0.0183
+   ],
+   "mwu_p": 0.0,
+   "cliffs_delta": 0.5166
+  },
+  "vader": {
+   "paired_n": 56,
+   "paired_mean_diff": -0.0417,
+   "paired_ci": [
+    -0.1677,
+    0.0838
+   ],
+   "wilcoxon_p": 0.340139,
+   "indep_n": [
+    179,
+    215
+   ],
+   "indep_means": [
+    0.3195,
+    0.1677
+   ],
+   "mwu_p": 6.8e-05,
+   "cliffs_delta": 0.2324
+  },
+  "lexicon": {
+   "paired_n": 56,
+   "paired_mean_diff": -0.0135,
+   "paired_ci": [
+    -0.1036,
+    0.0665
+   ],
+   "wilcoxon_p": 0.94992,
+   "indep_n": [
+    179,
+    215
+   ],
+   "indep_means": [
+    0.0992,
+    -0.0236
+   ],
+   "mwu_p": 5e-06,
+   "cliffs_delta": 0.1968
+  },
+  "robust_direction": false
+ },
+ "h2_domain_strict": {
+  "roberta": {
+   "paired_n": 20,
+   "paired_mean_diff": 0.0072,
+   "paired_ci": [
+    -0.2608,
+    0.2735
+   ],
+   "wilcoxon_p": 0.777118,
+   "indep_n": [
+    117,
+    14
+   ],
+   "indep_means": [
+    0.3968,
+    0.199
+   ],
+   "mwu_p": 0.070827,
+   "cliffs_delta": 0.2967
+  },
+  "vader": {
+   "paired_n": 20,
+   "paired_mean_diff": 0.039,
+   "paired_ci": [
+    -0.2007,
+    0.283
+   ],
+   "wilcoxon_p": 0.810697,
+   "indep_n": [
+    117,
+    14
+   ],
+   "indep_means": [
+    0.3619,
+    0.3423
+   ],
+   "mwu_p": 0.791192,
+   "cliffs_delta": 0.044
+  },
+  "lexicon": {
+   "paired_n": 20,
+   "paired_mean_diff": -0.0007,
+   "paired_ci": [
+    -0.1578,
+    0.1638
+   ],
+   "wilcoxon_p": 0.944114,
+   "indep_n": [
+    117,
+    14
+   ],
+   "indep_means": [
+    0.0907,
+    0.25
+   ],
+   "mwu_p": 0.08097,
+   "cliffs_delta": -0.2277
+  },
+  "robust_direction": false
+ },
+ "h2_query_adjusted_english_all": {
+  "roberta": {
+   "n": 394,
+   "diff_raw": 0.3616,
+   "diff_adj": 0.2605,
+   "ci_adj": [
+    0.1468,
+    0.3743
+   ],
+   "p_adj": 1e-05,
+   "share_explained_by_query": 0.2795
+  },
+  "vader": {
+   "n": 394,
+   "diff_raw": 0.1518,
+   "diff_adj": 0.1001,
+   "ci_adj": [
+    -0.0021,
+    0.2023
+   ],
+   "p_adj": 0.05486,
+   "share_explained_by_query": 0.3405
+  },
+  "lexicon": {
+   "n": 394,
+   "diff_raw": 0.1229,
+   "diff_adj": 0.1252,
+   "ci_adj": [
+    0.0503,
+    0.2
+   ],
+   "p_adj": 0.00105,
+   "share_explained_by_query": -0.0187
+  }
+ },
+ "domain_by_query": [
+  {
+   "query": "AI in architecture overreliance",
+   "n": 80,
+   "in_domain": 0.025,
+   "sentiment": 0.123,
+   "sentiment_in_domain": 0.61
+  },
+  {
+   "query": "generative AI architecture cognitive offloading",
+   "n": 38,
+   "in_domain": 0.026,
+   "sentiment": -0.056,
+   "sentiment_in_domain": 0.056
+  },
+  {
+   "query": "GenAI architecture critical thinking",
+   "n": 54,
+   "in_domain": 0.037,
+   "sentiment": 0.079,
+   "sentiment_in_domain": 0.498
+  },
+  {
+   "query": "AI architecture decision making",
+   "n": 36,
+   "in_domain": 0.056,
+   "sentiment": -0.074,
+   "sentiment_in_domain": 0.315
+  },
+  {
+   "query": "future of architects automation",
+   "n": 54,
+   "in_domain": 0.056,
+   "sentiment": 0.412,
+   "sentiment_in_domain": 0.045
+  },
+  {
+   "query": "AI architecture sustainability OR energy modeling",
+   "n": 98,
+   "in_domain": 0.092,
+   "sentiment": 0.264,
+   "sentiment_in_domain": 0.536
+  },
+  {
+   "query": "generative AI architecture homogenization",
+   "n": 78,
+   "in_domain": 0.103,
+   "sentiment": 0.034,
+   "sentiment_in_domain": 0.19
+  },
+  {
+   "query": "generative AI architecture deskilling",
+   "n": 19,
+   "in_domain": 0.105,
+   "sentiment": -0.023,
+   "sentiment_in_domain": 0.517
+  },
+  {
+   "query": "AI architect judgment",
+   "n": 94,
+   "in_domain": 0.117,
+   "sentiment": -0.013,
+   "sentiment_in_domain": 0.016
+  },
+  {
+   "query": "generative AI architecture code compliance",
+   "n": 46,
+   "in_domain": 0.13,
+   "sentiment": 0.146,
+   "sentiment_in_domain": 0.307
+  },
+  {
+   "query": "AI architectural practice replacement",
+   "n": 78,
+   "in_domain": 0.179,
+   "sentiment": 0.07,
+   "sentiment_in_domain": 0.138
+  },
+  {
+   "query": "architecture students generative AI skills",
+   "n": 56,
+   "in_domain": 0.232,
+   "sentiment": 0.442,
+   "sentiment_in_domain": 0.527
+  },
+  {
+   "query": "AI rendering architecture authorship",
+   "n": 19,
+   "in_domain": 0.526,
+   "sentiment": 0.316,
+   "sentiment_in_domain": 0.321
+  },
+  {
+   "query": "generative AI architecture environmental design",
+   "n": 29,
+   "in_domain": 0.586,
+   "sentiment": 0.468,
+   "sentiment_in_domain": 0.462
+  },
+  {
+   "query": "Midjourney architect design thinking",
+   "n": 15,
+   "in_domain": 0.6,
+   "sentiment": 0.212,
+   "sentiment_in_domain": 0.31
+  },
+  {
+   "query": "AI rendering architecture drafting",
+   "n": 83,
+   "in_domain": 0.831,
+   "sentiment": 0.401,
+   "sentiment_in_domain": 0.444
+  },
+  {
+   "query": "Midjourney architecture parametric design",
+   "n": 70,
+   "in_domain": 0.886,
+   "sentiment": 0.549,
+   "sentiment_in_domain": 0.529
+  },
+  {
+   "query": "AI rendering architecture architectural drawing",
+   "n": 31,
+   "in_domain": 0.968,
+   "sentiment": 0.538,
+   "sentiment_in_domain": 0.551
+  }
+ ],
+ "frame_effect_english_all": {
+  "kruskal_h": 186.9779,
+  "p": 0.0,
+  "epsilon_sq": 0.1914,
+  "by_query": [
+   {
+    "query": "AI architecture decision making",
+    "n": 36,
+    "mean": -0.0741,
+    "ci": [
+     -0.2044,
+     0.0659
+    ],
+    "vader_mean": 0.5014
+   },
+   {
+    "query": "generative AI architecture cognitive offloading",
+    "n": 38,
+    "mean": -0.0557,
+    "ci": [
+     -0.1849,
+     0.0753
+    ],
+    "vader_mean": 0.6234
+   },
+   {
+    "query": "generative AI architecture deskilling",
+    "n": 19,
+    "mean": -0.0233,
+    "ci": [
+     -0.1496,
+     0.1209
+    ],
+    "vader_mean": 0.4791
+   },
+   {
+    "query": "AI architect judgment",
+    "n": 94,
+    "mean": -0.0133,
+    "ci": [
+     -0.0963,
+     0.0621
+    ],
+    "vader_mean": 0.5334
+   },
+   {
+    "query": "generative AI architecture homogenization",
+    "n": 78,
+    "mean": 0.0341,
+    "ci": [
+     -0.0611,
+     0.1287
+    ],
+    "vader_mean": 0.4571
+   },
+   {
+    "query": "AI architectural practice replacement",
+    "n": 78,
+    "mean": 0.0698,
+    "ci": [
+     -0.0214,
+     0.1601
+    ],
+    "vader_mean": 0.494
+   },
+   {
+    "query": "GenAI architecture critical thinking",
+    "n": 54,
+    "mean": 0.0794,
+    "ci": [
+     -0.0449,
+     0.2029
+    ],
+    "vader_mean": 0.6617
+   },
+   {
+    "query": "AI in architecture overreliance",
+    "n": 80,
+    "mean": 0.1227,
+    "ci": [
+     0.0372,
+     0.21
+    ],
+    "vader_mean": 0.5229
+   },
+   {
+    "query": "generative AI architecture code compliance",
+    "n": 46,
+    "mean": 0.1463,
+    "ci": [
+     0.0293,
+     0.2646
+    ],
+    "vader_mean": 0.5737
+   },
+   {
+    "query": "Midjourney architect design thinking",
+    "n": 15,
+    "mean": 0.2116,
+    "ci": [
+     0.0158,
+     0.4047
+    ],
+    "vader_mean": 0.5288
+   },
+   {
+    "query": "AI architecture sustainability OR energy modeling",
+    "n": 98,
+    "mean": 0.2641,
+    "ci": [
+     0.1748,
+     0.3512
+    ],
+    "vader_mean": 0.7507
+   },
+   {
+    "query": "AI rendering architecture authorship",
+    "n": 19,
+    "mean": 0.3157,
+    "ci": [
+     0.1403,
+     0.4912
+    ],
+    "vader_mean": 0.6837
+   },
+   {
+    "query": "AI rendering architecture drafting",
+    "n": 83,
+    "mean": 0.4012,
+    "ci": [
+     0.2945,
+     0.5048
+    ],
+    "vader_mean": 0.8161
+   },
+   {
+    "query": "future of architects automation",
+    "n": 54,
+    "mean": 0.412,
+    "ci": [
+     0.2954,
+     0.5235
+    ],
+    "vader_mean": 0.6954
+   },
+   {
+    "query": "architecture students generative AI skills",
+    "n": 56,
+    "mean": 0.4424,
+    "ci": [
+     0.3294,
+     0.5544
+    ],
+    "vader_mean": 0.7628
+   },
+   {
+    "query": "generative AI architecture environmental design",
+    "n": 29,
+    "mean": 0.4677,
+    "ci": [
+     0.3336,
+     0.6046
+    ],
+    "vader_mean": 0.7252
+   },
+   {
+    "query": "AI rendering architecture architectural drawing",
+    "n": 31,
+    "mean": 0.5376,
+    "ci": [
+     0.4126,
+     0.6582
+    ],
+    "vader_mean": 0.7373
+   },
+   {
+    "query": "Midjourney architecture parametric design",
+    "n": 70,
+    "mean": 0.5487,
+    "ci": [
+     0.4627,
+     0.6257
+    ],
+    "vader_mean": 0.7609
+   }
+  ]
+ },
+ "stance_softmax_vs_dmode": {
+  "D0 Not addressed": 240,
+  "D4 Reassurance": 43,
+  "D2 Prospective warning": 2,
+  "D1 Experiential report": 1
+ },
+ "bh_adjusted": {
+  "h2_creativity_vs_judgment": {
+   "p": 0.717218,
+   "p_bh": 0.95949,
+   "reject": false
+  },
+  "h3_technical_vs_representation": {
+   "p": 0.95949,
+   "p_bh": 0.95949,
+   "reject": false
+  },
+  "deskilling_vs_creativity": {
+   "p": 0.001953,
+   "p_bh": 0.005859,
+   "reject": true
+  }
+ },
+ "frame_effect": {
+  "kruskal_h": 0.9774,
+  "p": 0.80670829,
+  "epsilon_sq": 0.0055,
+  "by_query": [
+   {
+    "query": "AI rendering architecture drafting",
+    "n": 69,
+    "mean": 0.4444,
+    "ci": [
+     0.3285,
+     0.5567
+    ],
+    "vader_mean": 0.8038
+   },
+   {
+    "query": "generative AI architecture environmental design",
+    "n": 17,
+    "mean": 0.4623,
+    "ci": [
+     0.2582,
+     0.637
+    ],
+    "vader_mean": 0.6869
+   },
+   {
+    "query": "Midjourney architecture parametric design",
+    "n": 62,
+    "mean": 0.5287,
+    "ci": [
+     0.4441,
+     0.6064
+    ],
+    "vader_mean": 0.795
+   },
+   {
+    "query": "AI rendering architecture architectural drawing",
+    "n": 30,
+    "mean": 0.5514,
+    "ci": [
+     0.4292,
+     0.6768
+    ],
+    "vader_mean": 0.7678
+   }
+  ]
+ },
+ "framework_on_run013": {
+  "stance": {
+   "counts": {
+    "Pragmatic Implementation": 179,
+    "Critical Skepticism": 80,
+    "Solutionist Hype": 24,
+    "Defensive Augmentation": 3
+   },
+   "mean_conf": 0.695,
+   "low_conf_share": 0.2832,
+   "sentiment_by_class": {
+    "Critical Skepticism": {
+     "n": 80,
+     "mean": 0.1367,
+     "ci": [
+      0.0541,
+      0.2187
+     ]
+    },
+    "Defensive Augmentation": {
+     "n": 3,
+     "mean": 0.613,
+     "ci": [
+      0.0742,
+      0.9215
+     ]
+    },
+    "Pragmatic Implementation": {
+     "n": 179,
+     "mean": 0.5177,
+     "ci": [
+      0.4636,
+      0.5731
+     ]
+    },
+    "Solutionist Hype": {
+     "n": 24,
+     "mean": 0.7021,
+     "ci": [
+      0.6108,
+      0.7884
+     ]
+    }
+   }
+  },
+  "dmode": {
+   "counts": {
+    "D0 Not addressed": 207,
+    "D4 Reassurance": 79
+   },
+   "mean_conf": 0.2935,
+   "low_conf_share": 0.7238,
+   "sentiment_by_class": {
+    "D0 Not addressed": {
+     "n": 207,
+     "mean": 0.3874,
+     "ci": [
+      0.3289,
+      0.4416
+     ]
+    },
+    "D4 Reassurance": {
+     "n": 79,
+     "mean": 0.533,
+     "ci": [
+      0.4499,
+      0.6117
+     ]
+    }
+   }
+  },
+  "dmode_x_stance": {
+   "D0 Not addressed": {
+    "Critical Skepticism": 68,
+    "Defensive Augmentation": 2,
+    "Pragmatic Implementation": 120,
+    "Solutionist Hype": 17
+   },
+   "D4 Reassurance": {
+    "Critical Skepticism": 12,
+    "Defensive Augmentation": 1,
+    "Pragmatic Implementation": 59,
+    "Solutionist Hype": 7
+   }
+  },
+  "aspect_prevalence_by_dmode": {
+   "D0 Not addressed": {
+    "RQ1_Deskilling": 0.063,
+    "RQ2a_Creativity": 0.493,
+    "RQ2b_CognitiveJudgment": 0.155,
+    "RQ3a_TechnicalEnvironmental": 0.232,
+    "RQ3b_RepresentationBIM": 0.618
+   },
+   "D4 Reassurance": {
+    "RQ1_Deskilling": 0.038,
+    "RQ2a_Creativity": 0.633,
+    "RQ2b_CognitiveJudgment": 0.063,
+    "RQ3a_TechnicalEnvironmental": 0.316,
+    "RQ3b_RepresentationBIM": 0.785
+   }
+  }
+ },
+ "topics": {
+  "k": 12,
+  "silhouette": {
+   "6": 0.0337,
+   "7": 0.0482,
+   "8": 0.0652,
+   "9": 0.0733,
+   "10": 0.067,
+   "11": 0.0615,
+   "12": 0.0776
+  },
+  "topics": [
+   {
+    "topic": 0,
+    "n": 58,
+    "terms": [
+     "architectural",
+     "tools",
+     "workflows",
+     "rendering",
+     "visualization",
+     "artificial",
+     "replace",
+     "using"
+    ],
+    "sentiment": 0.4318,
+    "sentiment_ci": [
+     0.3249,
+     0.54
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.086,
+     "RQ2a_Creativity": 0.621,
+     "RQ2b_CognitiveJudgment": 0.086,
+     "RQ3a_TechnicalEnvironmental": 0.483,
+     "RQ3b_RepresentationBIM": 0.793
+    },
+    "top_stance": "Pragmatic Implementation",
+    "top_dmode": "D0 Not addressed"
+   },
+   {
+    "topic": 1,
+    "n": 35,
+    "terms": [
+     "architectural",
+     "parametric",
+     "spatial",
+     "digital",
+     "process",
+     "building",
+     "construction",
+     "university"
+    ],
+    "sentiment": 0.4583,
+    "sentiment_ci": [
+     0.3336,
+     0.5832
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.0,
+     "RQ2a_Creativity": 0.486,
+     "RQ2b_CognitiveJudgment": 0.086,
+     "RQ3a_TechnicalEnvironmental": 0.343,
+     "RQ3b_RepresentationBIM": 0.743
+    },
+    "top_stance": "Pragmatic Implementation",
+    "top_dmode": "D0 Not addressed"
+   },
+   {
+    "topic": 5,
+    "n": 33,
+    "terms": [
+     "students",
+     "education",
+     "skills",
+     "question",
+     "teaching",
+     "learning",
+     "architectural",
+     "actually"
+    ],
+    "sentiment": 0.2386,
+    "sentiment_ci": [
+     0.0807,
+     0.392
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.121,
+     "RQ2a_Creativity": 0.515,
+     "RQ2b_CognitiveJudgment": 0.515,
+     "RQ3a_TechnicalEnvironmental": 0.273,
+     "RQ3b_RepresentationBIM": 0.364
+    },
+    "top_stance": "Critical Skepticism",
+    "top_dmode": "D0 Not addressed"
+   },
+   {
+    "topic": 11,
+    "n": 33,
+    "terms": [
+     "cities",
+     "future",
+     "heritage",
+     "cultural",
+     "seats",
+     "intelligence",
+     "urban",
+     "futuristic"
+    ],
+    "sentiment": 0.4134,
+    "sentiment_ci": [
+     0.2655,
+     0.5566
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.03,
+     "RQ2a_Creativity": 0.667,
+     "RQ2b_CognitiveJudgment": 0.121,
+     "RQ3a_TechnicalEnvironmental": 0.03,
+     "RQ3b_RepresentationBIM": 0.273
+    },
+    "top_stance": "Critical Skepticism",
+    "top_dmode": "D0 Not addressed"
+   },
+   {
+    "topic": 6,
+    "n": 31,
+    "terms": [
+     "rendering",
+     "drawing",
+     "architectural",
+     "tools",
+     "render",
+     "visualization",
+     "solution",
+     "minutes"
+    ],
+    "sentiment": 0.3856,
+    "sentiment_ci": [
+     0.2414,
+     0.5246
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.065,
+     "RQ2a_Creativity": 0.452,
+     "RQ2b_CognitiveJudgment": 0.065,
+     "RQ3a_TechnicalEnvironmental": 0.194,
+     "RQ3b_RepresentationBIM": 0.903
+    },
+    "top_stance": "Pragmatic Implementation",
+    "top_dmode": "D0 Not addressed"
+   },
+   {
+    "topic": 7,
+    "n": 28,
+    "terms": [
+     "architectural",
+     "visualization",
+     "realistic",
+     "elevation",
+     "lighting",
+     "rendering",
+     "project",
+     "villa"
+    ],
+    "sentiment": 0.7032,
+    "sentiment_ci": [
+     0.6177,
+     0.783
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.0,
+     "RQ2a_Creativity": 0.607,
+     "RQ2b_CognitiveJudgment": 0.0,
+     "RQ3a_TechnicalEnvironmental": 0.071,
+     "RQ3b_RepresentationBIM": 1.0
+    },
+    "top_stance": "Pragmatic Implementation",
+    "top_dmode": "D4 Reassurance"
+   },
+   {
+    "topic": 2,
+    "n": 18,
+    "terms": [
+     "organic",
+     "urban",
+     "nature",
+     "luxury",
+     "natural",
+     "water",
+     "soft",
+     "fluid"
+    ],
+    "sentiment": 0.4842,
+    "sentiment_ci": [
+     0.3764,
+     0.5882
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.0,
+     "RQ2a_Creativity": 0.722,
+     "RQ2b_CognitiveJudgment": 0.0,
+     "RQ3a_TechnicalEnvironmental": 0.389,
+     "RQ3b_RepresentationBIM": 0.5
+    },
+    "top_stance": "Critical Skepticism",
+    "top_dmode": "D4 Reassurance"
+   },
+   {
+    "topic": 3,
+    "n": 15,
+    "terms": [
+     "architectural",
+     "experience",
+     "years",
+     "coordination",
+     "portfolio",
+     "drawings",
+     "project",
+     "work"
+    ],
+    "sentiment": 0.4097,
+    "sentiment_ci": [
+     0.1548,
+     0.6291
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.0,
+     "RQ2a_Creativity": 0.333,
+     "RQ2b_CognitiveJudgment": 0.2,
+     "RQ3a_TechnicalEnvironmental": 0.133,
+     "RQ3b_RepresentationBIM": 0.667
+    },
+    "top_stance": "Pragmatic Implementation",
+    "top_dmode": "D0 Not addressed"
+   },
+   {
+    "topic": 9,
+    "n": 14,
+    "terms": [
+     "market",
+     "tools",
+     "firms",
+     "model",
+     "use",
+     "hours",
+     "project",
+     "client"
+    ],
+    "sentiment": 0.0839,
+    "sentiment_ci": [
+     -0.1184,
+     0.2914
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.286,
+     "RQ2a_Creativity": 0.5,
+     "RQ2b_CognitiveJudgment": 0.214,
+     "RQ3a_TechnicalEnvironmental": 0.214,
+     "RQ3b_RepresentationBIM": 0.714
+    },
+    "top_stance": "Pragmatic Implementation",
+    "top_dmode": "D0 Not addressed"
+   },
+   {
+    "topic": 10,
+    "n": 9,
+    "terms": [
+     "operational",
+     "digital",
+     "performance",
+     "integrated",
+     "manufacturing",
+     "optimization",
+     "retail",
+     "ecosystem"
+    ],
+    "sentiment": 0.3615,
+    "sentiment_ci": [
+     0.1273,
+     0.6073
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.0,
+     "RQ2a_Creativity": 0.333,
+     "RQ2b_CognitiveJudgment": 0.0,
+     "RQ3a_TechnicalEnvironmental": 0.222,
+     "RQ3b_RepresentationBIM": 0.444
+    },
+    "top_stance": "Pragmatic Implementation",
+    "top_dmode": "D0 Not addressed"
+   },
+   {
+    "topic": 4,
+    "n": 7,
+    "terms": [
+     "dynamo",
+     "bim",
+     "revit",
+     "link",
+     "free",
+     "mep",
+     "architecture structure",
+     "class"
+    ],
+    "sentiment": 0.6995,
+    "sentiment_ci": [
+     0.4987,
+     0.8319
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.0,
+     "RQ2a_Creativity": 0.143,
+     "RQ2b_CognitiveJudgment": 0.0,
+     "RQ3a_TechnicalEnvironmental": 0.143,
+     "RQ3b_RepresentationBIM": 0.857
+    },
+    "top_stance": "Pragmatic Implementation",
+    "top_dmode": "D0 Not addressed"
+   },
+   {
+    "topic": 8,
+    "n": 5,
+    "terms": [
+     "newsletter",
+     "stories",
+     "week",
+     "technologies",
+     "updates",
+     "november",
+     "tools",
+     "latest"
+    ],
+    "sentiment": 0.7741,
+    "sentiment_ci": [
+     0.6878,
+     0.88
+    ],
+    "aspects": {
+     "RQ1_Deskilling": 0.0,
+     "RQ2a_Creativity": 0.0,
+     "RQ2b_CognitiveJudgment": 0.0,
+     "RQ3a_TechnicalEnvironmental": 0.0,
+     "RQ3b_RepresentationBIM": 0.4
+    },
+    "top_stance": "Pragmatic Implementation",
+    "top_dmode": "D0 Not addressed"
+   }
+  ]
+ },
+ "engagement": {
+  "n": 286,
+  "alpha": 1.4639,
+  "pseudo_r2": 0.0479,
+  "terms": [
+   {
+    "term": "stance: Critical Skepticism",
+    "irr": 0.812,
+    "ci": [
+     0.483,
+     1.366
+    ],
+    "p": 0.4332
+   },
+   {
+    "term": "stance: Defensive Augmentation",
+    "irr": 0.553,
+    "ci": [
+     0.269,
+     1.138
+    ],
+    "p": 0.1079
+   },
+   {
+    "term": "stance: Solutionist Hype",
+    "irr": 1.737,
+    "ci": [
+     0.868,
+     3.48
+    ],
+    "p": 0.119
+   },
+   {
+    "term": "roberta_post",
+    "irr": 1.274,
+    "ci": [
+     0.734,
+     2.211
+    ],
+    "p": 0.3892
+   },
+   {
+    "term": "asp_RQ1_Deskilling",
+    "irr": 0.325,
+    "ci": [
+     0.188,
+     0.563
+    ],
+    "p": 0.0001
+   },
+   {
+    "term": "asp_RQ2a_Creativity",
+    "irr": 0.922,
+    "ci": [
+     0.667,
+     1.273
+    ],
+    "p": 0.6204
+   },
+   {
+    "term": "asp_RQ2b_CognitiveJudgment",
+    "irr": 1.322,
+    "ci": [
+     0.727,
+     2.403
+    ],
+    "p": 0.3597
+   },
+   {
+    "term": "asp_RQ3a_TechnicalEnvironmental",
+    "irr": 0.788,
+    "ci": [
+     0.549,
+     1.132
+    ],
+    "p": 0.1974
+   },
+   {
+    "term": "asp_RQ3b_RepresentationBIM",
+    "irr": 0.612,
+    "ci": [
+     0.402,
+     0.931
+    ],
+    "p": 0.0219
+   },
+   {
+    "term": "log_len",
+    "irr": 1.525,
+    "ci": [
+     1.199,
+     1.94
+    ],
+    "p": 0.0006
+   },
+   {
+    "term": "video",
+    "irr": 5.84,
+    "ci": [
+     2.777,
+     12.283
+    ],
+    "p": 0.0
+   }
+  ],
+  "note": "Negative binomial; author-clustered SE; comments/reposts not usable in Run 013 (all zero)."
+ },
+ "validation_sample_n": 60
+}

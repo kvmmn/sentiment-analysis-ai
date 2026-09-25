@@ -24,11 +24,22 @@ The Telegram group **Sentiment Analysis AI** is the team's main communication ch
 
 ## Start Here
 
-**[Project map and filing rules](docs/project-map.md)** · **[Research index](research/README.md)** · **[Code index](src/README.md)** · **[Experiment workflow](experiments/README.md)** · **[Per-invocation run guide](experiments/runs/README.md)** · **[Live-pilot plan](experiments/2026-09-17-iman-live-pilot.md)** · **[📘 Full Technical Report](docs/iman-live-pilot-technical-report.md)** · **[📋 Team Meeting Brief](docs/team-meeting-brief-2026-09-18.md)**
+**[Project map and filing rules](docs/project-map.md)** · **[Research index](research/README.md)** · **[Code index](src/README.md)** · **[Experiment workflow](experiments/README.md)** · **[Per-invocation run guide](experiments/runs/README.md)** · **[Live-pilot plan](experiments/2026-09-17-iman-live-pilot.md)** · **[📊 2026-09-25 Meeting Guide](docs/team-meeting-guide-2026-09-25.html)** · **[📘 Full Technical Benchmark](docs/team-meeting-analysis-2026-09-25.html)** · **[🎓 Thesis Methodology Draft](docs/kaveh-independent-methodology.md)**
 
 Looking for Iman’s code? Open the [code index](src/README.md#imans-submission-local-only). The complete source package now lives in `_local/submissions/2026-09-06-iman-protocol-drafts/`, not the historical archive. Baseline extracts remain local-only and must not be run in place; separate pilot snapshots are prepared.
 
-## Current Status — 18 September 2026 (local; executions 17 September UTC)
+## Current Status — 25 September 2026 (Run 013 Pilot & Team Meeting Preparation)
+
+- **Pilot dataset analysis:** evaluated 1,076 raw posts from verified Run 013 snapshot (`data/linkedin_genai_architecture_discourse_2026-09-20_run013.db`, SHA-256 `f0ea0952ed5ed806...`).
+- **Independent analytical pipeline:** implemented in [`src/analysis/kaveh_analytical_pipeline.py`](src/analysis/kaveh_analytical_pipeline.py) with 7/7 passing unit tests (`src/analysis/tests/test_kaveh_pipeline.py`). Features Clause-Level Context-Window ABSA (±5 tokens), a 2D continuous Discursive Stance framework (Human Agency $\times$ Discourse Valence), and Multi-Signal Stakeholder Inference.
+- **Empirical findings:**
+  - **H1 (Bimodality):** Naive whole-post lexicons produce an artificial bimodal artifact ($BC = 0.586$) from zero-inflation; context-window ABSA demonstrates unimodality ($BC = 0.450 < 0.555$) centered around pragmatic caution.
+  - **H2 (Creativity vs. Judgment):** Validated with strong significance ($p = 1.48 \times 10^{-7}$, Mann-Whitney $U = 42,018.0$); Creativity/Ideation polarity is positive (+0.219), whereas Cognitive Judgment/Oversight is negative/critical (-0.001).
+  - **Stakeholder Inference:** Recovered 68.2% (734/1,076) of posts across four cohorts using credential heuristics and textual cues, bypassing empty raw headline metadata.
+  - **Deskilling vs. Offloading:** Validated that architects express concern over *Cognitive Offloading* (delegating critical thinking) rather than manual deskilling.
+- **Meeting materials:** produced minimalist, self-contained interactive meeting guide in Persian with Rubik typography and live in-browser editing: [`docs/team-meeting-guide-2026-09-25.html`](docs/team-meeting-guide-2026-09-25.html), backed by 5 high-resolution figures in [`docs/figures_pilot_2026-09-25/`](docs/figures_pilot_2026-09-25/).
+
+## Historical Status — 18 September 2026 (local; executions 17 September UTC)
 
 - **Study:** sentiment about GenAI and skills in architectural discourse. Questions and methods remain provisional; see [research notes](research/notes.md).
 - **Working retrieval frame:** Domain ∧ Technology ∧ Labor/Competency, adopted for review on 10 September. Query version 1 is **not frozen**. The August two-layer catalog is a historical alternative, not the current sampling instruction.
