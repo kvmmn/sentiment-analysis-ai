@@ -23,7 +23,7 @@ The two-layer architecture + GenAI, then skill-filter sampling proposal is histo
 | [Keyword lexicon](keywords/keyword-lexicon.md)                     | Preserved categorized terms and coding vocabulary; not a validated thesaurus                   |
 | [Search scope and storage](keywords/keywords-search-storage.md)    | Historical sampling sketches and proposed handling requirements                                |
 | [Source identification](keywords/keyword-source-identification.md) | Dated comparison of teammate claims and published analogues, including unresolved evidence     |
-| [HTML catalog](../docs/index.html)                                 | Presentation of the historical August catalog, with current status notice                      |
+| [HTML catalog](../docs/archive/2026-09-25-historical-keyword-catalog.html) | Presentation of the historical August catalog, with current status notice (archived 2026-09-25; `docs/index.html` now redirects to the 2026-09-25 team meeting guide) |
 
 ## Access and privacy
 
