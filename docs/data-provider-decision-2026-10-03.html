@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saintiment Data Sourcing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Estedad:wght@300;400;600;800&display=swap">
+<style>
+/* Layout: one narrow RTL column — key numbers, decision helper, table, cost, pros/cons. Single light theme by request. */
+:root{
+  --bg:#ffffff; --fg:#1d2329; --muted:#76808a; --line:#eceff2; --soft:#f6f8fa;
+  --accent:#2563eb; --accent-soft:#eaf1ff; --good:#16a34a; --bad:#dc2626;
+  --font:"Estedad",Tahoma,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{direction:rtl}
+body{background:var(--bg);color:var(--fg);font:400 15px/1.9 var(--font);padding-inline:16px;padding-block:40px 64px;margin:0}
+.wrap{max-width:860px;margin:0 auto;display:grid;gap:52px}
+h1,h2{margin:0;font-weight:800;text-wrap:balance;line-height:1.5}
+h1{font-size:clamp(24px,4vw,32px)}
+h2{font-size:18px}
+p{margin:0;max-width:70ch}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{display:grid;gap:16px}
+
+/* key numbers */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.kpi{background:var(--bg);padding:18px;display:grid;gap:2px}
+.kpi b{font-size:28px;font-weight:800;line-height:1.4}
+.kpi span{font-size:13px;color:var(--muted)}
+.kpi.rec b{color:var(--accent)}
+
+/* table */
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:700px;font-size:14px}
+th,td{padding:11px 10px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}
+thead th{font-weight:600;color:var(--muted);font-size:12.5px}
+tbody th{font-weight:600;white-space:nowrap}
+tbody th small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+tr.rec{background:var(--accent-soft)}
+.y{color:var(--good);font-weight:600}
+.n{color:var(--bad);font-weight:600}
+.p{color:var(--muted)}
+
+/* calculator */
+.calc{display:grid;gap:18px}
+.ctl{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.ctl output{font-size:26px;font-weight:800}
+input[type=range]{width:100%;accent-color:var(--accent);direction:ltr}
+.bars{display:grid;gap:12px}
+.bar{display:grid;grid-template-columns:150px 1fr 130px;gap:12px;align-items:center;font-size:14px}
+.track{height:10px;background:var(--soft);border-radius:5px;overflow:hidden}
+.fill{height:100%;background:var(--muted);border-radius:5px;transition:width .2s}
+.bar.rec .fill{background:var(--accent)}
+.fill.na{background:repeating-linear-gradient(-45deg,var(--line) 0 5px,transparent 5px 10px);width:100%!important}
+.val{font-weight:600;text-align:left}
+.val small{display:block;font-weight:400;font-size:11.5px;color:var(--muted)}
+
+/* decision helper */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;align-items:start}
+.crit{display:grid;gap:10px}
+.c-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;font-size:14px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.c-row small{display:block;color:var(--muted);font-size:12px;line-height:1.7}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-size:12.5px;border:0;background:var(--bg);color:var(--muted);padding:5px 11px;cursor:pointer;border-left:1px solid var(--line)}
+.seg button:last-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.rank{display:grid;gap:10px}
+.r-row{display:grid;grid-template-columns:24px 150px 1fr 56px;gap:12px;align-items:center;font-size:14px}
+.r-row .pos{font-weight:800;color:var(--muted)}
+.r-row .fill{background:var(--muted)}
+.r-row.top{font-weight:600}
+.r-row.top .pos,.r-row.top .sc{color:var(--accent)}
+.r-row.top .fill{background:var(--accent)}
+.r-row.out{color:var(--muted)}
+.r-row.out .fill{background:var(--line)}
+.r-row .sc{font-weight:800;text-align:left}
+.verdict{background:var(--accent-soft);border-radius:10px;padding:14px 16px;font-size:14.5px}
+.verdict b{color:var(--accent)}
+
+/* scenarios */
+.scen{margin:0;padding:0;list-style:none;display:grid;border-top:1px solid var(--line)}
+.scen li{display:grid;grid-template-columns:1fr auto;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.scen li b{font-weight:600;color:var(--accent)}
+
+/* pros/cons */
+.svc{display:grid;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:170px 1fr 1fr;gap:20px;padding:16px 0;border-bottom:1px solid var(--line)}
+.row h3{margin:0;font-size:15px;font-weight:800}
+.row h3 small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.row ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:14px}
+.row li{display:grid;grid-template-columns:14px 1fr;gap:4px}
+.row li::before{font-weight:800}
+.pros li::before{content:"+";color:var(--good)}
+.cons li::before{content:"−";color:var(--bad)}
+
+.bottom{border-right:3px solid var(--accent);padding:4px 16px 4px 0;display:grid;gap:8px}
+.bottom b{font-size:16px}
+.src{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+
+@media (max-width:640px){
+  .bar{grid-template-columns:1fr 120px}.bar .track{grid-column:1/-1;grid-row:2}
+  .r-row{grid-template-columns:20px 1fr 48px}.r-row .track{grid-column:2/-1;grid-row:2}
+  .scen li{grid-template-columns:1fr;gap:2px}
+  .row{grid-template-columns:1fr;gap:8px}
+}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header style="display:grid;gap:10px">
+  <h1>مقایسه‌ی سرویس‌های تأمین داده‌ی لینکدین</h1>
+  <p class="muted">این صفحه برای انتخاب منبع داده‌ی پروژه‌ی Saintiment تهیه شده است. هدف، گردآوری ۱٬۰۰۰ تا ۱۰٬۰۰۰ پست لینکدین همراه با نام نویسنده، بر پایه‌ی ۲۱ کوئری بولین پروژه است. قیمت‌ها مربوط به مهر ۱۴۰۵ (اکتبر ۲۰۲۶) هستند.</p>
+</header>
+
+<section>
+  <h2>اعداد کلیدی</h2>
+  <div class="kpis">
+    <div class="kpi rec"><b>۱۹۹ دلار</b><span>هزینه‌ی تقریبی ۱۰ هزار پست در Coresignal (اشتراک یک‌ماهه)</span></div>
+    <div class="kpi"><b>۱۰ تا ۱۵ دلار</b><span>هزینه‌ی تقریبی ۱۰ هزار پست در Apify</span></div>
+    <div class="kpi"><b>۲٬۰۰۰ پست</b><span>رایگان، در دوره‌ی آزمایشی Coresignal</span></div>
+    <div class="kpi"><b>حدود ۵۰۰</b><span>سقف تعداد پست به ازای هر کوئری در Apify</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>ابزار کمک به تصمیم‌گیری</h2>
+  <p class="small muted">لطفاً میزان اهمیت هر معیار را برای پروژه مشخص کنید تا رتبه‌بندی سرویس‌ها متناسب با آن به‌روز شود. امتیاز هر سرویس در هر معیار، از ۰ تا ۵، بر اساس جدول مقایسه‌ی پایین صفحه تعیین شده است.</p>
+  <div class="grid2">
+    <div class="crit" id="crit"></div>
+    <div style="display:grid;gap:16px">
+      <div class="rank" id="rank"></div>
+      <div class="verdict" id="verdict"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>پیشنهاد بر اساس اولویت</h2>
+  <ul class="scen">
+    <li><span>هنوز بودجه‌ای در نظر گرفته نشده و فعلاً یک نمونه‌ی آزمایشی (۱٬۰۰۰ تا ۲٬۰۰۰ پست) کافی است.</span><b>نسخه‌ی آزمایشی Coresignal و Apify، هر دو رایگان</b></li>
+    <li><span>کمترین هزینه برای گردآوری ۱۰ هزار پست اهمیت دارد.</span><b>Apify، حدود ۱۰ تا ۱۵ دلار</b></li>
+    <li><span>قابل‌دفاع بودن روش در کمیته‌ی اخلاق، مهم‌ترین معیار است.</span><b>برنامه‌ی pro bono در Coresignal یا Bright Initiative</b></li>
+    <li><span>برای تحلیل روند، به پست‌های چند سال گذشته نیاز داریم.</span><b>Coresignal</b></li>
+    <li><span>کامنت‌های زیر پست‌ها نیز موردنیاز است.</span><b>Coresignal، که کامنت‌ها را همراه داده ارائه می‌دهد</b></li>
+  </ul>
+</section>
+
+<section>
+  <h2>جدول مقایسه</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr>
+        <th>سرویس</th><th>هزینه‌ی هر ۱٬۰۰۰ پست</th><th>هزینه‌ی ۱۰٬۰۰۰ پست</th><th>کوئری بولین</th><th>تاریخ دقیق و عنوان شغلی</th><th>پوشش زمانی</th><th>امکان رایگان پژوهشی</th>
+      </tr></thead>
+      <tbody>
+        <tr class="rec"><th>Coresignal<small>Posts API · گزینه‌ی پیشنهادی</small></th><td>۱۷ تا ۲۰ دلار</td><td>۱۹۹ دلار</td><td class="y">دارد</td><td class="y">دارد</td><td>بیش از ۸ سال</td><td class="y">pro bono و دوره‌ی آزمایشی</td></tr>
+        <tr><th>Apify Harvest<small>جست‌وجوی مستقیم در لینکدین</small></th><td>۱٫۵ تا ۲ دلار</td><td>۱۰ تا ۱۵ دلار</td><td class="y">دارد</td><td class="y">دارد</td><td class="p">محدود</td><td class="p">۵ دلار اعتبار ماهانه</td></tr>
+        <tr><th>Bright Data<small>دیتاست آماده</small></th><td>۲٫۵ دلار</td><td>۲۵۰ دلار (حداقل سفارش)</td><td class="p">فیلتر بر اساس فیلد</td><td class="y">دارد</td><td class="p">وابسته به آرشیو</td><td class="y">Bright Initiative</td></tr>
+        <tr><th>Bright Data<small>Scraper API</small></th><td>۱٫۵ دلار</td><td>۷٫۵ دلار</td><td class="n">ندارد</td><td class="y">دارد</td><td class="y">کامل</td><td class="y">۵ هزار رکورد در ماه</td></tr>
+        <tr><th>ScrapeCreators<small>جست‌وجو از طریق ایندکس گوگل</small></th><td class="p">اعلام نشده</td><td class="p">اعلام نشده</td><td class="p">ساده</td><td class="p">تأیید نشده</td><td class="p">محدود</td><td class="p">۱۰۰ اعتبار</td></tr>
+        <tr><th>API رسمی لینکدین</th><td colspan="6" class="n">امکان جست‌وجوی پست‌های عمومی با کلیدواژه را ندارد.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>برآورد هزینه</h2>
+  <div class="calc">
+    <div class="ctl"><label for="n">تعداد پست موردنیاز</label><output id="nOut" for="n">۵٬۰۰۰</output></div>
+    <input type="range" id="n" min="1000" max="10000" step="500" value="5000">
+    <div class="bars" id="bars"></div>
+    <p class="small muted" id="q"></p>
+  </div>
+</section>
+
+<section>
+  <h2>نقاط قوت و ضعف</h2>
+  <div class="svc">
+    <div class="row"><h3>Coresignal<small>گزینه‌ی پیشنهادی</small></h3>
+      <ul class="pros"><li>کوئری‌های بولین پروژه را مستقیماً از طریق Elasticsearch اجرا می‌کند.</li><li>تاریخ انتشار، عنوان شغلی نویسنده، لینک پست و کامنت‌ها را ارائه می‌دهد.</li><li>بیش از ۹۰۰ میلیون رکورد با پوشش زمانی بیش از ۸ سال دارد.</li><li>برنامه‌ی حمایت رایگان (pro bono) برای پژوهشگران دارد.</li></ul>
+      <ul class="cons"><li>دوره‌ی آزمایشی ۷ روزه است و برای هر دامنه‌ی ایمیل تنها یک بار ارائه می‌شود.</li><li>تعداد بازنشر (repost) را ثبت نمی‌کند.</li></ul></div>
+    <div class="row"><h3>Apify Harvest<small>مناسب برای مقایسه</small></h3>
+      <ul class="pros"><li>کم‌هزینه‌ترین گزینه برای جست‌وجو با کلیدواژه است.</li><li>از همان دستور جست‌وجوی لینکدین استفاده می‌کند و به ورود به حساب کاربری نیازی ندارد.</li><li>بیش از ۳۱ هزار کاربر و امتیاز ۴٫۹۵ از ۵ دارد.</li></ul>
+      <ul class="cons"><li>برای هر کوئری حداکثر حدود ۵۰۰ پست برمی‌گرداند؛ با ۲۱ کوئری، سقف کل حدود ۱۰ هزار پست است.</li><li>توسعه‌دهنده‌ی آن مستقل است و مستندات حقوقی ارائه نمی‌کند.</li></ul></div>
+    <div class="row"><h3>Bright Data<small>تنها در صورت دسترسی رایگان</small></h3>
+      <ul class="pros"><li>کامل‌ترین مستندات حقوقی و امنیتی را دارد (ISO 27001 و SOC 2).</li><li>بیش از ۱۳۰ میلیون پست با ۳۷ فیلد اطلاعاتی در اختیار دارد.</li><li>با بیش از ۹۰ دانشگاه همکاری رایگان دارد.</li></ul>
+      <ul class="cons"><li>حداقل سفارش ۱۰۰ هزار رکورد است؛ یعنی ده برابر نیاز پروژه.</li><li>Scraper API آن امکان جست‌وجو با کلیدواژه ندارد.</li></ul></div>
+    <div class="row"><h3>ScrapeCreators<small>مناسب این پروژه نیست</small></h3>
+      <ul class="pros"><li>برای بررسی‌های موردی و سریع کاربرد دارد.</li></ul>
+      <ul class="cons"><li>تنها پست‌هایی را پیدا می‌کند که گوگل ایندکس کرده است.</li><li>برای هر کوئری حداکثر ۱۱ صفحه نتیجه می‌دهد و قیمت آن نیز اعلام نشده است.</li></ul></div>
+  </div>
+  <p class="small muted">گزینه‌های کنارگذاشته‌شده: Proxycurl، که پس از شکایت لینکدین در ژوئیه‌ی ۲۰۲۵ فعالیتش را متوقف کرد؛ و ابزارهایی مانند Unipile و PhantomBuster، که از حساب کاربری شخصی لینکدین استفاده می‌کنند و ممکن است به مسدود شدن آن حساب منجر شوند.</p>
+</section>
+
+<section>
+  <h2>شبکه‌ی X (فاز دوم)</h2>
+  <div class="kpis">
+    <div class="kpi"><b>۱٫۵ دلار</b><span>هزینه‌ی ۱۰ هزار توییت در twitterapi.io، با دسترسی به آرشیو کامل</span></div>
+    <div class="kpi"><b>۵۰ دلار</b><span>هزینه‌ی ۱۰ هزار توییت در API رسمی X، محدود به ۷ روز اخیر</span></div>
+  </div>
+</section>
+
+<div class="bottom">
+  <b>جمع‌بندی: پیشنهاد می‌شود ابتدا نمونه‌ی رایگان Coresignal و Apify بررسی شود و سپس اشتراک یک‌ماهه‌ی Coresignal تهیه شود.</b>
+  <p class="small muted">توجه: داده‌ی همه‌ی این سرویس‌ها در اصل از طریق استخراج خودکار (scraping) گردآوری شده است و شرایط استفاده‌ی لینکدین چنین کاری را مجاز نمی‌داند. از این رو، پیش از هرگونه خرید، دریافت تأیید کمیته‌ی اخلاق دانشگاه Arden ضروری است.</p>
+</div>
+
+<div class="src">
+  <span>منابع:</span>
+  <a href="https://docs.coresignal.com/pricing">Coresignal pricing</a>
+  <a href="https://docs.coresignal.com/employee-api/employee-posts-api/data-dictionary-employee-posts-api">Coresignal fields</a>
+  <a href="https://coresignal.com/employee-posts-data/">Coresignal dataset</a>
+  <a href="https://apify.com/harvestapi/linkedin-post-search">Apify Harvest</a>
+  <a href="https://brightdata.com/products/datasets/linkedin/posts">Bright Data dataset</a>
+  <a href="https://brightdata.com/products/web-scraper/linkedin/post">Bright Data API</a>
+  <a href="https://brightinitiative.com/academy">Bright Initiative</a>
+  <a href="https://scrapecreators.com/linkedin/endpoints/search-posts">ScrapeCreators</a>
+  <a href="https://nubela.co/blog/goodbye-proxycurl/">Proxycurl</a>
+  <a href="https://www.outstand.so/blog/x-api-pricing">X API</a>
+  <a href="https://twitterapi.io/blog/twitter-academic-research-api-guide">twitterapi.io</a>
+</div>
+
+</div>
+
+<script>
+(function(){
+  var fa=function(x){return Number(x).toLocaleString("fa-IR",{maximumFractionDigits:1})};
+  var usd=function(x){return x===0?"رایگان":fa(x<10?Math.round(x*10)/10:Math.round(x))+" دلار"};
+
+  /* cost estimate */
+  var Q=21,CAP=500;
+  var P=[
+    {name:"Coresignal",rec:1,f:function(n){if(n<=2000)return{c:0,t:"دوره‌ی آزمایشی"};if(n<=2500)return{c:49,t:"اشتراک Mini"};return{c:199,t:"اشتراک Starter"}}},
+    {name:"Apify Harvest",f:function(n){var lo=Math.max(0,n*.0015-5),hi=Math.max(0,n*.002-5);return{c:hi,lo:lo,t:"پس از کسر ۵ دلار اعتبار رایگان"}}},
+    {name:"Bright Data (دیتاست)",f:function(){return{c:250,t:"حداقل سفارش"}}},
+    {name:"Bright Data (API)",f:function(){return{na:1,t:"جست‌وجو با کلیدواژه ندارد"}}}
+  ];
+  var el=document.getElementById("n"),out=document.getElementById("nOut"),bars=document.getElementById("bars"),q=document.getElementById("q");
+  function render(){
+    var n=+el.value;out.textContent=fa(n);
+    bars.innerHTML="";
+    P.forEach(function(p){
+      var r=p.f(n),w=r.na?100:Math.max(1,r.c/250*100);
+      var v=r.na?"—":(r.lo!==undefined&&Math.round(r.lo)!==Math.round(r.c)?fa(Math.round(r.lo))+" تا "+usd(r.c):usd(r.c));
+      var d=document.createElement("div");d.className="bar"+(p.rec?" rec":"");
+      d.innerHTML='<span>'+p.name+'</span><div class="track"><div class="fill'+(r.na?" na":"")+'" style="width:'+w+'%"></div></div><span class="val">'+v+'<small>'+r.t+'</small></span>';
+      bars.appendChild(d);
+    });
+    var per=Math.ceil(n/Q);
+    q.textContent="برای این تعداد، هر کوئری باید به‌طور میانگین حدود "+fa(per)+" پست برگرداند؛ "+(per>CAP?"این رقم از سقف حدوداً ۵۰۰ پستی Apify بیشتر است.":"این رقم در محدوده‌ی سقف حدوداً ۵۰۰ پستی Apify قرار دارد.");
+  }
+  el.addEventListener("input",render);render();
+
+  /* weighted scoring */
+  var C=[
+    {k:"cost",t:"هزینه",s:"برای گردآوری ۱ تا ۱۰ هزار پست",w:2},
+    {k:"fields",t:"کامل بودن داده‌ها",s:"تاریخ دقیق، عنوان شغلی نویسنده، لینک پست و آمار تعامل",w:3},
+    {k:"bool",t:"پشتیبانی از کوئری‌های بولین",s:"شرط لازم؛ سرویسی که آن را نداشته باشد کنار گذاشته می‌شود",w:3,must:1},
+    {k:"vol",t:"امکان رسیدن به ۱۰ هزار پست",s:"بدون محدودیت تعداد نتایج برای هر کوئری",w:2},
+    {k:"hist",t:"پوشش زمانی",s:"دسترسی به پست‌های سال‌های گذشته",w:1},
+    {k:"legal",t:"مستندات حقوقی",s:"انطباق با GDPR و قابلیت ارائه به کمیته‌ی اخلاق",w:2},
+    {k:"free",t:"امکان استفاده‌ی رایگان پژوهشی",s:"دوره‌ی آزمایشی یا برنامه‌ی حمایت از پژوهشگران",w:1}
+  ];
+  var S=[
+    {n:"Coresignal",cost:3,fields:4,bool:5,vol:5,hist:5,legal:4,free:4},
+    {n:"Apify Harvest",cost:5,fields:5,bool:5,vol:3,hist:2,legal:1,free:3},
+    {n:"Bright Data (دیتاست)",cost:2,fields:5,bool:2,vol:5,hist:3,legal:5,free:4},
+    {n:"Bright Data (API)",cost:5,fields:5,bool:0,vol:4,hist:4,legal:5,free:4},
+    {n:"ScrapeCreators",cost:3,fields:2,bool:2,vol:1,hist:2,legal:1,free:2}
+  ];
+  var L=["بی‌اهمیت","کم","متوسط","زیاد"];
+  var crit=document.getElementById("crit"),rank=document.getElementById("rank"),ver=document.getElementById("verdict");
+  C.forEach(function(c){
+    var r=document.createElement("div");r.className="c-row";
+    var h='<div>'+c.t+'<small>'+c.s+'</small></div><div class="seg" role="group" aria-label="'+c.t+'">';
+    L.forEach(function(l,i){h+='<button type="button" id="w-'+c.k+'-'+i+'" data-k="'+c.k+'" data-w="'+i+'" aria-pressed="'+(i===c.w)+'">'+l+'</button>'});
+    r.innerHTML=h+'</div>';crit.appendChild(r);
+  });
+  crit.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b)return;
+    C.filter(function(x){return x.k===b.dataset.k})[0].w=+b.dataset.w;
+    b.parentNode.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});
+    score();
+  });
+  function score(){
+    var max=C.reduce(function(a,c){return a+5*c.w},0)||1;
+    var res=S.map(function(s){
+      var v=C.reduce(function(a,c){return a+s[c.k]*c.w},0);
+      var out=C.some(function(c){return c.must&&c.w>0&&s[c.k]===0});
+      return{n:s.n,p:Math.round(v/max*100),out:out};
+    }).sort(function(a,b){return (a.out-b.out)||(b.p-a.p)});
+    rank.innerHTML="";
+    res.forEach(function(r,i){
+      var d=document.createElement("div");d.className="r-row"+(i===0&&!r.out?" top":"")+(r.out?" out":"");
+      d.innerHTML='<span class="pos">'+fa(i+1)+'</span><span>'+r.n+(r.out?' <small>(فاقد کوئری بولین)</small>':'')+'</span><div class="track"><div class="fill" style="width:'+r.p+'%"></div></div><span class="sc">'+fa(r.p)+'٪</span>';
+      rank.appendChild(d);
+    });
+    var a=res[0],b=res[1],gap=a.p-b.p;
+    ver.innerHTML=gap<5
+      ? '<b>'+a.n+'</b> و <b>'+b.n+'</b> امتیاز نزدیکی دارند (اختلاف '+fa(gap)+'٪). پیشنهاد می‌شود پیش از تصمیم نهایی، نمونه‌ی آزمایشی هر دو بررسی شود.'
+      : 'با اولویت‌های انتخاب‌شده، <b>'+a.n+'</b> با '+fa(gap)+'٪ اختلاف مناسب‌ترین گزینه است.';
+  }
+  score();
+})();
+</script>
+</body>
+</html>
