@@ -568,3 +568,15 @@ The offline result records **four passing fake-browser scenarios** (already auth
 - Run cost and start time are not stored in the `runs` table (cost expected near the pay-per-result rate of USD 0.002/post, about USD 3 for 1,486 items, but not verified from billing here).
 - The Apify field mapping and `master_posts` schema were written from this one dataset; no tests exist.
 - How to deliver the Sheet to the team is undecided (Apify's Google Sheets actor with Google authorization, a script upload, or manual CSV import). The ethics/ToS review from section 40 is still open.
+
+## 43. Plan for the Coresignal and Bright Data runs (2026-10-07)
+
+**Decision (Kaveh):** postpone Google Sheets; move on to the next two providers.
+
+**Status:** no Coresignal or Bright Data API credentials exist in the environment, and the Bright Data tools available here are search/scrape only (no LinkedIn dataset tools). Nothing was run and no adapter was written, because the real payload shapes are unknown. Sources: PD-01 to PD-05 in `research/references.md`.
+
+**What the vendor documentation states (unverified by testing):**
+- **Coresignal:** Employee Posts API with Elasticsearch DSL search (free, returns post IDs, up to 1,000 per page) and a collect-by-ID call that deducts credits per post. Free trial: 2,000 credits for 7 days, granted once per company email domain; the exact credit cost per Employee Posts record was not found in the pages read. Posts scraped since 2025-03 (so earlier posts would be absent). Whether the ES DSL text matching can express the agreed three-block Boolean query is untested.
+- **Bright Data:** the LinkedIn posts Scraper API (dataset `gd_lyy3tktm25m4avu764`) discovers posts by profile or company URL, not by keyword, and returns about 10 public posts per profile; USD 1.50 per 1,000 records. A separate Marketplace route filters a pre-collected LinkedIn Posts dataset (e.g. post text `includes`), charging per record in the filtered snapshot; its field names, coverage and per-record price were not confirmed.
+
+**Open:** Coresignal API key (trial) and Bright Data API token as environment secrets; which Bright Data route to test; a small spend cap per provider; the ethics/ToS review from section 40.
