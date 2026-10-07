@@ -580,3 +580,29 @@ The offline result records **four passing fake-browser scenarios** (already auth
 - **Bright Data:** the LinkedIn posts Scraper API (dataset `gd_lyy3tktm25m4avu764`) discovers posts by profile or company URL, not by keyword, and returns about 10 public posts per profile; USD 1.50 per 1,000 records. A separate Marketplace route filters a pre-collected LinkedIn Posts dataset (e.g. post text `includes`), charging per record in the filtered snapshot; its field names, coverage and per-record price were not confirmed.
 
 **Open:** Coresignal API key (trial) and Bright Data API token as environment secrets; which Bright Data route to test; a small spend cap per provider; the ethics/ToS review from section 40.
+
+## 44. Checkpoint: Coresignal, Bright Data and Google Sheets deferred (2026-10-07)
+
+**Decision (Kaveh, Project chat):** defer Coresignal and Bright Data; no new collection, no API spend and no Coresignal or Bright Data calls until work resumes from this Project. Google Sheets stays postponed (section 43). This section consolidates the state so the work can be continued.
+
+**What ran (Apify, the only provider used so far):**
+- Actor `harvestapi/linkedin-post-search`, run `tKJavW6tIKBOP7NlO`, 105 sub-queries derived from the agreed three-block Boolean query (provenance in `research/keywords/linkedin-boolean-2026-10-07/`: `decompose.py`, `subqueries.json`; terms only). Run time 2026-10-07 14:04:12 to 14:11:14 UTC.
+- Dataset `XeYe0ReCWPpyZpG91`: 1,486 items, 1,137 unique posts. Earlier notes in section 41 cited about 1,458 items; the dataset metadata and the downloaded file both give 1,486, which supersedes that figure.
+- Verified run cost: USD 2.97205. Apify monthly usage at that point: 3.19 of the 5 USD free allowance (billing cycle ends 2026-10-10). Remaining allowance is therefore small; a second full run is not covered by it.
+- Apify dataset retention is 7 days on this plan, so the dataset is expected to expire around 2026-10-14 (date computed from the retention figure, not confirmed in the console). The Neon copy is the durable record.
+
+**Where the data lives:**
+- Neon project `cool-cake-91875024`, database `_saintiment_db`: 1 run, 105 queries, 1,486 raw items, 1,137 master posts, 1,486 post-query hits (about 18 MB; free plan limit 1 GB per branch). Counts were checked by SQL against the local file.
+- VM-only, git-ignored files under `data/local/linkedin-boolean-2026-10-07/`: raw JSONL and `master_posts_apify.csv`. These do not persist beyond the cloud VM; they can be regenerated from the Apify dataset (until about 2026-10-14) or exported again from Neon with `src/ingest/export_master_csv.py`.
+- Nothing containing post text or author names is committed to git.
+
+**How to continue:**
+- Reload or export: `src/ingest/apify_to_neon.py` and `src/ingest/export_master_csv.py` (see `src/README.md`); provenance entry in `data/README.md`.
+- Coresignal and Bright Data plan and open questions: section 43. Both need credentials added as Cursor Cloud Agent secrets (Runtime Secret type) before a new VM starts. No adapter exists and payload shapes are untested.
+
+**Open decisions and issues:**
+- Why 93 of 105 sub-queries stopped at 15 posts is unknown (possibly an actor input or default limit); results are likely truncated and not a census.
+- Google Sheets delivery route, author-identifying columns in shared files, and the ethics/ToS review (section 40).
+- Which providers to use after the Apify allowance, and spend caps per provider.
+- Security: the Neon role password appeared in tool output during the session (not committed to git). Rotating it in the Neon console is recommended; this has not been done.
+- Process: a local-only commit adding a Coresignal MCP configuration to `.cursor/mcp.json` was reverted and never pushed, because the MCP is configured in Kaveh's local Cursor and not available in the cloud agent. Pushes failed with GitHub HTTP 500 for a period during this session; see the PR for the final push status.
