@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "coresignal": {
+      "url": "https://mcp.coresignal.com/mcp/v2"
+    }
+  }
+}
