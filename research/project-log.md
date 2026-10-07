@@ -531,3 +531,18 @@ The offline result records **four passing fake-browser scenarios** (already auth
 **Open decision (not made):** how to run the agreed query on each provider (split into sub-queries of at most 5 operators, filter a broader pull afterwards, or use a provider that accepts the full Boolean string). Master-data schema, query-decomposition method, budget cap, and the ethics/ToS review remain open. No master dataset has been created.
 
 
+
+## 41. Neon database created for master data (2026-10-07)
+
+**Decision (Kaveh):** use Neon Postgres as the structured store for provider results; Google Sheets remains the shareable export for the team. Whether Supabase or other stores are needed was left unused.
+
+**Actions:**
+- In the new Neon project `_saintimental` (id `cool-cake-91875024`, AWS eu-central-1, Postgres 18, free plan, default branch `production`), created database `_saintiment_db` (owner `neondb_owner`). No credentials or connection strings are stored in the repository; the connection string must be provided to scripts as a local secret.
+- Created an initial, provider-neutral schema (tables only, no data): `runs` (one row per provider run: source, tool, cost, input, external reference), `queries` (query set and text), `raw_items` (unmodified provider payloads as `jsonb`, unique per run and item id), `master_posts` (normalized post fields, unique per source and source post id), `post_query_hits` (which query returned which post in which run).
+- Verified by listing the tables in the new database. No rows have been loaded.
+
+**Not yet done / open:**
+- The Apify dataset `XeYe0ReCWPpyZpG91` (about 1,458 items reported by run `tKJavW6tIKBOP7NlO`) has not been downloaded, deduplicated or loaded; the Apify-to-`master_posts` field mapping is not written and the schema may change when real payloads are inspected.
+- Coresignal and Bright Data adapters are not written; whether Coresignal's post data is available through its API (versus monthly flat files) is unverified.
+- The Google Sheets export route (Apify's Google Sheets actor versus a script-generated CSV/API upload) is not chosen.
+- Handling of author-identifying columns in shared Sheets, and the ethics/ToS review noted in section 40, remain open.
