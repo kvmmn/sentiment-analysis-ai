@@ -512,4 +512,22 @@ The offline result records **four passing fake-browser scenarios** (already auth
 5. `src/analysis/`: Independent analytical pipeline (`kaveh_analytical_pipeline.py`), component `README.md`, and unit tests (`tests/test_kaveh_pipeline.py`, 7/7 passing).
 6. `docs/thesis_assets/`: Exported LaTeX tables, CSV dataset (`kaveh_enriched_corpus_run013.csv`), and summary JSON statistics.
 
+## 40. Provider pilot: Apify small tests and Boolean-query limit (2026-10-07)
+
+**Context:** the team's 2026-10-03 data-provider comparison ([page](../docs/data-provider-decision-2026-10-03.html)) led to a plan to try Apify, Coresignal and Bright Data at minimal cost. No purchase or ethics/ToS decision is recorded here; the page itself notes that the services' data originates from scraping that LinkedIn's terms do not permit, and that review by the responsible body is needed before purchase. Only small Apify tests were run; Coresignal and Bright Data have **not** been run (no accounts/keys yet; Bright Data's LinkedIn dataset tools are not enabled in this environment).
+
+**Executions (Apify actor `harvestapi/linkedin-post-search`, pay-per-result about USD 0.002/post, posts only, no reactions/comments; estimated total spend about USD 0.2 including empty-query charges):**
+- Run `hkWPsSHkVY67BwBcg`: `"generative AI" architecture`, 25 posts.
+- Run `VCLkZi3mWsCQytHdv`: `"AI rendering" architect` and `"deskilling" architecture`, 25 posts each.
+- Runs `Ib6OPXtgBOIO7Zpzl`, `yeaIsetckEJgRfLgv`, `3DReuXJBKcfANqzW4`, `ryTnLVBt9rP8LuTa6`, `3jEYCqh16gGtnXQBC`: Boolean-query tests with 1–5 posts per query.
+- Raw results were inspected in the Apify datasets only; nothing was saved to the repository, and no author names were recorded here.
+
+**Observations (not research findings):**
+- Returned fields included post text, date, author headline, and likes/comments/shares. In the 75 posts of the first two runs, 25/25 and about 44/50 headlines were real job titles; about 6/50 in the second run were "N followers" instead.
+- Broad terms drift away from architecture of buildings: `"generative AI" architecture` returned mostly recruiter and software-engineering posts; `"deskilling" architecture` returned mostly software/enterprise architecture and general deskilling; `"AI rendering" architect` was the most on-domain of the three.
+- The agreed three-block Boolean query (10 × 5 × 13 terms, about 27 operators) returned **0 results**, as did shorter variants with 6 or more operators. Variants with 5 or fewer AND/OR operators returned results, e.g. `(architecture OR architect) AND (AI OR GenAI) AND (skills OR creativity)`. This is an empirical observation from these runs only; the exact limit is not documented by LinkedIn or the actor in anything reviewed here.
+- The agreed query text as supplied also had missing spaces (`intelligenceOR`, `architectsOR`) and unquoted multi-word terms; the executed form added spaces and quotes. Original text is preserved in the meeting message and this entry.
+
+**Open decision (not made):** how to run the agreed query on each provider (split into sub-queries of at most 5 operators, filter a broader pull afterwards, or use a provider that accepts the full Boolean string). Master-data schema, query-decomposition method, budget cap, and the ethics/ToS review remain open. No master dataset has been created.
+
 
