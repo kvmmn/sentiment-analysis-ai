@@ -117,6 +117,18 @@ Records support search-method design and source identification. They are **not**
 | KS-35 | DIN EN ISO 19650 — Bauwerksinformationsmodellierung                                                                                                                                                                                                                                                                                                                                                                                    | DE BIM term                    |
 | KS-36 | Duden — Dequalifizierung, Kompetenzverlust                                                                                                                                                                                                                                                                                                                                                                                             | DE Layer 2 deskilling          |
 
+## Provider documentation consulted — 2026-10-07
+
+Vendor documentation read for data-collection planning; descriptions of what the vendors state, not verified by testing and not scholarly sources.
+
+| ID    | Source                                                                                                                                                               | Used for                                                                                          |
+| ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| PD-01 | Coresignal, [Employee Posts API](https://docs.coresignal.com/employee-api/employee-posts-api) and [Elasticsearch DSL endpoint](https://docs.coresignal.com/employee-api/employee-posts-api/endpoints/elasticsearch-dsl) | Search by ES DSL returns post IDs; collect by ID returns the post. Accessed 2026-10-07.            |
+| PD-02 | Coresignal, [Pricing](https://docs.coresignal.com/pricing) and [Credits](https://docs.coresignal.com/api-introduction/credits)                                      | Free trial (2,000 credits, 7 days, once per company email domain); search free, collect per record. Accessed 2026-10-07. |
+| PD-03 | Coresignal, [Employee Posts Data](https://docs.coresignal.com/employee-data/employee-posts-data) and [delivery formats](https://docs.coresignal.com/introduction/delivery-formats) | Flat-file delivery (JSONL/Parquet), monthly, scraped since 2025-03. Accessed 2026-10-07.           |
+| PD-04 | Bright Data, [Scraper API FAQs](https://docs.brightdata.com/products/scrapers/scrapers-library/faqs) and [Discover LinkedIn posts by URL](https://docs.brightdata.com/api-reference/scrapers/social-media-apis/linkedin-posts-discover-by-url) | Posts scraper discovers by profile/company URL; about 10 public posts per profile; USD 1.50 per 1,000 records. Accessed 2026-10-07. |
+| PD-05 | Bright Data, [Filter dataset](https://docs.brightdata.com/api-reference/marketplace-dataset-api/filter-dataset) and [filter syntax](https://docs.brightdata.com/api-reference/marketplace-dataset-api/filter-syntax) | Marketplace LinkedIn Posts dataset can be filtered (e.g. text `includes`); charged per record. Accessed 2026-10-07. |
+
 ## Source Template
 
 ```text

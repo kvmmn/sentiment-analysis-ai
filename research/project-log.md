@@ -512,4 +512,97 @@ The offline result records **four passing fake-browser scenarios** (already auth
 5. `src/analysis/`: Independent analytical pipeline (`kaveh_analytical_pipeline.py`), component `README.md`, and unit tests (`tests/test_kaveh_pipeline.py`, 7/7 passing).
 6. `docs/thesis_assets/`: Exported LaTeX tables, CSV dataset (`kaveh_enriched_corpus_run013.csv`), and summary JSON statistics.
 
+## 40. Provider pilot: Apify small tests and Boolean-query limit (2026-10-07)
 
+**Context:** the team's 2026-10-03 data-provider comparison ([page](../docs/data-provider-decision-2026-10-03.html)) led to a plan to try Apify, Coresignal and Bright Data at minimal cost. No purchase or ethics/ToS decision is recorded here; the page itself notes that the services' data originates from scraping that LinkedIn's terms do not permit, and that review by the responsible body is needed before purchase. Only small Apify tests were run; Coresignal and Bright Data have **not** been run (no accounts/keys yet; Bright Data's LinkedIn dataset tools are not enabled in this environment).
+
+**Executions (Apify actor `harvestapi/linkedin-post-search`, pay-per-result about USD 0.002/post, posts only, no reactions/comments; estimated total spend about USD 0.2 including empty-query charges):**
+- Run `hkWPsSHkVY67BwBcg`: `"generative AI" architecture`, 25 posts.
+- Run `VCLkZi3mWsCQytHdv`: `"AI rendering" architect` and `"deskilling" architecture`, 25 posts each.
+- Runs `Ib6OPXtgBOIO7Zpzl`, `yeaIsetckEJgRfLgv`, `3DReuXJBKcfANqzW4`, `ryTnLVBt9rP8LuTa6`, `3jEYCqh16gGtnXQBC`: Boolean-query tests with 1–5 posts per query.
+- Raw results were inspected in the Apify datasets only; nothing was saved to the repository, and no author names were recorded here.
+
+**Observations (not research findings):**
+- Returned fields included post text, date, author headline, and likes/comments/shares. In the 75 posts of the first two runs, 25/25 and about 44/50 headlines were real job titles; about 6/50 in the second run were "N followers" instead.
+- Broad terms drift away from architecture of buildings: `"generative AI" architecture` returned mostly recruiter and software-engineering posts; `"deskilling" architecture` returned mostly software/enterprise architecture and general deskilling; `"AI rendering" architect` was the most on-domain of the three.
+- The agreed three-block Boolean query (10 × 5 × 13 terms, about 27 operators) returned **0 results**, as did shorter variants with 6 or more operators. Variants with 5 or fewer AND/OR operators returned results, e.g. `(architecture OR architect) AND (AI OR GenAI) AND (skills OR creativity)`. This is an empirical observation from these runs only; the exact limit is not documented by LinkedIn or the actor in anything reviewed here.
+- The agreed query text as supplied also had missing spaces (`intelligenceOR`, `architectsOR`) and unquoted multi-word terms; the executed form added spaces and quotes. Original text is preserved in the meeting message and this entry.
+
+**Open decision (not made):** how to run the agreed query on each provider (split into sub-queries of at most 5 operators, filter a broader pull afterwards, or use a provider that accepts the full Boolean string). Master-data schema, query-decomposition method, budget cap, and the ethics/ToS review remain open. No master dataset has been created.
+
+
+
+## 41. Neon database created for master data (2026-10-07)
+
+**Decision (Kaveh):** use Neon Postgres as the structured store for provider results; Google Sheets remains the shareable export for the team. Whether Supabase or other stores are needed was left unused.
+
+**Actions:**
+- In the new Neon project `_saintimental` (id `cool-cake-91875024`, AWS eu-central-1, Postgres 18, free plan, default branch `production`), created database `_saintiment_db` (owner `neondb_owner`). No credentials or connection strings are stored in the repository; the connection string must be provided to scripts as a local secret.
+- Created an initial, provider-neutral schema (tables only, no data): `runs` (one row per provider run: source, tool, cost, input, external reference), `queries` (query set and text), `raw_items` (unmodified provider payloads as `jsonb`, unique per run and item id), `master_posts` (normalized post fields, unique per source and source post id), `post_query_hits` (which query returned which post in which run).
+- Verified by listing the tables in the new database. No rows have been loaded.
+
+**Not yet done / open:**
+- The Apify dataset `XeYe0ReCWPpyZpG91` (about 1,458 items reported by run `tKJavW6tIKBOP7NlO`) has not been downloaded, deduplicated or loaded; the Apify-to-`master_posts` field mapping is not written and the schema may change when real payloads are inspected.
+- Coresignal and Bright Data adapters are not written; whether Coresignal's post data is available through its API (versus monthly flat files) is unverified.
+- The Google Sheets export route (Apify's Google Sheets actor versus a script-generated CSV/API upload) is not chosen.
+- Handling of author-identifying columns in shared Sheets, and the ethics/ToS review noted in section 40, remain open.
+
+## 42. Apify full run downloaded and loaded into Neon (2026-10-07)
+
+**Question:** can the Apify results be stored cleanly in the new Neon database and exported for Google Sheets?
+
+**Source:** Apify run `tKJavW6tIKBOP7NlO` (actor `harvestapi/linkedin-post-search`), dataset `XeYe0ReCWPpyZpG91`, created 2026-10-07 14:04 UTC. Input: the 105 sub-queries in `data/local/linkedin-boolean-2026-10-07/subqueries.json` (generated by `decompose.py` from the agreed three-block query; each sub-query has at most 5 operators). Dataset metadata reports 1,486 items.
+
+**Execution:**
+- Downloaded all 1,486 items through the Apify MCP resource API in pages of 25–50 (larger pages exceed the 256 KB inline limit) to the git-ignored `data/local/linkedin-boolean-2026-10-07/apify_raw/XeYe0ReCWPpyZpG91.jsonl` (6.6 MB). 20 overlapping items from a trial page were removed; the 1,486 count matches the dataset metadata.
+- Loaded with `src/ingest/apify_to_neon.py` into `_saintiment_db` (Neon project `cool-cake-91875024`): 1 run, 105 queries, 1,486 raw items, 1,137 unique posts, 1,486 post-query hits. Counts in the database match the local file (verified by SQL). Database size about 18 MB.
+- First load attempt failed on a NUL character (`\u0000`) in one payload; nothing was committed. The script now strips NUL characters before storing, so that payload differs from Apify's original in that respect only.
+- Exported `master_posts_apify.csv` (1,137 rows, about 1.8 MB, git-ignored) with `src/ingest/export_master_csv.py` as the Google Sheets import candidate. It has not been uploaded anywhere.
+
+**Observations (not research findings):**
+- All 1,486 items are posts; 1,388 authors are profiles and 98 are companies. Post dates range from 2022-12-28 to 2026-10-07. Median post text length is 972 characters; 10 items have empty text.
+- 93 of the 105 sub-queries returned exactly 15 posts (the maximum seen), and the other 12 returned 2–13. The cap's origin was not checked here, so the pull is likely **truncated for most sub-queries** and is not a complete census of matching posts. 218 of the 1,137 unique posts were returned by more than one sub-query (up to 15).
+- Not checked: relevance of results to architecture (no coding or sampling done), representativeness, author privacy handling in shared Sheets.
+
+**Limitations / open:**
+- Run cost and start time are not stored in the `runs` table (cost expected near the pay-per-result rate of USD 0.002/post, about USD 3 for 1,486 items, but not verified from billing here).
+- The Apify field mapping and `master_posts` schema were written from this one dataset; no tests exist.
+- How to deliver the Sheet to the team is undecided (Apify's Google Sheets actor with Google authorization, a script upload, or manual CSV import). The ethics/ToS review from section 40 is still open.
+
+## 43. Plan for the Coresignal and Bright Data runs (2026-10-07)
+
+**Decision (Kaveh):** postpone Google Sheets; move on to the next two providers.
+
+**Status:** no Coresignal or Bright Data API credentials exist in the environment, and the Bright Data tools available here are search/scrape only (no LinkedIn dataset tools). Nothing was run and no adapter was written, because the real payload shapes are unknown. Sources: PD-01 to PD-05 in `research/references.md`.
+
+**What the vendor documentation states (unverified by testing):**
+- **Coresignal:** Employee Posts API with Elasticsearch DSL search (free, returns post IDs, up to 1,000 per page) and a collect-by-ID call that deducts credits per post. Free trial: 2,000 credits for 7 days, granted once per company email domain; the exact credit cost per Employee Posts record was not found in the pages read. Posts scraped since 2025-03 (so earlier posts would be absent). Whether the ES DSL text matching can express the agreed three-block Boolean query is untested.
+- **Bright Data:** the LinkedIn posts Scraper API (dataset `gd_lyy3tktm25m4avu764`) discovers posts by profile or company URL, not by keyword, and returns about 10 public posts per profile; USD 1.50 per 1,000 records. A separate Marketplace route filters a pre-collected LinkedIn Posts dataset (e.g. post text `includes`), charging per record in the filtered snapshot; its field names, coverage and per-record price were not confirmed.
+
+**Open:** Coresignal API key (trial) and Bright Data API token as environment secrets; which Bright Data route to test; a small spend cap per provider; the ethics/ToS review from section 40.
+
+## 44. Checkpoint: Coresignal, Bright Data and Google Sheets deferred (2026-10-07)
+
+**Decision (Kaveh, Project chat):** defer Coresignal and Bright Data; no new collection, no API spend and no Coresignal or Bright Data calls until work resumes from this Project. Google Sheets stays postponed (section 43). This section consolidates the state so the work can be continued.
+
+**What ran (Apify, the only provider used so far):**
+- Actor `harvestapi/linkedin-post-search`, run `tKJavW6tIKBOP7NlO`, 105 sub-queries derived from the agreed three-block Boolean query (provenance in `research/keywords/linkedin-boolean-2026-10-07/`: `decompose.py`, `subqueries.json`; terms only). Run time 2026-10-07 14:04:12 to 14:11:14 UTC.
+- Dataset `XeYe0ReCWPpyZpG91`: 1,486 items, 1,137 unique posts. Earlier notes in section 41 cited about 1,458 items; the dataset metadata and the downloaded file both give 1,486, which supersedes that figure.
+- Verified run cost: USD 2.97205. Apify monthly usage at that point: 3.19 of the 5 USD free allowance (billing cycle ends 2026-10-10). Remaining allowance is therefore small; a second full run is not covered by it.
+- Apify dataset retention is 7 days on this plan, so the dataset is expected to expire around 2026-10-14 (date computed from the retention figure, not confirmed in the console). The Neon copy is the durable record.
+
+**Where the data lives:**
+- Neon project `cool-cake-91875024`, database `_saintiment_db`: 1 run, 105 queries, 1,486 raw items, 1,137 master posts, 1,486 post-query hits (about 18 MB; free plan limit 1 GB per branch). Counts were checked by SQL against the local file.
+- VM-only, git-ignored files under `data/local/linkedin-boolean-2026-10-07/`: raw JSONL and `master_posts_apify.csv`. These do not persist beyond the cloud VM; they can be regenerated from the Apify dataset (until about 2026-10-14) or exported again from Neon with `src/ingest/export_master_csv.py`.
+- Nothing containing post text or author names is committed to git.
+
+**How to continue:**
+- Reload or export: `src/ingest/apify_to_neon.py` and `src/ingest/export_master_csv.py` (see `src/README.md`); provenance entry in `data/README.md`.
+- Coresignal and Bright Data plan and open questions: section 43. Both need credentials added as Cursor Cloud Agent secrets (Runtime Secret type) before a new VM starts. No adapter exists and payload shapes are untested.
+
+**Open decisions and issues:**
+- Why 93 of 105 sub-queries stopped at 15 posts is unknown (possibly an actor input or default limit); results are likely truncated and not a census.
+- Google Sheets delivery route, author-identifying columns in shared files, and the ethics/ToS review (section 40).
+- Which providers to use after the Apify allowance, and spend caps per provider.
+- Security: the Neon role password appeared in tool output during the session (not committed to git). Rotating it in the Neon console is recommended; this has not been done.
+- Process: a local-only commit adding a Coresignal MCP configuration to `.cursor/mcp.json` was reverted and never pushed, because the MCP is configured in Kaveh's local Cursor and not available in the cloud agent. Pushes failed with GitHub HTTP 500 for a period during this session; see the PR for the final push status.
