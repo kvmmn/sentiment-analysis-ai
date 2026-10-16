@@ -1,6 +1,6 @@
 # Local workspace index
 
-Updated: 2026-09-17. **Git tracks only this README.** Other contents are ignored and are not available in a fresh public clone. Ignore rules are not encryption, backup, or permission to retain personal data.
+Updated: 2026-10-16. **Git tracks only this README.** Other contents are ignored and are not available in a fresh public clone. Ignore rules are not encryption, backup, or permission to retain personal data.
 
 ## Find Iman’s code
 
@@ -15,7 +15,13 @@ These are preserved submission extracts, not entrypoints to run in place. The in
 
 ## Current run workspaces
 
-Use the [per-invocation guide](../experiments/runs/README.md) and [live-pilot plan](../experiments/2026-09-17-iman-live-pilot.md).
+Provider-pilot local notes (personal data; not in git):
+
+- `_local/work/2026-10-08-coresignal-posts/` — Coresignal search/collect notes and payloads for the 200-post Neon load ([project log §45](../research/project-log.md#45-coresignal-employee-posts-200-collect-2026-10-08)).
+- `_local/work/2026-10-08-brightdata/` — Bright Data path tests and Marketplace filter artifacts for the 200-post Neon load ([§46](../research/project-log.md#46-bright-data-marketplace-filter-200-posts-2026-10-08)).
+- `_local/work/2026-10-09-review-sheets/` and `_local/work/2026-10-09-review-complete/` — 200-per-source review extracts ([§47](../research/project-log.md#47-three-source-review-pack-of-200-posts-each-2026-10-09)).
+
+September live-pilot workspaces (historical; use the [per-invocation guide](../experiments/runs/README.md) and [live-pilot plan](../experiments/2026-09-17-iman-live-pilot.md)):
 
 - `_local/work/2026-09-17-iman-live-pilot/runs/001-collector/`: LF-normalized snapshot was launched, then interrupted by the assistant without a user request to stop; see [public record](../experiments/runs/2026-09-17-iman-live-pilot/001-collector.md). Exact end/exit provenance is incomplete; login/count unknown. The [original manifest](work/2026-09-17-iman-live-pilot/runs/001-collector/manifest.json) remains stale `running`; read with the separate [interruption note](work/2026-09-17-iman-live-pilot/runs/001-collector/interruption-note.md).
 - `_local/work/2026-09-17-iman-live-pilot/runs/002-analysis/`: prepared LF-normalized snapshot; [public record](../experiments/runs/2026-09-17-iman-live-pilot/002-analysis.md) remains blocked and not run pending reviewed nonempty, consistent input. No finalized input handoff is established.

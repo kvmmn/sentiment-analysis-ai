@@ -1,11 +1,12 @@
 # Saintiment research index
 
-Updated: 2026-09-17. This index separates the current working method from historical proposals and source evidence. It does not authorize collection or freeze queries.
+Updated: 2026-10-16. This index separates the current working method from historical proposals and source evidence. It does not authorize collection or freeze queries.
 
 ## Current working method
 
 - **Working frame adopted 2026-09-10:** Domain ∧ Technology ∧ Labor/Competency, using Iman’s three-pillar search for the review pass. See the dated decision in [keyword systems](keywords/keyword-systems.md) and [research notes](notes.md#decisions).
 - **Queries are not frozen.** Individual terms, query balance, exact sampling rules, annotation, evaluation, and access conditions still require resolution. The adopted frame is not approval of every submitted query or script.
+- **Three-provider LinkedIn pilot (2026-10-07–09), synced 2026-10-16:** Apify 1,137 + Coresignal 200 + Bright Data 200 master posts in Neon; local 200-per-source review packs. See [project log §48](project-log.md#48-complete-three-provider-set-synced-2026-10-16) and [data README](../data/README.md). Not an approved corpus; ethics/ToS still open.
 - **Pilot analysis & independent methodology (2026-09-25):** completed pilot on Run 013 (1,076 posts); see [team meeting guide](../docs/team-meeting-guide-2026-09-25.html), [technical benchmark report](../docs/team-meeting-analysis-2026-09-25.html), and [Kaveh's independent methodology draft](../docs/kaveh-independent-methodology.md).
 - [Sent team feedback — 15 September](team/team-feedback-to-team-2026-09-15-FA.md): registered Persian letter, with its original Google Doc source. Sent feedback is not a record of implemented changes or verified findings.
 - [Iman’s submission](../_local/submissions/2026-09-06-iman-protocol-drafts/): local-only protocol, matrix, codebook, and scripts; not published or merged as an approved protocol.

@@ -1,14 +1,16 @@
 # Project Log
 
-**Current closeout — 18 September 2026 local (executions 17 September UTC):** [007 resume](../experiments/runs/2026-09-17-iman-live-pilot/007-collector-resume.md) completed after 005's watchdog stop, with 1,237 DB/CSV rows and unique stored IDs (net +56). Analysis 002 failed; separate [008 guarded analysis](../experiments/runs/2026-09-17-iman-live-pilot/008-analysis-guarded.md) completed, and [009 synthetic guards](../experiments/runs/2026-09-17-iman-live-pilot/009-analysis-guard-tests.md) passed 8/8 without live collection. All headlines are empty and all stakeholder labels `Unclassified`; no stakeholder inference or scientific findings are possible from these outputs. Guards do not repair metadata. No metadata collector fix, checkpoint implementation or further live run was completed. Baselines are intact; no new dependencies. Git sync is pending, and access approval remains unestablished. See [section 38](#38-close-resume-and-guarded-analysis-with-missing-metadata-2026-09-18-local).
+**Current closeout — 16 October 2026:** three-provider LinkedIn post pilot is complete in Neon `_saintiment_db`: Apify 1,137 + Coresignal 200 + Bright Data marketplace 200 master posts (1,537 total). Local 200-per-source review packs exist under `_local/work/2026-10-09-*` (git-ignored; personal data). Meeting/pilot deliverables from 25 September are published under `docs/`. No ethics/ToS clearance and no scientific findings from the provider pilots. See [section 48](#48-complete-three-provider-set-synced-2026-10-16).
 
-**Historical status snapshots:** the two updates immediately below and all earlier “Current desk/handoff” sections describe their dated stage only. Their not-run/pending statements are not the current queue.
+**Historical status snapshots:** the September closeout and earlier “Current desk/handoff” sections below describe their dated stage only. Their not-run/pending statements are not the current queue. The 7 October deferral of Coresignal/Bright Data ([section 44](#44-checkpoint-coresignal-bright-data-and-google-sheets-deferred-2026-10-07)) was superseded by the 8–9 October runs ([sections 45–47](#45-coresignal-employee-posts-200-collect-2026-10-08)).
+
+**Earlier closeout — 18 September 2026 local (executions 17 September UTC):** [007 resume](../experiments/runs/2026-09-17-iman-live-pilot/007-collector-resume.md) completed after 005's watchdog stop, with 1,237 DB/CSV rows and unique stored IDs (net +56). Analysis 002 failed; separate [008 guarded analysis](../experiments/runs/2026-09-17-iman-live-pilot/008-analysis-guarded.md) completed, and [009 synthetic guards](../experiments/runs/2026-09-17-iman-live-pilot/009-analysis-guard-tests.md) passed 8/8 without live collection. All headlines are empty and all stakeholder labels `Unclassified`; no stakeholder inference or scientific findings are possible from these outputs. Guards do not repair metadata. No metadata collector fix, checkpoint implementation or further live run was completed. Baselines are intact; no new dependencies. Access approval remains unestablished. See [section 38](#38-close-resume-and-guarded-analysis-with-missing-metadata-2026-09-18-local).
 
 **Earlier execution update — 2026-09-17 UTC:** [Collector 005](../experiments/runs/2026-09-17-iman-live-pilot/005-collector-readiness.md) stopped at `22:26:31.760Z` when the wrapper's one-hour watchdog sent SIGTERM. It completed 22 query scroll sequences and reached query 23, scroll 28/35. Read-only SQLite quick_check passed; 1,181 rows and distinct stored IDs were verified. Last CSV export logged 1,178 rows, so it is older than the DB. This is a partial dataset, not completed collection. The previous progress summary below is historical.
 
 **Earlier execution update:** Collector 005 was running with a narrowly changed feed-readiness check. Retry 003 exited 1 on the old `nav.global-nav` wait and contained zero rows. Separate diagnostic 006 confirmed a signed-in feed with generated navigation classes. Run 005 then passed readiness and exported 59 records after its first query; query 2 started. These are partial log observations, not completed collection or scientific validation. Analysis has not run. Originals remain unchanged. Copied local sessions are an explicit deviation from the fresh-profile workflow; screenshots and raw artifacts remain private. Prepared diagnostic 004 was not executed. Final results and synchronization are pending.
 
-This is the shared record of actions, decisions, rationale, and open questions. Entries begin with the work discussed on 2026-08-28 and continue chronologically through September 2026; the latest run-status amendment is in [section 38](#38-close-resume-and-guarded-analysis-with-missing-metadata-2026-09-18-local). The earlier [Current desk (2026-09-17)](#current-desk-2026-09-17) is preserved as historical context. It summarizes the project conversation and file/tool checks; it is not a verbatim transcript or evidence that planned actions occurred. Keep earlier decisions visible when a later decision supersedes them.
+This is the shared record of actions, decisions, rationale, and open questions. Entries begin with the work discussed on 2026-08-28 and continue chronologically; the latest closeout amendment is in [section 48](#48-complete-three-provider-set-synced-2026-10-16). Earlier [Current desk](#current-desk-2026-09-17) sections are preserved as historical context. They summarize dated conversation and file/tool checks; they are not a verbatim transcript or evidence that planned actions occurred. Keep earlier decisions visible when a later decision supersedes them.
 
 Paths inside dated entries are historical: files have since been reorganized (keyword notes into `research/keywords/`, access reviews into `research/access/`, the sent team letter into `research/team/`, the scraper into `src/linkedin-scraper/`, and Iman's draft package into `_local/submissions/`). See the migration map in [docs/project-map.md](../docs/project-map.md) for the current locations.
 
@@ -606,3 +608,59 @@ The offline result records **four passing fake-browser scenarios** (already auth
 - Which providers to use after the Apify allowance, and spend caps per provider.
 - Security: the Neon role password appeared in tool output during the session (not committed to git). Rotating it in the Neon console is recommended; this has not been done.
 - Process: a local-only commit adding a Coresignal MCP configuration to `.cursor/mcp.json` was reverted and never pushed, because the MCP is configured in Kaveh's local Cursor and not available in the cloud agent. Pushes failed with GitHub HTTP 500 for a period during this session; see the PR for the final push status.
+
+## 45. Coresignal Employee Posts: 200 collect (2026-10-08)
+
+**Context:** after the 7 October deferral ([section 44](#44-checkpoint-coresignal-bright-data-and-google-sheets-deferred-2026-10-07)), Coresignal was run locally. Local working notes: `_local/work/2026-10-08-coresignal-posts/README.md` (git-ignored).
+
+**Execution:**
+- Free ES DSL search on `article_body` requiring all three blocks (narrower than the 105 Apify sub-queries; no bare `AI` or bare `architecture`): 9,550 unique post IDs across 10 pages. Search did not reduce credits (1,960 remaining after search).
+- Collected the first 200 IDs (newest page order), 1 credit each; credits 1,960 → 1,760.
+- Loaded into Neon `_saintiment_db` as run `coresignal-employee-posts-2026-10-08-200` (source `coresignal`): 200 `master_posts`, 200 `raw_items`, plus matching `queries` / `post_query_hits`. Apify rows left in place.
+
+**Observations (not research findings):**
+- `date_published` range on the 200: 2026-09-11 to 2026-10-04. All bodies nonempty (median about 1,979 characters). 174 distinct profile URLs. `author_headline` empty on all 200.
+
+**Not done:** full collect of 9,550 IDs; relevance coding; shared Sheets export; ethics/ToS review.
+
+## 46. Bright Data Marketplace filter: 200 posts (2026-10-08)
+
+**Context:** Bright Data was tested for a retrieval path comparable to keyword post search. Local notes: `_local/work/2026-10-08-brightdata/README.md` (git-ignored).
+
+**Failed or non-comparable paths (recorded, not used as the comparison sample):**
+- Posts Scraper API with API token: HTTP 401 (`API_TOKEN is not a valid token`); no charge recorded.
+- Browser zone on 20 profile activity pages: 0 post bodies (sign-up walls).
+- Browser re-open of 200 Coresignal permalinks: 198 texts loaded briefly as run `brightdata-browser-posts-2026-10-08`, then **deleted** from Neon because re-fetching known URLs is not a keyword search.
+- Profile discovery and LinkedIn content-search URL discovery: not usable keyword search (cancelled or empty/proxy error).
+
+**Kept path:** Marketplace `POST /datasets/filter` on dataset `gd_lyy3tktm25m4avu764`, field `post_text`, tighter three-block `includes` (snapshot `snap_mv00q3kw1p5pkzceb2`, `records_limit` 200). Snapshot status reported cost 0; list price noted as USD 2.50 per 1,000 returned records. Dates in the 200: 2017-08-30 to 2026-09-22.
+
+**Neon:** run `brightdata-marketplace-posts-2026-10-08-200` (source `brightdata`): 200 `master_posts`, 200 `raw_items`, matching hits. No post text committed to git.
+
+## 47. Three-source review pack of 200 posts each (2026-10-09)
+
+**Purpose:** local comparison sheets for the team, not a frozen analysis sample and not an approved corpus.
+
+**Selection (from `_local/work/2026-10-09-review-sheets/notes.csv`):**
+- Apify: 200 of 1,130 nonempty posts that passed building-architecture + technology cue + labor/competency filters and software-architecture exclusions; 250 passed, top 200 by fit score kept.
+- Coresignal: all 200 collected posts; no further quality cut.
+- Bright Data: all 200 marketplace-filter posts; no further quality cut. 26 posts longer than 49,000 characters truncated for Sheet cell limits (original length retained in `text_chars`).
+
+**Artifacts (git-ignored, personal data):** `_local/work/2026-10-09-review-sheets/` and `_local/work/2026-10-09-review-complete/saintiment-review-200.*`. Nothing from these packs is in the public repository.
+
+## 48. Complete three-provider set synced (2026-10-16)
+
+**Decision (Kaveh):** treat the Apify + Coresignal + Bright Data Neon loads and the 200-per-source review packs as the complete provider pilot set, and sync documentation and publishable deliverables to GitHub and the Project store.
+
+**Verified 2026-10-16 (SQL on Neon `_saintiment_db`):**
+
+| Source | `master_posts` | `raw_items` | Run id |
+| --- | ---: | ---: | --- |
+| apify | 1,137 | 1,486 | `tKJavW6tIKBOP7NlO` |
+| coresignal | 200 | 200 | `coresignal-employee-posts-2026-10-08-200` |
+| brightdata | 200 | 200 | `brightdata-marketplace-posts-2026-10-08-200` |
+| **Total** | **1,537** | **1,886** | three runs |
+
+**Published in this sync (no post text / author names):** `docs/figures_pilot_2026-09-25/` (5 PNGs), `docs/kaveh-independent-methodology.md` (+ `.docx`), meeting guide/analysis `.docx` companions, and `docs/thesis_assets/` figures, LaTeX table, and inferential JSON. The enriched Run 013 CSV (`kaveh_enriched_corpus_run013.csv`) stays local-only because it contains author-identifying fields and post text.
+
+**Still open:** ethics/ToS review before sharing personal data beyond Neon/local packs; formal `experiments/` provenance records; query version 1 freeze; Google Sheets delivery route; Apify 15-post sub-query cap; Neon password rotation (recommended since 7 October); LinkedIn DSA case still open on last evidence.

@@ -48,3 +48,9 @@ Desktop.ini
 corpus_data/
 __pycache__/
 *.py[cod]
+
+# Thesis pilot enriched corpus (author names, profile URLs, post text).
+/docs/thesis_assets/kaveh_enriched_corpus_run013.csv
+
+# Duplicate root copy of meeting figures (canonical path is docs/figures_pilot_2026-09-25/).
+/figures_pilot_2026-09-25/

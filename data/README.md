@@ -28,8 +28,8 @@ Version / release / retrieval date: 2026-10-07, run 14:04:12 to 14:11:14 UTC (ab
 Query provenance: 105 sub-queries of the agreed three-block Boolean query; see research/keywords/linkedin-boolean-2026-10-07/ (decompose.py generates subqueries.json; each sub-query has at most 5 AND/OR/NOT operators; together they cover all 10 x 5 x 13 = 650 term triples)
 Local raw/derived artifact paths: data/local/linkedin-boolean-2026-10-07/apify_raw/XeYe0ReCWPpyZpG91.jsonl (1,486 lines, 6.6 MB) and master_posts_apify.csv (1,137 rows); git-ignored and present only on the cloud-agent VM that ran the work, not backed up elsewhere
 Durable copy: Neon Postgres, project cool-cake-91875024 (_saintimental), database _saintiment_db (branch production, AWS eu-central-1, Postgres 18, free plan)
-Neon contents: runs 1, queries 105, raw_items 1,486, master_posts 1,137, post_query_hits 1,486; about 18 MB; counts checked by SQL against the local JSONL
-Apify retention: the account's data retention is 7 days, so the Apify dataset is expected to be deleted around 2026-10-14 (not confirmed in the console); the Neon raw_items payloads are the durable copy
+Neon contents (Apify portion of the multi-provider DB): run `tKJavW6tIKBOP7NlO`, queries 105, raw_items 1,486, master_posts 1,137, post_query_hits 1,486. Full DB as of 2026-10-16 also holds Coresignal and Bright Data (see below); Apify counts re-verified by SQL on 2026-10-16
+Apify retention: 7-day dataset retention; as of 2026-10-16 the Apify dataset is expected to have expired (~2026-10-14); Neon `raw_items` for this run is the durable copy
 Acquisition steps (without credentials): run the actor once with the 105 sub-queries; read dataset pages of 25-50 items through the Apify API; load with src/ingest/apify_to_neon.py using DATABASE_URL from the environment
 Source/input SHA-256 and artifact paths: TODO (not computed)
 Derived/output SHA-256 and artifact paths: TODO (not computed)
@@ -42,7 +42,47 @@ Preprocessing and split definitions: none beyond NUL-character removal at load t
 Known limitations: 93 of 105 sub-queries returned exactly 15 posts, so the pull is probably capped and not a census; relevance to architecture not assessed; engagement counts are a snapshot at scrape time; no reactions or comments collected; some author headlines are follower counts rather than job titles (seen in the earlier pilot)
 ```
 
-The Neon schema (tables `runs`, `queries`, `raw_items`, `master_posts`, `post_query_hits`) was written from this one dataset and may change; connection details are never recorded in git.
+The Neon schema (tables `runs`, `queries`, `raw_items`, `master_posts`, `post_query_hits`) was written from the Apify load and reused for later providers; connection details are never recorded in git.
+
+### Coresignal Employee Posts collect (2026-10-08)
+
+Provider test collection, not an approved research corpus. See [project log section 45](../research/project-log.md#45-coresignal-employee-posts-200-collect-2026-10-08). Personal data; none in git.
+
+```text
+Dataset name / ID: coresignal-employee-posts-2026-10-08-200
+Origin / provider: Coresignal Employee Posts API (ES DSL search + collect-by-ID)
+Source URL: LinkedIn employee posts, as returned by Coresignal
+License and access conditions: TODO (not reviewed)
+Permitted use and redistribution: TODO (do not share outside the team)
+Version / release / retrieval date: 2026-10-08
+Query provenance: narrower three-block Boolean on article_body (architectural|architects) ∧ (generative AI|ChatGPT|Midjourney|GenAI) ∧ (skills|deskilling|critical thinking|role of the architect); 9,550 IDs searched; first 200 collected
+Local raw/derived artifact paths: _local/work/2026-10-08-coresignal-posts/ (git-ignored)
+Durable copy: Neon _saintiment_db, run coresignal-employee-posts-2026-10-08-200; master_posts 200, raw_items 200 (verified SQL 2026-10-16)
+Cost: 200 collect credits (trial balance 1,960 → 1,760); search free
+Known limitations: not the full 105-subquery Apify frame; author_headline empty on all 200; no relevance coding
+```
+
+### Bright Data Marketplace LinkedIn posts filter (2026-10-08)
+
+Provider test collection, not an approved research corpus. See [project log section 46](../research/project-log.md#46-bright-data-marketplace-filter-200-posts-2026-10-08). Personal data; none in git.
+
+```text
+Dataset name / ID: brightdata-marketplace-posts-2026-10-08-200 (snapshot snap_mv00q3kw1p5pkzceb2)
+Origin / provider: Bright Data Marketplace filter on LinkedIn posts dataset gd_lyy3tktm25m4avu764
+Source URL: pre-collected LinkedIn posts filtered by post_text includes
+License and access conditions: TODO (not reviewed)
+Permitted use and redistribution: TODO (do not share outside the team)
+Version / release / retrieval date: 2026-10-08
+Query provenance: tighter three-block includes (no bare AI / bare architecture); input recorded locally under _local/work/2026-10-08-brightdata/scraper/filter-200-input.json
+Local raw/derived artifact paths: _local/work/2026-10-08-brightdata/ (git-ignored)
+Durable copy: Neon _saintiment_db, run brightdata-marketplace-posts-2026-10-08-200; master_posts 200, raw_items 200 (verified SQL 2026-10-16)
+Cost: snapshot status reported 0; list price noted USD 2.50 / 1,000 returned records
+Known limitations: Marketplace corpus ≠ live keyword search; profile/scraper/browser paths tested and not kept as the comparison sample
+```
+
+### Three-source review pack (2026-10-09)
+
+Local-only comparison extracts (200 posts per source). See [project log section 47](../research/project-log.md#47-three-source-review-pack-of-200-posts-each-2026-10-09). Paths: `_local/work/2026-10-09-review-sheets/` and `_local/work/2026-10-09-review-complete/`. Not in git.
 
 ## Dataset Template
 

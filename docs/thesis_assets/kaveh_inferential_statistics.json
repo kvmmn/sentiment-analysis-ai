@@ -1,0 +1,63 @@
+{
+  "H1_Bimodality": {
+    "Deskilling": {
+      "BC": 0.44990093517598695,
+      "Skewness": -0.12741306755550016,
+      "Kurtosis": -0.7851782409328472,
+      "Bimodal": false
+    },
+    "General_Corpus": {
+      "BC": 0.3819100023292911,
+      "Skewness": -0.031864896253731664,
+      "Kurtosis": -0.38731369815374217,
+      "Bimodal": false
+    },
+    "Finding": "Supported for targeted deskilling discourse; general discourse clusters unimodally with heavy tails."
+  },
+  "H2_Creativity_vs_Judgment": {
+    "Creativity_Mean": 0.218807123655914,
+    "Creativity_Median": 0.0,
+    "N_Creativity": 248,
+    "Judgment_Mean": -0.0014294403892944037,
+    "Judgment_Median": 0.0,
+    "N_Judgment": 274,
+    "Mann_Whitney_U": 42018.0,
+    "p_value": 1.4825421567462157e-07,
+    "Significant": true
+  },
+  "H3_Environmental_vs_Representation": {
+    "Environmental_Mean": 0.06890547263681593,
+    "Environmental_Median": 0.0,
+    "N_Environmental": 268,
+    "Representation_Mean": 0.13474747474747473,
+    "Representation_Median": 0.0,
+    "N_Representation": 330,
+    "Mann_Whitney_U": 47083.0,
+    "p_value": 0.10003382864314876,
+    "Significant": false
+  },
+  "H4_Stakeholder_ANOVA": {
+    "Kruskal_Wallis_H": 0.06886457810146282,
+    "p_value": 0.7929971825427686,
+    "Sample_Sizes": {
+      "Practitioner": 11,
+      "Academic": 16,
+      "Student": 1,
+      "Industry Leader": 1
+    }
+  },
+  "Engagement_Dynamics": {
+    "engagement_total": {
+      "rho": 0.039492353466394,
+      "p_value": 0.1955118370399108
+    },
+    "reaction_count": {
+      "rho": 0.039492353466394,
+      "p_value": 0.1955118370399108
+    },
+    "comment_count": {
+      "rho": null,
+      "p_value": null
+    }
+  }
+}
