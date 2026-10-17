@@ -113,6 +113,8 @@ On 2026-09-09 Kaveh archived a Telegram-group summary dated 8 September 2026 in 
 
 On 2026-09-10 Kaveh chose Iman’s **three-pillar search** (architecture domain ∧ GenAI ∧ labor/competency inside the query) over the repository’s two-layer model for the keyword-review pass. This is a sampling-strategy choice, not a freeze of individual terms, not permission to collect, and not a rewrite of the 2026-08-31 catalog files.
 
+On 2026-10-17 the group note (skill layer inside the query, plus a compact two-layer tool-and-AI set, without one long Boolean string) was turned into a 55-query working list for a later Apify pass. The list respects the five-operator ceiling from the 7 October tests. It is not a frozen query version 1 and no run was started. See [the round note](keywords/linkedin-apify-2026-10-17/README.md) and project log section 49.
+
 ## Open Questions
 
 The following are planning questions added while organizing the draft, not decisions from the original document.
