@@ -1,11 +1,12 @@
 # Saintiment research index
 
-Updated: 2026-10-16. This index separates the current working method from historical proposals and source evidence. It does not authorize collection or freeze queries.
+Updated: 2026-10-17. This index separates the current working method from historical proposals and source evidence. It does not authorize collection or freeze queries.
 
 ## Current working method
 
 - **Working frame adopted 2026-09-10:** Domain ∧ Technology ∧ Labor/Competency, using Iman’s three-pillar search for the review pass. See the dated decision in [keyword systems](keywords/keyword-systems.md) and [research notes](notes.md#decisions).
 - **Queries are not frozen.** Individual terms, query balance, exact sampling rules, annotation, evaluation, and access conditions still require resolution. The adopted frame is not approval of every submitted query or script.
+- **Apify round list, 2026-10-17:** 55 executable LinkedIn queries (36 three-layer, 19 two-layer) at the five-operator ceiling. Working list only; no run started. See [the round note](keywords/linkedin-apify-2026-10-17/README.md).
 - **Three-provider LinkedIn pilot (2026-10-07–09), synced 2026-10-16:** Apify 1,137 + Coresignal 200 + Bright Data 200 master posts in Neon; local 200-per-source review packs. See [project log §48](project-log.md#48-complete-three-provider-set-synced-2026-10-16) and [data README](../data/README.md). Not an approved corpus; ethics/ToS still open.
 - **Pilot analysis & independent methodology (2026-09-25):** completed pilot on Run 013 (1,076 posts); see [team meeting guide](../docs/team-meeting-guide-2026-09-25.html), [technical benchmark report](../docs/team-meeting-analysis-2026-09-25.html), and [Kaveh's independent methodology draft](../docs/kaveh-independent-methodology.md).
 - [Sent team feedback — 15 September](team/team-feedback-to-team-2026-09-15-FA.md): registered Persian letter, with its original Google Doc source. Sent feedback is not a record of implemented changes or verified findings.
@@ -25,6 +26,7 @@ The two-layer architecture + GenAI, then skill-filter sampling proposal is histo
 | [Search scope and storage](keywords/keywords-search-storage.md)    | Historical sampling sketches and proposed handling requirements                                |
 | [Source identification](keywords/keyword-source-identification.md) | Dated comparison of teammate claims and published analogues, including unresolved evidence     |
 | [LinkedIn Boolean sub-queries, 2026-10-07](keywords/linkedin-boolean-2026-10-07/subqueries.json) | 105 executable sub-queries and the script that generated them from the agreed three-block query; terms only, no collected data |
+| [Apify round, 2026-10-17](keywords/linkedin-apify-2026-10-17/README.md) | Working list for the next Apify pass; the [clean three-layer file](keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) writes every keyword and all 36 queries in full |
 | [HTML catalog](../docs/archive/2026-09-25-historical-keyword-catalog.html) | Presentation of the historical August catalog, with current status notice (archived 2026-09-25; `docs/index.html` now redirects to the 2026-09-25 team meeting guide) |
 
 ## Access and privacy
