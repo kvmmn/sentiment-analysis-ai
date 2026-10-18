@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Saintiment — گزارش نهایی معماری سه‌لایه کلیدواژه‌ها، کوئری‌ها و استخراج Apify (۱۸ اکتبر ۲۰۲۶)</title>
+<title>Saintiment — خلاصه استخراج سه‌لایه Apify و دانلود دیتابیس (۱۸ اکتبر ۲۰۲۶)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Estedad:wght@300;400;600;800&display=swap">
@@ -12,117 +12,102 @@
   --bg:#ffffff; --fg:#1d2329; --muted:#64707d; --line:#e5e9ef; --soft:#f6f8fa;
   --accent:#2563eb; --accent-soft:#eaf1ff; --accent-border:#bfdbfe;
   --good:#16a34a; --good-soft:#eefbf3; --good-border:#bbf7d0;
-  --purple:#7c3aed; --purple-soft:#f3e8ff; --purple-border:#ddd6fe;
-  --amber:#d97706; --amber-soft:#fffbeb; --amber-border:#fde68a;
-  --teal:#0d9488; --teal-soft:#f0fdfa; --teal-border:#99f6e4;
+  --purple:#7c3aed; --purple-soft:#f3e8ff;
+  --amber:#d97706; --amber-soft:#fffbeb;
   --font:"Estedad",Tahoma,"Segoe UI",sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
   color-scheme:light;
 }
 *{box-sizing:border-box}
 html{direction:rtl}
-body{background:var(--bg);color:var(--fg);font:400 15px/1.85 var(--font);padding-inline:18px;padding-block:36px 72px;margin:0;-webkit-font-smoothing:antialiased}
-.wrap{max-width:980px;margin:0 auto;display:grid;gap:44px}
-h1,h2,h3,h4{margin:0;font-weight:800;text-wrap:balance;line-height:1.45}
-h1{font-size:clamp(22px,3.6vw,30px)}
-h2{font-size:19px;display:flex;align-items:center;gap:10px}
-h2 .sec-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-size:13.5px;font-weight:800}
-h3{font-size:15.5px}
-p{margin:0;max-width:82ch}
+body{background:var(--bg);color:var(--fg);font:400 14.5px/1.75 var(--font);padding:28px 16px 56px;margin:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto;display:grid;gap:28px}
+h1,h2,h3{margin:0;font-weight:800;line-height:1.4}
+h1{font-size:clamp(20px,3.2vw,26px)}
+h2{font-size:16.5px;display:flex;align-items:center;gap:8px}
+h3{font-size:14.5px}
+p{margin:0}
 .muted{color:var(--muted)}
-.small{font-size:13.5px}
-section{display:grid;gap:18px}
+.small{font-size:13px}
+section{display:grid;gap:12px}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 
-/* Top Navigation / Quick Links */
-.top-nav{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-bottom:16px;border-bottom:1px solid var(--line)}
-.badge-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+/* Top Bar */
+.top-nav{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;background:var(--soft);color:var(--muted);border:1px solid var(--line)}
 .pill.blue{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-border)}
 .pill.green{background:var(--good-soft);color:var(--good);border-color:var(--good-border)}
-.pill.purple{background:var(--purple-soft);color:var(--purple);border-color:var(--purple-border)}
 
-/* KPI Grid */
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,0.02)}
-.kpi{background:var(--bg);padding:16px 18px;display:grid;gap:3px}
-.kpi b{font-size:24px;font-weight:800;line-height:1.3;direction:ltr;text-align:right}
-.kpi span{font-size:12.5px;color:var(--muted)}
+/* KPIs */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.kpi{background:var(--bg);padding:12px 14px;display:grid;gap:2px}
+.kpi b{font-size:21px;font-weight:800;line-height:1.25;direction:ltr;text-align:right}
+.kpi span{font-size:12px;color:var(--muted)}
 .kpi.blue b{color:var(--accent)}
 .kpi.green b{color:var(--good)}
-.kpi.purple b{color:var(--purple)}
 
-/* Layer Cards */
-.layers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px;align-items:stretch}
-.layer-card{border:1.5px solid var(--line);border-radius:14px;padding:20px;background:var(--bg);display:grid;gap:14px;align-content:start}
-.layer-card.l1{border-top:4px solid var(--accent)}
-.layer-card.l2{border-top:4px solid var(--purple)}
-.layer-card.l3{border-top:4px solid var(--good);grid-column:1 / -1}
-.layer-head{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding-bottom:10px}
-.layer-tag{font-size:12px;font-weight:800;padding:2px 9px;border-radius:6px}
-.l1 .layer-tag{background:var(--accent-soft);color:var(--accent)}
-.l2 .layer-tag{background:var(--purple-soft);color:var(--purple)}
-.l3 .layer-tag{background:var(--good-soft);color:var(--good)}
-
-.sublayer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
-.sublayer-box{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px;align-content:start}
-.sublayer-title{font-size:13px;font-weight:800;display:flex;justify-content:space-between;align-items:center}
-
-.chips{display:flex;flex-wrap:wrap;gap:6px;direction:ltr}
-.chip{font:500 12.5px/1.4 var(--mono);padding:3px 8px;border-radius:6px;background:var(--bg);border:1px solid var(--line);color:var(--fg)}
-.chip.added{background:var(--accent-soft);border-color:var(--accent-border);color:#1e40af;font-weight:600}
-.legend-row{display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--muted);align-items:center}
-.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-left:5px;vertical-align:middle}
-
-/* Formula & Optimizations */
-.formula-card{border:1px solid var(--accent-border);background:linear-gradient(180deg,var(--accent-soft) 0%,#ffffff 85%);border-radius:12px;padding:18px 20px;display:grid;gap:10px}
-.formula{font:600 13.5px/1.7 var(--mono);direction:ltr;text-align:left;background:var(--bg);padding:10px 14px;border-radius:8px;border:1px solid var(--accent-border);overflow-x:auto;color:#1e3a8a}
-
-.opt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-.opt-card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--bg);display:grid;gap:8px;align-content:start}
-.opt-card h4{font-size:14px;color:var(--fg);display:flex;align-items:center;gap:6px}
-.opt-card p{font-size:13.5px;color:var(--muted)}
+/* Access & Download Hub */
+.hub{border:2px solid var(--accent);background:linear-gradient(180deg,var(--accent-soft) 0%,#ffffff 75%);border-radius:14px;padding:18px;display:grid;gap:14px}
+.hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.hub-box{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:8px;align-content:start}
+.btn-row{display:flex;flex-wrap:wrap;gap:6px}
+.btn{display:inline-flex;align-items:center;gap:5px;font:600 12.5px var(--font);padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.primary:hover{opacity:.92;color:#fff}
+.cmd-box{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0f172a;color:#f8fafc;padding:8px 12px;border-radius:8px;direction:ltr;font:500 12px/1.5 var(--mono);overflow-x:auto}
+.cmd-box button{font:600 11.5px var(--font);background:#334155;color:#fff;border:0;padding:4px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.cmd-box button:hover{background:var(--accent)}
 .code-inline{font:500 12px var(--mono);background:var(--soft);padding:1px 6px;border-radius:4px;border:1px solid var(--line);direction:ltr;display:inline-block}
+
+/* Compact 3-Layer Keywords */
+.kw-table{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--bg)}
+.kw-row{display:grid;grid-template-columns:190px 1fr;border-bottom:1px solid var(--line)}
+.kw-row:last-child{border-bottom:0}
+.kw-label{background:var(--soft);padding:10px 14px;font-weight:700;font-size:13px;border-left:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;gap:2px}
+.kw-label small{font-weight:400;font-size:11.5px;color:var(--muted)}
+.chips{padding:10px 12px;display:flex;flex-wrap:wrap;gap:5px;direction:ltr;align-items:center}
+.chip{font:500 12px/1.35 var(--mono);padding:2px 7px;border-radius:5px;background:var(--soft);border:1px solid var(--line);color:var(--fg)}
+.chip.added{background:var(--accent-soft);border-color:var(--accent-border);color:#1e40af;font-weight:600}
 
 /* Tables */
 .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
-table{border-collapse:collapse;width:100%;min-width:640px;font-size:13.5px}
-th,td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}
+table{border-collapse:collapse;width:100%;min-width:580px;font-size:13px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}
 tbody tr:last-child td, tbody tr:last-child th{border-bottom:0}
-thead th{font-weight:600;color:var(--muted);font-size:12.5px;background:var(--soft);white-space:nowrap}
+thead th{font-weight:600;color:var(--muted);font-size:12px;background:var(--soft);white-space:nowrap}
 tbody th{font-weight:600;white-space:nowrap}
-.ltr{direction:ltr;text-align:left;font-family:var(--mono);font-size:12.5px}
+.ltr{direction:ltr;text-align:left;font-family:var(--mono);font-size:12px}
 .num-cell{direction:ltr;text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
 
-/* Family badge */
-.fam-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:600;font-family:var(--font)}
+.fam-badge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:11px;font-weight:600}
 .fam-direct{background:var(--accent-soft);color:var(--accent)}
 .fam-cognition{background:var(--purple-soft);color:var(--purple)}
 .fam-process{background:var(--good-soft);color:var(--good)}
 .fam-technical_and_pedagogy{background:var(--amber-soft);color:var(--amber)}
 
-/* Interactive Query Viewer */
-.viewer-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;background:var(--soft);padding:12px 14px;border-radius:12px;border:1px solid var(--line)}
-.tabs{display:flex;flex-wrap:wrap;gap:6px}
-.tabs button{font:600 12.5px var(--font);border:1px solid var(--line);background:var(--bg);color:var(--muted);padding:6px 12px;border-radius:8px;cursor:pointer;transition:all .15s}
+/* Collapsible Details */
+details{border:1px solid var(--line);border-radius:12px;background:var(--bg);overflow:hidden}
+summary{padding:12px 16px;font-weight:800;font-size:14.5px;cursor:pointer;background:var(--soft);display:flex;justify-content:space-between;align-items:center;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"نمایش جدول کامل ۴۸ کوئری ▾";font-size:12.5px;font-weight:600;color:var(--accent)}
+details[open] summary::after{content:"بستن جدول ▴"}
+.details-body{padding:14px;display:grid;gap:12px}
+
+.viewer-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+.tabs{display:flex;flex-wrap:wrap;gap:5px}
+.tabs button{font:600 12px var(--font);border:1px solid var(--line);background:var(--bg);color:var(--muted);padding:5px 10px;border-radius:7px;cursor:pointer}
 .tabs button[aria-selected="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
-.action-btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.search-input{font:400 13px var(--font);padding:6px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);min-width:190px}
-.copy-btn{font:600 12.5px var(--font);border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:6px 12px;border-radius:8px;cursor:pointer}
-.copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+.search-input{font:400 12.5px var(--font);padding:5px 10px;border:1px solid var(--line);border-radius:7px;min-width:180px}
 
-/* Bar visual inside table */
-.bar-wrap{display:flex;align-items:center;gap:8px;direction:ltr}
-.bar-bg{width:64px;height:7px;background:var(--soft);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
-.bar-fill{height:100%;background:var(--accent);border-radius:99px}
-.bar-fill.full{background:var(--good)}
+footer{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted)}
 
-/* DB Card */
-.db-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.db-card{border:1.5px solid var(--line);border-radius:12px;padding:18px;background:var(--bg);display:grid;gap:10px;align-content:start}
-.db-card.primary{border-color:var(--good-border);background:linear-gradient(180deg,var(--good-soft) 0%,#ffffff 70%)}
-
-footer{border-top:1px solid var(--line);padding-top:20px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:13px;color:var(--muted)}
+@media (max-width:640px){
+  .kw-row{grid-template-columns:1fr}
+  .kw-label{border-left:0;border-bottom:1px solid var(--line)}
+}
 </style>
 </head>
 <body>
@@ -132,384 +117,209 @@ footer{border-top:1px solid var(--line);padding-top:20px;display:flex;flex-wrap:
   <!-- Top Bar -->
   <div class="top-nav">
     <div class="badge-row">
-      <span class="pill blue">پروژه Saintiment</span>
-      <span class="pill green">اجرای نهایی سه‌لایه: ۱۸ اکتبر ۲۰۲۶</span>
-      <span class="pill purple">Apify Run: X2gdX05u8rP41b4rG</span>
+      <span class="pill blue">Saintiment</span>
+      <span class="pill green">استخراج سه‌لایه نهایی: ۱۸ اکتبر ۲۰۲۶ (Run: X2gdX05u8rP41b4rG)</span>
     </div>
     <div class="badge-row small">
-      <a href="team-meeting-guide-2026-09-25.html">گزارش جلسه ۲۵ سپتامبر</a> ·
-      <a href="team-meeting-analysis-2026-09-25.html">بنچمارک فنی Run 013</a> ·
+      <a href="team-meeting-guide-2026-09-25.html">گزارش ۲۵ سپتامبر</a> ·
       <a href="layer2-query-decision-2026-10-16.html">یادداشت ۱۶ اکتبر</a>
     </div>
   </div>
 
-  <!-- Header -->
-  <header style="display:grid;gap:12px">
-    <h1>گزارش نهایی معماری سه‌لایه کلیدواژه‌ها، ۴۸ کوئری لینکدین و نتایج استخراج Apify</h1>
-    <p class="muted">
-      این صفحه ساختار نهایی و تثبیت‌شدهٔ کلیدواژه‌ها و کوئری‌های سه‌لایهٔ پروژه (<span class="code-inline">Domain/Tools ∧ AI ∧ Skill/Cognition/Process/Education</span>) و خروجی اجرای زندهٔ آن روی اکتور <span class="code-inline">harvestapi/linkedin-post-search</span> در تاریخ ۱۸ اکتبر ۲۰۲۶ را برای اعضای تیم مستند می‌کند.
+  <!-- Header + KPIs -->
+  <header style="display:grid;gap:8px">
+    <h1>خلاصه استخراج سه‌لایه لینکدین (Apify) و دسترسی مستقیم به دیتابیس</h1>
+    <p class="muted small">
+      ساختار سه‌لایهٔ توافق‌شده (<span class="code-inline">(Domain/Tool) AND (AI) AND (Skill/Cognition/Process)</span> با سقف ۵ عملگر بولین) روی Apify اجرا شد و تمامی ۴۸ کوئری خروجی برگرداندند.
     </p>
   </header>
 
-  <!-- Executive KPIs -->
   <div class="kpis">
-    <div class="kpi blue">
-      <b>55</b>
-      <span>کلیدواژه نهایی در ۳ لایه</span>
-    </div>
-    <div class="kpi blue">
-      <b>48 / 48</b>
-      <span>کوئری سه‌لایه با خروجی (۱۰۰٪)</span>
-    </div>
-    <div class="kpi green">
-      <b>2,158</b>
-      <span>آیتم خام استخراج‌شده (Raw Hits)</span>
-    </div>
-    <div class="kpi green">
-      <b>1,858</b>
-      <span>پست یکتا در این ران (Unique Posts)</span>
-    </div>
-    <div class="kpi purple">
-      <b>99.95%</b>
-      <span>پوشش عنوان شغلی نویسنده (۱٬۸۵۷ پست)</span>
-    </div>
-    <div class="kpi">
-      <b>$4.32</b>
-      <span>هزینه اجرا (از اعتبار رایگان ماهانه)</span>
-    </div>
+    <div class="kpi blue"><b>55</b><span>کلیدواژه نهایی (۳ لایه)</span></div>
+    <div class="kpi blue"><b>48 / 48</b><span>کوئری با خروجی (۱۰۰٪)</span></div>
+    <div class="kpi green"><b>2,158</b><span>آیتم خام (Raw Hits)</span></div>
+    <div class="kpi green"><b>1,858</b><span>پست یکتا (Unique Posts)</span></div>
+    <div class="kpi green"><b>99.95%</b><span>دارای عنوان شغلی (۱٬۸۵۷ پست)</span></div>
   </div>
 
-  <!-- Section 1: Three-Layer Architecture & 55 Keywords -->
-  <section>
-    <h2><span class="sec-num">۱</span> معماری سه‌لایه و ۵۵ کلیدواژهٔ نهایی</h2>
-    <p class="muted small">
-      تمام کوئری‌ها دقیقاً از الگوی سه‌لایه با سقف حداکثر <b>۵ عملگر بولین</b> پیروی می‌کنند تا با محدودیت موتور جستجوی لینکدین کاملاً سازگار باشند:
-    </p>
+  <!-- 1. Direct Access & Download Hub (Front and Center) -->
+  <section class="hub">
+    <h2>📥 ۱. دانلود و دسترسی سریع به دیتابیس و فایل‌ها</h2>
 
-    <div class="formula-card">
-      <div class="small" style="font-weight:700;color:var(--accent)">فرمول استاندارد هر ۴۸ کوئری (حداکثر ۵ عملگر بولین):</div>
-      <div class="formula">(Layer 1: Domain_A OR Domain_B) AND (Layer 2: AI_A OR AI_B) AND (Layer 3: Skill_A OR Skill_B)</div>
-      <div class="legend-row">
-        <span><i class="legend-dot" style="background:var(--bg);border:1px solid var(--line)"></i>کلیدواژه‌های پایهٔ تیم (۳۵ واژه)</span>
-        <span><i class="legend-dot" style="background:var(--accent-soft);border:1px solid var(--accent-border)"></i>کلیدواژه‌های تقویتی استخراج‌شده از مرور جامع اسناد پروژه (۲۰ واژهٔ آبی‌رنگ)</span>
-      </div>
-    </div>
-
-    <div class="layers-grid">
-      <!-- Layer 1 -->
-      <div class="layer-card l1">
-        <div class="layer-head">
-          <h3>لایه اول: دامنه و ابزارهای معماری</h3>
-          <span class="layer-tag">Layer 1 — 16 واژه</span>
+    <div class="hub-grid">
+      <div class="hub-box">
+        <h3>الف) دریافت یک‌خطی کل دیتابیس در ۴ فرمت (SQLite, CSV, JSON, JSONL)</h3>
+        <p class="small muted">در ریشهٔ ریپو (با داشتن فایل <span class="code-inline">.env</span>) این دستور را اجرا کنید تا هر ۴ فایل مستقیم از سرور Neon در پوشهٔ <span class="code-inline">data/local/linkedin-apify-2026-10-17/</span> ساخته شوند:</p>
+        <div class="cmd-box">
+          <code id="dlCmd">git pull &amp;&amp; .venv/bin/python src/ingest/download_three_layer_db.py</code>
+          <button type="button" onclick="copyText('git pull && .venv/bin/python src/ingest/download_three_layer_db.py', 'دستور دانلود کپی شد.')">کپی دستور</button>
         </div>
-        <p class="small muted">هویت حرفه‌ای معماران، نرم‌افزارهای تخصصی BIM/CAD/Parametric، تجسم‌سازی معماری و آموزش معماری.</p>
-        <div class="chips">
-          <span class="chip">architect</span>
-          <span class="chip added" title="فرم جمع برای حذف تداخل با software architect">architects</span>
-          <span class="chip">architecture</span>
-          <span class="chip">architectural</span>
-          <span class="chip added">"architectural design"</span>
-          <span class="chip added">"computational design"</span>
-          <span class="chip">BIM</span>
-          <span class="chip">Revit</span>
-          <span class="chip">Rhino</span>
-          <span class="chip">Grasshopper</span>
-          <span class="chip">Parametric</span>
-          <span class="chip">"generative design"</span>
-          <span class="chip">Rendering</span>
-          <span class="chip added" title="اصطلاح تخصصی بدون ابهام برای تجسم‌سازی معماری">archviz</span>
-          <span class="chip added">"architectural education"</span>
-          <span class="chip added">"architecture students"</span>
+        <div class="small muted" style="display:grid;gap:3px;margin-top:2px">
+          <div>• <b>SQLite DB (۱۹.۵ مگابایت):</b> <span class="code-inline">apify_three_layer_2026-10-18.db</span></div>
+          <div>• <b>CSV یکتا (۵.۱ مگابایت، ۱٬۸۵۸ پست):</b> <span class="code-inline">apify_three_layer_2026-10-18.csv</span></div>
+          <div>• <b>JSON یکتا (۷.۷ مگابایت):</b> <span class="code-inline">apify_three_layer_2026-10-18.json</span></div>
+          <div>• <b>JSONL خام (۹.۸ مگابایت، ۲٬۱۵۸ آیتم):</b> <span class="code-inline">apify_raw/WUsK3RRYo7nKEOUbA.jsonl</span></div>
         </div>
       </div>
 
-      <!-- Layer 2 -->
-      <div class="layer-card l2">
-        <div class="layer-head">
-          <h3>لایه دوم: هوش مصنوعی و ابزارهای زایا</h3>
-          <span class="layer-tag">Layer 2 — 10 واژه</span>
+      <div class="hub-box">
+        <h3>ب) اتصال مستقیم به دیتابیس مجزا در Neon و فایل‌های کوئری</h3>
+        <p class="small muted">
+          دیتابیس اختصاصی این ران روی سرور Neon (جدا از دیتابیس قبلی) ساخته شده است:
+        </p>
+        <div class="small" style="display:grid;gap:4px">
+          <div>• <b>نام دیتابیس مجزا در Neon:</b> <span class="code-inline">_saintiment_apify_three_layer_db</span></div>
+          <div>• <b>جداول:</b> <span class="code-inline">master_posts</span> (۱٬۸۵۸ پست با ۳۴ ستون)، <span class="code-inline">raw_items</span> (۲٬۱۵۸)، <span class="code-inline">queries</span> (۴۸)، <span class="code-inline">post_query_hits</span> (۲٬۱۵۸)</div>
+          <div>• <b>اسکریپت دانلود:</b> <a href="https://github.com/kvmmn/sentiment-analysis-ai/blob/main/src/ingest/download_three_layer_db.py" target="_blank"><span class="code-inline">src/ingest/download_three_layer_db.py</span></a></div>
         </div>
-        <p class="small muted">مفاهیم پایهٔ هوش مصنوعی زایا به همراه مدل‌های متنی و تصویری رایج در استودیوهای معماری.</p>
-        <div class="chips">
-          <span class="chip">AI</span>
-          <span class="chip">GenAI</span>
-          <span class="chip">"generative AI"</span>
-          <span class="chip">"artificial intelligence"</span>
-          <span class="chip">Midjourney</span>
-          <span class="chip">ChatGPT</span>
-          <span class="chip">Copilot</span>
-          <span class="chip added">"Stable Diffusion"</span>
-          <span class="chip added">DALL-E</span>
-          <span class="chip added">"AI rendering"</span>
-        </div>
-      </div>
-
-      <!-- Layer 3 -->
-      <div class="layer-card l3">
-        <div class="layer-head">
-          <h3>لایه سوم: مهارت، شناخت، فرآیند کار و آموزش (۴ زیرشاخهٔ تحلیلی)</h3>
-          <span class="layer-tag">Layer 3 — 29 واژه</span>
-        </div>
-        <div class="sublayer-grid">
-          <div class="sublayer-box">
-            <div class="sublayer-title">
-              <span>۳.۱. مهارت مستقیم (Direct Skill)</span>
-              <span class="muted small">۸ واژه</span>
-            </div>
-            <div class="chips">
-              <span class="chip">skill</span>
-              <span class="chip">skills</span>
-              <span class="chip">upskilling</span>
-              <span class="chip">deskilling</span>
-              <span class="chip">reskilling</span>
-              <span class="chip added">downskilling</span>
-              <span class="chip added">"skill loss"</span>
-              <span class="chip added">expertise</span>
-            </div>
-          </div>
-
-          <div class="sublayer-box">
-            <div class="sublayer-title">
-              <span>۳.۲. شناخت و طراحی (RQ2a/b)</span>
-              <span class="muted small">۸ واژه</span>
-            </div>
-            <div class="chips">
-              <span class="chip">creativity</span>
-              <span class="chip added">"design thinking"</span>
-              <span class="chip">"critical thinking"</span>
-              <span class="chip">judgment</span>
-              <span class="chip">intuition</span>
-              <span class="chip">authorship</span>
-              <span class="chip added">"cognitive offloading"</span>
-              <span class="chip added">overreliance</span>
-            </div>
-          </div>
-
-          <div class="sublayer-box">
-            <div class="sublayer-title">
-              <span>۳.۳. فرآیند، سازگاری و نقش (RQ1)</span>
-              <span class="muted small">۷ واژه</span>
-            </div>
-            <div class="chips">
-              <span class="chip">workflow</span>
-              <span class="chip">automation</span>
-              <span class="chip">replace</span>
-              <span class="chip added">replacement</span>
-              <span class="chip added">augmentation</span>
-              <span class="chip added">"human-in-the-loop"</span>
-              <span class="chip added">"role of the architect"</span>
-            </div>
-          </div>
-
-          <div class="sublayer-box">
-            <div class="sublayer-title">
-              <span>۳.۴. فنی، اقلیمی و آموزش (RQ3a/RQ4)</span>
-              <span class="muted small">۶ واژه</span>
-            </div>
-            <div class="chips">
-              <span class="chip added">"technical skills"</span>
-              <span class="chip added">"environmental design"</span>
-              <span class="chip added">"building performance"</span>
-              <span class="chip added">"energy modeling"</span>
-              <span class="chip added">curriculum</span>
-              <span class="chip added">learning</span>
-            </div>
-          </div>
+        <div class="btn-row" style="margin-top:4px">
+          <a class="btn primary" href="https://github.com/kvmmn/sentiment-analysis-ai/blob/main/research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md" target="_blank">📄 لیست تمیز کلیدواژه و کوئری‌ها</a>
+          <a class="btn" href="https://raw.githubusercontent.com/kvmmn/sentiment-analysis-ai/main/research/keywords/linkedin-apify-2026-10-17/queries.json" target="_blank" download="queries.json">📦 دانلود queries.json</a>
+          <button type="button" class="btn" onclick="downloadQueriesCsv()">📊 دانلود CSV آمار ۴۸ کوئری</button>
+          <button type="button" class="btn" onclick="copyQueries('text')">📋 کپی ۴۸ کوئری</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Section 2: Optimizations Performed -->
+  <!-- 2. Summary Table by Family (4 compact rows) -->
   <section>
-    <h2><span class="sec-num">۲</span> بهینه‌سازی‌های انجام‌شده بدون تغییر اسکلت مورد توافق تیم</h2>
-    <div class="opt-grid">
-      <div class="opt-card">
-        <h4>۱. حذف تکرارهای لایه سوم در ۳۶ کوئری پایه</h4>
-        <p>
-          در پیش‌نویس اولیه، سه واژهٔ <span class="code-inline">reskilling</span>، <span class="code-inline">judgment</span> و <span class="code-inline">automation</span> هر کدام در دو زوج مختلف تکرار شده بودند. بدون افزایش تعداد کوئری‌ها، جای خالی آن‌ها با <span class="code-inline">"skill loss"</span>، <span class="code-inline">"design thinking"</span> (هستهٔ RQ2a) و <span class="code-inline">augmentation</span> پر شد.
-        </p>
-      </div>
-      <div class="opt-card">
-        <h4>۲. تعادل روش‌شناختی Substitution و Augmentation</h4>
-        <p>
-          طبق نقد روش‌شناختی ۱۵ سپتامبر، جفت شدن <span class="code-inline">(replace OR automation)</span> باعث سوگیری نمونه‌گیری به سمت جایگزینی می‌شد. تبدیل آن به <span class="code-inline">(replace OR augmentation)</span> هر دو قطب جایگزینی و توانمندسازی را در یک کوئری متوازن کرد.
-        </p>
-      </div>
-      <div class="opt-card">
-        <h4>۳. افزودن کلیدواژه‌های توافق‌شده و یافته‌های پایلوت</h4>
-        <p>
-          واژه‌های <span class="code-inline">downskilling</span> (توافق ۸ سپتامبر)، <span class="code-inline">"cognitive offloading"</span> و <span class="code-inline">overreliance</span> (مهم‌ترین یافتهٔ تحلیل Run 013 و کدگذاری ایمان)، و ابزارهای تصویری <span class="code-inline">"Stable Diffusion"</span>، <span class="code-inline">DALL-E</span> و <span class="code-inline">"AI rendering"</span> اضافه شدند.
-        </p>
-      </div>
-      <div class="opt-card">
-        <h4>۴. پوشش کامل سوالات پژوهشی RQ3a و RQ4</h4>
-        <p>
-          ۴ کوئری هدفمند برای مهارت‌های فنی و اقلیمی (<span class="code-inline">"building performance"</span>، <span class="code-inline">"energy modeling"</span>) و آموزش معماری (<span class="code-inline">"architectural education"</span> با واژگان خنثی <span class="code-inline">curriculum</span> و <span class="code-inline">learning</span> بدون پیش‌فرض منفی) اضافه شد.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 3: Extraction Breakdown by Family & Quality Metrics -->
-  <section>
-    <h2><span class="sec-num">۳</span> آمار عملکرد استخراج به تفکیک خانواده‌های کوئری</h2>
+    <h2>📊 ۲. خلاصه خروجی به تفکیک ۴ خانواده کوئری</h2>
     <div class="scroll">
       <table>
         <thead>
           <tr>
             <th>خانواده تحلیلی (لایه سوم)</th>
             <th>تعداد کوئری</th>
-            <th>کوئری‌های با خروجی</th>
-            <th>آیتم‌های خام (Raw Hits)</th>
-            <th>پست‌های یکتا در خانواده</th>
-            <th>میانگین پست در هر کوئری</th>
-            <th>پوشش سوالات پژوهشی</th>
+            <th>آیتم خام (Hits)</th>
+            <th>پست یکتا</th>
+            <th>سوالات پژوهشی</th>
+            <th>نکته کلیدی</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th><span class="fam-badge fam-direct">Direct Skill (مهارت مستقیم)</span></th>
+            <th><span class="fam-badge fam-direct">۱. مهارت مستقیم (Direct Skill)</span></th>
             <td class="num-cell">16 (Q01–Q16)</td>
-            <td class="num-cell" style="color:var(--good)">16 / 16 (100%)</td>
             <td class="num-cell">686</td>
             <td class="num-cell">544</td>
-            <td class="num-cell">42.9</td>
             <td>RQ1, RQ3b</td>
+            <td class="small muted">پوشش <span class="code-inline">upskilling</span>، <span class="code-inline">deskilling</span>، <span class="code-inline">downskilling</span> و <span class="code-inline">"skill loss"</span></td>
           </tr>
           <tr>
-            <th><span class="fam-badge fam-cognition">Cognition &amp; Design (شناخت و طراحی)</span></th>
+            <th><span class="fam-badge fam-cognition">۲. شناخت و طراحی (Cognition)</span></th>
             <td class="num-cell">16 (Q17–Q32)</td>
-            <td class="num-cell" style="color:var(--good)">16 / 16 (100%)</td>
             <td class="num-cell">732</td>
             <td class="num-cell">681</td>
-            <td class="num-cell">45.8</td>
             <td>RQ2a, RQ2b</td>
+            <td class="small muted">بیشترین خروجی یکتا؛ شامل <span class="code-inline">"design thinking"</span> و <span class="code-inline">"cognitive offloading"</span></td>
           </tr>
           <tr>
-            <th><span class="fam-badge fam-process">Process, Adaptation &amp; Role (فرآیند و نقش)</span></th>
+            <th><span class="fam-badge fam-process">۳. فرآیند و نقش (Process &amp; Role)</span></th>
             <td class="num-cell">12 (Q33–Q44)</td>
-            <td class="num-cell" style="color:var(--good)">12 / 12 (100%)</td>
             <td class="num-cell">540</td>
             <td class="num-cell">538</td>
-            <td class="num-cell">45.0</td>
             <td>RQ1, RQ3b</td>
+            <td class="small muted">موازنهٔ <span class="code-inline">(replace OR augmentation)</span> و <span class="code-inline">"role of the architect"</span></td>
           </tr>
           <tr>
-            <th><span class="fam-badge fam-technical_and_pedagogy">Technical, Environmental &amp; Pedagogy (فنی و آموزش)</span></th>
+            <th><span class="fam-badge fam-technical_and_pedagogy">۴. فنی و آموزش (Technical &amp; Pedagogy)</span></th>
             <td class="num-cell">4 (Q45–Q48)</td>
-            <td class="num-cell" style="color:var(--good)">4 / 4 (100%)</td>
             <td class="num-cell">200</td>
             <td class="num-cell">190</td>
-            <td class="num-cell">50.0</td>
             <td>RQ3a, RQ4</td>
+            <td class="small muted">هر ۴ کوئری سقف کامل ۵۰ پست را پر کردند (پایداری + آموزش معماری)</td>
           </tr>
           <tr style="background:var(--soft);font-weight:800">
-            <th>مجموع کل استخراج سه‌لایه (Run X2gdX05u8rP41b4rG)</th>
+            <th>مجموع کل (۸۷.۱٪ پست‌ها منحصربه‌فردِ ۱ کوئری)</th>
             <td class="num-cell">48 کوئری</td>
-            <td class="num-cell" style="color:var(--good)">48 / 48 (100%)</td>
             <td class="num-cell">2,158</td>
-            <td class="num-cell">1,858 پست یکتا</td>
-            <td class="num-cell">45.0</td>
+            <td class="num-cell">1,858 یکتا</td>
             <td>RQ1 – RQ4</td>
+            <td class="small muted">۱٬۵۱۴ پروفایل حقیقی (۸۱.۵٪) + ۳۴۴ صفحه شرکت/استودیو (۱۸.۵٪)</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-    <div class="opt-grid">
-      <div class="opt-card">
-        <h4>استقلال بالای کوئری‌ها (۸۷.۱٪ پست‌های منحصربه‌فرد)</h4>
-        <p>
-          از <b>۱٬۸۵۸</b> پست یکتا، <b>۱٬۶۱۸ پست (۸۷.۱٪)</b> فقط توسط یک کوئری واحد برگردانده شده‌اند، <b>۲۰۱ پست (۱۰.۸٪)</b> در ۲ کوئری مشترک بوده‌اند و تنها <b>۳۹ پست (۲.۱٪)</b> در ۳ کوئری یا بیشتر تکرار شده‌اند. این یعنی ۴۸ کوئری هم‌پوشانی کاذب ندارند و هر کدام بخش متفاوتی از گفتمان را پوشش می‌دهند.
-        </p>
-      </div>
-      <div class="opt-card">
-        <h4>رفع کامل نقص Headline نویسندگان (۹۹.۹۵٪)</h4>
-        <p>
-          برخلاف اسکرپر قبلی و خروجی Coresignal که فیلد عنوان شغلی (<span class="code-inline">author_headline</span>) در آن‌ها خالی بود، در این استخراج <b>۱٬۸۵۷ از ۱٬۸۵۸ پست یکتا (۹۹.۹۵٪)</b> دارای عنوان شغلی کامل هستند (<b>۱٬۵۱۴</b> پروفایل حقیقی و <b>۳۴۴</b> صفحهٔ شرکت/استودیو).
-        </p>
-      </div>
-    </div>
   </section>
 
-  <!-- Section 4: Interactive 48-Query Explorer -->
+  <!-- 3. Compact 55 Keywords Table -->
   <section>
-    <h2><span class="sec-num">۴</span> جدول تعاملی ۴۸ کوئری سه‌لایه و تعداد خروجی هر کوئری</h2>
-    <div class="viewer-bar">
-      <div class="tabs" role="tablist">
-        <button type="button" role="tab" aria-selected="true" onclick="filterQueries('all', this)">همه کوئری‌ها (48)</button>
-        <button type="button" role="tab" aria-selected="false" onclick="filterQueries('direct', this)">مهارت مستقیم (16)</button>
-        <button type="button" role="tab" aria-selected="false" onclick="filterQueries('cognition', this)">شناخت و طراحی (16)</button>
-        <button type="button" role="tab" aria-selected="false" onclick="filterQueries('process', this)">فرآیند و نقش (12)</button>
-        <button type="button" role="tab" aria-selected="false" onclick="filterQueries('technical_and_pedagogy', this)">فنی و آموزش (4)</button>
+    <h2>🔑 ۳. لیست ۵۵ کلیدواژه نهایی در ۳ لایه <span class="muted small" style="font-weight:400">(تگ‌های آبی = تقویتی اضافه‌شده از اسناد پروژه)</span></h2>
+    <div class="kw-table">
+      <div class="kw-row">
+        <div class="kw-label">لایه ۱: دامنه و ابزارها<small>16 کلیدواژه</small></div>
+        <div class="chips">
+          <span class="chip">architect</span><span class="chip added">architects</span><span class="chip">architecture</span><span class="chip">architectural</span><span class="chip added">"architectural design"</span><span class="chip added">"computational design"</span><span class="chip">BIM</span><span class="chip">Revit</span><span class="chip">Rhino</span><span class="chip">Grasshopper</span><span class="chip">Parametric</span><span class="chip">"generative design"</span><span class="chip">Rendering</span><span class="chip added">archviz</span><span class="chip added">"architectural education"</span><span class="chip added">"architecture students"</span>
+        </div>
       </div>
-      <div class="action-btns">
-        <input type="search" id="qSearch" class="search-input" placeholder="جستجو در کوئری‌ها (مثلاً Revit)..." oninput="renderTable()">
-        <button type="button" class="copy-btn" onclick="copyQueries('text')">کپی لیست ۴۸ کوئری</button>
-        <button type="button" class="copy-btn" onclick="copyQueries('json')">کپی آرایه JSON</button>
+      <div class="kw-row">
+        <div class="kw-label">لایه ۲: هوش مصنوعی<small>10 کلیدواژه</small></div>
+        <div class="chips">
+          <span class="chip">AI</span><span class="chip">GenAI</span><span class="chip">"generative AI"</span><span class="chip">"artificial intelligence"</span><span class="chip">Midjourney</span><span class="chip">ChatGPT</span><span class="chip">Copilot</span><span class="chip added">"Stable Diffusion"</span><span class="chip added">DALL-E</span><span class="chip added">"AI rendering"</span>
+        </div>
       </div>
-    </div>
-
-    <div class="scroll" style="max-height:540px;overflow-y:auto">
-      <table>
-        <thead style="position:sticky;top:0;z-index:2">
-          <tr>
-            <th>کد</th>
-            <th>خانواده</th>
-            <th>تعداد پست (از سقف ۵۰)</th>
-            <th>پست منحصربه‌فرد</th>
-            <th style="text-align:left">عبارت بولین سه‌لایه (Layer 1 AND Layer 2 AND Layer 3)</th>
-          </tr>
-        </thead>
-        <tbody id="queryTableBody"></tbody>
-      </table>
+      <div class="kw-row">
+        <div class="kw-label">لایه ۳.۱: مهارت مستقیم<small>8 کلیدواژه</small></div>
+        <div class="chips">
+          <span class="chip">skill</span><span class="chip">skills</span><span class="chip">upskilling</span><span class="chip">deskilling</span><span class="chip">reskilling</span><span class="chip added">downskilling</span><span class="chip added">"skill loss"</span><span class="chip added">expertise</span>
+        </div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-label">لایه ۳.۲: شناخت و طراحی<small>8 کلیدواژه</small></div>
+        <div class="chips">
+          <span class="chip">creativity</span><span class="chip added">"design thinking"</span><span class="chip">"critical thinking"</span><span class="chip">judgment</span><span class="chip">intuition</span><span class="chip">authorship</span><span class="chip added">"cognitive offloading"</span><span class="chip added">overreliance</span>
+        </div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-label">لایه ۳.۳: فرآیند و نقش<small>7 کلیدواژه</small></div>
+        <div class="chips">
+          <span class="chip">workflow</span><span class="chip">automation</span><span class="chip">replace</span><span class="chip added">replacement</span><span class="chip added">augmentation</span><span class="chip added">"human-in-the-loop"</span><span class="chip added">"role of the architect"</span>
+        </div>
+      </div>
+      <div class="kw-row">
+        <div class="kw-label">لایه ۳.۴: فنی و آموزش<small>6 کلیدواژه</small></div>
+        <div class="chips">
+          <span class="chip added">"technical skills"</span><span class="chip added">"environmental design"</span><span class="chip added">"building performance"</span><span class="chip added">"energy modeling"</span><span class="chip added">curriculum</span><span class="chip added">learning</span>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Section 5: Dedicated Database Architecture -->
-  <section>
-    <h2><span class="sec-num">۵</span> دیتابیس اختصاصی و فایل‌های خروجی</h2>
-    <p class="muted small">
-      این استخراج علاوه بر دیتابیس تجمیعی، در یک دیتابیس کاملاً مجزا روی سرور Neon Postgres و یک دیتابیس SQLite لوکال با اسکیمای غنی (۳۴ ستون در جدول <span class="code-inline">master_posts</span>) ذخیره شده است:
-    </p>
-    <div class="db-grid">
-      <div class="db-card primary">
-        <div class="badge-row">
-          <span class="pill green">دیتابیس ابری مجزا (Neon Postgres)</span>
+  <!-- 4. Collapsible 48 Queries Table -->
+  <details>
+    <summary>🔎 ۴. مشاهده و فیلتر ریزِ ۴۸ کوئری سه‌لایه و تعداد خروجی هر کدام</summary>
+    <div class="details-body">
+      <div class="viewer-bar">
+        <div class="tabs" role="tablist">
+          <button type="button" aria-selected="true" onclick="filterQueries('all', this)">همه (48)</button>
+          <button type="button" aria-selected="false" onclick="filterQueries('direct', this)">مهارت مستقیم (16)</button>
+          <button type="button" aria-selected="false" onclick="filterQueries('cognition', this)">شناخت و طراحی (16)</button>
+          <button type="button" aria-selected="false" onclick="filterQueries('process', this)">فرآیند و نقش (12)</button>
+          <button type="button" aria-selected="false" onclick="filterQueries('technical_and_pedagogy', this)">فنی و آموزش (4)</button>
         </div>
-        <h3><span class="code-inline">_saintiment_apify_three_layer_db</span></h3>
-        <p class="small muted">
-          شامل ۵ جدول استاندارد و غنی‌شده صرفاً برای همین استخراج سه‌لایه:
-        </p>
-        <ul class="small" style="margin:0;padding-right:18px;color:var(--fg)">
-          <li><span class="code-inline">runs</span>: ۱ رکورد (<span class="code-inline">X2gdX05u8rP41b4rG</span>)</li>
-          <li><span class="code-inline">queries</span>: ۴۸ کوئری (<span class="code-inline">Q01</span>–<span class="code-inline">Q48</span> با شمارش دقیق <span class="code-inline">raw_hits_count</span>)</li>
-          <li><span class="code-inline">raw_items</span>: ۲٬۱۵۸ پیلود کامل JSONB</li>
-          <li><span class="code-inline">master_posts</span>: ۱٬۸۵۸ پست یکتا با ۳۴ ستون (متن، نویسنده، تعاملات، تفکیک ری‌اکشن‌ها، هشتگ‌ها و <span class="code-inline">matched_query_codes</span>)</li>
-          <li><span class="code-inline">post_query_hits</span>: ۲٬۱۵۸ نگاشت پست به کوئری</li>
-        </ul>
+        <input type="search" id="qSearch" class="search-input" placeholder="جستجو در کوئری‌ها..." oninput="renderTable()">
       </div>
-
-      <div class="db-card">
-        <div class="badge-row">
-          <span class="pill blue">فایل‌های لوکال و مستندات ریپو</span>
-        </div>
-        <h3>خروجی‌های آماده برای تحلیل</h3>
-        <ul class="small" style="margin:0;padding-right:18px;color:var(--fg)">
-          <li><b>فایل تمیز کلیدواژه‌ها و کوئری‌ها:</b> <a href="../research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md"><span class="code-inline">keywords-and-queries.md</span></a></li>
-          <li><b>فایل JSON کوئری‌ها:</b> <a href="../research/keywords/linkedin-apify-2026-10-17/queries.json"><span class="code-inline">queries.json</span></a></li>
-          <li><b>دیتابیس SQLite مجزا (لوکال):</b> <span class="code-inline">data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18.db</span> (19.5 MB)</li>
-          <li><b>فایل CSV مجزا (۱٬۸۵۸ پست یکتا):</b> <span class="code-inline">data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18.csv</span> (5.1 MB)</li>
-          <li><b>دیتابیس تجمیعی کل منابع (<span class="code-inline">_saintiment_db</span>):</b> ۳٬۳۵۴ پست یکتا (Apify: ۲٬۹۵۴ + Coresignal: ۲۰۰ + Bright Data: ۲۰۰)</li>
-        </ul>
+      <div class="scroll" style="max-height:420px;overflow-y:auto">
+        <table>
+          <thead style="position:sticky;top:0;z-index:2">
+            <tr>
+              <th>کد</th>
+              <th>خانواده</th>
+              <th>خروجی (از ۵۰)</th>
+              <th>پست منحصربه‌فرد</th>
+              <th style="text-align:left">عبارت بولین سه‌لایه</th>
+            </tr>
+          </thead>
+          <tbody id="queryTableBody"></tbody>
+        </table>
       </div>
     </div>
-  </section>
+  </details>
 
   <footer>
     <span>پروژه پژوهشی <b>Saintiment</b> — ایمان شیخ‌انصاری، مرتضی هزبی، کاوه مؤمنی</span>
-    <span>آخرین به‌روزرسانی: ۱۸ اکتبر ۲۰۲۶</span>
+    <span>۱۸ اکتبر ۲۰۲۶</span>
   </footer>
 
 </div>
@@ -518,11 +328,10 @@ footer{border-top:1px solid var(--line);padding-top:20px;display:flex;flex-wrap:
 const QUERIES = [{"id": "Q01", "family": "direct", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (skill OR skills)"}, {"id": "Q02", "family": "direct", "operators": 5, "hits": 50, "exclusive": 33, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (skill OR skills)"}, {"id": "Q03", "family": "direct", "operators": 5, "hits": 50, "exclusive": 46, "query": "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (skill OR skills)"}, {"id": "Q04", "family": "direct", "operators": 5, "hits": 50, "exclusive": 46, "query": "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (skill OR skills)"}, {"id": "Q05", "family": "direct", "operators": 5, "hits": 50, "exclusive": 45, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)"}, {"id": "Q06", "family": "direct", "operators": 5, "hits": 50, "exclusive": 46, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)"}, {"id": "Q07", "family": "direct", "operators": 5, "hits": 13, "exclusive": 7, "query": "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)"}, {"id": "Q08", "family": "direct", "operators": 5, "hits": 11, "exclusive": 5, "query": "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)"}, {"id": "Q09", "family": "direct", "operators": 5, "hits": 50, "exclusive": 15, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")"}, {"id": "Q10", "family": "direct", "operators": 5, "hits": 34, "exclusive": 23, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")"}, {"id": "Q11", "family": "direct", "operators": 5, "hits": 14, "exclusive": 8, "query": "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")"}, {"id": "Q12", "family": "direct", "operators": 5, "hits": 10, "exclusive": 5, "query": "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")"}, {"id": "Q13", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")"}, {"id": "Q14", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 36, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")"}, {"id": "Q15", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 39, "query": "(Rendering OR archviz) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")"}, {"id": "Q16", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 48, "query": "(Rendering OR archviz) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")"}, {"id": "Q17", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 28, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)"}, {"id": "Q18", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 33, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)"}, {"id": "Q19", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 42, "query": "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)"}, {"id": "Q20", "family": "cognition", "operators": 5, "hits": 47, "exclusive": 40, "query": "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)"}, {"id": "Q21", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 36, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)"}, {"id": "Q22", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 30, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)"}, {"id": "Q23", "family": "cognition", "operators": 5, "hits": 30, "exclusive": 15, "query": "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)"}, {"id": "Q24", "family": "cognition", "operators": 5, "hits": 37, "exclusive": 26, "query": "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)"}, {"id": "Q25", "family": "process", "operators": 5, "hits": 50, "exclusive": 33, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (workflow OR automation)"}, {"id": "Q26", "family": "process", "operators": 5, "hits": 50, "exclusive": 29, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (workflow OR automation)"}, {"id": "Q27", "family": "process", "operators": 5, "hits": 50, "exclusive": 44, "query": "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (workflow OR automation)"}, {"id": "Q28", "family": "process", "operators": 5, "hits": 50, "exclusive": 40, "query": "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (workflow OR automation)"}, {"id": "Q29", "family": "process", "operators": 5, "hits": 50, "exclusive": 30, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)"}, {"id": "Q30", "family": "process", "operators": 5, "hits": 50, "exclusive": 31, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)"}, {"id": "Q31", "family": "process", "operators": 5, "hits": 50, "exclusive": 34, "query": "(Rendering OR architecture) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)"}, {"id": "Q32", "family": "process", "operators": 5, "hits": 50, "exclusive": 41, "query": "(Rendering OR architecture) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)"}, {"id": "Q33", "family": "direct", "operators": 5, "hits": 50, "exclusive": 45, "query": "(architect OR architectural) AND (AI OR \"artificial intelligence\") AND (skill OR skills)"}, {"id": "Q34", "family": "process", "operators": 5, "hits": 50, "exclusive": 48, "query": "(BIM OR Revit) AND (AI OR \"artificial intelligence\") AND (workflow OR automation)"}, {"id": "Q35", "family": "process", "operators": 5, "hits": 50, "exclusive": 40, "query": "(BIM OR Revit) AND (Copilot OR ChatGPT) AND (workflow OR automation)"}, {"id": "Q36", "family": "direct", "operators": 4, "hits": 32, "exclusive": 28, "query": "(Rhino OR Grasshopper) AND Copilot AND (skill OR skills)"}, {"id": "Q37", "family": "direct", "operators": 5, "hits": 38, "exclusive": 14, "query": "(architect OR architects) AND (GenAI OR \"generative AI\") AND (downskilling OR deskilling)"}, {"id": "Q38", "family": "direct", "operators": 5, "hits": 50, "exclusive": 43, "query": "(\"architectural design\" OR \"computational design\") AND (GenAI OR ChatGPT) AND (skills OR expertise)"}, {"id": "Q39", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 39, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"cognitive offloading\" OR overreliance)"}, {"id": "Q40", "family": "cognition", "operators": 5, "hits": 42, "exclusive": 38, "query": "(architect OR architects) AND (Midjourney OR ChatGPT) AND (\"cognitive offloading\" OR overreliance)"}, {"id": "Q41", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 43, "query": "(architect OR architectural) AND (\"Stable Diffusion\" OR DALL-E) AND (creativity OR authorship)"}, {"id": "Q42", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 40, "query": "(Rendering OR archviz) AND (\"AI rendering\" OR Midjourney) AND (creativity OR judgment)"}, {"id": "Q43", "family": "process", "operators": 5, "hits": 50, "exclusive": 35, "query": "(architect OR architects) AND (GenAI OR \"generative AI\") AND (\"human-in-the-loop\" OR \"role of the architect\")"}, {"id": "Q44", "family": "process", "operators": 5, "hits": 50, "exclusive": 35, "query": "(\"architectural design\" OR architecture) AND (GenAI OR \"generative AI\") AND (replacement OR augmentation)"}, {"id": "Q45", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"technical skills\" OR \"environmental design\")"}, {"id": "Q46", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 48, "query": "(BIM OR \"architectural design\") AND (AI OR \"generative AI\") AND (\"building performance\" OR \"energy modeling\")"}, {"id": "Q47", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 39, "query": "(\"architectural education\" OR \"architecture students\") AND (GenAI OR \"generative AI\") AND (curriculum OR learning)"}, {"id": "Q48", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 38, "query": "(\"architectural education\" OR \"architecture students\") AND (Midjourney OR ChatGPT) AND (skills OR \"critical thinking\")"}];
 const FAMILY_LABELS = {
   direct: "Direct Skill",
-  cognition: "Cognition & Design",
-  process: "Process & Role",
-  technical_and_pedagogy: "Technical & Pedagogy"
+  cognition: "Cognition",
+  process: "Process",
+  technical_and_pedagogy: "Tech & Pedagogy"
 };
-
 let activeFamily = "all";
 
 function filterQueries(fam, btn) {
@@ -540,35 +349,36 @@ function renderTable() {
     const matchTerm = !term || q.query.toLowerCase().includes(term) || q.id.toLowerCase().includes(term);
     return matchFam && matchTerm;
   });
+  tbody.innerHTML = filtered.map(q => `
+    <tr>
+      <th class="ltr">${q.id}</th>
+      <td><span class="fam-badge fam-${q.family}">${FAMILY_LABELS[q.family] || q.family}</span></td>
+      <td class="num-cell">${q.hits} / 50</td>
+      <td class="num-cell">${q.exclusive}</td>
+      <td class="ltr">${q.query}</td>
+    </tr>
+  `).join('');
+}
 
-  tbody.innerHTML = filtered.map(q => {
-    const pct = Math.round((q.hits / 50) * 100);
-    const fillClass = q.hits === 50 ? 'bar-fill full' : 'bar-fill';
-    return `
-      <tr>
-        <th class="ltr">${q.id}</th>
-        <td><span class="fam-badge fam-${q.family}">${FAMILY_LABELS[q.family] || q.family}</span></td>
-        <td>
-          <div class="bar-wrap">
-            <span class="num-cell" style="min-width:24px">${q.hits}</span>
-            <div class="bar-bg"><div class="${fillClass}" style="width:${pct}%"></div></div>
-          </div>
-        </td>
-        <td class="num-cell">${q.exclusive}</td>
-        <td class="ltr">${q.query}</td>
-      </tr>
-    `;
-  }).join('');
+function copyText(txt, msg) {
+  navigator.clipboard.writeText(txt).then(() => alert(msg));
 }
 
 function copyQueries(mode) {
-  const list = QUERIES.map(q => q.query);
-  const text = mode === 'json'
-    ? JSON.stringify(list, null, 2)
+  const txt = mode === 'json'
+    ? JSON.stringify(QUERIES.map(q => q.query), null, 2)
     : QUERIES.map((q, i) => `${i + 1}. ${q.query}`).join('\n');
-  navigator.clipboard.writeText(text).then(() => {
-    alert(mode === 'json' ? 'آرایه JSON هر ۴۸ کوئری کپی شد.' : 'لیست ۴۸ کوئری کپی شد.');
-  });
+  copyText(txt, 'کپی شد.');
+}
+
+function downloadQueriesCsv() {
+  const header = ['query_code,query_family,operators,raw_hits,exclusive_posts,query_text'];
+  const lines = QUERIES.map(q => `${q.id},${q.family},${q.operators},${q.hits},${q.exclusive},"${q.query.replace(/"/g, '""')}"`);
+  const blob = new Blob([header.concat(lines).join('\n')], {type: 'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'saintiment-48-queries-hits-2026-10-18.csv';
+  a.click();
 }
 
 renderTable();
