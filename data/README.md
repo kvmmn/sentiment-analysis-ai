@@ -44,6 +44,27 @@ Known limitations: 93 of 105 sub-queries returned exactly 15 posts, so the pull 
 
 The Neon schema (tables `runs`, `queries`, `raw_items`, `master_posts`, `post_query_hits`) was written from the Apify load and reused for later providers; connection details are never recorded in git.
 
+### Apify LinkedIn post search, 48 three-layer queries (2026-10-18)
+
+Provider collection using the finalized 55-keyword, 48-query three-layer set (`research/keywords/linkedin-apify-2026-10-17/`). See [project log section 51](../research/project-log.md#51-apify-48-query-three-layer-run-executed-and-loaded-into-neon-2026-10-18). Contains personal data (author names, headlines, profile URLs, post text); none of it is in git.
+
+```text
+Dataset name / ID: apify-linkedin-post-search-2026-10-18 (Apify dataset WUsK3RRYo7nKEOUbA)
+Origin / provider: Apify actor harvestapi/linkedin-post-search (actor ID buIWk2uOUzTmcLsuB, build 9BWuRUTT3NouYMxcU), run X2gdX05u8rP41b4rG
+Source URL: LinkedIn post search, as scraped by the actor
+License and access conditions: TODO (ethics/ToS review open)
+Permitted use and redistribution: TODO (do not share outside the team)
+Version / release / retrieval date: 2026-10-18, run 17:49:12.622Z to 17:53:47.096Z UTC (~274.5 s)
+Query provenance: 48 three-layer queries (Domain/Tools ∧ AI ∧ Skill/Cognition/Process/Education, <= 5 Boolean operators per query); see research/keywords/linkedin-apify-2026-10-17/queries.json (SHA-256 01eeb4346725f17e09f81c19e6121c0394408ea792bf66dd338f7f1eb832f0a4)
+Local raw/derived artifact paths: data/local/linkedin-apify-2026-10-17/apify_raw/WUsK3RRYo7nKEOUbA.jsonl (2,158 lines, 9,778,702 bytes, SHA-256 e68471e3d0b4a7031221dfd2d666f67a37862d575d190d4a184df8daa4d5c47c) and data/local/linkedin-apify-2026-10-17/master_posts_apify_2026-10-18.csv (3,354 total master_posts rows across all providers, 10,194,385 bytes, SHA-256 56dbfa361a661c89a0afc699c01b493ef4fc98f6e56bc1ab88fc4d2bb89844e3); git-ignored
+Durable copy: Neon Postgres, project cool-cake-91875024 (_saintimental), database _saintiment_db
+Neon contents: run `X2gdX05u8rP41b4rG`, queries 48, raw_items 2,158, post_query_hits 2,158; 1,858 unique posts in this run (1,817 net-new unique Apify posts added to the 1,137 from 2026-10-07, bringing Apify master_posts to 2,954 and total master_posts across Apify + Coresignal + Bright Data to 3,354)
+Processing code commit and scripts: src/ingest/apify_to_neon.py (updated with 250-item batched executemany), src/ingest/export_master_csv.py
+Environment/interpreter: .venv/bin/python (Python 3.13, psycopg 3.3.6)
+Contents and labels: 2,158 result items across all 48 queries (48/48 queries returned >= 10 posts; 37/48 queries hit the maxPosts=50 cap; min 10, median 50, max 50); 1,858 unique post IDs; post dates 2023-01-10 to 2026-10-18
+Cost: USD 4.31605 (2,158 post events at USD 0.002 + start event USD 0.00005), covered by the FREE plan monthly allowance
+```
+
 ### Coresignal Employee Posts collect (2026-10-08)
 
 Provider test collection, not an approved research corpus. See [project log section 45](../research/project-log.md#45-coresignal-employee-posts-200-collect-2026-10-08). Personal data; none in git.

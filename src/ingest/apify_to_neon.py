@@ -37,8 +37,9 @@ def main(run_id, dataset_id, items_path, queries_path):
     items = [json.loads(line) for line in open(items_path, encoding="utf-8")]
     queries = json.load(open(queries_path, encoding="utf-8"))
     query_set = f"{run_id}-subqueries"
+    db_url = os.environ["DATABASE_URL"]
 
-    with psycopg.connect(os.environ["DATABASE_URL"]) as conn, conn.cursor() as cur:
+    with psycopg.connect(db_url) as conn, conn.cursor() as cur:
         cur.execute(
             "INSERT INTO runs (run_id, source, tool, input, external_ref, notes) "
             "VALUES (%s, %s, %s, %s, %s, %s) ON CONFLICT (run_id) DO NOTHING",
@@ -62,50 +63,92 @@ def main(run_id, dataset_id, items_path, queries_path):
                 (query_set, q),
             )
             query_ids[q] = cur.fetchone()[0]
+        conn.commit()
 
-        for item in items:
-            qid = query_ids[item["query"]["search"]]
-            cur.execute(
+    batch_size = 250
+    for start in range(0, len(items), batch_size):
+        batch = items[start : start + batch_size]
+        with psycopg.connect(db_url) as conn, conn.cursor() as cur:
+            for item in batch:
+                search_str = (item.get("query") or {}).get("search")
+                if search_str not in query_ids:
+                    cur.execute(
+                        "INSERT INTO queries (query_set, query_text) VALUES (%s, %s) "
+                        "ON CONFLICT (query_set, query_text) DO UPDATE SET query_text = EXCLUDED.query_text "
+                        "RETURNING query_id",
+                        (query_set, search_str or ""),
+                    )
+                    query_ids[search_str] = cur.fetchone()[0]
+
+            raw_params = []
+            for item in batch:
+                qid = query_ids[(item.get("query") or {}).get("search")]
+                raw_params.append((run_id, f"{item['id']}#{qid}", dumps(item)))
+
+            cur.executemany(
                 "INSERT INTO raw_items (run_id, source_item_id, payload) VALUES (%s, %s, %s) "
                 "ON CONFLICT (run_id, source_item_id) DO UPDATE SET payload = EXCLUDED.payload "
                 "RETURNING id",
-                (run_id, f"{item['id']}#{qid}", dumps(item)),
+                raw_params,
+                returning=True,
             )
-            raw_id = cur.fetchone()[0]
+            raw_ids = []
+            while True:
+                raw_ids.append(cur.fetchone()[0])
+                if not cur.nextset():
+                    break
 
-            author = item.get("author") or {}
-            engagement = item.get("engagement") or {}
-            posted_at = (item.get("postedAt") or {}).get("date")
-            # `likes` already equals the sum of all reaction types in this actor's output.
-            cur.execute(
+            master_params = []
+            for item, raw_id in zip(batch, raw_ids):
+                author = item.get("author") or {}
+                engagement = item.get("engagement") or {}
+                posted_at = (item.get("postedAt") or {}).get("date")
+                master_params.append(
+                    (
+                        SOURCE,
+                        item["id"],
+                        clean(item.get("linkedinUrl")),
+                        posted_at,
+                        clean(item.get("content")),
+                        clean(author.get("name")),
+                        clean(author.get("linkedinUrl")),
+                        clean(author.get("info")),
+                        engagement.get("likes"),
+                        engagement.get("comments"),
+                        engagement.get("shares"),
+                        media_of(item),
+                        raw_id,
+                    )
+                )
+
+            cur.executemany(
                 "INSERT INTO master_posts (source, source_post_id, post_url, posted_at, post_text, "
                 "author_name, author_url, author_headline, reactions, comments, shares, media, "
                 "first_raw_item_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) "
                 "ON CONFLICT (source, source_post_id) DO UPDATE SET source_post_id = EXCLUDED.source_post_id "
                 "RETURNING id",
-                (
-                    SOURCE,
-                    item["id"],
-                    clean(item.get("linkedinUrl")),
-                    posted_at,
-                    clean(item.get("content")),
-                    clean(author.get("name")),
-                    clean(author.get("linkedinUrl")),
-                    clean(author.get("info")),
-                    engagement.get("likes"),
-                    engagement.get("comments"),
-                    engagement.get("shares"),
-                    media_of(item),
-                    raw_id,
-                ),
+                master_params,
+                returning=True,
             )
-            post_id = cur.fetchone()[0]
-            cur.execute(
+            post_ids = []
+            while True:
+                post_ids.append(cur.fetchone()[0])
+                if not cur.nextset():
+                    break
+
+            hit_params = [
+                (post_id, query_ids[(item.get("query") or {}).get("search")], run_id)
+                for item, post_id in zip(batch, post_ids)
+            ]
+            cur.executemany(
                 "INSERT INTO post_query_hits (post_id, query_id, run_id) VALUES (%s, %s, %s) "
                 "ON CONFLICT DO NOTHING",
-                (post_id, qid, run_id),
+                hit_params,
             )
-        conn.commit()
+            conn.commit()
+        print(f"  committed {min(start + batch_size, len(items))}/{len(items)} items", flush=True)
+
+
 
 
 if __name__ == "__main__":

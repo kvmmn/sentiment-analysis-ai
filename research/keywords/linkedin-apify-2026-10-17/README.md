@@ -1,8 +1,8 @@
-# Apify LinkedIn query round — 2026-10-17 (finalized 2026-10-18)
+# Apify LinkedIn query round — 2026-10-17 (finalized & executed 2026-10-18)
 
-Status: **final confirmed three-layer keyword and query list (confirmed 2026-10-18)**. Contains 55 keywords across 3 layers and 48 executable three-layer queries (`<= 5` Boolean operators per query). No Apify run has been started in this commit.
+Status: **final confirmed three-layer keyword and query list, executed on 2026-10-18** (Apify run `X2gdX05u8rP41b4rG`, dataset `WUsK3RRYo7nKEOUbA`: **2,158 raw items**, **1,858 unique posts**, **48/48 queries returning results**, loaded into Neon `_saintiment_db`).
 
-Actor, when a run is separately authorized: `harvestapi/linkedin-post-search`. The clean three-layer list, with every keyword and every query written out for the team, is [`keywords-and-queries.md`](keywords-and-queries.md). The machine-readable record is [`queries.json`](queries.json), produced by [`build_queries.py`](build_queries.py).
+Actor: `harvestapi/linkedin-post-search`. The clean three-layer list, with every keyword and every query written out for the team, is [`keywords-and-queries.md`](keywords-and-queries.md). The machine-readable record is [`queries.json`](queries.json), produced by [`build_queries.py`](build_queries.py).
 
 ## What this round is for
 
