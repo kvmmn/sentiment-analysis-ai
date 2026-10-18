@@ -703,17 +703,23 @@ The offline result records **four passing fake-browser scenarios** (already auth
 - Input parameters: 48 finalized three-layer queries from [`queries.json`](keywords/linkedin-apify-2026-10-17/queries.json) (SHA-256 `01eeb4346725f17e...`), `maxPosts: 50`, `postedLimitDate: "2022-11-30"`, `sortBy: "date"`, `scrapeComments: false`, `scrapeReactions: false`, `profileScraperMode: "short"`, `contentType: "all"`.
 - Cost: **USD 4.31605** (2,158 post events at USD 0.002 + start event USD 0.00005), covered by the FREE plan monthly allowance.
 - Downloaded all **2,158 raw items** to git-ignored `data/local/linkedin-apify-2026-10-17/apify_raw/WUsK3RRYo7nKEOUbA.jsonl` (9,778,702 bytes, SHA-256 `e68471e3d0b4a7031221dfd2d666f67a37862d575d190d4a184df8daa4d5c47c`).
-- Updated [`src/ingest/apify_to_neon.py`](../src/ingest/apify_to_neon.py) to use 250-item batched `cur.executemany(..., returning=True)` commits after an initial single-transaction load hit a Neon connection-pooler SSL timeout. Loaded all 2,158 items into Neon `_saintiment_db` and exported `data/local/linkedin-apify-2026-10-17/master_posts_apify_2026-10-18.csv` (3,354 rows, SHA-256 `56dbfa361a661c89a0afc699c01b493ef4fc98f6e56bc1ab88fc4d2bb89844e3`).
+- Updated [`src/ingest/apify_to_neon.py`](../src/ingest/apify_to_neon.py) to use 250-item batched `cur.executemany(..., returning=True)` commits after an initial single-transaction load hit a Neon connection-pooler SSL timeout.
+- **Dedicated standalone databases (per Kaveh's request to keep this extraction separate with full metadata):**
+  1. **Neon Postgres database `_saintiment_apify_three_layer_db`:** created on Neon project `cool-cake-91875024` containing ONLY run `X2gdX05u8rP41b4rG` (`runs`: 1, `queries`: 48 with `query_code` `Q01`–`Q48` and `query_family`, `raw_items`: 2,158, `master_posts`: 1,858 with 34 enriched columns including `entity_id`, `share_urn`, `post_type`, `author_type`, `author_public_id`, `reactions_breakdown`, `content_attributes`, `matched_query_count`, `matched_query_codes`, `matched_families`, and `post_query_hits`: 2,158).
+  2. **Local SQLite database:** `data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18.db` (19,521,536 bytes, SHA-256 `b1029855ed5269cff30906f5af69304ad56bcf1b82b3a3110d5e3b9df9c5dc0e`) with the identical 5-table enriched schema.
+  3. **Standalone CSV (this run only):** `data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18.csv` (1,858 unique posts, 5,085,021 bytes, SHA-256 `c7a7d05a66e139eb3f0db4a374dc88114c22dd2dcc1bdd65379d3063fd59b13f`).
+- Also loaded into the combined multi-provider Neon database `_saintiment_db` and exported `data/local/linkedin-apify-2026-10-17/master_posts_apify_2026-10-18.csv` (3,354 rows, SHA-256 `56dbfa361a661c89a0afc699c01b493ef4fc98f6e56bc1ab88fc4d2bb89844e3`).
 
 **Observations & verified Neon counts (2026-10-18):**
 - **Query hit rate:** **48 out of 48 queries (100%)** returned posts (min 10, median 50, max 50; 37 of 48 queries reached the `maxPosts = 50` cap, and 11 queries returned between 10 and 47 posts). Post dates span `2023-01-10` to `2026-10-18`.
 - **Unique posts in run `X2gdX05u8rP41b4rG`:** **1,858** unique post IDs from **2,158** raw items (**1,817 net-new unique Apify posts** added to the 1,137 from the 7 October run).
 
-| Source | `master_posts` | `raw_items` | Runs |
-| --- | ---: | ---: | --- |
-| apify | 2,954 | 3,644 | `tKJavW6tIKBOP7NlO` (1,486 raw) + `X2gdX05u8rP41b4rG` (2,158 raw) |
-| coresignal | 200 | 200 | `coresignal-employee-posts-2026-10-08-200` |
-| brightdata | 200 | 200 | `brightdata-marketplace-posts-2026-10-08-200` |
-| **Total** | **3,354** | **4,044** | four runs |
+| Database | Source | `master_posts` | `raw_items` | Runs |
+| --- | --- | ---: | ---: | --- |
+| **`_saintiment_apify_three_layer_db` (Dedicated)** | apify | **1,858** | **2,158** | `X2gdX05u8rP41b4rG` only (48 three-layer queries) |
+| `_saintiment_db` (Combined) | apify | 2,954 | 3,644 | `tKJavW6tIKBOP7NlO` (1,486 raw) + `X2gdX05u8rP41b4rG` (2,158 raw) |
+| `_saintiment_db` (Combined) | coresignal | 200 | 200 | `coresignal-employee-posts-2026-10-08-200` |
+| `_saintiment_db` (Combined) | brightdata | 200 | 200 | `brightdata-marketplace-posts-2026-10-08-200` |
+| **`_saintiment_db` Total** | all three | **3,354** | **4,044** | four runs |
 
 
