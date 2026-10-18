@@ -28,9 +28,11 @@ The Telegram group **Sentiment Analysis AI** is the team's main communication ch
 
 Looking for Iman’s code? Open the [code index](src/README.md#imans-submission-local-only). The complete source package now lives in `_local/submissions/2026-09-06-iman-protocol-drafts/`, not the historical archive. Baseline extracts remain local-only and must not be run in place; separate pilot snapshots are prepared.
 
-## Current Status — 25 September 2026 (Run 013 Pilot & Team Meeting Preparation)
+## Current Status — 18 October 2026 (Final Three-Layer Apify Query List & Pilot Assets)
 
-- **Pilot dataset analysis:** evaluated 1,076 raw posts from verified Run 013 snapshot (`data/linkedin_genai_architecture_discourse_2026-09-20_run013.db`, SHA-256 `f0ea0952ed5ed806...`).
+- **Final three-layer Apify keyword & query list (confirmed 2026-10-18):** 55 keywords across 3 pillars (`Domain/Tools ∧ AI ∧ Skill/Cognition/Process/Education`) and **48 executable three-layer LinkedIn queries** (`<= 5` Boolean operators per query), documented in [`research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md`](research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) and [`queries.json`](research/keywords/linkedin-apify-2026-10-17/queries.json).
+- **Three-provider LinkedIn pilot (2026-10-07–09, synced 2026-10-16):** Apify (1,137), Coresignal (200), and Bright Data (200) master posts stored in Neon (`1,537` total) with local 200-per-source review packs; see [project log §48](research/project-log.md#48-complete-three-provider-set-synced-2026-10-16).
+- **Pilot dataset analysis (25 September 2026):** evaluated 1,076 raw posts from verified Run 013 snapshot (`data/linkedin_genai_architecture_discourse_2026-09-20_run013.db`, SHA-256 `f0ea0952ed5ed806...`).
 - **Independent analytical pipeline:** implemented in [`src/analysis/kaveh_analytical_pipeline.py`](src/analysis/kaveh_analytical_pipeline.py) with 7/7 passing unit tests (`src/analysis/tests/test_kaveh_pipeline.py`). Features Clause-Level Context-Window ABSA (±5 tokens), a 2D continuous Discursive Stance framework (Human Agency $\times$ Discourse Valence), and Multi-Signal Stakeholder Inference.
 - **Empirical findings:**
   - **H1 (Bimodality):** Naive whole-post lexicons produce an artificial bimodal artifact ($BC = 0.586$) from zero-inflation; context-window ABSA demonstrates unimodality ($BC = 0.450 < 0.555$) centered around pragmatic caution.

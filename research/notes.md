@@ -113,6 +113,8 @@ On 2026-09-09 Kaveh archived a Telegram-group summary dated 8 September 2026 in 
 
 On 2026-09-10 Kaveh chose Iman’s **three-pillar search** (architecture domain ∧ GenAI ∧ labor/competency inside the query) over the repository’s two-layer model for the keyword-review pass. This is a sampling-strategy choice, not a freeze of individual terms, not permission to collect, and not a rewrite of the 2026-08-31 catalog files.
 
+On 2026-10-17 the group note (skill layer inside the query, without one long Boolean string) was turned into an initial working list for the Apify pass. On 2026-10-18, following a cross-repository audit of all project documents and empirical pilot findings, Kaveh confirmed the strengthened **48 three-layer queries (55 keywords across Domain/Tools ∧ AI ∧ Skill/Cognition/Process/Education)** as the final list for the Apify round (`<= 5` Boolean operators per query; two-layer queries omitted). See [the round note](keywords/linkedin-apify-2026-10-17/README.md), [clean list](keywords/linkedin-apify-2026-10-17/keywords-and-queries.md), and project log section 50.
+
 ## Open Questions
 
 The following are planning questions added while organizing the draft, not decisions from the original document.

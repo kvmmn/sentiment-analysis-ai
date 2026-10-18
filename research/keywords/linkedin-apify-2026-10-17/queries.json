@@ -1,0 +1,536 @@
+{
+  "protocol_id": "linkedin-apify-2026-10-17",
+  "status": "final confirmed three-layer list for the Apify round (confirmed 2026-10-18); 55 keywords across 3 layers, 48 queries; no run started in this commit",
+  "actor": "harvestapi/linkedin-post-search",
+  "operator_ceiling": 5,
+  "operator_ceiling_source": "research/project-log.md section 40, Apify tests on 2026-10-07",
+  "keywords": {
+    "domain_and_tools": [
+      "architect",
+      "architects",
+      "architecture",
+      "architectural",
+      "\"architectural design\"",
+      "\"computational design\"",
+      "BIM",
+      "Revit",
+      "Rhino",
+      "Grasshopper",
+      "Parametric",
+      "\"generative design\"",
+      "Rendering",
+      "archviz",
+      "\"architectural education\"",
+      "\"architecture students\""
+    ],
+    "ai": [
+      "AI",
+      "GenAI",
+      "\"generative AI\"",
+      "\"artificial intelligence\"",
+      "Midjourney",
+      "ChatGPT",
+      "Copilot",
+      "\"Stable Diffusion\"",
+      "DALL-E",
+      "\"AI rendering\""
+    ],
+    "skill_direct": [
+      "skill",
+      "skills",
+      "upskilling",
+      "deskilling",
+      "reskilling",
+      "downskilling",
+      "\"skill loss\"",
+      "expertise"
+    ],
+    "skill_cognition": [
+      "creativity",
+      "\"design thinking\"",
+      "\"critical thinking\"",
+      "judgment",
+      "intuition",
+      "authorship",
+      "\"cognitive offloading\"",
+      "overreliance"
+    ],
+    "skill_process": [
+      "workflow",
+      "automation",
+      "replace",
+      "replacement",
+      "augmentation",
+      "\"human-in-the-loop\"",
+      "\"role of the architect\""
+    ],
+    "skill_technical_and_pedagogy": [
+      "\"technical skills\"",
+      "\"environmental design\"",
+      "\"building performance\"",
+      "\"energy modeling\"",
+      "curriculum",
+      "learning"
+    ]
+  },
+  "query_count": 48,
+  "queries": [
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (skill OR skills)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q01"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (skill OR skills)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q02"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (skill OR skills)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q03"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (skill OR skills)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q04"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q05"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q06"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q07"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q08"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q09"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q10"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q11"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q12"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q13"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q14"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(Rendering OR archviz) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q15"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(Rendering OR archviz) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q16"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q17"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q18"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q19"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q20"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q21"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q22"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q23"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q24"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (workflow OR automation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q25"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (workflow OR automation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q26"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (workflow OR automation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q27"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (workflow OR automation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q28"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q29"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q30"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(Rendering OR architecture) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q31"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(Rendering OR architecture) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q32"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(architect OR architectural) AND (AI OR \"artificial intelligence\") AND (skill OR skills)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q33"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(BIM OR Revit) AND (AI OR \"artificial intelligence\") AND (workflow OR automation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q34"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(BIM OR Revit) AND (Copilot OR ChatGPT) AND (workflow OR automation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q35"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(Rhino OR Grasshopper) AND Copilot AND (skill OR skills)",
+      "operators": 4,
+      "layers": 3,
+      "id": "Q36"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(architect OR architects) AND (GenAI OR \"generative AI\") AND (downskilling OR deskilling)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q37"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "direct",
+      "query": "(\"architectural design\" OR \"computational design\") AND (GenAI OR ChatGPT) AND (skills OR expertise)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q38"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"cognitive offloading\" OR overreliance)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q39"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(architect OR architects) AND (Midjourney OR ChatGPT) AND (\"cognitive offloading\" OR overreliance)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q40"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(architect OR architectural) AND (\"Stable Diffusion\" OR DALL-E) AND (creativity OR authorship)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q41"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "cognition",
+      "query": "(Rendering OR archviz) AND (\"AI rendering\" OR Midjourney) AND (creativity OR judgment)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q42"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(architect OR architects) AND (GenAI OR \"generative AI\") AND (\"human-in-the-loop\" OR \"role of the architect\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q43"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "process",
+      "query": "(\"architectural design\" OR architecture) AND (GenAI OR \"generative AI\") AND (replacement OR augmentation)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q44"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "technical_and_pedagogy",
+      "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"technical skills\" OR \"environmental design\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q45"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "technical_and_pedagogy",
+      "query": "(BIM OR \"architectural design\") AND (AI OR \"generative AI\") AND (\"building performance\" OR \"energy modeling\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q46"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "technical_and_pedagogy",
+      "query": "(\"architectural education\" OR \"architecture students\") AND (GenAI OR \"generative AI\") AND (curriculum OR learning)",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q47"
+    },
+    {
+      "tier": "tier1_three_layer",
+      "family": "technical_and_pedagogy",
+      "query": "(\"architectural education\" OR \"architecture students\") AND (Midjourney OR ChatGPT) AND (skills OR \"critical thinking\")",
+      "operators": 5,
+      "layers": 3,
+      "id": "Q48"
+    }
+  ],
+  "searchQueries": [
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (skill OR skills)",
+    "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (skill OR skills)",
+    "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (skill OR skills)",
+    "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (skill OR skills)",
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)",
+    "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)",
+    "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)",
+    "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)",
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")",
+    "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")",
+    "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")",
+    "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")",
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")",
+    "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")",
+    "(Rendering OR archviz) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")",
+    "(Rendering OR archviz) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")",
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)",
+    "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)",
+    "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)",
+    "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)",
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)",
+    "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)",
+    "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)",
+    "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)",
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (workflow OR automation)",
+    "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (workflow OR automation)",
+    "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (workflow OR automation)",
+    "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (workflow OR automation)",
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)",
+    "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)",
+    "(Rendering OR architecture) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)",
+    "(Rendering OR architecture) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)",
+    "(architect OR architectural) AND (AI OR \"artificial intelligence\") AND (skill OR skills)",
+    "(BIM OR Revit) AND (AI OR \"artificial intelligence\") AND (workflow OR automation)",
+    "(BIM OR Revit) AND (Copilot OR ChatGPT) AND (workflow OR automation)",
+    "(Rhino OR Grasshopper) AND Copilot AND (skill OR skills)",
+    "(architect OR architects) AND (GenAI OR \"generative AI\") AND (downskilling OR deskilling)",
+    "(\"architectural design\" OR \"computational design\") AND (GenAI OR ChatGPT) AND (skills OR expertise)",
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"cognitive offloading\" OR overreliance)",
+    "(architect OR architects) AND (Midjourney OR ChatGPT) AND (\"cognitive offloading\" OR overreliance)",
+    "(architect OR architectural) AND (\"Stable Diffusion\" OR DALL-E) AND (creativity OR authorship)",
+    "(Rendering OR archviz) AND (\"AI rendering\" OR Midjourney) AND (creativity OR judgment)",
+    "(architect OR architects) AND (GenAI OR \"generative AI\") AND (\"human-in-the-loop\" OR \"role of the architect\")",
+    "(\"architectural design\" OR architecture) AND (GenAI OR \"generative AI\") AND (replacement OR augmentation)",
+    "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"technical skills\" OR \"environmental design\")",
+    "(BIM OR \"architectural design\") AND (AI OR \"generative AI\") AND (\"building performance\" OR \"energy modeling\")",
+    "(\"architectural education\" OR \"architecture students\") AND (GenAI OR \"generative AI\") AND (curriculum OR learning)",
+    "(\"architectural education\" OR \"architecture students\") AND (Midjourney OR ChatGPT) AND (skills OR \"critical thinking\")"
+  ],
+  "post_filters_not_in_the_query": [
+    "software architect",
+    "software architecture",
+    "enterprise architect",
+    "enterprise architecture",
+    "solution architect",
+    "solutions architect",
+    "GitHub Copilot",
+    "cloud architect",
+    "data architect",
+    "security architect",
+    "systems architect",
+    "network architect"
+  ],
+  "recommended_actor_input_not_executed": {
+    "maxPosts": 50,
+    "postedLimitDate": "2022-11-30",
+    "sortBy": "date",
+    "scrapeComments": false,
+    "scrapeReactions": false,
+    "profileScraperMode": "short",
+    "contentType": "all"
+  }
+}

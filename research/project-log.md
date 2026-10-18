@@ -1,5 +1,7 @@
 # Project Log
 
+**Query list — 17 October 2026:** a 55-query working list for a later Apify pass is in [section 49](#49-apify-query-list-for-the-next-round-2026-10-17). No run was started. Query version 1 is not frozen.
+
 **Current closeout — 16 October 2026:** three-provider LinkedIn post pilot is complete in Neon `_saintiment_db`: Apify 1,137 + Coresignal 200 + Bright Data marketplace 200 master posts (1,537 total). Local 200-per-source review packs exist under `_local/work/2026-10-09-*` (git-ignored; personal data). Meeting/pilot deliverables from 25 September are published under `docs/`. No ethics/ToS clearance and no scientific findings from the provider pilots. See [section 48](#48-complete-three-provider-set-synced-2026-10-16).
 
 **Historical status snapshots:** the September closeout and earlier “Current desk/handoff” sections below describe their dated stage only. Their not-run/pending statements are not the current queue. The 7 October deferral of Coresignal/Bright Data ([section 44](#44-checkpoint-coresignal-bright-data-and-google-sheets-deferred-2026-10-07)) was superseded by the 8–9 October runs ([sections 45–47](#45-coresignal-employee-posts-200-collect-2026-10-08)).
@@ -664,3 +666,31 @@ The offline result records **four passing fake-browser scenarios** (already auth
 **Published in this sync (no post text / author names):** `docs/figures_pilot_2026-09-25/` (5 PNGs), `docs/kaveh-independent-methodology.md` (+ `.docx`), meeting guide/analysis `.docx` companions, and `docs/thesis_assets/` figures, LaTeX table, and inferential JSON. The enriched Run 013 CSV (`kaveh_enriched_corpus_run013.csv`) stays local-only because it contains author-identifying fields and post text.
 
 **Still open:** ethics/ToS review before sharing personal data beyond Neon/local packs; formal `experiments/` provenance records; query version 1 freeze; Google Sheets delivery route; Apify 15-post sub-query cap; Neon password rotation (recommended since 7 October); LinkedIn DSA case still open on last evidence.
+
+## 49. Apify query list for the next round (2026-10-17)
+
+**Request:** prepare the keyword list and search queries for a new Apify pass, using the 17 October group note and Iman’s uploaded keyword JSON.
+
+**Decision:** write a working list of 55 executable queries. Do not start the actor. Do not freeze query version 1.
+
+**Why these strings:** the group wants the skill layer inside the query (reproducibility) and a second, two-layer tool-and-AI set (posts that name software instead of “skill”). The 7 October tests returned no posts at six or more `AND`/`OR` operators. Iman’s parent strings have 7 to 11 operators, so they are archived as the received sketch and split into pairs. A file referred to as the 19 option-A queries was not in the repository or found in Drive; tier 2 is the reconstructed 19-query grid, with `(architect OR architectural) AND Copilot` omitted because of the GitHub Copilot collision.
+
+**Record:** [round note](keywords/linkedin-apify-2026-10-17/README.md), [clean three-layer list](keywords/linkedin-apify-2026-10-17/keywords-and-queries.md), [`queries.json`](keywords/linkedin-apify-2026-10-17/queries.json), [`build_queries.py`](keywords/linkedin-apify-2026-10-17/build_queries.py). Every agreed term appears in at least one query. Maximum operator count is 5. Comments stay out of the recommended input, matching the 16 October note. `maxPosts` 50, `postedLimitDate` 2022-11-30, and `sortBy` date are recommendations, not a run.
+
+**Not done:** Apify execution, deduplication, post-filtering of software-architecture noise, and any change to the October Neon corpus.
+
+## 50. Cross-repository keyword audit and Apify query optimization (2026-10-18)
+
+**Request:** review all project documents, repositories, and archives from a fresh perspective; extract missing high-signal keywords needed for the three-layer structure (`Domain/Tools ∧ AI ∧ Skill/Cognition/Process`); and regenerate the keyword list and Apify queries in [`research/keywords/linkedin-apify-2026-10-17/`](keywords/linkedin-apify-2026-10-17/README.md) without altering the core team consensus structure.
+
+**Sources audited:** [`keyword-lexicon.md`](keywords/keyword-lexicon.md), [`keyword-discourse-catalog.md`](keywords/keyword-discourse-catalog.md), [`keyword-systems.md`](keywords/keyword-systems.md), [`team-feedback-to-team-2026-09-15-FA.md`](team/team-feedback-to-team-2026-09-15-FA.md), `_local/archive/2026-09-08-telegram-team-update/saintiment-update-Sep8.md`, `_local/submissions/2026-09-06-iman-protocol-drafts/working-copies/02_SEARCH_QUERY_MATRIX_AND_TAXONOMY.txt`, [`docs/team-meeting-guide-2026-09-25.md`](../docs/team-meeting-guide-2026-09-25.md), [`src/analysis/kaveh_analytical_pipeline.py`](../src/analysis/kaveh_analytical_pipeline.py), and [`linkedin-boolean-2026-10-07/decompose.py`](keywords/linkedin-boolean-2026-10-07/decompose.py).
+
+**Changes and rationale:**
+1. **In-place deduplication of the original 36 three-layer queries (0 extra queries):** replaced repeated third-leg terms `(deskilling OR reskilling)` → `(deskilling OR "skill loss")`, `(creativity OR judgment)` → `(creativity OR "design thinking")` (keeping `judgment` in `(authorship OR judgment)`), and `(replace OR automation)` → `(replace OR augmentation)` (keeping `automation` in `(workflow OR automation)` and balancing Substitution vs. Augmentation within the same query per the 15 September methodological critique).
+2. **Noise reduction in Layer 1:** replaced bare `architecture` in the creativity queries (Q15–Q16) with self-anchored `archviz` (`(Rendering OR archviz)`), while retaining `(Rendering OR architecture)` in Q39–Q40 so the `architecture` lemma stays covered; added plural `architects` (`(architect OR architects)`) to avoid singular `"software architect"` collisions.
+3. **Targeted consensus additions (+12 three-layer queries):** added `downskilling` (8 September team consensus), `"cognitive offloading"` and `overreliance` (25 September Run 013 & Iman 300-post coding convergence), `"Stable Diffusion"`, `DALL-E`, and `"AI rendering"` (Layer 2 visual GenAI anchors), `"human-in-the-loop"` and `"role of the architect"` (adaptation/agency), plus 2 queries for RQ3a (`"technical skills"`, `"environmental design"`, `"building performance"`, `"energy modeling"`) and 2 neutral queries for RQ4 (`"architectural education"`, `"architecture students"` paired with `curriculum`, `learning`, `skills`, `"critical thinking"`). Kept strictly to the three-layer structure (48 queries total; two-layer queries omitted).
+
+**Decision (Kaveh, 2026-10-18):** confirmed this 55-keyword, 48-query three-layer package as the final list for the Apify round and requested synchronization across local and GitHub repositories.
+
+**Verification:** [`build_queries.py`](keywords/linkedin-apify-2026-10-17/build_queries.py) executed and exited 0: 48 three-layer queries, 55 agreed keywords with 100% coverage, maximum 5 Boolean operators per query, maximum length 117 characters, 0 duplicate queries.
+
