@@ -2,7 +2,7 @@
 
 Status: **working list for this round**. Query version 1 is not frozen. No Apify run has been started from this list. This is not a collection licence and not an ethics or terms-of-service clearance.
 
-Actor, when a run is separately authorized: `harvestapi/linkedin-post-search`. The machine-readable input is [`queries.json`](queries.json), produced by [`build_queries.py`](build_queries.py). Re-run the script after any term edit so the JSON stays the executable copy.
+Actor, when a run is separately authorized: `harvestapi/linkedin-post-search`. The three-layer run list, with every keyword and every query written out, is [`keywords-and-queries.md`](keywords-and-queries.md). The machine-readable record of both tiers is [`queries.json`](queries.json), produced by [`build_queries.py`](build_queries.py).
 
 ## What this round is for
 
