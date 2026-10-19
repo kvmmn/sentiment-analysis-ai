@@ -722,4 +722,18 @@ The offline result records **four passing fake-browser scenarios** (already auth
 | `_saintiment_db` (Combined) | brightdata | 200 | 200 | `brightdata-marketplace-posts-2026-10-08-200` |
 | **`_saintiment_db` Total** | all three | **3,354** | **4,044** | four runs |
 
+## 52. Interactive post swipe-review interface and curated database builder (2026-10-19)
 
+**Request (Kaveh):** add a callout and button at the bottom of the main extraction report page ([`docs/index.html`](../docs/index.html)) that opens a dedicated interactive page where extracted posts can be reviewed one by one with full details and filtered via left/right swipe (keep vs. reject) to remove off-topic items and export the relevant posts into a new curated database.
+
+**Changes implemented:**
+1. **Main report entry point ([`docs/index.html`](../docs/index.html)):** added Section 6 at the bottom of the report (plus a shortcut link in the top navigation bar) opening [`docs/swipe-review.html`](../docs/swipe-review.html) in a new tab.
+2. **Interactive Swipe Review & Curation page ([`docs/swipe-review.html`](../docs/swipe-review.html)):**
+   - Automatically loads the 1,858 unique three-layer posts from the local JSON (`data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18.json`) when opened locally, or directly from the live Apify dataset API (`WUsK3RRYo7nKEOUbA`) when opened on GitHub Pages, with manual JSON upload fallback. No personal post records are committed to git.
+   - Displays full post details on a clean card: author name, profile/company badge, full headline, post date, direct LinkedIn URL, matched query codes (`Q01`–`Q48`), analytical family tags, exact three-layer Boolean formulas, color-coded in-text highlighting of all 55 three-layer keywords (Layer 1 Domain/Tools, Layer 2 AI, Layer 3 Skill/Cognition/Process/Pedagogy), attached images/articles, and engagement counts.
+   - Supports touch/mouse drag swipe (Swipe Right / `→` = Keep ✅, Swipe Left / `←` = Reject ❌), skip (`↓` / `Space`), undo (`Z` / `Backspace`), queue filtering by review status, analytical family, query code, or search term, and automatic persistence in browser `localStorage`.
+   - Provides one-click in-browser export of a standalone SQLite database file (`.db` via `sql.js`), curated CSV, curated JSON, and a reproducible decisions manifest (`saintiment_swipe_decisions.json`).
+3. **Curated database builder ([`src/ingest/build_curated_db.py`](../src/ingest/build_curated_db.py)):**
+   - Takes `saintiment_swipe_decisions.json` (or curated JSON) and builds a new 6-table local SQLite database (`data/local/linkedin-apify-2026-10-17/apify_curated_2026-10-19.db` containing `runs`, `queries`, `raw_items`, `master_posts`, `post_query_hits` filtered to kept posts, plus `curation_decisions`), alongside CSV/JSON exports, and supports `--push-neon` to populate a dedicated Neon Postgres database (`_saintiment_apify_curated_db`).
+
+**Verification:** tested `build_local_curated_sqlite` against `apify_three_layer_2026-10-18.db` in a temporary directory with sample `keep`/`reject` decisions; verified exact row filtering across `master_posts`, `raw_items`, `post_query_hits`, and `curation_decisions`.

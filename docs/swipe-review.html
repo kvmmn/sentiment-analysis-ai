@@ -1,0 +1,1192 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Saintiment — غربالگری تعاملی پست‌ها (Swipe Review & Curated DB)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Estedad:wght@300;400;600;700;800&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<style>
+:root{
+  --bg:#f8fafc; --card:#ffffff; --fg:#0f172a; --muted:#64748b; --line:#e2e8f0; --soft:#f1f5f9;
+  --accent:#2563eb; --accent-soft:#eff6ff; --accent-border:#bfdbfe;
+  --good:#16a34a; --good-soft:#f0fdf4; --good-border:#86efac;
+  --bad:#dc2626; --bad-soft:#fef2f2; --bad-border:#fca5a5;
+  --purple:#7c3aed; --purple-soft:#f3e8ff;
+  --amber:#d97706; --amber-soft:#fffbeb;
+  --font:"Estedad",Tahoma,"Segoe UI",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{direction:rtl}
+body{background:var(--bg);color:var(--fg);font:400 14.5px/1.7 var(--font);margin:0;padding:16px 14px 48px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:940px;margin:0 auto;display:grid;gap:16px}
+h1,h2,h3{margin:0;font-weight:800;line-height:1.35}
+p{margin:0}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.ltr{direction:ltr;text-align:left}
+
+/* Top Nav */
+.top-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;background:var(--card);padding:12px 16px;border-radius:14px;border:1px solid var(--line);box-shadow:0 1px 3px rgba(15,23,42,.03)}
+.brand{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;background:var(--soft);color:var(--muted);border:1px solid var(--line)}
+.pill.blue{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-border)}
+.pill.green{background:var(--good-soft);color:var(--good);border-color:var(--good-border)}
+.pill.red{background:var(--bad-soft);color:var(--bad);border-color:var(--bad-border)}
+
+/* Stats & Progress Bar */
+.status-panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:12px;box-shadow:0 1px 3px rgba(15,23,42,.03)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.stat-box{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .15s}
+.stat-box:hover{border-color:var(--accent)}
+.stat-box.active-filter{outline:2px solid var(--accent);background:var(--accent-soft)}
+.stat-box b{font-size:18px;font-weight:800;direction:ltr}
+.stat-box span{font-size:12px;color:var(--muted);font-weight:600}
+.stat-box.keep{background:var(--good-soft);border-color:var(--good-border)}
+.stat-box.keep b{color:var(--good)}
+.stat-box.reject{background:var(--bad-soft);border-color:var(--bad-border)}
+.stat-box.reject b{color:var(--bad)}
+
+.progress-wrap{display:grid;gap:5px}
+.progress-track{height:10px;background:var(--soft);border-radius:999px;overflow:hidden;display:flex;border:1px solid var(--line)}
+.progress-keep{background:var(--good);height:100%;transition:width .25s ease}
+.progress-reject{background:var(--bad);height:100%;transition:width .25s ease}
+.progress-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+
+/* Filters Bar */
+.filters-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--line)}
+.filter-group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.input-ctrl{font:600 12.5px var(--font);padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+.input-ctrl:focus{outline:none;border-color:var(--accent)}
+
+/* Swipe Stage */
+.stage{position:relative;min-height:470px;display:flex;flex-direction:column;gap:14px; perspective:1000px}
+
+.swipe-card{
+  position:relative;
+  background:var(--card);
+  border:1.5px solid var(--line);
+  border-radius:18px;
+  padding:20px 22px;
+  box-shadow:0 10px 28px -6px rgba(15,23,42,.08),0 2px 6px -1px rgba(15,23,42,.04);
+  display:grid;
+  gap:14px;
+  touch-action:pan-y;
+  user-select:none;
+  -webkit-user-select:none;
+  transition:transform .22s cubic-bezier(.2,.8,.2,1), opacity .22s ease, border-color .15s ease, box-shadow .15s ease;
+  will-change:transform,opacity;
+}
+.swipe-card.dragging{transition:none;cursor:grabbing}
+.swipe-card.hint-keep{border-color:var(--good);box-shadow:0 12px 32px rgba(22,163,74,.18)}
+.swipe-card.hint-reject{border-color:var(--bad);box-shadow:0 12px 32px rgba(220,38,38,.18)}
+.swipe-card.fly-right{transform:translateX(120%) rotate(14deg) !important;opacity:0 !important;transition:transform .28s ease-in, opacity .25s ease-in !important}
+.swipe-card.fly-left{transform:translateX(-120%) rotate(-14deg) !important;opacity:0 !important;transition:transform .28s ease-in, opacity .25s ease-in !important}
+
+/* Stamp Overlays during swipe */
+.stamp{
+  position:absolute;top:24px;z-index:10;padding:6px 16px;border-radius:10px;font:800 20px/1.2 var(--font);
+  letter-spacing:.5px;pointer-events:none;opacity:0;transform:scale(.85);transition:opacity .1s, transform .1s;
+}
+.stamp.keep{right:24px;background:rgba(22,163,74,.95);color:#fff;border:2px solid #bbf7d0;transform:rotate(8deg)}
+.stamp.reject{left:24px;background:rgba(220,38,38,.95);color:#fff;border:2px solid #fecaca;transform:rotate(-8deg)}
+
+/* Card Header */
+.card-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.author-block{display:grid;gap:3px;direction:ltr;text-align:left;flex:1;min-width:240px}
+.author-name-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.author-name{font-weight:800;font-size:15.5px;color:var(--fg)}
+.author-headline{font-size:12.5px;color:var(--muted);line-height:1.45}
+.card-meta-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+
+/* Query & Keyword Provenance Bar */
+.provenance-bar{background:var(--soft);border:1px solid var(--line);border-radius:11px;padding:10px 13px;display:grid;gap:7px}
+.prov-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.q-badges{display:flex;flex-wrap:wrap;gap:5px;align-items:center;direction:ltr}
+.q-code{font:700 11.5px var(--mono);padding:2px 7px;border-radius:5px;background:var(--card);border:1px solid var(--line);color:var(--fg)}
+.fam-badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11.5px;font-weight:700}
+.fam-direct{background:var(--accent-soft);color:var(--accent)}
+.fam-cognition{background:var(--purple-soft);color:var(--purple)}
+.fam-process{background:var(--good-soft);color:var(--good)}
+.fam-technical_and_pedagogy{background:var(--amber-soft);color:var(--amber)}
+.query-formula{font:500 11.5px/1.45 var(--mono);color:var(--muted);direction:ltr;text-align:left;background:var(--card);padding:5px 9px;border-radius:6px;border:1px dashed var(--line)}
+
+/* Detected Keywords inside Post */
+.kw-hits-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:11.5px}
+.kw-hit-pill{font:600 11px var(--mono);padding:1px 6px;border-radius:4px;direction:ltr}
+.kw-l1{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
+.kw-l2{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe}
+.kw-l3{background:#dcfce7;color:#166534;border:1px solid #86efac}
+
+/* Post Full Text Box */
+.post-body-wrap{position:relative}
+.post-body{
+  direction:ltr;text-align:left;font-size:14.5px;line-height:1.72;color:#1e293b;
+  white-space:pre-line;background:#fcfdff;border:1px solid var(--line);border-radius:12px;
+  padding:16px 18px;max-height:420px;overflow-y:auto;user-select:text;-webkit-user-select:text;
+}
+mark.hl-l1{background:#dbeafe;color:#1e3a8a;padding:0 3px;border-radius:3px;font-weight:600}
+mark.hl-l2{background:#f3e8ff;color:#581c87;padding:0 3px;border-radius:3px;font-weight:600}
+mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font-weight:600}
+
+/* Card Footer Metrics */
+.card-footer{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-top:8px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.eng-pills{display:flex;flex-wrap:wrap;gap:8px;direction:ltr}
+.eng-pill{background:var(--soft);border:1px solid var(--line);padding:3px 9px;border-radius:7px;font-weight:600;color:var(--fg)}
+
+/* Swipe Action Controls */
+.action-bar{
+  display:grid;grid-template-columns:1fr auto auto 1fr;gap:10px;align-items:center;
+  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 16px;
+  box-shadow:0 4px 12px rgba(15,23,42,.04);
+}
+.act-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font:700 14px var(--font);padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--fg);cursor:pointer;transition:all .14s;
+}
+.act-btn:hover{transform:translateY(-1px)}
+.act-btn:active{transform:translateY(0)}
+.act-btn.keep-btn{background:var(--good);color:#fff;border-color:var(--good);box-shadow:0 4px 12px rgba(22,163,74,.25)}
+.act-btn.keep-btn:hover{background:#15803d}
+.act-btn.reject-btn{background:var(--bad);color:#fff;border-color:var(--bad);box-shadow:0 4px 12px rgba(220,38,38,.22)}
+.act-btn.reject-btn:hover{background:#b91c1c}
+.act-btn.sub-btn{font-size:12.5px;padding:10px 13px;background:var(--soft);color:var(--muted)}
+.act-btn.sub-btn:hover{color:var(--fg);border-color:var(--muted)}
+.kbd{font:600 11px var(--mono);padding:1px 6px;border-radius:4px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);direction:ltr}
+.sub-btn .kbd{background:var(--card);border-color:var(--line);color:var(--muted)}
+
+/* Database Export Hub */
+.db-hub{
+  border:2px solid var(--good);
+  background:linear-gradient(180deg,var(--good-soft) 0%,#ffffff 85%);
+  border-radius:16px;padding:18px;display:grid;gap:14px;
+}
+.db-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
+.db-box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:9px;align-content:start}
+.btn-row{display:flex;flex-wrap:wrap;gap:7px}
+.btn{display:inline-flex;align-items:center;gap:6px;font:600 12.5px var(--font);padding:7px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.primary:hover{opacity:.92;color:#fff}
+.btn.success{background:var(--good);color:#fff;border-color:var(--good)}
+.btn.success:hover{opacity:.92;color:#fff}
+.cmd-box{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0f172a;color:#f8fafc;padding:8px 12px;border-radius:8px;direction:ltr;font:500 11.5px/1.5 var(--mono);overflow-x:auto}
+.cmd-box button{font:600 11px var(--font);background:#334155;color:#fff;border:0;padding:4px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.cmd-box button:hover{background:var(--accent)}
+
+/* Empty / Completed State */
+.empty-state{text-align:center;padding:48px 20px;background:var(--card);border:1.5px dashed var(--line);border-radius:18px;display:grid;gap:12px;justify-items:center}
+
+@media (max-width:680px){
+  .action-bar{grid-template-columns:1fr 1fr;gap:8px}
+  .act-btn.keep-btn{grid-column:1 / 2;order:1}
+  .act-btn.reject-btn{grid-column:2 / 3;order:2}
+  .act-btn.sub-btn{order:3}
+  .post-body{max-height:340px;font-size:13.5px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- Top Navigation -->
+  <div class="top-bar">
+    <div class="brand">
+      <a href="index.html" class="btn">→ بازگشت به صفحه اصلی گزارش</a>
+      <span class="pill blue">Saintiment — غربالگری تعاملی (Swipe Curation)</span>
+      <span class="pill" id="sourceStatusPill">⏳ در حال بارگذاری پست‌ها...</span>
+    </div>
+    <div class="btn-row">
+      <label class=" small muted" style="display:inline-flex;align-items:center;gap:5px;cursor:pointer">
+        <input type="checkbox" id="highlightToggle" checked onchange="renderCurrentCard()">
+        هایلایت کلیدواژه‌ها در متن
+      </label>
+      <input type="file" id="localFilePicker" accept=".json" style="display:none" onchange="handleLocalJsonUpload(event)">
+      <button type="button" class="btn" onclick="document.getElementById('localFilePicker').click()">📂 بارگذاری فایل JSON</button>
+    </div>
+  </div>
+
+  <!-- Live Progress & Queue Filters -->
+  <section class="status-panel">
+    <div class="stats-grid">
+      <div class="stat-box active-filter" id="filterBoxUnreviewed" onclick="setDecisionFilter('unreviewed')">
+        <span>⏳ در صف بررسی</span>
+        <b id="statUnreviewed">0</b>
+      </div>
+      <div class="stat-box keep" id="filterBoxKeep" onclick="setDecisionFilter('keep')">
+        <span>✅ بماند (دیتابیس جدید)</span>
+        <b id="statKeep">0</b>
+      </div>
+      <div class="stat-box reject" id="filterBoxReject" onclick="setDecisionFilter('reject')">
+        <span>❌ ردشده (نامرتبط)</span>
+        <b id="statReject">0</b>
+      </div>
+      <div class="stat-box" id="filterBoxAll" onclick="setDecisionFilter('all')">
+        <span>📚 کل پست‌های یکتا</span>
+        <b id="statTotal">0</b>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-keep" id="progKeepBar" style="width:0%"></div>
+        <div class="progress-reject" id="progRejectBar" style="width:0%"></div>
+      </div>
+      <div class="progress-meta">
+        <span id="progressText">پیشرفت بررسی: ۰ از ۰ پست (۰٪)</span>
+        <span id="autoSaveNotice">💾 ذخیره خودکار در مرورگر فعال است</span>
+      </div>
+    </div>
+
+    <div class="filters-bar">
+      <div class="filter-group">
+        <select id="familyFilter" class="input-ctrl" onchange="applyFiltersAndResetIndex()">
+          <option value="all">همه خانواده‌های تحلیلی (۴ خانواده)</option>
+          <option value="direct">۱. مهارت مستقیم (Direct Skill)</option>
+          <option value="cognition">۲. شناخت و طراحی (Cognition)</option>
+          <option value="process">۳. فرآیند و نقش (Process & Role)</option>
+          <option value="technical_and_pedagogy">۴. فنی و آموزش (Tech & Pedagogy)</option>
+        </select>
+        <select id="queryFilter" class="input-ctrl" onchange="applyFiltersAndResetIndex()">
+          <option value="all">همه ۴۸ کوئری (Q01–Q48)</option>
+        </select>
+        <select id="authorTypeFilter" class="input-ctrl" onchange="applyFiltersAndResetIndex()">
+          <option value="all">همه نویسندگان (حقیقی + شرکت)</option>
+          <option value="profile">👤 فقط پروفایل‌های حقیقی</option>
+          <option value="company">🏢 فقط صفحات شرکت/استودیو</option>
+        </select>
+        <select id="sortOrder" class="input-ctrl" onchange="applyFiltersAndResetIndex()">
+          <option value="default">ترتیب: کد کوئری و پیش‌فرض</option>
+          <option value="reactions">بیشترین لایک 👍</option>
+          <option value="chars_desc">طولانی‌ترین متن 📝</option>
+          <option value="date_desc">جدیدترین تاریخ 📅</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <input type="search" id="searchInput" class="input-ctrl" placeholder="جستجو در متن یا عنوان شغلی..." oninput="applyFiltersAndResetIndex()">
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Swipe Card Stage -->
+  <div class="stage" id="cardStage">
+    <div class="swipe-card" id="swipeCard">
+      <div class="stamp keep" id="stampKeep">✅ بماند (KEEP)</div>
+      <div class="stamp reject" id="stampReject">❌ حذف (REJECT)</div>
+
+      <div class="card-top">
+        <div class="author-block">
+          <div class="author-name-row">
+            <span id="cardAuthorIcon">👤</span>
+            <a id="cardAuthorName" class="author-name" href="#" target="_blank" rel="noopener">—</a>
+            <span class="pill" id="cardPostIdPill" style="font-family:var(--mono);font-size:11px">ID: —</span>
+            <span class="pill" id="cardCurrentDecisionPill" style="display:none"></span>
+          </div>
+          <div class="author-headline" id="cardAuthorHeadline">—</div>
+        </div>
+        <div class="card-meta-right">
+          <span class="pill blue" id="cardQueuePosition">0 / 0</span>
+          <div class="small muted ltr" id="cardDateAndLink">—</div>
+        </div>
+      </div>
+
+      <!-- Query & Keyword Match Details -->
+      <div class="provenance-bar">
+        <div class="prov-row">
+          <div class="q-badges" id="cardQueryBadges"></div>
+          <div class="kw-hits-row" id="cardKeywordHits"></div>
+        </div>
+        <div class="query-formula" id="cardQueryFormula">—</div>
+      </div>
+
+      <!-- Full Post Content -->
+      <div class="post-body-wrap">
+        <div class="post-body" id="cardPostBody">در حال بارگذاری اطلاعات پست‌ها...</div>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="card-footer">
+        <div class="eng-pills" id="cardEngagement"></div>
+        <div class="small muted" id="cardExtraInfo">برای انتخاب: کارت را به راست (بماند) یا چپ (حذف) بکشید یا از کلیدهای جهت‌نما استفاده کنید</div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-bar">
+      <button type="button" class="act-btn keep-btn" onclick="triggerDecision('keep')">
+        <span>✅ بماند در دیتابیس جدید</span>
+        <span class="kbd">Swipe راست / →</span>
+      </button>
+
+      <button type="button" class="act-btn sub-btn" onclick="undoLastDecision()" id="undoBtn" disabled title="برگشت به پست قبلی (Z یا Backspace)">
+        <span>↩️ واگرد</span>
+        <span class="kbd">Z</span>
+      </button>
+
+      <button type="button" class="act-btn sub-btn" onclick="skipCurrentPost()" title="رد شدن موقت بدون تصمیم (↓ یا Space)">
+        <span>⏭️ بعدی</span>
+        <span class="kbd">↓</span>
+      </button>
+
+      <button type="button" class="act-btn reject-btn" onclick="triggerDecision('reject')">
+        <span>❌ رد شود (نامرتبط)</span>
+        <span class="kbd">← / Swipe چپ</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- New Curated Database Export Hub -->
+  <section class="db-hub">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">
+      <div>
+        <h2>🗄️ خروجی و ساخت دیتابیس جدید (پست‌های انتخاب‌شده)</h2>
+        <p class="small muted">هر زمان که غربالگری (کامل یا بخشی از آن) تمام شد، می‌توانید دیتابیس جدید شامل فقط پست‌های تاییدشده (<b id="exportKeepCount">0</b> پست) را مستقیم دانلود یا در پروژه ذخیره کنید.</p>
+      </div>
+      <div class="btn-row">
+        <input type="file" id="importDecisionsInput" accept=".json" style="display:none" onchange="importDecisionsFile(event)">
+        <button type="button" class="btn" onclick="document.getElementById('importDecisionsInput').click()">📂 بازیابی تصمیم‌های قبلی (JSON)</button>
+        <button type="button" class="btn" onclick="resetAllDecisions()" style="color:var(--bad)">🗑️ پاک‌سازی تصمیم‌ها</button>
+      </div>
+    </div>
+
+    <div class="db-grid">
+      <div class="db-box">
+        <h3>۱. دانلود مستقیم دیتابیس جدید از مرورگر (با یک کلیک)</h3>
+        <p class="small muted">ساخت آنی فایل دیتابیس SQLite (`.db`)، CSV و JSON فقط شامل پست‌های تاییدشده (Keep):</p>
+        <div class="btn-row">
+          <button type="button" class="btn success" onclick="exportSqliteDbInBrowser(this)">🗄️ دانلود مستقیم دیتابیس SQLite جدید (.db)</button>
+          <button type="button" class="btn primary" onclick="exportCuratedData('csv')">⬇️ دانلود CSV دیتابیس جدید</button>
+          <button type="button" class="btn primary" onclick="exportCuratedData('json')">⬇️ دانلود JSON دیتابیس جدید</button>
+          <button type="button" class="btn" onclick="exportDecisionsManifest()">📋 دانلود فایل تصمیم‌ها (Decisions JSON)</button>
+        </div>
+      </div>
+
+      <div class="db-box">
+        <h3>۲. ساخت دیتابیس ۵ جدوله کامل در پروژه + Neon Postgres</h3>
+        <p class="small muted">فایل تصمیم‌ها یا JSON را دانلود کنید و با دستور زیر دیتابیس ۵ جدوله استاندارد (<span style="font-family:var(--mono)">apify_curated_2026-10-19.db</span>) و دیتابیس جدید Neon (<span style="font-family:var(--mono)">_saintiment_apify_curated_db</span>) را بسازید:</p>
+        <div class="cmd-box">
+          <code>.venv/bin/python src/ingest/build_curated_db.py ~/Downloads/saintiment_swipe_decisions.json --push-neon</code>
+          <button type="button" onclick="copyCmd('.venv/bin/python src/ingest/build_curated_db.py ~/Downloads/saintiment_swipe_decisions.json --push-neon')">کپی دستور</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'saintiment_swipe_decisions_v1';
+
+const QUERIES = [
+  {"id": "Q01", "family": "direct", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (skill OR skills)"},
+  {"id": "Q02", "family": "direct", "operators": 5, "hits": 50, "exclusive": 33, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (skill OR skills)"},
+  {"id": "Q03", "family": "direct", "operators": 5, "hits": 50, "exclusive": 46, "query": "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (skill OR skills)"},
+  {"id": "Q04", "family": "direct", "operators": 5, "hits": 50, "exclusive": 46, "query": "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (skill OR skills)"},
+  {"id": "Q05", "family": "direct", "operators": 5, "hits": 50, "exclusive": 45, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)"},
+  {"id": "Q06", "family": "direct", "operators": 5, "hits": 50, "exclusive": 46, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)"},
+  {"id": "Q07", "family": "direct", "operators": 5, "hits": 13, "exclusive": 7, "query": "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)"},
+  {"id": "Q08", "family": "direct", "operators": 5, "hits": 11, "exclusive": 5, "query": "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)"},
+  {"id": "Q09", "family": "direct", "operators": 5, "hits": 50, "exclusive": 15, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")"},
+  {"id": "Q10", "family": "direct", "operators": 5, "hits": 34, "exclusive": 23, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")"},
+  {"id": "Q11", "family": "direct", "operators": 5, "hits": 14, "exclusive": 8, "query": "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")"},
+  {"id": "Q12", "family": "direct", "operators": 5, "hits": 10, "exclusive": 5, "query": "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")"},
+  {"id": "Q13", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")"},
+  {"id": "Q14", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 36, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")"},
+  {"id": "Q15", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 39, "query": "(Rendering OR archviz) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")"},
+  {"id": "Q16", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 48, "query": "(Rendering OR archviz) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")"},
+  {"id": "Q17", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 28, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)"},
+  {"id": "Q18", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 33, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)"},
+  {"id": "Q19", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 42, "query": "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)"},
+  {"id": "Q20", "family": "cognition", "operators": 5, "hits": 47, "exclusive": 40, "query": "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)"},
+  {"id": "Q21", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 36, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)"},
+  {"id": "Q22", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 30, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)"},
+  {"id": "Q23", "family": "cognition", "operators": 5, "hits": 30, "exclusive": 15, "query": "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)"},
+  {"id": "Q24", "family": "cognition", "operators": 5, "hits": 37, "exclusive": 26, "query": "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)"},
+  {"id": "Q25", "family": "process", "operators": 5, "hits": 50, "exclusive": 33, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (workflow OR automation)"},
+  {"id": "Q26", "family": "process", "operators": 5, "hits": 50, "exclusive": 29, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (workflow OR automation)"},
+  {"id": "Q27", "family": "process", "operators": 5, "hits": 50, "exclusive": 44, "query": "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (workflow OR automation)"},
+  {"id": "Q28", "family": "process", "operators": 5, "hits": 50, "exclusive": 40, "query": "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (workflow OR automation)"},
+  {"id": "Q29", "family": "process", "operators": 5, "hits": 50, "exclusive": 30, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)"},
+  {"id": "Q30", "family": "process", "operators": 5, "hits": 50, "exclusive": 31, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)"},
+  {"id": "Q31", "family": "process", "operators": 5, "hits": 50, "exclusive": 34, "query": "(Rendering OR architecture) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)"},
+  {"id": "Q32", "family": "process", "operators": 5, "hits": 50, "exclusive": 41, "query": "(Rendering OR architecture) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)"},
+  {"id": "Q33", "family": "direct", "operators": 5, "hits": 50, "exclusive": 45, "query": "(architect OR architectural) AND (AI OR \"artificial intelligence\") AND (skill OR skills)"},
+  {"id": "Q34", "family": "process", "operators": 5, "hits": 50, "exclusive": 48, "query": "(BIM OR Revit) AND (AI OR \"artificial intelligence\") AND (workflow OR automation)"},
+  {"id": "Q35", "family": "process", "operators": 5, "hits": 50, "exclusive": 40, "query": "(BIM OR Revit) AND (Copilot OR ChatGPT) AND (workflow OR automation)"},
+  {"id": "Q36", "family": "direct", "operators": 4, "hits": 32, "exclusive": 28, "query": "(Rhino OR Grasshopper) AND Copilot AND (skill OR skills)"},
+  {"id": "Q37", "family": "direct", "operators": 5, "hits": 38, "exclusive": 14, "query": "(architect OR architects) AND (GenAI OR \"generative AI\") AND (downskilling OR deskilling)"},
+  {"id": "Q38", "family": "direct", "operators": 5, "hits": 50, "exclusive": 43, "query": "(\"architectural design\" OR \"computational design\") AND (GenAI OR ChatGPT) AND (skills OR expertise)"},
+  {"id": "Q39", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 39, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"cognitive offloading\" OR overreliance)"},
+  {"id": "Q40", "family": "cognition", "operators": 5, "hits": 42, "exclusive": 38, "query": "(architect OR architects) AND (Midjourney OR ChatGPT) AND (\"cognitive offloading\" OR overreliance)"},
+  {"id": "Q41", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 43, "query": "(architect OR architectural) AND (\"Stable Diffusion\" OR DALL-E) AND (creativity OR authorship)"},
+  {"id": "Q42", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 40, "query": "(Rendering OR archviz) AND (\"AI rendering\" OR Midjourney) AND (creativity OR judgment)"},
+  {"id": "Q43", "family": "process", "operators": 5, "hits": 50, "exclusive": 35, "query": "(architect OR architects) AND (GenAI OR \"generative AI\") AND (\"human-in-the-loop\" OR \"role of the architect\")"},
+  {"id": "Q44", "family": "process", "operators": 5, "hits": 50, "exclusive": 35, "query": "(\"architectural design\" OR architecture) AND (GenAI OR \"generative AI\") AND (replacement OR augmentation)"},
+  {"id": "Q45", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"technical skills\" OR \"environmental design\")"},
+  {"id": "Q46", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 48, "query": "(BIM OR \"architectural design\") AND (AI OR \"generative AI\") AND (\"building performance\" OR \"energy modeling\")"},
+  {"id": "Q47", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 39, "query": "(\"architectural education\" OR \"architecture students\") AND (GenAI OR \"generative AI\") AND (curriculum OR learning)"},
+  {"id": "Q48", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 38, "query": "(\"architectural education\" OR \"architecture students\") AND (Midjourney OR ChatGPT) AND (skills OR \"critical thinking\")"}
+];
+
+const QUERY_BY_TEXT = Object.fromEntries(QUERIES.map(q => [q.query.trim(), q]));
+const QUERY_BY_ID = Object.fromEntries(QUERIES.map(q => [q.id, q]));
+
+const FAMILY_LABELS = {
+  direct: "مهارت مستقیم (Direct Skill)",
+  cognition: "شناخت و طراحی (Cognition)",
+  process: "فرآیند و نقش (Process)",
+  technical_and_pedagogy: "فنی و آموزش (Tech & Pedagogy)"
+};
+
+const LAYER1_TERMS = ["architectural design","computational design","generative design","architectural education","architecture students","architectural","architecture","architects","architect","grasshopper","parametric","rendering","archviz","revit","rhino","bim"];
+const LAYER2_TERMS = ["artificial intelligence","stable diffusion","generative ai","ai rendering","midjourney","chatgpt","copilot","dall-e","genai","ai"];
+const LAYER3_TERMS = ["cognitive offloading","role of the architect","environmental design","building performance","human-in-the-loop","critical thinking","technical skills","design thinking","energy modeling","downskilling","overreliance","augmentation","replacement","upskilling","deskilling","reskilling","skill loss","creativity","authorship","curriculum","automation","expertise","intuition","judgment","workflow","learning","replace","skills","skill"];
+
+let ALL_POSTS = [];
+let FILTERED_POSTS = [];
+let currentIndex = 0;
+let activeDecisionFilter = 'unreviewed'; // 'unreviewed' | 'keep' | 'reject' | 'all'
+let decisions = {}; // { [source_post_id]: { status: 'keep'|'reject', timestamp: string } }
+let historyStack = []; // [{ id, prevDecision }]
+
+// Populate Query dropdown
+const qSelect = document.getElementById('queryFilter');
+QUERIES.forEach(q => {
+  const opt = document.createElement('option');
+  opt.value = q.id;
+  opt.textContent = `${q.id} (${q.hits} hits) — ${q.query.slice(0, 52)}...`;
+  qSelect.appendChild(opt);
+});
+
+function loadSavedDecisions() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) decisions = JSON.parse(raw) || {};
+  } catch (e) {
+    decisions = {};
+  }
+}
+
+function saveDecisions() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(decisions));
+  } catch (e) {}
+  updateStatsUI();
+}
+
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function highlightKeywords(text) {
+  let safe = escapeHtml(text);
+  const detected = { l1: new Set(), l2: new Set(), l3: new Set() };
+
+  const applyLayer = (terms, cls, bucket) => {
+    for (const term of terms) {
+      const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const re = new RegExp(`(\\b${escapedTerm}\\b)`, 'gi');
+      if (re.test(safe)) {
+        bucket.add(term);
+        if (document.getElementById('highlightToggle').checked) {
+          safe = safe.replace(re, `<mark class="${cls}">$1</mark>`);
+        }
+      }
+    }
+  };
+
+  applyLayer(LAYER1_TERMS, 'hl-l1', detected.l1);
+  applyLayer(LAYER2_TERMS, 'hl-l2', detected.l2);
+  applyLayer(LAYER3_TERMS, 'hl-l3', detected.l3);
+
+  return { html: safe, detected };
+}
+
+function normalizePostRecord(r) {
+  const fams = String(r.matched_families || 'direct').split(',').map(s => s.trim()).filter(Boolean);
+  const qCodes = String(r.matched_query_codes || '').split(',').map(s => s.trim()).filter(Boolean);
+  return {
+    source_post_id: String(r.source_post_id || r.id || ''),
+    posted_at: String(r.posted_at || '').slice(0, 10) || '—',
+    post_type: r.post_type || 'post',
+    author_type: r.author_type || 'profile',
+    author_name: r.author_name || '—',
+    author_headline: r.author_headline || '—',
+    author_url: r.author_url || '',
+    author_public_id: r.author_public_id || '',
+    post_url: r.post_url || '',
+    reactions: Number(r.reactions || 0),
+    comments: Number(r.comments || 0),
+    shares: Number(r.shares || 0),
+    text_chars: Number(r.text_chars || (r.post_text ? r.post_text.length : 0)),
+    matched_query_count: Number(r.matched_query_count || qCodes.length || 1),
+    matched_query_codes: qCodes.join(','),
+    query_list: qCodes,
+    matched_families: fams.join(','),
+    families: fams,
+    primary_family: fams[0] || 'direct',
+    media: r.media || null,
+    post_text: String(r.post_text || '')
+  };
+}
+
+function convertRawApifyItemsToUniquePosts(items) {
+  const byId = new Map();
+  for (const item of items) {
+    const pid = String(item.id || item.entityId || '');
+    if (!pid) continue;
+    const qStr = (item.query && item.query.search) ? String(item.query.search).trim() : '';
+    const qMeta = QUERY_BY_TEXT[qStr];
+    const qCode = qMeta ? qMeta.id : 'Q?';
+    const qFam = qMeta ? qMeta.family : 'direct';
+    if (!byId.has(pid)) {
+      const txt = String(item.content || '');
+      const eng = item.engagement || {};
+      const auth = item.author || {};
+      const posted = item.postedAt || {};
+      const mediaObj = {};
+      for (const k of ['postImages', 'postVideo', 'article', 'document', 'poll', 'repost']) {
+        if (item[k] && (!Array.isArray(item[k]) || item[k].length > 0)) mediaObj[k] = item[k];
+      }
+      byId.set(pid, {
+        source_post_id: pid,
+        posted_at: String(posted.date || '').slice(0, 10) || '—',
+        post_type: item.type || 'post',
+        author_type: auth.type || 'profile',
+        author_name: auth.name || '—',
+        author_headline: auth.info || '—',
+        author_url: auth.linkedinUrl || '',
+        author_public_id: auth.publicIdentifier || '',
+        post_url: item.linkedinUrl || '',
+        reactions: Number(eng.likes || 0),
+        comments: Number(eng.comments || 0),
+        shares: Number(eng.shares || 0),
+        text_chars: txt.length,
+        media: Object.keys(mediaObj).length ? JSON.stringify(mediaObj) : null,
+        qSet: new Set([qCode]),
+        fSet: new Set([qFam]),
+        post_text: txt
+      });
+    } else {
+      const entry = byId.get(pid);
+      entry.qSet.add(qCode);
+      entry.fSet.add(qFam);
+    }
+  }
+  return Array.from(byId.values()).map(r => {
+    const qList = Array.from(r.qSet).sort();
+    const fList = Array.from(r.fSet);
+    return normalizePostRecord({
+      ...r,
+      matched_query_count: qList.length,
+      matched_query_codes: qList.join(','),
+      matched_families: fList.join(',')
+    });
+  });
+}
+
+async function initLoadPosts() {
+  loadSavedDecisions();
+  const pill = document.getElementById('sourceStatusPill');
+
+  // 1. Try local JSON file first (fast when opened locally)
+  try {
+    const localRes = await fetch('../data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18.json');
+    if (localRes.ok) {
+      const data = await localRes.json();
+      if (Array.isArray(data) && data.length > 0) {
+        ALL_POSTS = data.map(normalizePostRecord);
+        pill.className = 'pill green';
+        pill.textContent = `✅ بارگذاری‌شده از دیتابیس لوکال (${ALL_POSTS.length} پست یکتا)`;
+        applyFiltersAndResetIndex();
+        return;
+      }
+    }
+  } catch (e) {}
+
+  // 2. Fallback to live Apify dataset API (works on GitHub Pages)
+  try {
+    pill.textContent = '⏳ در حال دریافت ۱٬۸۵۸ پست از سرور Apify...';
+    const apiRes = await fetch('https://api.apify.com/v2/datasets/WUsK3RRYo7nKEOUbA/items?format=json&clean=true');
+    if (!apiRes.ok) throw new Error('HTTP ' + apiRes.status);
+    const items = await apiRes.json();
+    ALL_POSTS = convertRawApifyItemsToUniquePosts(items);
+    pill.className = 'pill green';
+    pill.textContent = `✅ بارگذاری آنلاین (${ALL_POSTS.length} پست یکتا)`;
+    applyFiltersAndResetIndex();
+  } catch (err) {
+    pill.className = 'pill red';
+    pill.textContent = '⚠️ خطا در دریافت آنلاین — فایل JSON را دستی انتخاب کنید';
+    document.getElementById('cardPostBody').textContent = 'امکان دریافت خودکار نبود. لطفاً با دکمه «بارگذاری فایل JSON» در بالای صفحه، فایل JSON دیتاست را انتخاب کنید.';
+  }
+}
+
+function handleLocalJsonUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!Array.isArray(parsed)) throw new Error('فایل JSON باید آرایه‌ای از پست‌ها باشد.');
+      if (parsed.length > 0 && parsed[0].source_post_id) {
+        ALL_POSTS = parsed.map(normalizePostRecord);
+      } else {
+        ALL_POSTS = convertRawApifyItemsToUniquePosts(parsed);
+      }
+      const pill = document.getElementById('sourceStatusPill');
+      pill.className = 'pill green';
+      pill.textContent = `✅ بارگذاری از فایل (${ALL_POSTS.length} پست)`;
+      applyFiltersAndResetIndex();
+    } catch (err) {
+      alert('خطا در خواندن فایل: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function updateStatsUI() {
+  const total = ALL_POSTS.length;
+  let keepCount = 0;
+  let rejectCount = 0;
+  for (const p of ALL_POSTS) {
+    const d = decisions[p.source_post_id];
+    if (d && d.status === 'keep') keepCount++;
+    else if (d && d.status === 'reject') rejectCount++;
+  }
+  const unreviewedCount = Math.max(0, total - keepCount - rejectCount);
+  const reviewedCount = keepCount + rejectCount;
+  const pct = total > 0 ? ((reviewedCount / total) * 100).toFixed(1) : '0.0';
+
+  document.getElementById('statUnreviewed').textContent = unreviewedCount.toLocaleString('en-US');
+  document.getElementById('statKeep').textContent = keepCount.toLocaleString('en-US');
+  document.getElementById('statReject').textContent = rejectCount.toLocaleString('en-US');
+  document.getElementById('statTotal').textContent = total.toLocaleString('en-US');
+  document.getElementById('exportKeepCount').textContent = keepCount.toLocaleString('en-US');
+
+  document.getElementById('progKeepBar').style.width = total > 0 ? `${(keepCount / total) * 100}%` : '0%';
+  document.getElementById('progRejectBar').style.width = total > 0 ? `${(rejectCount / total) * 100}%` : '0%';
+  document.getElementById('progressText').textContent = `پیشرفت بررسی: ${reviewedCount} از ${total} پست (${pct}٪) — ${keepCount} تایید، ${rejectCount} رد`;
+  document.getElementById('undoBtn').disabled = historyStack.length === 0;
+}
+
+function setDecisionFilter(mode) {
+  activeDecisionFilter = mode;
+  document.querySelectorAll('.stat-box').forEach(el => el.classList.remove('active-filter'));
+  if (mode === 'unreviewed') document.getElementById('filterBoxUnreviewed').classList.add('active-filter');
+  if (mode === 'keep') document.getElementById('filterBoxKeep').classList.add('active-filter');
+  if (mode === 'reject') document.getElementById('filterBoxReject').classList.add('active-filter');
+  if (mode === 'all') document.getElementById('filterBoxAll').classList.add('active-filter');
+  applyFiltersAndResetIndex();
+}
+
+function applyFiltersAndResetIndex() {
+  const fam = document.getElementById('familyFilter').value;
+  const qId = document.getElementById('queryFilter').value;
+  const authType = document.getElementById('authorTypeFilter').value;
+  const sortKey = document.getElementById('sortOrder').value;
+  const term = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+
+  FILTERED_POSTS = ALL_POSTS.filter(p => {
+    const dec = decisions[p.source_post_id]?.status || 'unreviewed';
+    if (activeDecisionFilter !== 'all' && dec !== activeDecisionFilter) return false;
+    if (fam !== 'all' && !p.families.includes(fam)) return false;
+    if (qId !== 'all' && !p.query_list.includes(qId)) return false;
+    if (authType !== 'all' && p.author_type !== authType) return false;
+    if (term) {
+      const hay = `${p.post_text} ${p.author_name} ${p.author_headline} ${p.matched_query_codes}`.toLowerCase();
+      if (!hay.includes(term)) return false;
+    }
+    return true;
+  });
+
+  if (sortKey === 'reactions') {
+    FILTERED_POSTS.sort((a, b) => b.reactions - a.reactions);
+  } else if (sortKey === 'chars_desc') {
+    FILTERED_POSTS.sort((a, b) => b.text_chars - a.text_chars);
+  } else if (sortKey === 'date_desc') {
+    FILTERED_POSTS.sort((a, b) => String(b.posted_at).localeCompare(String(a.posted_at)));
+  }
+
+  currentIndex = 0;
+  updateStatsUI();
+  renderCurrentCard();
+}
+
+function renderCurrentCard() {
+  const card = document.getElementById('swipeCard');
+  if (!FILTERED_POSTS.length || currentIndex >= FILTERED_POSTS.length) {
+    document.getElementById('cardQueuePosition').textContent = '0 / 0';
+    document.getElementById('cardAuthorName').textContent = 'پستی در این فیلتر باقی نمانده است 🎉';
+    document.getElementById('cardAuthorHeadline').textContent = 'می‌توانید فیلتر بالا را تغییر دهید یا از بخش پایین خروجی دیتابیس جدید را دریافت کنید.';
+    document.getElementById('cardPostIdPill').textContent = 'Done';
+    document.getElementById('cardCurrentDecisionPill').style.display = 'none';
+    document.getElementById('cardDateAndLink').innerHTML = '';
+    document.getElementById('cardQueryBadges').innerHTML = '';
+    document.getElementById('cardKeywordHits').innerHTML = '';
+    document.getElementById('cardQueryFormula').textContent = '—';
+    document.getElementById('cardPostBody').innerHTML = '<div style="text-align:center;padding:30px;direction:rtl;color:var(--muted)">تمام پست‌های این بخش بررسی شدند! از پنل پایین صفحه می‌توانید دیتابیس جدید را دانلود کنید.</div>';
+    document.getElementById('cardEngagement').innerHTML = '';
+    return;
+  }
+
+  const p = FILTERED_POSTS[currentIndex];
+  const dec = decisions[p.source_post_id];
+
+  document.getElementById('cardQueuePosition').textContent = `${currentIndex + 1} / ${FILTERED_POSTS.length}`;
+  document.getElementById('cardAuthorIcon').textContent = p.author_type === 'company' ? '🏢' : '👤';
+
+  const nameEl = document.getElementById('cardAuthorName');
+  nameEl.textContent = p.author_name || 'بدون نام';
+  if (p.author_url) {
+    nameEl.href = p.author_url;
+  } else {
+    nameEl.removeAttribute('href');
+  }
+
+  document.getElementById('cardPostIdPill').textContent = `ID: ${p.source_post_id.slice(-8)}`;
+
+  const decPill = document.getElementById('cardCurrentDecisionPill');
+  if (dec) {
+    decPill.style.display = 'inline-flex';
+    decPill.className = 'pill ' + (dec.status === 'keep' ? 'green' : 'red');
+    decPill.textContent = dec.status === 'keep' ? '✅ انتخاب‌شده' : '❌ ردشده';
+  } else {
+    decPill.style.display = 'none';
+  }
+
+  document.getElementById('cardAuthorHeadline').textContent = p.author_headline || '—';
+
+  const postLink = p.post_url ? `<a href="${escapeHtml(p.post_url)}" target="_blank" rel="noopener">🔗 لینک پست در لینکدین ↗</a>` : '';
+  document.getElementById('cardDateAndLink').innerHTML = `📅 ${escapeHtml(p.posted_at)} ${postLink ? ' · ' + postLink : ''}`;
+
+  // Query badges & families
+  const qBadgesHtml = p.query_list.map(qCode => `<span class="q-code">${escapeHtml(qCode)}</span>`).join('') +
+    p.families.map(f => `<span class="fam-badge fam-${escapeHtml(f)}">${escapeHtml(FAMILY_LABELS[f] || f)}</span>`).join('');
+  document.getElementById('cardQueryBadges').innerHTML = qBadgesHtml;
+
+  // Query formula
+  const formulas = p.query_list.map(qCode => {
+    const qObj = QUERY_BY_ID[qCode];
+    return qObj ? `${qCode}: ${qObj.query}` : qCode;
+  });
+  document.getElementById('cardQueryFormula').textContent = formulas.join('  |  ') || '—';
+
+  // Highlight text & show matched keywords
+  const { html, detected } = highlightKeywords(p.post_text || '');
+  let mediaHtml = '';
+  if (p.media) {
+    try {
+      const m = typeof p.media === 'string' ? JSON.parse(p.media) : p.media;
+      if (m.article && m.article.title) {
+        mediaHtml += `<div style="margin-top:12px;padding:10px 12px;background:var(--soft);border:1px solid var(--line);border-radius:8px;font-size:12.5px">
+          <b>📄 مقاله پیوست:</b> ${escapeHtml(m.article.title)}
+          ${m.article.subtitle ? `<div class="muted">${escapeHtml(m.article.subtitle)}</div>` : ''}
+          ${m.article.link ? `<div><a href="${escapeHtml(m.article.link)}" target="_blank" rel="noopener">مشاهده لینک پیوست ↗</a></div>` : ''}
+        </div>`;
+      }
+      if (Array.isArray(m.postImages) && m.postImages.length > 0) {
+        const imgs = m.postImages.slice(0, 4).map(img =>
+          img && img.url ? `<a href="${escapeHtml(img.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(img.url)}" alt="Post image" loading="lazy" style="max-height:150px;max-width:100%;border-radius:8px;border:1px solid var(--line);object-fit:cover"></a>` : ''
+        ).join('');
+        if (imgs) {
+          mediaHtml += `<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px">${imgs}</div>`;
+        }
+      }
+    } catch (e) {}
+  }
+  const bodyEl = document.getElementById('cardPostBody');
+  bodyEl.innerHTML = (html || '<span class="muted">(بدون متن)</span>') + mediaHtml;
+  bodyEl.scrollTop = 0;
+
+  const kwPills = [
+    ...Array.from(detected.l1).map(w => `<span class="kw-hit-pill kw-l1" title="لایه ۱: معماری/ابزار">${escapeHtml(w)}</span>`),
+    ...Array.from(detected.l2).map(w => `<span class="kw-hit-pill kw-l2" title="لایه ۲: هوش مصنوعی">${escapeHtml(w)}</span>`),
+    ...Array.from(detected.l3).map(w => `<span class="kw-hit-pill kw-l3" title="لایه ۳: مهارت/شناخت/فرآیند">${escapeHtml(w)}</span>`)
+  ];
+  document.getElementById('cardKeywordHits').innerHTML = kwPills.length
+    ? `<span class="muted">کلیدواژه‌های درون متن:</span> ${kwPills.join('')}`
+    : `<span class="muted">کلیدواژه مستقیمی در متن یافت نشد (ممکن است در لینک/ری‌پست باشد)</span>`;
+
+  // Footer metrics
+  document.getElementById('cardEngagement').innerHTML = `
+    <span class="eng-pill">👍 ${p.reactions} Likes</span>
+    <span class="eng-pill">💬 ${p.comments} Comments</span>
+    <span class="eng-pill">🔁 ${p.shares} Shares</span>
+    <span class="eng-pill">📝 ${p.text_chars} Chars</span>
+    <span class="eng-pill">${p.author_type === 'company' ? '🏢 Company' : '👤 Profile'}</span>
+  `;
+}
+
+function triggerDecision(status) {
+  if (!FILTERED_POSTS.length || currentIndex >= FILTERED_POSTS.length) return;
+  const p = FILTERED_POSTS[currentIndex];
+  const card = document.getElementById('swipeCard');
+
+  historyStack.push({
+    id: p.source_post_id,
+    prevDecision: decisions[p.source_post_id] ? { ...decisions[p.source_post_id] } : null
+  });
+
+  decisions[p.source_post_id] = {
+    status,
+    timestamp: new Date().toISOString()
+  };
+  saveDecisions();
+
+  const flyClass = status === 'keep' ? 'fly-right' : 'fly-left';
+  const stampEl = document.getElementById(status === 'keep' ? 'stampKeep' : 'stampReject');
+  stampEl.style.opacity = '1';
+  stampEl.style.transform = 'scale(1) rotate(' + (status === 'keep' ? '8deg' : '-8deg') + ')';
+  card.classList.add(flyClass);
+
+  setTimeout(() => {
+    card.classList.remove('fly-right', 'fly-left', 'hint-keep', 'hint-reject');
+    card.style.transform = '';
+    stampEl.style.opacity = '0';
+
+    if (activeDecisionFilter === 'unreviewed') {
+      FILTERED_POSTS.splice(currentIndex, 1);
+      if (currentIndex >= FILTERED_POSTS.length) currentIndex = Math.max(0, FILTERED_POSTS.length - 1);
+    } else {
+      currentIndex++;
+    }
+    renderCurrentCard();
+  }, 220);
+}
+
+function skipCurrentPost() {
+  if (!FILTERED_POSTS.length) return;
+  if (currentIndex < FILTERED_POSTS.length - 1) {
+    currentIndex++;
+  } else {
+    currentIndex = 0;
+  }
+  renderCurrentCard();
+}
+
+function undoLastDecision() {
+  if (!historyStack.length) return;
+  const last = historyStack.pop();
+  if (last.prevDecision) {
+    decisions[last.id] = last.prevDecision;
+  } else {
+    delete decisions[last.id];
+  }
+  saveDecisions();
+
+  const postObj = ALL_POSTS.find(x => x.source_post_id === last.id);
+  if (postObj) {
+    const existingIdx = FILTERED_POSTS.findIndex(x => x.source_post_id === last.id);
+    if (existingIdx !== -1) {
+      currentIndex = existingIdx;
+    } else {
+      FILTERED_POSTS.splice(currentIndex, 0, postObj);
+    }
+  }
+  renderCurrentCard();
+}
+
+// Touch & Mouse Drag Swipe Handling
+(function setupSwipeGestures() {
+  const card = document.getElementById('swipeCard');
+  const stampKeep = document.getElementById('stampKeep');
+  const stampReject = document.getElementById('stampReject');
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let isDragging = false;
+
+  function onStart(clientX, clientY, target) {
+    if (target.closest('a, button, input, select, .post-body')) return;
+    startX = clientX;
+    startY = clientY;
+    currentX = 0;
+    isDragging = true;
+    card.classList.add('dragging');
+  }
+
+  function onMove(clientX, clientY) {
+    if (!isDragging) return;
+    const dx = clientX - startX;
+    const dy = clientY - startY;
+    if (Math.abs(dy) > Math.abs(dx) * 1.5 && Math.abs(dx) < 30) return;
+    currentX = dx;
+    const rot = dx * 0.04;
+    card.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
+
+    const ratio = Math.min(1, Math.abs(dx) / 110);
+    if (dx > 25) {
+      card.classList.add('hint-keep');
+      card.classList.remove('hint-reject');
+      stampKeep.style.opacity = String(ratio);
+      stampReject.style.opacity = '0';
+    } else if (dx < -25) {
+      card.classList.add('hint-reject');
+      card.classList.remove('hint-keep');
+      stampReject.style.opacity = String(ratio);
+      stampKeep.style.opacity = '0';
+    } else {
+      card.classList.remove('hint-keep', 'hint-reject');
+      stampKeep.style.opacity = '0';
+      stampReject.style.opacity = '0';
+    }
+  }
+
+  function onEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    card.classList.remove('dragging');
+    if (currentX > 105) {
+      triggerDecision('keep');
+    } else if (currentX < -105) {
+      triggerDecision('reject');
+    } else {
+      card.style.transform = '';
+      card.classList.remove('hint-keep', 'hint-reject');
+      stampKeep.style.opacity = '0';
+      stampReject.style.opacity = '0';
+    }
+  }
+
+  card.addEventListener('mousedown', e => onStart(e.clientX, e.clientY, e.target));
+  window.addEventListener('mousemove', e => onMove(e.clientX, e.clientY));
+  window.addEventListener('mouseup', onEnd);
+
+  card.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) onStart(e.touches[0].clientX, e.touches[0].clientY, e.target);
+  }, { passive: true });
+  card.addEventListener('touchmove', e => {
+    if (e.touches.length === 1) onMove(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  card.addEventListener('touchend', onEnd);
+})();
+
+// Keyboard Shortcuts
+window.addEventListener('keydown', e => {
+  if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) return;
+  if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D' || e.key === 'Enter') {
+    e.preventDefault();
+    triggerDecision('keep');
+  } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+    e.preventDefault();
+    triggerDecision('reject');
+  } else if (e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault();
+    skipCurrentPost();
+  } else if (e.key === 'z' || e.key === 'Z' || e.key === 'Backspace') {
+    e.preventDefault();
+    undoLastDecision();
+  }
+});
+
+// Export Functions
+function getKeptPosts() {
+  return ALL_POSTS.filter(p => decisions[p.source_post_id]?.status === 'keep');
+}
+
+function exportCuratedData(fmt) {
+  const kept = getKeptPosts();
+  if (!kept.length) {
+    alert('هنوز هیچ پستی را با «بماند ✅» انتخاب نکرده‌اید.');
+    return;
+  }
+  const rows = kept.map(p => ({
+    source_post_id: p.source_post_id,
+    posted_at: p.posted_at,
+    post_type: p.post_type,
+    author_type: p.author_type,
+    author_name: p.author_name,
+    author_headline: p.author_headline,
+    author_url: p.author_url,
+    post_url: p.post_url,
+    reactions: p.reactions,
+    comments: p.comments,
+    shares: p.shares,
+    text_chars: p.text_chars,
+    matched_query_count: p.matched_query_count,
+    matched_query_codes: p.matched_query_codes,
+    matched_families: p.matched_families,
+    curated_at: decisions[p.source_post_id]?.timestamp || '',
+    post_text: p.post_text
+  }));
+
+  if (fmt === 'json') {
+    const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `saintiment_curated_posts_${rows.length}.json`;
+    a.click();
+  } else {
+    const cols = Object.keys(rows[0]);
+    const lines = [cols.join(',')];
+    for (const r of rows) {
+      lines.push(cols.map(c => `"${String(r[c] ?? '').replace(/"/g, '""')}"`).join(','));
+    }
+    const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `saintiment_curated_posts_${rows.length}.csv`;
+    a.click();
+  }
+}
+
+function exportDecisionsManifest() {
+  const payload = {
+    project: 'Saintiment',
+    source_run_id: 'X2gdX05u8rP41b4rG',
+    source_dataset_id: 'WUsK3RRYo7nKEOUbA',
+    exported_at: new Date().toISOString(),
+    summary: {
+      total_posts: ALL_POSTS.length,
+      kept: Object.values(decisions).filter(d => d.status === 'keep').length,
+      rejected: Object.values(decisions).filter(d => d.status === 'reject').length
+    },
+    decisions
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'saintiment_swipe_decisions.json';
+  a.click();
+}
+
+async function exportSqliteDbInBrowser(btn) {
+  const kept = getKeptPosts();
+  if (!kept.length) {
+    alert('هنوز هیچ پستی را با «بماند ✅» انتخاب نکرده‌اید.');
+    return;
+  }
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳ در حال ساخت دیتابیس SQLite...';
+  try {
+    const SQL = await initSqlJs({
+      locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}`
+    });
+    const db = new SQL.Database();
+    db.run(`
+      CREATE TABLE queries (
+        query_code TEXT PRIMARY KEY,
+        query_family TEXT,
+        operators INTEGER,
+        query_text TEXT
+      );
+      CREATE TABLE master_posts (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        source_post_id TEXT UNIQUE,
+        posted_at TEXT,
+        post_type TEXT,
+        author_type TEXT,
+        author_name TEXT,
+        author_headline TEXT,
+        author_url TEXT,
+        post_url TEXT,
+        reactions INTEGER,
+        comments INTEGER,
+        shares INTEGER,
+        text_chars INTEGER,
+        matched_query_count INTEGER,
+        matched_query_codes TEXT,
+        matched_families TEXT,
+        curated_at TEXT,
+        post_text TEXT
+      );
+      CREATE TABLE curation_decisions (
+        source_post_id TEXT PRIMARY KEY,
+        status TEXT NOT NULL,
+        decided_at TEXT
+      );
+    `);
+
+    const qStmt = db.prepare('INSERT INTO queries VALUES (?, ?, ?, ?)');
+    for (const q of QUERIES) {
+      qStmt.run([q.id, q.family, q.operators, q.query]);
+    }
+    qStmt.free();
+
+    const pStmt = db.prepare('INSERT INTO master_posts (source_post_id,posted_at,post_type,author_type,author_name,author_headline,author_url,post_url,reactions,comments,shares,text_chars,matched_query_count,matched_query_codes,matched_families,curated_at,post_text) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
+    for (const p of kept) {
+      pStmt.run([
+        p.source_post_id, p.posted_at, p.post_type, p.author_type, p.author_name,
+        p.author_headline, p.author_url, p.post_url, p.reactions, p.comments,
+        p.shares, p.text_chars, p.matched_query_count, p.matched_query_codes,
+        p.matched_families, decisions[p.source_post_id]?.timestamp || '', p.post_text
+      ]);
+    }
+    pStmt.free();
+
+    const dStmt = db.prepare('INSERT INTO curation_decisions VALUES (?, ?, ?)');
+    for (const [pid, d] of Object.entries(decisions)) {
+      dStmt.run([pid, d.status, d.timestamp || '']);
+    }
+    dStmt.free();
+
+    const binaryArray = db.export();
+    const blob = new Blob([binaryArray], { type: 'application/x-sqlite3' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `saintiment_curated_${kept.length}_posts.db`;
+    a.click();
+    db.close();
+  } catch (err) {
+    alert('خطا در ساخت SQLite در مرورگر: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = orig;
+  }
+}
+
+function importDecisionsFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      const imported = data.decisions || data;
+      let count = 0;
+      for (const [k, v] of Object.entries(imported)) {
+        if (v && (v.status === 'keep' || v.status === 'reject')) {
+          decisions[k] = v;
+          count++;
+        }
+      }
+      saveDecisions();
+      applyFiltersAndResetIndex();
+      alert(`${count} تصمیم قبلی با موفقیت بازیابی شد.`);
+    } catch (err) {
+      alert('فایل تصمیم‌ها معتبر نیست: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetAllDecisions() {
+  if (!confirm('آیا مطمئن هستید که می‌خواهید تمام تصمیم‌های ذخیره‌شده در مرورگر را پاک کنید؟')) return;
+  decisions = {};
+  historyStack = [];
+  saveDecisions();
+  applyFiltersAndResetIndex();
+}
+
+function copyCmd(txt) {
+  navigator.clipboard.writeText(txt).then(() => alert('دستور کپی شد.'));
+}
+
+initLoadPosts();
+</script>
+</body>
+</html>
