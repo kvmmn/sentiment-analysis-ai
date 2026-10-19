@@ -2,28 +2,31 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Saintiment — غربالگری تعاملی پست‌ها (Swipe Review & Curated DB)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saintiment — غربالگری تعاملی پست‌ها با نمایش متن کامل (Swipe Review)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Estedad:wght@300;400;600;700;800&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<!-- Instant local loader when opened on local machine (even via file://); silently ignored on GitHub Pages -->
+<script src="../data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18_posts.js" onerror="window.LOCAL_APIFY_POSTS=null"></script>
 <style>
 :root{
-  --bg:#f8fafc; --card:#ffffff; --fg:#0f172a; --muted:#64748b; --line:#e2e8f0; --soft:#f1f5f9;
+  --bg:#f1f5f9; --card:#ffffff; --fg:#0f172a; --muted:#64748b; --line:#e2e8f0; --soft:#f8fafc;
   --accent:#2563eb; --accent-soft:#eff6ff; --accent-border:#bfdbfe;
   --good:#16a34a; --good-soft:#f0fdf4; --good-border:#86efac;
   --bad:#dc2626; --bad-soft:#fef2f2; --bad-border:#fca5a5;
   --purple:#7c3aed; --purple-soft:#f3e8ff;
   --amber:#d97706; --amber-soft:#fffbeb;
-  --font:"Estedad",Tahoma,"Segoe UI",sans-serif;
+  --font:"Estedad",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Tahoma,sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --post-font-size:16.5px;
   color-scheme:light;
 }
 *{box-sizing:border-box}
 html{direction:rtl}
-body{background:var(--bg);color:var(--fg);font:400 14.5px/1.7 var(--font);margin:0;padding:16px 14px 48px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-.wrap{max-width:940px;margin:0 auto;display:grid;gap:16px}
+body{background:var(--bg);color:var(--fg);font:400 14.5px/1.7 var(--font);margin:0;padding:14px 14px 56px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:960px;margin:0 auto;display:grid;gap:14px}
 h1,h2,h3{margin:0;font-weight:800;line-height:1.35}
 p{margin:0}
 a{color:var(--accent);text-decoration:none}
@@ -32,81 +35,128 @@ a:hover{text-decoration:underline}
 .small{font-size:12.5px}
 .ltr{direction:ltr;text-align:left}
 
-/* Top Nav */
-.top-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;background:var(--card);padding:12px 16px;border-radius:14px;border:1px solid var(--line);box-shadow:0 1px 3px rgba(15,23,42,.03)}
+/* Top Bar */
+.top-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;background:var(--card);padding:11px 16px;border-radius:14px;border:1px solid var(--line);box-shadow:0 1px 2px rgba(15,23,42,.03)}
 .brand{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;background:var(--soft);color:var(--muted);border:1px solid var(--line)}
 .pill.blue{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-border)}
 .pill.green{background:var(--good-soft);color:var(--good);border-color:var(--good-border)}
 .pill.red{background:var(--bad-soft);color:var(--bad);border-color:var(--bad-border)}
 
-/* Stats & Progress Bar */
-.status-panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:12px;box-shadow:0 1px 3px rgba(15,23,42,.03)}
+/* Compact Status & Filters Panel */
+.status-panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 15px;display:grid;gap:10px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
-.stat-box{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .15s}
+.stat-box{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .15s}
 .stat-box:hover{border-color:var(--accent)}
 .stat-box.active-filter{outline:2px solid var(--accent);background:var(--accent-soft)}
-.stat-box b{font-size:18px;font-weight:800;direction:ltr}
+.stat-box b{font-size:17px;font-weight:800;direction:ltr}
 .stat-box span{font-size:12px;color:var(--muted);font-weight:600}
 .stat-box.keep{background:var(--good-soft);border-color:var(--good-border)}
 .stat-box.keep b{color:var(--good)}
 .stat-box.reject{background:var(--bad-soft);border-color:var(--bad-border)}
 .stat-box.reject b{color:var(--bad)}
 
-.progress-wrap{display:grid;gap:5px}
-.progress-track{height:10px;background:var(--soft);border-radius:999px;overflow:hidden;display:flex;border:1px solid var(--line)}
+.progress-wrap{display:grid;gap:4px}
+.progress-track{height:8px;background:var(--soft);border-radius:999px;overflow:hidden;display:flex;border:1px solid var(--line)}
 .progress-keep{background:var(--good);height:100%;transition:width .25s ease}
 .progress-reject{background:var(--bad);height:100%;transition:width .25s ease}
-.progress-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.progress-meta{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
 
-/* Filters Bar */
-.filters-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--line)}
+.filters-bar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid var(--line)}
 .filter-group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.input-ctrl{font:600 12.5px var(--font);padding:6px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
-.input-ctrl:focus{outline:none;border-color:var(--accent)}
+.input-ctrl{font:600 12px var(--font);padding:5px 9px;border:1px solid var(--line);border-radius:8px;background:var(--soft);color:var(--fg)}
+.input-ctrl:focus{outline:none;border-color:var(--accent);background:var(--card)}
 
-/* Swipe Stage */
-.stage{position:relative;min-height:470px;display:flex;flex-direction:column;gap:14px; perspective:1000px}
+/* Swipe Card Stage */
+.stage{position:relative;display:flex;flex-direction:column;gap:14px}
 
 .swipe-card{
   position:relative;
   background:var(--card);
-  border:1.5px solid var(--line);
+  border:2px solid var(--line);
   border-radius:18px;
-  padding:20px 22px;
-  box-shadow:0 10px 28px -6px rgba(15,23,42,.08),0 2px 6px -1px rgba(15,23,42,.04);
+  padding:22px 24px;
+  box-shadow:0 12px 32px -8px rgba(15,23,42,.08),0 2px 6px -1px rgba(15,23,42,.04);
   display:grid;
-  gap:14px;
+  gap:16px;
   touch-action:pan-y;
-  user-select:none;
-  -webkit-user-select:none;
   transition:transform .22s cubic-bezier(.2,.8,.2,1), opacity .22s ease, border-color .15s ease, box-shadow .15s ease;
   will-change:transform,opacity;
 }
 .swipe-card.dragging{transition:none;cursor:grabbing}
-.swipe-card.hint-keep{border-color:var(--good);box-shadow:0 12px 32px rgba(22,163,74,.18)}
-.swipe-card.hint-reject{border-color:var(--bad);box-shadow:0 12px 32px rgba(220,38,38,.18)}
-.swipe-card.fly-right{transform:translateX(120%) rotate(14deg) !important;opacity:0 !important;transition:transform .28s ease-in, opacity .25s ease-in !important}
-.swipe-card.fly-left{transform:translateX(-120%) rotate(-14deg) !important;opacity:0 !important;transition:transform .28s ease-in, opacity .25s ease-in !important}
+.swipe-card.hint-keep{border-color:var(--good);box-shadow:0 14px 36px rgba(22,163,74,.2)}
+.swipe-card.hint-reject{border-color:var(--bad);box-shadow:0 14px 36px rgba(220,38,38,.2)}
+.swipe-card.fly-right{transform:translateX(120%) rotate(12deg) !important;opacity:0 !important;transition:transform .26s ease-in, opacity .24s ease-in !important}
+.swipe-card.fly-left{transform:translateX(-120%) rotate(-12deg) !important;opacity:0 !important;transition:transform .26s ease-in, opacity .24s ease-in !important}
 
 /* Stamp Overlays during swipe */
 .stamp{
-  position:absolute;top:24px;z-index:10;padding:6px 16px;border-radius:10px;font:800 20px/1.2 var(--font);
+  position:fixed;top:90px;z-index:50;padding:8px 20px;border-radius:12px;font:800 22px/1.2 var(--font);
   letter-spacing:.5px;pointer-events:none;opacity:0;transform:scale(.85);transition:opacity .1s, transform .1s;
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
 }
-.stamp.keep{right:24px;background:rgba(22,163,74,.95);color:#fff;border:2px solid #bbf7d0;transform:rotate(8deg)}
-.stamp.reject{left:24px;background:rgba(220,38,38,.95);color:#fff;border:2px solid #fecaca;transform:rotate(-8deg)}
+.stamp.keep{right:32px;background:rgba(22,163,74,.96);color:#fff;border:2px solid #bbf7d0;transform:rotate(6deg)}
+.stamp.reject{left:32px;background:rgba(220,38,38,.96);color:#fff;border:2px solid #fecaca;transform:rotate(-6deg)}
 
-/* Card Header */
-.card-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:10px;padding-bottom:12px;border-bottom:1px solid var(--line)}
-.author-block{display:grid;gap:3px;direction:ltr;text-align:left;flex:1;min-width:240px}
-.author-name-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.author-name{font-weight:800;font-size:15.5px;color:var(--fg)}
-.author-headline{font-size:12.5px;color:var(--muted);line-height:1.45}
-.card-meta-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+/* Card Header: Author & Metadata */
+.card-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.author-block{display:grid;gap:4px;direction:ltr;text-align:left;flex:1;min-width:250px}
+.author-name-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.author-name{font-weight:800;font-size:16.5px;color:var(--fg)}
+.author-headline{font-size:13.5px;color:#334155;line-height:1.5;font-weight:500}
+.card-meta-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 
-/* Query & Keyword Provenance Bar */
-.provenance-bar{background:var(--soft);border:1px solid var(--line);border-radius:11px;padding:10px 13px;display:grid;gap:7px}
+/* Full Text Reader Toolbar */
+.text-toolbar{
+  display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;
+  background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:9px 14px;
+}
+.text-meta-badge{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;font-weight:700;color:#1e293b}
+.reader-ctrls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ctrl-btn{
+  font:700 12px var(--font);padding:4px 9px;border-radius:7px;border:1px solid var(--line);
+  background:var(--card);color:var(--fg);cursor:pointer;display:inline-flex;align-items:center;gap:4px;
+}
+.ctrl-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Primary Full Post Text Canvas (No truncation, no inner scrollbar!) */
+.post-body-canvas{
+  background:#ffffff;
+  border:2px solid #cbd5e1;
+  border-radius:14px;
+  padding:24px 28px;
+  font-size:var(--post-font-size);
+  line-height:1.88;
+  color:#0f172a;
+  box-shadow:inset 0 1px 3px rgba(15,23,42,.03);
+  overflow-wrap:break-word;
+  word-break:break-word;
+}
+.post-para{margin:0 0 14px 0;text-align:start}
+.post-para:last-child{margin-bottom:0}
+.post-list-item{
+  margin:0 0 8px 0;
+  padding-inline-start:14px;
+  border-inline-start:3px solid var(--accent-border);
+  text-align:start;
+}
+.hashtag-block{
+  margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);
+  display:flex;flex-wrap:wrap;gap:6px;direction:ltr;
+}
+.hashtag-chip{
+  font:600 12.5px var(--mono);color:#475569;background:#f1f5f9;
+  padding:2px 8px;border-radius:6px;border:1px solid #e2e8f0;display:inline-block;
+}
+.inline-tag{color:#2563eb;font-weight:600}
+
+/* 3-Layer Keyword Highlights inside Full Text */
+mark.hl-l1{background:#dbeafe;color:#1e3a8a;padding:1px 5px;border-radius:5px;font-weight:700;border-bottom:2px solid #60a5fa}
+mark.hl-l2{background:#f3e8ff;color:#581c87;padding:1px 5px;border-radius:5px;font-weight:700;border-bottom:2px solid #c084fc}
+mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;font-weight:700;border-bottom:2px solid #4ade80}
+
+/* Provenance & Detected Keywords Box */
+.provenance-bar{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:11px 14px;display:grid;gap:8px}
 .prov-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
 .q-badges{display:flex;flex-wrap:wrap;gap:5px;align-items:center;direction:ltr}
 .q-code{font:700 11.5px var(--mono);padding:2px 7px;border-radius:5px;background:var(--card);border:1px solid var(--line);color:var(--fg)}
@@ -115,49 +165,39 @@ a:hover{text-decoration:underline}
 .fam-cognition{background:var(--purple-soft);color:var(--purple)}
 .fam-process{background:var(--good-soft);color:var(--good)}
 .fam-technical_and_pedagogy{background:var(--amber-soft);color:var(--amber)}
-.query-formula{font:500 11.5px/1.45 var(--mono);color:var(--muted);direction:ltr;text-align:left;background:var(--card);padding:5px 9px;border-radius:6px;border:1px dashed var(--line)}
+.query-formula{font:500 11.5px/1.45 var(--mono);color:var(--muted);direction:ltr;text-align:left;background:var(--card);padding:6px 10px;border-radius:6px;border:1px dashed var(--line)}
 
-/* Detected Keywords inside Post */
-.kw-hits-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:11.5px}
-.kw-hit-pill{font:600 11px var(--mono);padding:1px 6px;border-radius:4px;direction:ltr}
+.kw-hits-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:12px}
+.kw-hit-pill{font:600 11.5px var(--mono);padding:1px 7px;border-radius:5px;direction:ltr}
 .kw-l1{background:#dbeafe;color:#1e40af;border:1px solid #93c5fd}
 .kw-l2{background:#f3e8ff;color:#6b21a8;border:1px solid #d8b4fe}
 .kw-l3{background:#dcfce7;color:#166534;border:1px solid #86efac}
 
-/* Post Full Text Box */
-.post-body-wrap{position:relative}
-.post-body{
-  direction:ltr;text-align:left;font-size:14.5px;line-height:1.72;color:#1e293b;
-  white-space:pre-line;background:#fcfdff;border:1px solid var(--line);border-radius:12px;
-  padding:16px 18px;max-height:420px;overflow-y:auto;user-select:text;-webkit-user-select:text;
-}
-mark.hl-l1{background:#dbeafe;color:#1e3a8a;padding:0 3px;border-radius:3px;font-weight:600}
-mark.hl-l2{background:#f3e8ff;color:#581c87;padding:0 3px;border-radius:3px;font-weight:600}
-mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font-weight:600}
-
 /* Card Footer Metrics */
 .card-footer{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding-top:8px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
 .eng-pills{display:flex;flex-wrap:wrap;gap:8px;direction:ltr}
-.eng-pill{background:var(--soft);border:1px solid var(--line);padding:3px 9px;border-radius:7px;font-weight:600;color:var(--fg)}
+.eng-pill{background:var(--soft);border:1px solid var(--line);padding:3px 10px;border-radius:7px;font-weight:600;color:var(--fg)}
 
-/* Swipe Action Controls */
+/* Sticky Bottom Swipe Action Controls */
 .action-bar{
-  display:grid;grid-template-columns:1fr auto auto 1fr;gap:10px;align-items:center;
-  background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 16px;
-  box-shadow:0 4px 12px rgba(15,23,42,.04);
+  position:sticky;bottom:12px;z-index:30;
+  display:grid;grid-template-columns:1.25fr auto auto 1.25fr;gap:10px;align-items:center;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1.5px solid #cbd5e1;border-radius:16px;padding:12px 16px;
+  box-shadow:0 10px 28px rgba(15,23,42,.12);
 }
 .act-btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  font:700 14px var(--font);padding:12px 16px;border-radius:12px;border:1.5px solid var(--line);
+  font:800 14.5px var(--font);padding:13px 16px;border-radius:12px;border:1.5px solid var(--line);
   background:var(--card);color:var(--fg);cursor:pointer;transition:all .14s;
 }
 .act-btn:hover{transform:translateY(-1px)}
 .act-btn:active{transform:translateY(0)}
-.act-btn.keep-btn{background:var(--good);color:#fff;border-color:var(--good);box-shadow:0 4px 12px rgba(22,163,74,.25)}
+.act-btn.keep-btn{background:var(--good);color:#fff;border-color:var(--good);box-shadow:0 4px 12px rgba(22,163,74,.28)}
 .act-btn.keep-btn:hover{background:#15803d}
-.act-btn.reject-btn{background:var(--bad);color:#fff;border-color:var(--bad);box-shadow:0 4px 12px rgba(220,38,38,.22)}
+.act-btn.reject-btn{background:var(--bad);color:#fff;border-color:var(--bad);box-shadow:0 4px 12px rgba(220,38,38,.25)}
 .act-btn.reject-btn:hover{background:#b91c1c}
-.act-btn.sub-btn{font-size:12.5px;padding:10px 13px;background:var(--soft);color:var(--muted)}
+.act-btn.sub-btn{font-size:12.5px;font-weight:700;padding:11px 13px;background:var(--soft);color:var(--muted)}
 .act-btn.sub-btn:hover{color:var(--fg);border-color:var(--muted)}
 .kbd{font:600 11px var(--mono);padding:1px 6px;border-radius:4px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.35);direction:ltr}
 .sub-btn .kbd{background:var(--card);border-color:var(--line);color:var(--muted)}
@@ -181,19 +221,20 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font
 .cmd-box button{font:600 11px var(--font);background:#334155;color:#fff;border:0;padding:4px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
 .cmd-box button:hover{background:var(--accent)}
 
-/* Empty / Completed State */
-.empty-state{text-align:center;padding:48px 20px;background:var(--card);border:1.5px dashed var(--line);border-radius:18px;display:grid;gap:12px;justify-items:center}
-
 @media (max-width:680px){
-  .action-bar{grid-template-columns:1fr 1fr;gap:8px}
+  .swipe-card{padding:16px 15px}
+  .post-body-canvas{padding:16px 16px}
+  .action-bar{grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px}
   .act-btn.keep-btn{grid-column:1 / 2;order:1}
   .act-btn.reject-btn{grid-column:2 / 3;order:2}
   .act-btn.sub-btn{order:3}
-  .post-body{max-height:340px;font-size:13.5px}
 }
 </style>
 </head>
 <body>
+
+<div class="stamp keep" id="stampKeep">✅ بماند در دیتابیس جدید (KEEP)</div>
+<div class="stamp reject" id="stampReject">❌ حذف شود (REJECT)</div>
 
 <div class="wrap">
 
@@ -201,16 +242,12 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font
   <div class="top-bar">
     <div class="brand">
       <a href="index.html" class="btn">→ بازگشت به صفحه اصلی گزارش</a>
-      <span class="pill blue">Saintiment — غربالگری تعاملی (Swipe Curation)</span>
-      <span class="pill" id="sourceStatusPill">⏳ در حال بارگذاری پست‌ها...</span>
+      <span class="pill blue">Saintiment — غربالگری تعاملی با نمایش متن کامل</span>
+      <span class="pill" id="sourceStatusPill">⏳ در حال بارگذاری ۱٬۸۵۸ پست...</span>
     </div>
     <div class="btn-row">
-      <label class=" small muted" style="display:inline-flex;align-items:center;gap:5px;cursor:pointer">
-        <input type="checkbox" id="highlightToggle" checked onchange="renderCurrentCard()">
-        هایلایت کلیدواژه‌ها در متن
-      </label>
       <input type="file" id="localFilePicker" accept=".json" style="display:none" onchange="handleLocalJsonUpload(event)">
-      <button type="button" class="btn" onclick="document.getElementById('localFilePicker').click()">📂 بارگذاری فایل JSON</button>
+      <button type="button" class="btn" onclick="document.getElementById('localFilePicker').click()">📂 بارگذاری فایل JSON دستی</button>
     </div>
   </div>
 
@@ -242,7 +279,7 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font
       </div>
       <div class="progress-meta">
         <span id="progressText">پیشرفت بررسی: ۰ از ۰ پست (۰٪)</span>
-        <span id="autoSaveNotice">💾 ذخیره خودکار در مرورگر فعال است</span>
+        <span>💾 ذخیره خودکار در مرورگر فعال است · میانبر: کلید راست (بماند) / کلید چپ (حذف)</span>
       </div>
     </div>
 
@@ -271,7 +308,7 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font
         </select>
       </div>
       <div class="filter-group">
-        <input type="search" id="searchInput" class="input-ctrl" placeholder="جستجو در متن یا عنوان شغلی..." oninput="applyFiltersAndResetIndex()">
+        <input type="search" id="searchInput" class="input-ctrl" placeholder="جستجو در متن کامل یا عنوان شغلی..." oninput="applyFiltersAndResetIndex()">
       </div>
     </div>
   </section>
@@ -279,13 +316,12 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font
   <!-- Main Swipe Card Stage -->
   <div class="stage" id="cardStage">
     <div class="swipe-card" id="swipeCard">
-      <div class="stamp keep" id="stampKeep">✅ بماند (KEEP)</div>
-      <div class="stamp reject" id="stampReject">❌ حذف (REJECT)</div>
 
+      <!-- 1. Author & Post Header -->
       <div class="card-top">
         <div class="author-block">
           <div class="author-name-row">
-            <span id="cardAuthorIcon">👤</span>
+            <span id="cardAuthorIcon" style="font-size:18px">👤</span>
             <a id="cardAuthorName" class="author-name" href="#" target="_blank" rel="noopener">—</a>
             <span class="pill" id="cardPostIdPill" style="font-family:var(--mono);font-size:11px">ID: —</span>
             <span class="pill" id="cardCurrentDecisionPill" style="display:none"></span>
@@ -293,33 +329,52 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font
           <div class="author-headline" id="cardAuthorHeadline">—</div>
         </div>
         <div class="card-meta-right">
-          <span class="pill blue" id="cardQueuePosition">0 / 0</span>
+          <span class="pill blue" id="cardQueuePosition" style="font-size:13px">0 / 0</span>
           <div class="small muted ltr" id="cardDateAndLink">—</div>
         </div>
       </div>
 
-      <!-- Query & Keyword Match Details -->
+      <!-- 2. Reader Controls & Completeness Guarantee Bar -->
+      <div class="text-toolbar">
+        <div class="text-meta-badge">
+          <span style="color:var(--good)">● نمایش ۱۰۰٪ متن کامل پست (بدون هیچ‌گونه برش)</span>
+          <span class="muted" id="cardTextStatsPill">—</span>
+        </div>
+        <div class="reader-ctrls">
+          <label class="ctrl-btn" style="cursor:pointer">
+            <input type="checkbox" id="highlightToggle" checked onchange="renderCurrentCard()">
+            هایلایت کلیدواژه‌های ۳ لایه
+          </label>
+          <button type="button" class="ctrl-btn" onclick="adjustFontSize(-1)" title="کوچک کردن فونت متن">A−</button>
+          <button type="button" class="ctrl-btn" onclick="adjustFontSize(0)" title="اندازه پیش‌فرض فونت">A</button>
+          <button type="button" class="ctrl-btn" onclick="adjustFontSize(1)" title="بزرگ کردن فونت متن">A+</button>
+          <button type="button" class="ctrl-btn" onclick="copyCurrentPostText()" title="کپی متن کامل پست">📋 کپی متن</button>
+        </div>
+      </div>
+
+      <!-- 3. Detected Keywords Summary right above the text -->
+      <div class="kw-hits-row" id="cardKeywordHits"></div>
+
+      <!-- 4. FULL UNTRUNCATED POST TEXT CANVAS -->
+      <div class="post-body-canvas" id="cardPostBody">در حال بارگذاری متن کامل پست‌ها...</div>
+
+      <!-- 5. Query & Boolean Provenance -->
       <div class="provenance-bar">
         <div class="prov-row">
+          <span class="small muted" style="font-weight:700">کوئری و خانوادهٔ بازیابی این پست:</span>
           <div class="q-badges" id="cardQueryBadges"></div>
-          <div class="kw-hits-row" id="cardKeywordHits"></div>
         </div>
         <div class="query-formula" id="cardQueryFormula">—</div>
       </div>
 
-      <!-- Full Post Content -->
-      <div class="post-body-wrap">
-        <div class="post-body" id="cardPostBody">در حال بارگذاری اطلاعات پست‌ها...</div>
-      </div>
-
-      <!-- Card Footer -->
+      <!-- 6. Card Footer Metrics -->
       <div class="card-footer">
         <div class="eng-pills" id="cardEngagement"></div>
-        <div class="small muted" id="cardExtraInfo">برای انتخاب: کارت را به راست (بماند) یا چپ (حذف) بکشید یا از کلیدهای جهت‌نما استفاده کنید</div>
+        <div class="small muted">💡 در هر جای کارت می‌توانید به راست (بماند ✅) یا چپ (حذف ❌) بکشید</div>
       </div>
     </div>
 
-    <!-- Action Buttons -->
+    <!-- Sticky Bottom Action Buttons -->
     <div class="action-bar">
       <button type="button" class="act-btn keep-btn" onclick="triggerDecision('keep')">
         <span>✅ بماند در دیتابیس جدید</span>
@@ -348,7 +403,7 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">
       <div>
         <h2>🗄️ خروجی و ساخت دیتابیس جدید (پست‌های انتخاب‌شده)</h2>
-        <p class="small muted">هر زمان که غربالگری (کامل یا بخشی از آن) تمام شد، می‌توانید دیتابیس جدید شامل فقط پست‌های تاییدشده (<b id="exportKeepCount">0</b> پست) را مستقیم دانلود یا در پروژه ذخیره کنید.</p>
+        <p class="small muted">هر زمان که غربالگری (کامل یا بخشی از آن) تمام شد، می‌توانید دیتابیس جدید شامل فقط پست‌های تاییدشده (<b id="exportKeepCount">0</b> پست با متن کامل) را مستقیم دانلود یا در پروژه ذخیره کنید.</p>
       </div>
       <div class="btn-row">
         <input type="file" id="importDecisionsInput" accept=".json" style="display:none" onchange="importDecisionsFile(event)">
@@ -371,7 +426,7 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font
 
       <div class="db-box">
         <h3>۲. ساخت دیتابیس ۵ جدوله کامل در پروژه + Neon Postgres</h3>
-        <p class="small muted">فایل تصمیم‌ها یا JSON را دانلود کنید و با دستور زیر دیتابیس ۵ جدوله استاندارد (<span style="font-family:var(--mono)">apify_curated_2026-10-19.db</span>) و دیتابیس جدید Neon (<span style="font-family:var(--mono)">_saintiment_apify_curated_db</span>) را بسازید:</p>
+        <p class="small muted">فایل تصمیم‌ها را دانلود کنید و با دستور زیر دیتابیس ۵ جدوله استاندارد (<span style="font-family:var(--mono)">apify_curated_2026-10-19.db</span>) و دیتابیس جدید Neon (<span style="font-family:var(--mono)">_saintiment_apify_curated_db</span>) را بسازید:</p>
         <div class="cmd-box">
           <code>.venv/bin/python src/ingest/build_curated_db.py ~/Downloads/saintiment_swipe_decisions.json --push-neon</code>
           <button type="button" onclick="copyCmd('.venv/bin/python src/ingest/build_curated_db.py ~/Downloads/saintiment_swipe_decisions.json --push-neon')">کپی دستور</button>
@@ -384,6 +439,7 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:0 3px;border-radius:3px;font
 
 <script>
 const STORAGE_KEY = 'saintiment_swipe_decisions_v1';
+const FONT_SIZE_KEY = 'saintiment_post_font_size_v1';
 
 const QUERIES = [
   {"id": "Q01", "family": "direct", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (skill OR skills)"},
@@ -453,9 +509,19 @@ const LAYER3_TERMS = ["cognitive offloading","role of the architect","environmen
 let ALL_POSTS = [];
 let FILTERED_POSTS = [];
 let currentIndex = 0;
-let activeDecisionFilter = 'unreviewed'; // 'unreviewed' | 'keep' | 'reject' | 'all'
-let decisions = {}; // { [source_post_id]: { status: 'keep'|'reject', timestamp: string } }
-let historyStack = []; // [{ id, prevDecision }]
+let activeDecisionFilter = 'unreviewed';
+let decisions = {};
+let historyStack = [];
+let currentFontSize = Number(localStorage.getItem(FONT_SIZE_KEY) || 16.5);
+
+document.documentElement.style.setProperty('--post-font-size', `${currentFontSize}px`);
+
+function adjustFontSize(delta) {
+  if (delta === 0) currentFontSize = 16.5;
+  else currentFontSize = Math.min(22, Math.max(13.5, currentFontSize + delta * 1.25));
+  document.documentElement.style.setProperty('--post-font-size', `${currentFontSize}px`);
+  try { localStorage.setItem(FONT_SIZE_KEY, String(currentFontSize)); } catch (e) {}
+}
 
 // Populate Query dropdown
 const qSelect = document.getElementById('queryFilter');
@@ -490,33 +556,123 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
-function highlightKeywords(text) {
-  let safe = escapeHtml(text);
-  const detected = { l1: new Set(), l2: new Set(), l3: new Set() };
-
+function highlightKeywordsInHtml(safeHtml, detected, enableMarks) {
   const applyLayer = (terms, cls, bucket) => {
     for (const term of terms) {
       const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       const re = new RegExp(`(\\b${escapedTerm}\\b)`, 'gi');
-      if (re.test(safe)) {
+      if (re.test(safeHtml)) {
         bucket.add(term);
-        if (document.getElementById('highlightToggle').checked) {
-          safe = safe.replace(re, `<mark class="${cls}">$1</mark>`);
+        if (enableMarks) {
+          safeHtml = safeHtml.replace(re, `<mark class="${cls}">$1</mark>`);
         }
       }
     }
   };
-
   applyLayer(LAYER1_TERMS, 'hl-l1', detected.l1);
   applyLayer(LAYER2_TERMS, 'hl-l2', detected.l2);
   applyLayer(LAYER3_TERMS, 'hl-l3', detected.l3);
+  return safeHtml;
+}
 
-  return { html: safe, detected };
+function formatFullPostText(rawText, enableMarks) {
+  const detected = { l1: new Set(), l2: new Set(), l3: new Set() };
+  const cleaned = String(rawText || '').replace(/\r\n/g, '\n').trim();
+  if (!cleaned) {
+    return {
+      html: `<div style="padding:18px;background:var(--amber-soft);border:1px solid #fde68a;border-radius:10px;color:#92400e;direction:rtl;text-align:right">
+        ⚠️ <b>این پست در لینکدین بدون متن متنی منتشر شده است</b> (صرفاً شامل ویدیو، تصویر، نظرسنجی یا بازنشر بدون کپشن بوده است). جزئیات پیوست را در پایین ببینید یا لینک اصلی لینکدین را باز کنید.
+      </div>`,
+      detected,
+      wordCount: 0,
+      lineCount: 0
+    };
+  }
+
+  const words = cleaned.split(/\s+/).filter(Boolean).length;
+  const rawLines = cleaned.split('\n');
+
+  // Separate trailing hashtag-only lines if present at the very end
+  const trailingHashtags = [];
+  while (rawLines.length > 0) {
+    const lastLine = rawLines[rawLines.length - 1].trim();
+    if (!lastLine) {
+      rawLines.pop();
+      continue;
+    }
+    const tokens = lastLine.split(/\s+/);
+    if (tokens.length >= 2 && tokens.every(t => /^#[\w\u0600-\u06FF-]+$/i.test(t))) {
+      trailingHashtags.unshift(...tokens);
+      rawLines.pop();
+    } else {
+      break;
+    }
+  }
+
+  // Group remaining lines into paragraphs separated by blank lines
+  const paragraphs = [];
+  let currentPara = [];
+  for (const line of rawLines) {
+    if (!line.trim()) {
+      if (currentPara.length) {
+        paragraphs.push(currentPara);
+        currentPara = [];
+      }
+    } else {
+      currentPara.push(line);
+    }
+  }
+  if (currentPara.length) paragraphs.push(currentPara);
+
+  const bulletRegex = /^(\s*)([•▪▫‣⁃\-–—→➔➢➣➤✓✔✅☑️🔹🔸🚀💡📌🎯🔑✨1-9️⃣]+|\d+[\.\)])\s+/;
+
+  const renderedBlocks = paragraphs.map(paraLines => {
+    // Check if lines inside this block are bullet items
+    const allBullets = paraLines.length > 1 && paraLines.every(l => bulletRegex.test(l));
+    if (allBullets) {
+      return paraLines.map(l => {
+        let safeLine = escapeHtml(l.trim());
+        safeLine = highlightKeywordsInHtml(safeLine, detected, enableMarks);
+        return `<div class="post-list-item" dir="auto">${safeLine}</div>`;
+      }).join('');
+    }
+
+    const innerHtml = paraLines.map(l => {
+      const isBullet = bulletRegex.test(l);
+      let safeLine = escapeHtml(l);
+      safeLine = highlightKeywordsInHtml(safeLine, detected, enableMarks);
+      if (isBullet) {
+        return `<div class="post-list-item" dir="auto">${safeLine}</div>`;
+      }
+      return safeLine;
+    }).join('<br>');
+
+    return `<div class="post-para" dir="auto">${innerHtml}</div>`;
+  });
+
+  // Also scan trailing hashtags for keyword matches
+  let hashtagHtml = '';
+  if (trailingHashtags.length > 0) {
+    const chips = trailingHashtags.map(tag => {
+      let safeTag = escapeHtml(tag);
+      safeTag = highlightKeywordsInHtml(safeTag, detected, enableMarks);
+      return `<span class="hashtag-chip">${safeTag}</span>`;
+    }).join('');
+    hashtagHtml = `<div class="hashtag-block">${chips}</div>`;
+  }
+
+  return {
+    html: renderedBlocks.join('') + hashtagHtml,
+    detected,
+    wordCount: words,
+    lineCount: rawLines.length
+  };
 }
 
 function normalizePostRecord(r) {
   const fams = String(r.matched_families || 'direct').split(',').map(s => s.trim()).filter(Boolean);
   const qCodes = String(r.matched_query_codes || '').split(',').map(s => s.trim()).filter(Boolean);
+  const fullText = String(r.post_text ?? r.content ?? '');
   return {
     source_post_id: String(r.source_post_id || r.id || ''),
     posted_at: String(r.posted_at || '').slice(0, 10) || '—',
@@ -530,7 +686,7 @@ function normalizePostRecord(r) {
     reactions: Number(r.reactions || 0),
     comments: Number(r.comments || 0),
     shares: Number(r.shares || 0),
-    text_chars: Number(r.text_chars || (r.post_text ? r.post_text.length : 0)),
+    text_chars: fullText.length,
     matched_query_count: Number(r.matched_query_count || qCodes.length || 1),
     matched_query_codes: qCodes.join(','),
     query_list: qCodes,
@@ -538,7 +694,7 @@ function normalizePostRecord(r) {
     families: fams,
     primary_family: fams[0] || 'direct',
     media: r.media || null,
-    post_text: String(r.post_text || '')
+    post_text: fullText
   };
 }
 
@@ -601,7 +757,16 @@ async function initLoadPosts() {
   loadSavedDecisions();
   const pill = document.getElementById('sourceStatusPill');
 
-  // 1. Try local JSON file first (fast when opened locally)
+  // 1. Instant local JS bundle (works even on file:// without CORS)
+  if (Array.isArray(window.LOCAL_APIFY_POSTS) && window.LOCAL_APIFY_POSTS.length > 0) {
+    ALL_POSTS = window.LOCAL_APIFY_POSTS.map(normalizePostRecord);
+    pill.className = 'pill green';
+    pill.textContent = `✅ بارگذاری آنی از دیتابیس لوکال (${ALL_POSTS.length} پست کامل)`;
+    applyFiltersAndResetIndex();
+    return;
+  }
+
+  // 2. Try local JSON via fetch (when served over http://localhost)
   try {
     const localRes = await fetch('../data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18.json');
     if (localRes.ok) {
@@ -609,27 +774,27 @@ async function initLoadPosts() {
       if (Array.isArray(data) && data.length > 0) {
         ALL_POSTS = data.map(normalizePostRecord);
         pill.className = 'pill green';
-        pill.textContent = `✅ بارگذاری‌شده از دیتابیس لوکال (${ALL_POSTS.length} پست یکتا)`;
+        pill.textContent = `✅ بارگذاری‌شده از دیتابیس لوکال (${ALL_POSTS.length} پست کامل)`;
         applyFiltersAndResetIndex();
         return;
       }
     }
   } catch (e) {}
 
-  // 2. Fallback to live Apify dataset API (works on GitHub Pages)
+  // 3. Fallback to live Apify dataset API (works on GitHub Pages)
   try {
-    pill.textContent = '⏳ در حال دریافت ۱٬۸۵۸ پست از سرور Apify...';
+    pill.textContent = '⏳ در حال دریافت متن کامل ۱٬۸۵۸ پست از سرور Apify...';
     const apiRes = await fetch('https://api.apify.com/v2/datasets/WUsK3RRYo7nKEOUbA/items?format=json&clean=true');
     if (!apiRes.ok) throw new Error('HTTP ' + apiRes.status);
     const items = await apiRes.json();
     ALL_POSTS = convertRawApifyItemsToUniquePosts(items);
     pill.className = 'pill green';
-    pill.textContent = `✅ بارگذاری آنلاین (${ALL_POSTS.length} پست یکتا)`;
+    pill.textContent = `✅ بارگذاری آنلاین (${ALL_POSTS.length} پست با متن کامل)`;
     applyFiltersAndResetIndex();
   } catch (err) {
     pill.className = 'pill red';
-    pill.textContent = '⚠️ خطا در دریافت آنلاین — فایل JSON را دستی انتخاب کنید';
-    document.getElementById('cardPostBody').textContent = 'امکان دریافت خودکار نبود. لطفاً با دکمه «بارگذاری فایل JSON» در بالای صفحه، فایل JSON دیتاست را انتخاب کنید.';
+    pill.textContent = '⚠️ خطا در دریافت خودکار — فایل JSON را انتخاب کنید';
+    document.getElementById('cardPostBody').textContent = 'امکان دریافت خودکار نبود. لطفاً با دکمه «بارگذاری فایل JSON دستی» در بالای صفحه، فایل JSON دیتاست را انتخاب کنید.';
   }
 }
 
@@ -641,14 +806,14 @@ function handleLocalJsonUpload(event) {
     try {
       const parsed = JSON.parse(e.target.result);
       if (!Array.isArray(parsed)) throw new Error('فایل JSON باید آرایه‌ای از پست‌ها باشد.');
-      if (parsed.length > 0 && parsed[0].source_post_id) {
+      if (parsed.length > 0 && (parsed[0].source_post_id || parsed[0].post_text !== undefined)) {
         ALL_POSTS = parsed.map(normalizePostRecord);
       } else {
         ALL_POSTS = convertRawApifyItemsToUniquePosts(parsed);
       }
       const pill = document.getElementById('sourceStatusPill');
       pill.className = 'pill green';
-      pill.textContent = `✅ بارگذاری از فایل (${ALL_POSTS.length} پست)`;
+      pill.textContent = `✅ بارگذاری از فایل (${ALL_POSTS.length} پست کامل)`;
       applyFiltersAndResetIndex();
     } catch (err) {
       alert('خطا در خواندن فایل: ' + err.message);
@@ -726,7 +891,6 @@ function applyFiltersAndResetIndex() {
 }
 
 function renderCurrentCard() {
-  const card = document.getElementById('swipeCard');
   if (!FILTERED_POSTS.length || currentIndex >= FILTERED_POSTS.length) {
     document.getElementById('cardQueuePosition').textContent = '0 / 0';
     document.getElementById('cardAuthorName').textContent = 'پستی در این فیلتر باقی نمانده است 🎉';
@@ -734,10 +898,11 @@ function renderCurrentCard() {
     document.getElementById('cardPostIdPill').textContent = 'Done';
     document.getElementById('cardCurrentDecisionPill').style.display = 'none';
     document.getElementById('cardDateAndLink').innerHTML = '';
+    document.getElementById('cardTextStatsPill').textContent = '';
     document.getElementById('cardQueryBadges').innerHTML = '';
     document.getElementById('cardKeywordHits').innerHTML = '';
     document.getElementById('cardQueryFormula').textContent = '—';
-    document.getElementById('cardPostBody').innerHTML = '<div style="text-align:center;padding:30px;direction:rtl;color:var(--muted)">تمام پست‌های این بخش بررسی شدند! از پنل پایین صفحه می‌توانید دیتابیس جدید را دانلود کنید.</div>';
+    document.getElementById('cardPostBody').innerHTML = '<div style="text-align:center;padding:32px;direction:rtl;color:var(--muted)">تمام پست‌های این بخش بررسی شدند! از پنل پایین صفحه می‌توانید دیتابیس جدید را دانلود کنید.</div>';
     document.getElementById('cardEngagement').innerHTML = '';
     return;
   }
@@ -745,7 +910,7 @@ function renderCurrentCard() {
   const p = FILTERED_POSTS[currentIndex];
   const dec = decisions[p.source_post_id];
 
-  document.getElementById('cardQueuePosition').textContent = `${currentIndex + 1} / ${FILTERED_POSTS.length}`;
+  document.getElementById('cardQueuePosition').textContent = `پست ${currentIndex + 1} از ${FILTERED_POSTS.length}`;
   document.getElementById('cardAuthorIcon').textContent = p.author_type === 'company' ? '🏢' : '👤';
 
   const nameEl = document.getElementById('cardAuthorName');
@@ -756,7 +921,7 @@ function renderCurrentCard() {
     nameEl.removeAttribute('href');
   }
 
-  document.getElementById('cardPostIdPill').textContent = `ID: ${p.source_post_id.slice(-8)}`;
+  document.getElementById('cardPostIdPill').textContent = `ID: ${p.source_post_id}`;
 
   const decPill = document.getElementById('cardCurrentDecisionPill');
   if (dec) {
@@ -769,8 +934,50 @@ function renderCurrentCard() {
 
   document.getElementById('cardAuthorHeadline').textContent = p.author_headline || '—';
 
-  const postLink = p.post_url ? `<a href="${escapeHtml(p.post_url)}" target="_blank" rel="noopener">🔗 لینک پست در لینکدین ↗</a>` : '';
+  const postLink = p.post_url ? `<a href="${escapeHtml(p.post_url)}" target="_blank" rel="noopener">🔗 باز کردن پست اصلی در لینکدین ↗</a>` : '';
   document.getElementById('cardDateAndLink').innerHTML = `📅 ${escapeHtml(p.posted_at)} ${postLink ? ' · ' + postLink : ''}`;
+
+  // Format 100% full untruncated text with paragraph structure & keyword highlighting
+  const enableMarks = document.getElementById('highlightToggle').checked;
+  const { html, detected, wordCount, lineCount } = formatFullPostText(p.post_text || '', enableMarks);
+
+  document.getElementById('cardTextStatsPill').textContent = `(${wordCount.toLocaleString('en-US')} کلمه · ${p.text_chars.toLocaleString('en-US')} کاراکتر · ${lineCount} خط)`;
+
+  let mediaHtml = '';
+  if (p.media) {
+    try {
+      const m = typeof p.media === 'string' ? JSON.parse(p.media) : p.media;
+      if (m.article && m.article.title) {
+        mediaHtml += `<div style="margin-top:16px;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;font-size:13.5px;direction:ltr;text-align:left">
+          <div><b>📄 Shared Article:</b> ${escapeHtml(m.article.title)}</div>
+          ${m.article.subtitle ? `<div class="muted" style="margin-top:2px">${escapeHtml(m.article.subtitle)}</div>` : ''}
+          ${m.article.description ? `<div style="margin-top:6px;font-size:13px">${escapeHtml(m.article.description)}</div>` : ''}
+          ${m.article.link ? `<div style="margin-top:6px"><a href="${escapeHtml(m.article.link)}" target="_blank" rel="noopener">🔗 مشاهده لینک مقاله پیوست ↗</a></div>` : ''}
+        </div>`;
+      }
+      if (Array.isArray(m.postImages) && m.postImages.length > 0) {
+        const imgs = m.postImages.slice(0, 6).map(img =>
+          img && img.url ? `<a href="${escapeHtml(img.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(img.url)}" alt="Post attachment" loading="lazy" style="max-height:190px;max-width:100%;border-radius:10px;border:1px solid var(--line);object-fit:cover"></a>` : ''
+        ).join('');
+        if (imgs) {
+          mediaHtml += `<div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;direction:ltr">${imgs}</div>`;
+        }
+      }
+    } catch (e) {}
+  }
+
+  const bodyEl = document.getElementById('cardPostBody');
+  bodyEl.innerHTML = html + mediaHtml;
+
+  // Detected keywords summary bar
+  const kwPills = [
+    ...Array.from(detected.l1).map(w => `<span class="kw-hit-pill kw-l1" title="لایه ۱: معماری / ابزار">${escapeHtml(w)}</span>`),
+    ...Array.from(detected.l2).map(w => `<span class="kw-hit-pill kw-l2" title="لایه ۲: هوش مصنوعی">${escapeHtml(w)}</span>`),
+    ...Array.from(detected.l3).map(w => `<span class="kw-hit-pill kw-l3" title="لایه ۳: مهارت / شناخت / فرآیند">${escapeHtml(w)}</span>`)
+  ];
+  document.getElementById('cardKeywordHits').innerHTML = kwPills.length
+    ? `<span class="muted" style="font-weight:700">کلیدواژه‌های یافت‌شده در متن:</span> ${kwPills.join('')} <span class="muted small" style="margin-right:auto">(🟦 لایه ۱ معماری · 🟪 لایه ۲ هوش مصنوعی · 🟩 لایه ۳ مهارت/شناخت)</span>`
+    : `<span class="muted">کلیدواژه مستقیمی در متن یافت نشد (ممکن است در لینک/عنوان یا ری‌پست باشد)</span>`;
 
   // Query badges & families
   const qBadgesHtml = p.query_list.map(qCode => `<span class="q-code">${escapeHtml(qCode)}</span>`).join('') +
@@ -784,50 +991,20 @@ function renderCurrentCard() {
   });
   document.getElementById('cardQueryFormula').textContent = formulas.join('  |  ') || '—';
 
-  // Highlight text & show matched keywords
-  const { html, detected } = highlightKeywords(p.post_text || '');
-  let mediaHtml = '';
-  if (p.media) {
-    try {
-      const m = typeof p.media === 'string' ? JSON.parse(p.media) : p.media;
-      if (m.article && m.article.title) {
-        mediaHtml += `<div style="margin-top:12px;padding:10px 12px;background:var(--soft);border:1px solid var(--line);border-radius:8px;font-size:12.5px">
-          <b>📄 مقاله پیوست:</b> ${escapeHtml(m.article.title)}
-          ${m.article.subtitle ? `<div class="muted">${escapeHtml(m.article.subtitle)}</div>` : ''}
-          ${m.article.link ? `<div><a href="${escapeHtml(m.article.link)}" target="_blank" rel="noopener">مشاهده لینک پیوست ↗</a></div>` : ''}
-        </div>`;
-      }
-      if (Array.isArray(m.postImages) && m.postImages.length > 0) {
-        const imgs = m.postImages.slice(0, 4).map(img =>
-          img && img.url ? `<a href="${escapeHtml(img.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(img.url)}" alt="Post image" loading="lazy" style="max-height:150px;max-width:100%;border-radius:8px;border:1px solid var(--line);object-fit:cover"></a>` : ''
-        ).join('');
-        if (imgs) {
-          mediaHtml += `<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px">${imgs}</div>`;
-        }
-      }
-    } catch (e) {}
-  }
-  const bodyEl = document.getElementById('cardPostBody');
-  bodyEl.innerHTML = (html || '<span class="muted">(بدون متن)</span>') + mediaHtml;
-  bodyEl.scrollTop = 0;
-
-  const kwPills = [
-    ...Array.from(detected.l1).map(w => `<span class="kw-hit-pill kw-l1" title="لایه ۱: معماری/ابزار">${escapeHtml(w)}</span>`),
-    ...Array.from(detected.l2).map(w => `<span class="kw-hit-pill kw-l2" title="لایه ۲: هوش مصنوعی">${escapeHtml(w)}</span>`),
-    ...Array.from(detected.l3).map(w => `<span class="kw-hit-pill kw-l3" title="لایه ۳: مهارت/شناخت/فرآیند">${escapeHtml(w)}</span>`)
-  ];
-  document.getElementById('cardKeywordHits').innerHTML = kwPills.length
-    ? `<span class="muted">کلیدواژه‌های درون متن:</span> ${kwPills.join('')}`
-    : `<span class="muted">کلیدواژه مستقیمی در متن یافت نشد (ممکن است در لینک/ری‌پست باشد)</span>`;
-
   // Footer metrics
   document.getElementById('cardEngagement').innerHTML = `
     <span class="eng-pill">👍 ${p.reactions} Likes</span>
     <span class="eng-pill">💬 ${p.comments} Comments</span>
     <span class="eng-pill">🔁 ${p.shares} Shares</span>
     <span class="eng-pill">📝 ${p.text_chars} Chars</span>
-    <span class="eng-pill">${p.author_type === 'company' ? '🏢 Company' : '👤 Profile'}</span>
+    <span class="eng-pill">${p.author_type === 'company' ? '🏢 Company Page' : '👤 Personal Profile'}</span>
   `;
+}
+
+function copyCurrentPostText() {
+  if (!FILTERED_POSTS.length || currentIndex >= FILTERED_POSTS.length) return;
+  const p = FILTERED_POSTS[currentIndex];
+  navigator.clipboard.writeText(p.post_text || '').then(() => alert('متن کامل پست کپی شد.'));
 }
 
 function triggerDecision(status) {
@@ -849,7 +1026,7 @@ function triggerDecision(status) {
   const flyClass = status === 'keep' ? 'fly-right' : 'fly-left';
   const stampEl = document.getElementById(status === 'keep' ? 'stampKeep' : 'stampReject');
   stampEl.style.opacity = '1';
-  stampEl.style.transform = 'scale(1) rotate(' + (status === 'keep' ? '8deg' : '-8deg') + ')';
+  stampEl.style.transform = 'scale(1) rotate(' + (status === 'keep' ? '6deg' : '-6deg') + ')';
   card.classList.add(flyClass);
 
   setTimeout(() => {
@@ -864,7 +1041,7 @@ function triggerDecision(status) {
       currentIndex++;
     }
     renderCurrentCard();
-  }, 220);
+  }, 210);
 }
 
 function skipCurrentPost() {
@@ -899,7 +1076,7 @@ function undoLastDecision() {
   renderCurrentCard();
 }
 
-// Touch & Mouse Drag Swipe Handling
+// Full-Card Touch & Mouse Drag Swipe Handling (works everywhere on the card including over the post text!)
 (function setupSwipeGestures() {
   const card = document.getElementById('swipeCard');
   const stampKeep = document.getElementById('stampKeep');
@@ -907,27 +1084,43 @@ function undoLastDecision() {
   let startX = 0;
   let startY = 0;
   let currentX = 0;
-  let isDragging = false;
+  let isTracking = false;
+  let isHorizontalSwipe = false;
 
   function onStart(clientX, clientY, target) {
-    if (target.closest('a, button, input, select, .post-body')) return;
+    if (target.closest('a, button, input, select, label')) return;
     startX = clientX;
     startY = clientY;
     currentX = 0;
-    isDragging = true;
-    card.classList.add('dragging');
+    isTracking = true;
+    isHorizontalSwipe = false;
   }
 
   function onMove(clientX, clientY) {
-    if (!isDragging) return;
+    if (!isTracking) return;
     const dx = clientX - startX;
     const dy = clientY - startY;
-    if (Math.abs(dy) > Math.abs(dx) * 1.5 && Math.abs(dx) < 30) return;
+
+    if (!isHorizontalSwipe) {
+      // Only lock into horizontal card swipe if horizontal movement clearly dominates vertical scroll
+      if (Math.abs(dy) > 22 && Math.abs(dy) > Math.abs(dx)) {
+        isTracking = false;
+        return;
+      }
+      if (Math.abs(dx) > 18 && Math.abs(dx) > Math.abs(dy) * 1.35) {
+        isHorizontalSwipe = true;
+        card.classList.add('dragging');
+        window.getSelection()?.removeAllRanges();
+      } else {
+        return;
+      }
+    }
+
     currentX = dx;
-    const rot = dx * 0.04;
+    const rot = dx * 0.035;
     card.style.transform = `translateX(${dx}px) rotate(${rot}deg)`;
 
-    const ratio = Math.min(1, Math.abs(dx) / 110);
+    const ratio = Math.min(1, Math.abs(dx) / 105);
     if (dx > 25) {
       card.classList.add('hint-keep');
       card.classList.remove('hint-reject');
@@ -946,12 +1139,12 @@ function undoLastDecision() {
   }
 
   function onEnd() {
-    if (!isDragging) return;
-    isDragging = false;
+    if (!isTracking) return;
+    isTracking = false;
     card.classList.remove('dragging');
-    if (currentX > 105) {
+    if (isHorizontalSwipe && currentX > 105) {
       triggerDecision('keep');
-    } else if (currentX < -105) {
+    } else if (isHorizontalSwipe && currentX < -105) {
       triggerDecision('reject');
     } else {
       card.style.transform = '';
@@ -959,6 +1152,7 @@ function undoLastDecision() {
       stampKeep.style.opacity = '0';
       stampReject.style.opacity = '0';
     }
+    isHorizontalSwipe = false;
   }
 
   card.addEventListener('mousedown', e => onStart(e.clientX, e.clientY, e.target));

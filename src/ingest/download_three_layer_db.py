@@ -92,6 +92,13 @@ def main():
     json_path.write_text(json.dumps(json_records, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Saved master_posts JSON ({len(json_records)} unique posts): {json_path}")
 
+    js_bundle_path = OUT_DIR / "apify_three_layer_2026-10-18_posts.js"
+    js_bundle_path.write_text(
+        "window.LOCAL_APIFY_POSTS = " + json.dumps(json_records, ensure_ascii=False) + ";\n",
+        encoding="utf-8",
+    )
+    print(f"Saved local browser JS bundle ({len(json_records)} unique posts): {js_bundle_path}")
+
     # 3. Write SQLite DB
     if sqlite_path.exists():
         sqlite_path.unlink()
