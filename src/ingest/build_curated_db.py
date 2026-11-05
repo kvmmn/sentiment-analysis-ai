@@ -1,5 +1,10 @@
 """Build a new curated SQLite database (and optionally a new Neon Postgres database)
-from the interactive Swipe Review decisions file exported by `docs/swipe-review.html`.
+from a Swipe Review decisions file.
+
+Live review marks are stored on the corpus database by `swipe_review_server.py`
+(`curation_decisions` in `_saintiment_apify_three_layer_db`). Export that manifest
+with `python src/ingest/swipe_store.py export-decisions` and pass it here when a
+separate kept-only database is needed.
 
 Usage:
     .venv/bin/python src/ingest/build_curated_db.py path/to/saintiment_swipe_decisions.json [--push-neon]
@@ -180,7 +185,9 @@ def build_local_curated_sqlite(decisions: dict[str, dict], out_sqlite: Path, out
         CREATE TABLE curation_decisions (
             source_post_id TEXT PRIMARY KEY,
             status TEXT NOT NULL,
-            decided_at TEXT
+            decided_at TEXT,
+            reviewer TEXT NOT NULL DEFAULT '',
+            note TEXT NOT NULL DEFAULT ''
         );
         """
     )
@@ -194,11 +201,17 @@ def build_local_curated_sqlite(decisions: dict[str, dict], out_sqlite: Path, out
     )
     dst_cur.executemany("INSERT INTO post_query_hits VALUES (?,?,?,?,?)", kept_hits)
     decision_rows = [
-        (str(pid), str(meta.get("status", "")), str(meta.get("timestamp", "")))
+        (
+            str(pid),
+            str(meta.get("status", "")),
+            str(meta.get("timestamp", "")),
+            str(meta.get("reviewer", "") or ""),
+            str(meta.get("note", "") or ""),
+        )
         for pid, meta in decisions.items()
         if isinstance(meta, dict) and meta.get("status") in ("keep", "reject")
     ]
-    dst_cur.executemany("INSERT INTO curation_decisions VALUES (?,?,?)", decision_rows)
+    dst_cur.executemany("INSERT INTO curation_decisions VALUES (?,?,?,?,?)", decision_rows)
     dst_conn.commit()
     dst_conn.close()
 
@@ -304,7 +317,9 @@ def push_to_neon(kept_master, master_cols, queries_rows, kept_raw, kept_hits, de
             CREATE TABLE IF NOT EXISTS curation_decisions (
                 source_post_id TEXT PRIMARY KEY,
                 status TEXT NOT NULL,
-                decided_at TEXT
+                decided_at TEXT,
+                reviewer TEXT NOT NULL DEFAULT '',
+                note TEXT NOT NULL DEFAULT ''
             );
             TRUNCATE TABLE post_query_hits, master_posts, raw_items, queries, curation_decisions;
             """
@@ -314,7 +329,7 @@ def push_to_neon(kept_master, master_cols, queries_rows, kept_raw, kept_hits, de
         placeholders = ",".join(["%s"] * len(master_cols))
         cur.executemany(f"INSERT INTO master_posts VALUES ({placeholders})", kept_master)
         cur.executemany("INSERT INTO post_query_hits VALUES (%s,%s,%s,%s,%s)", kept_hits)
-        cur.executemany("INSERT INTO curation_decisions VALUES (%s,%s,%s)", decision_rows)
+        cur.executemany("INSERT INTO curation_decisions VALUES (%s,%s,%s,%s,%s)", decision_rows)
         conn.commit()
     print(f"Synced {len(kept_master)} curated master_posts to Neon database `{NEON_CURATED_DB}`.")
 
