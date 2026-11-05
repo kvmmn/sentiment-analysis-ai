@@ -7,9 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Estedad:wght@300;400;600;700;800&display=swap">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
-<!-- Instant local loader when opened on local machine (even via file://); silently ignored on GitHub Pages -->
-<script src="../data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18_posts.js" onerror="window.LOCAL_APIFY_POSTS=null"></script>
 <style>
 :root{
   --bg:#f1f5f9; --card:#ffffff; --fg:#0f172a; --muted:#64748b; --line:#e2e8f0; --soft:#f8fafc;
@@ -468,10 +465,7 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
         <h3>۱. دانلود مستقیم دیتابیس جدید از مرورگر (با یک کلیک)</h3>
         <p class="small muted">ساخت آنی فایل دیتابیس SQLite (`.db`)، CSV و JSON فقط شامل پست‌های تاییدشده (Keep):</p>
         <div class="btn-row">
-          <button type="button" class="btn success" onclick="exportSqliteDbInBrowser(this)">🗄️ دانلود مستقیم دیتابیس SQLite جدید (.db)</button>
-          <button type="button" class="btn primary" onclick="exportCuratedData('csv')">⬇️ دانلود CSV دیتابیس جدید</button>
-          <button type="button" class="btn primary" onclick="exportCuratedData('json')">⬇️ دانلود JSON دیتابیس جدید</button>
-          <button type="button" class="btn" onclick="exportDecisionsManifest()">📋 دانلود فایل تصمیم‌ها (Decisions JSON)</button>
+          <button type="button" class="btn" onclick="exportDecisionsManifest()">📋 دانلود فایل تصمیم‌ها (فقط شناسه و علامت)</button>
         </div>
       </div>
 
@@ -809,6 +803,18 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
+function safeHttpUrl(value) {
+  const text = String(value || '').trim();
+  if (!/^https?:\/\//i.test(text)) return '';
+  try {
+    const url = new URL(text);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return '';
+    return url.href;
+  } catch (e) {
+    return '';
+  }
+}
+
 function highlightKeywordsInHtml(safeHtml, detected, enableMarks) {
   const applyLayer = (terms, cls, bucket) => {
     for (const term of terms) {
@@ -1038,40 +1044,10 @@ async function initLoadPosts() {
     }
   } catch (e) {}
 
-  // 2. Instant local JS bundle (works even on file:// without CORS)
-  if (Array.isArray(window.LOCAL_APIFY_POSTS) && window.LOCAL_APIFY_POSTS.length > 0) {
-    ALL_POSTS = window.LOCAL_APIFY_POSTS.map(normalizePostRecord);
-    finishPostLoad(`✅ بارگذاری آنی از دیتابیس لوکال (${ALL_POSTS.length} پست کامل)`, 'green');
-    return;
-  }
-
-  // 3. Try local JSON via fetch (when served over http://localhost)
-  try {
-    const localRes = await fetch('../data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18.json');
-    if (localRes.ok) {
-      const data = await localRes.json();
-      if (Array.isArray(data) && data.length > 0) {
-        ALL_POSTS = data.map(normalizePostRecord);
-        finishPostLoad(`✅ بارگذاری‌شده از دیتابیس لوکال (${ALL_POSTS.length} پست کامل)`, 'green');
-        return;
-      }
-    }
-  } catch (e) {}
-
-  // 4. Fallback to live Apify dataset API (works on GitHub Pages; retention may have expired)
-  try {
-    pill.textContent = '⏳ در حال دریافت متن کامل ۱٬۸۵۸ پست از سرور Apify...';
-    const apiRes = await fetch('https://api.apify.com/v2/datasets/WUsK3RRYo7nKEOUbA/items?format=json&clean=true');
-    if (!apiRes.ok) throw new Error('HTTP ' + apiRes.status);
-    const items = await apiRes.json();
-    ALL_POSTS = convertRawApifyItemsToUniquePosts(items);
-    finishPostLoad(`✅ بارگذاری آنلاین (${ALL_POSTS.length} پست با متن کامل)`, 'green');
-  } catch (err) {
-    pill.className = 'pill red';
-    pill.textContent = '⚠️ خطا در دریافت خودکار — فایل JSON را انتخاب کنید';
-    document.getElementById('cardPostBody').textContent = 'امکان دریافت خودکار نبود. سرور بررسی را اجرا کنید (python src/ingest/swipe_review_server.py) یا فایل JSON پیکره را بارگذاری کنید.';
-    updateSyncUI();
-  }
+  pill.className = 'pill red';
+  pill.textContent = 'پیکره از این صفحهٔ عمومی بارگذاری نمی‌شود';
+  document.getElementById('cardPostBody').textContent = 'متن پست‌ها اینجا دانلود نمی‌شود. برای بررسی، سرور محلی را اجرا کنید یا فایل JSON پیکره را خودتان انتخاب کنید.';
+  updateSyncUI();
 }
 
 function handleLocalJsonUpload(event) {
@@ -1198,8 +1174,11 @@ function renderCurrentCard() {
 
   const nameEl = document.getElementById('cardAuthorName');
   nameEl.textContent = p.author_name || 'بدون نام';
-  if (p.author_url) {
-    nameEl.href = p.author_url;
+  const authorHref = safeHttpUrl(p.author_url);
+  if (authorHref) {
+    nameEl.href = authorHref;
+    nameEl.target = '_blank';
+    nameEl.rel = 'noopener noreferrer';
   } else {
     nameEl.removeAttribute('href');
   }
@@ -1219,7 +1198,8 @@ function renderCurrentCard() {
 
   document.getElementById('cardAuthorHeadline').textContent = p.author_headline || '—';
 
-  const postLink = p.post_url ? `<a href="${escapeHtml(p.post_url)}" target="_blank" rel="noopener">🔗 باز کردن پست اصلی در لینکدین ↗</a>` : '';
+  const postHref = safeHttpUrl(p.post_url);
+  const postLink = postHref ? `<a href="${escapeHtml(postHref)}" target="_blank" rel="noopener noreferrer">🔗 باز کردن پست اصلی در لینکدین ↗</a>` : '';
   document.getElementById('cardDateAndLink').innerHTML = `📅 ${escapeHtml(p.posted_at)} ${postLink ? ' · ' + postLink : ''}`;
 
   // Format 100% full untruncated text with paragraph structure & keyword highlighting
@@ -1237,13 +1217,14 @@ function renderCurrentCard() {
           <div><b>📄 Shared Article:</b> ${escapeHtml(m.article.title)}</div>
           ${m.article.subtitle ? `<div class="muted" style="margin-top:2px">${escapeHtml(m.article.subtitle)}</div>` : ''}
           ${m.article.description ? `<div style="margin-top:6px;font-size:13px">${escapeHtml(m.article.description)}</div>` : ''}
-          ${m.article.link ? `<div style="margin-top:6px"><a href="${escapeHtml(m.article.link)}" target="_blank" rel="noopener">🔗 مشاهده لینک مقاله پیوست ↗</a></div>` : ''}
+          ${safeHttpUrl(m.article.link) ? `<div style="margin-top:6px"><a href="${escapeHtml(safeHttpUrl(m.article.link))}" target="_blank" rel="noopener noreferrer">🔗 مشاهده لینک مقاله پیوست ↗</a></div>` : ''}
         </div>`;
       }
       if (Array.isArray(m.postImages) && m.postImages.length > 0) {
-        const imgs = m.postImages.slice(0, 6).map(img =>
-          img && img.url ? `<a href="${escapeHtml(img.url)}" target="_blank" rel="noopener"><img src="${escapeHtml(img.url)}" alt="Post attachment" loading="lazy" style="max-height:190px;max-width:100%;border-radius:10px;border:1px solid var(--line);object-fit:cover"></a>` : ''
-        ).join('');
+        const imgs = m.postImages.slice(0, 6).map(img => {
+          const src = img && safeHttpUrl(img.url);
+          return src ? `<a href="${escapeHtml(src)}" target="_blank" rel="noopener noreferrer"><img src="${escapeHtml(src)}" alt="Post attachment" loading="lazy" style="max-height:190px;max-width:100%;border-radius:10px;border:1px solid var(--line);object-fit:cover"></a>` : '';
+        }).join('');
         if (imgs) {
           mediaHtml += `<div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:10px;direction:ltr">${imgs}</div>`;
         }
@@ -1469,61 +1450,9 @@ window.addEventListener('keydown', e => {
 });
 
 // Export Functions
-function getKeptPosts() {
-  return ALL_POSTS.filter(p => decisions[p.source_post_id]?.status === 'keep');
-}
-
-function exportCuratedData(fmt) {
-  const kept = getKeptPosts();
-  if (!kept.length) {
-    alert('هنوز هیچ پستی را با «بماند ✅» انتخاب نکرده‌اید.');
-    return;
-  }
-  const rows = kept.map(p => ({
-    source_post_id: p.source_post_id,
-    posted_at: p.posted_at,
-    post_type: p.post_type,
-    author_type: p.author_type,
-    author_name: p.author_name,
-    author_headline: p.author_headline,
-    author_url: p.author_url,
-    post_url: p.post_url,
-    reactions: p.reactions,
-    comments: p.comments,
-    shares: p.shares,
-    text_chars: p.text_chars,
-    matched_query_count: p.matched_query_count,
-    matched_query_codes: p.matched_query_codes,
-    matched_families: p.matched_families,
-    curated_at: decisions[p.source_post_id]?.timestamp || '',
-    post_text: p.post_text
-  }));
-
-  if (fmt === 'json') {
-    const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json;charset=utf-8;' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `saintiment_curated_posts_${rows.length}.json`;
-    a.click();
-  } else {
-    const cols = Object.keys(rows[0]);
-    const lines = [cols.join(',')];
-    for (const r of rows) {
-      lines.push(cols.map(c => `"${String(r[c] ?? '').replace(/"/g, '""')}"`).join(','));
-    }
-    const blob = new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `saintiment_curated_posts_${rows.length}.csv`;
-    a.click();
-  }
-}
-
 function exportDecisionsManifest() {
   const payload = {
     project: 'Saintiment',
-    source_run_id: 'X2gdX05u8rP41b4rG',
-    source_dataset_id: 'WUsK3RRYo7nKEOUbA',
     exported_at: new Date().toISOString(),
     summary: {
       total_posts: ALL_POSTS.length,
@@ -1537,95 +1466,6 @@ function exportDecisionsManifest() {
   a.href = URL.createObjectURL(blob);
   a.download = 'saintiment_swipe_decisions.json';
   a.click();
-}
-
-async function exportSqliteDbInBrowser(btn) {
-  const kept = getKeptPosts();
-  if (!kept.length) {
-    alert('هنوز هیچ پستی را با «بماند ✅» انتخاب نکرده‌اید.');
-    return;
-  }
-  const orig = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = '⏳ در حال ساخت دیتابیس SQLite...';
-  try {
-    const SQL = await initSqlJs({
-      locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${file}`
-    });
-    const db = new SQL.Database();
-    db.run(`
-      CREATE TABLE queries (
-        query_code TEXT PRIMARY KEY,
-        query_family TEXT,
-        operators INTEGER,
-        query_text TEXT
-      );
-      CREATE TABLE master_posts (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        source_post_id TEXT UNIQUE,
-        posted_at TEXT,
-        post_type TEXT,
-        author_type TEXT,
-        author_name TEXT,
-        author_headline TEXT,
-        author_url TEXT,
-        post_url TEXT,
-        reactions INTEGER,
-        comments INTEGER,
-        shares INTEGER,
-        text_chars INTEGER,
-        matched_query_count INTEGER,
-        matched_query_codes TEXT,
-        matched_families TEXT,
-        curated_at TEXT,
-        post_text TEXT
-      );
-      CREATE TABLE curation_decisions (
-        source_post_id TEXT PRIMARY KEY,
-        status TEXT NOT NULL,
-        decided_at TEXT,
-        reviewer TEXT,
-        note TEXT
-      );
-    `);
-
-    const qStmt = db.prepare('INSERT INTO queries VALUES (?, ?, ?, ?)');
-    for (const q of QUERIES) {
-      qStmt.run([q.id, q.family, q.operators, q.query]);
-    }
-    qStmt.free();
-
-    const pStmt = db.prepare('INSERT INTO master_posts (source_post_id,posted_at,post_type,author_type,author_name,author_headline,author_url,post_url,reactions,comments,shares,text_chars,matched_query_count,matched_query_codes,matched_families,curated_at,post_text) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
-    for (const p of kept) {
-      pStmt.run([
-        p.source_post_id, p.posted_at, p.post_type, p.author_type, p.author_name,
-        p.author_headline, p.author_url, p.post_url, p.reactions, p.comments,
-        p.shares, p.text_chars, p.matched_query_count, p.matched_query_codes,
-        p.matched_families, decisions[p.source_post_id]?.timestamp || '', p.post_text
-      ]);
-    }
-    pStmt.free();
-
-    const dStmt = db.prepare('INSERT INTO curation_decisions VALUES (?, ?, ?, ?, ?)');
-    for (const [pid, d] of Object.entries(decisions)) {
-      if (!d || (d.status !== 'keep' && d.status !== 'reject')) continue;
-      dStmt.run([pid, d.status, d.timestamp || '', d.reviewer || '', d.note || '']);
-    }
-    dStmt.free();
-
-    const binaryArray = db.export();
-    const blob = new Blob([binaryArray], { type: 'application/x-sqlite3' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `saintiment_curated_${kept.length}_posts.db`;
-    a.click();
-    db.close();
-  } catch (err) {
-    alert('خطا در ساخت SQLite در مرورگر: ' + err.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = orig;
-  }
 }
 
 function importDecisionsFile(event) {

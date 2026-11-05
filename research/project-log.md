@@ -762,4 +762,6 @@ Then open `http://127.0.0.1:8765/`. Another person running the same command agai
 
 **Verification:** `src/ingest/tests/test_swipe_store.py` passed. Against the live corpus, one existing post was marked `reject` through the phone layout (`rejected` 1, `events` 1, next post shown alone) and that probe mark and its history were then deleted, leaving 1,858 unreviewed. Desktop 1280×800 and phone 390×844 both showed one post body, no horizontal overflow, and both choice buttons. No scientific relevance coding is claimed.
 
-**Unresolved:** the team has not started the relevance judgments. GitHub Pages still cannot write to Neon; the shared record exists only through this server and `DATABASE_URL`. Downloaded post files must not be committed.
+**Decision (Kaveh, 2026-11-05):** keep the review screen as the HTML file in this repository (`docs/swipe-review.html`). Do not publish it as a separate hosted app. The public HTML does not link to the Apify dataset, does not embed scraped posts, and does not load sql.js from a third-party CDN. Author, post, article, and image links accept only `http` and `https`.
+
+**Unresolved:** the team has not started the relevance judgments. Shared marks exist only through `swipe_review_server.py` and `DATABASE_URL`. Downloaded post files must not be committed.
