@@ -25,8 +25,8 @@
 }
 *{box-sizing:border-box}
 html{direction:rtl}
-body{background:var(--bg);color:var(--fg);font:400 14.5px/1.7 var(--font);margin:0;padding:14px 14px 56px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-.wrap{max-width:960px;margin:0 auto;display:grid;gap:14px}
+body{background:var(--bg);color:var(--fg);font:400 14.5px/1.7 var(--font);margin:0;padding:14px 14px 112px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:760px;margin:0 auto;display:grid;gap:12px}
 h1,h2,h3{margin:0;font-weight:800;line-height:1.35}
 p{margin:0}
 a{color:var(--accent);text-decoration:none}
@@ -42,6 +42,7 @@ a:hover{text-decoration:underline}
 .pill.blue{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-border)}
 .pill.green{background:var(--good-soft);color:var(--good);border-color:var(--good-border)}
 .pill.red{background:var(--bad-soft);color:var(--bad);border-color:var(--bad-border)}
+.pill.amber{background:var(--amber-soft);color:var(--amber);border-color:#fde68a}
 
 /* Compact Status & Filters Panel */
 .status-panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 15px;display:grid;gap:10px;box-shadow:0 1px 2px rgba(15,23,42,.03)}
@@ -100,7 +101,7 @@ a:hover{text-decoration:underline}
 
 /* Card Header: Author & Metadata */
 .card-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line)}
-.author-block{display:grid;gap:4px;direction:ltr;text-align:left;flex:1;min-width:250px}
+.author-block{display:grid;gap:4px;direction:ltr;text-align:left;flex:1;min-width:0}
 .author-name-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .author-name{font-weight:800;font-size:16.5px;color:var(--fg)}
 .author-headline{font-size:13.5px;color:#334155;line-height:1.5;font-weight:500}
@@ -180,12 +181,14 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
 
 /* Sticky Bottom Swipe Action Controls */
 .action-bar{
-  position:sticky;bottom:12px;z-index:30;
-  display:grid;grid-template-columns:1.25fr auto auto 1.25fr;gap:10px;align-items:center;
-  background:rgba(255,255,255,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  border:1.5px solid #cbd5e1;border-radius:16px;padding:12px 16px;
-  box-shadow:0 10px 28px rgba(15,23,42,.12);
+  position:fixed;left:50%;bottom:0;transform:translateX(-50%);z-index:30;
+  width:min(760px, 100%);
+  display:grid;grid-template-columns:1fr auto auto 1fr;gap:10px;align-items:center;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1.5px solid #cbd5e1;border-bottom:0;border-radius:16px 16px 0 0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+  box-shadow:0 -8px 28px rgba(15,23,42,.12);
 }
+.label-short{display:none}
 .act-btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   font:800 14.5px var(--font);padding:13px 16px;border-radius:12px;border:1.5px solid var(--line);
@@ -220,21 +223,55 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
 .cmd-box{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0f172a;color:#f8fafc;padding:8px 12px;border-radius:8px;direction:ltr;font:500 11.5px/1.5 var(--mono);overflow-x:auto}
 .cmd-box button{font:600 11px var(--font);background:#334155;color:#fff;border:0;padding:4px 9px;border-radius:6px;cursor:pointer;white-space:nowrap}
 .cmd-box button:hover{background:var(--accent)}
+.tools-disclosure,.card-disclosure{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0}
+.tools-disclosure > summary,.card-disclosure > summary{cursor:pointer;font-weight:800;padding:12px 14px;list-style:none}
+.tools-disclosure > summary::-webkit-details-marker,.card-disclosure > summary::-webkit-details-marker{display:none}
+.tools-disclosure[open] > summary,.card-disclosure[open] > summary{border-bottom:1px solid var(--line)}
+.tools-body{padding:12px 14px 14px;display:grid;gap:12px}
+.review-count{font-weight:800}
 
 @media (max-width:680px){
-  .swipe-card{padding:16px 15px}
-  .post-body-canvas{padding:16px 16px}
-  .action-bar{grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px}
-  .act-btn.keep-btn{grid-column:1 / 2;order:1}
-  .act-btn.reject-btn{grid-column:2 / 3;order:2}
-  .act-btn.sub-btn{order:3}
+  body{padding:8px 8px calc(118px + env(safe-area-inset-bottom))}
+  .wrap{gap:8px}
+  .top-bar{padding:8px 10px}
+  .top-bar .brand a.btn,
+  .top-bar .brand .pill.blue,
+  .top-bar .btn-row > button.btn{display:none}
+  .status-panel{padding:8px 10px;gap:6px}
+  .stats-grid,
+  .status-panel .tools-disclosure,
+  .progress-meta #syncHint{display:none}
+  .brand .pill.blue,.label-long,.kbd{display:none}
+  .label-short{display:inline}
+  .swipe-card{padding:12px 12px 10px;gap:10px}
+  .post-body-canvas{padding:12px;line-height:1.7}
+  .card-top{gap:6px;padding-bottom:8px}
+  .author-headline{
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+  .card-meta-right{align-items:flex-start;width:100%}
+  .author-name{font-size:15.5px}
+  .progress-meta{flex-direction:column;align-items:flex-start;gap:2px}
+  .action-bar{
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    padding:10px 10px calc(10px + env(safe-area-inset-bottom));
+    width:100%;
+  }
+  .act-btn{min-height:52px;font-size:16px;padding:12px 8px}
+  .act-btn.keep-btn{grid-column:1;grid-row:1;order:1}
+  .act-btn.reject-btn{grid-column:2;grid-row:1;order:2}
+  .act-btn.sub-btn{min-height:44px;font-size:13px;order:3}
+  .stamp{top:auto;bottom:148px;font-size:16px;padding:6px 12px}
+  .stamp.keep{right:12px}
+  .stamp.reject{left:12px}
 }
 </style>
 </head>
 <body>
 
-<div class="stamp keep" id="stampKeep">✅ بماند در دیتابیس جدید (KEEP)</div>
-<div class="stamp reject" id="stampReject">❌ حذف شود (REJECT)</div>
+<div class="stamp keep" id="stampKeep">✅ باشد</div>
+<div class="stamp reject" id="stampReject">❌ نباشد</div>
 
 <div class="wrap">
 
@@ -244,8 +281,12 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
       <a href="index.html" class="btn">→ بازگشت به صفحه اصلی گزارش</a>
       <span class="pill blue">Saintiment — غربالگری تعاملی با نمایش متن کامل</span>
       <span class="pill" id="sourceStatusPill">⏳ در حال بارگذاری ۱٬۸۵۸ پست...</span>
+      <span class="pill" id="syncStatusPill">⏳ اتصال به دیتابیس مشترک...</span>
     </div>
     <div class="btn-row">
+      <label class="small muted" style="display:flex;align-items:center;gap:6px">نام بازبین
+        <input id="reviewerName" class="input-ctrl" maxlength="80" placeholder="مثلاً Kaveh" autocomplete="name" style="min-width:130px">
+      </label>
       <input type="file" id="localFilePicker" accept=".json" style="display:none" onchange="handleLocalJsonUpload(event)">
       <button type="button" class="btn" onclick="document.getElementById('localFilePicker').click()">📂 بارگذاری فایل JSON دستی</button>
     </div>
@@ -259,11 +300,11 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
         <b id="statUnreviewed">0</b>
       </div>
       <div class="stat-box keep" id="filterBoxKeep" onclick="setDecisionFilter('keep')">
-        <span>✅ بماند (دیتابیس جدید)</span>
+        <span>✅ باشد</span>
         <b id="statKeep">0</b>
       </div>
       <div class="stat-box reject" id="filterBoxReject" onclick="setDecisionFilter('reject')">
-        <span>❌ ردشده (نامرتبط)</span>
+        <span>❌ نباشد</span>
         <b id="statReject">0</b>
       </div>
       <div class="stat-box" id="filterBoxAll" onclick="setDecisionFilter('all')">
@@ -279,10 +320,13 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
       </div>
       <div class="progress-meta">
         <span id="progressText">پیشرفت بررسی: ۰ از ۰ پست (۰٪)</span>
-        <span>💾 ذخیره خودکار در مرورگر فعال است · میانبر: کلید راست (بماند) / کلید چپ (حذف)</span>
+        <span id="syncHint">هر swipe در جدول curation_decisions ثبت می‌شود · راست = باشد / چپ = نباشد</span>
       </div>
     </div>
 
+    <details class="tools-disclosure">
+      <summary>فیلتر صف (اختیاری)</summary>
+      <div class="tools-body">
     <div class="filters-bar">
       <div class="filter-group">
         <select id="familyFilter" class="input-ctrl" onchange="applyFiltersAndResetIndex()">
@@ -311,6 +355,8 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
         <input type="search" id="searchInput" class="input-ctrl" placeholder="جستجو در متن کامل یا عنوان شغلی..." oninput="applyFiltersAndResetIndex()">
       </div>
     </div>
+      </div>
+    </details>
   </section>
 
   <!-- Main Swipe Card Stage -->
@@ -334,7 +380,11 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
         </div>
       </div>
 
-      <!-- 2. Reader Controls & Completeness Guarantee Bar -->
+      <div class="post-body-canvas" id="cardPostBody">در حال بارگذاری متن کامل پست‌ها...</div>
+
+      <details class="card-disclosure">
+        <summary>ابزار متن، کلیدواژه و کوئری همین پست</summary>
+        <div class="tools-body">
       <div class="text-toolbar">
         <div class="text-meta-badge">
           <span style="color:var(--good)">● نمایش ۱۰۰٪ متن کامل پست (بدون هیچ‌گونه برش)</span>
@@ -352,13 +402,9 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
         </div>
       </div>
 
-      <!-- 3. Detected Keywords Summary right above the text -->
       <div class="kw-hits-row" id="cardKeywordHits"></div>
 
-      <!-- 4. FULL UNTRUNCATED POST TEXT CANVAS -->
-      <div class="post-body-canvas" id="cardPostBody">در حال بارگذاری متن کامل پست‌ها...</div>
-
-      <!-- 5. Query & Boolean Provenance -->
+      <!-- Query & Boolean Provenance -->
       <div class="provenance-bar">
         <div class="prov-row">
           <span class="small muted" style="font-weight:700">کوئری و خانوادهٔ بازیابی این پست:</span>
@@ -370,15 +416,18 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
       <!-- 6. Card Footer Metrics -->
       <div class="card-footer">
         <div class="eng-pills" id="cardEngagement"></div>
-        <div class="small muted">💡 در هر جای کارت می‌توانید به راست (بماند ✅) یا چپ (حذف ❌) بکشید</div>
+        <div class="small muted">یک پست در هر صفحه. به راست بکشید = باشد، به چپ = نباشد.</div>
       </div>
+        </div>
+      </details>
     </div>
 
     <!-- Sticky Bottom Action Buttons -->
     <div class="action-bar">
       <button type="button" class="act-btn keep-btn" onclick="triggerDecision('keep')">
-        <span>✅ بماند در دیتابیس جدید</span>
-        <span class="kbd">Swipe راست / →</span>
+        <span class="label-long">✅ باشد</span>
+        <span class="label-short">✅ باشد</span>
+        <span class="kbd">→</span>
       </button>
 
       <button type="button" class="act-btn sub-btn" onclick="undoLastDecision()" id="undoBtn" disabled title="برگشت به پست قبلی (Z یا Backspace)">
@@ -392,14 +441,16 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
       </button>
 
       <button type="button" class="act-btn reject-btn" onclick="triggerDecision('reject')">
-        <span>❌ رد شود (نامرتبط)</span>
-        <span class="kbd">← / Swipe چپ</span>
+        <span class="label-long">❌ نباشد</span>
+        <span class="label-short">❌ نباشد</span>
+        <span class="kbd">←</span>
       </button>
     </div>
   </div>
 
-  <!-- New Curated Database Export Hub -->
-  <section class="db-hub">
+  <details class="tools-disclosure db-hub">
+    <summary>خروجی، دانلود و اشتراک با بقیه تیم</summary>
+    <div class="tools-body">
     <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">
       <div>
         <h2>🗄️ خروجی و ساخت دیتابیس جدید (پست‌های انتخاب‌شده)</h2>
@@ -432,13 +483,32 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
           <button type="button" onclick="copyCmd('.venv/bin/python src/ingest/build_curated_db.py ~/Downloads/saintiment_swipe_decisions.json --push-neon')">کپی دستور</button>
         </div>
       </div>
+
+      <div class="db-box" style="grid-column:1 / -1">
+        <h3>۳. دیتابیس مشترک Neon — ثبت هر swipe برای بقیه تیم</h3>
+        <p class="small muted" id="sharedDbCopy">در حال بررسی اتصال به Neon...</p>
+        <div class="btn-row" id="sharedDownloads" style="display:none">
+          <a class="btn" href="/api/swipe/export/decisions.json">📋 دانلود تصمیم‌ها (JSON)</a>
+          <a class="btn" href="/api/swipe/export/decisions.csv">📋 دانلود تصمیم‌ها (CSV)</a>
+          <a class="btn success" href="/api/swipe/export/marked.sqlite">🗄️ دانلود SQLite نشانه‌گذاری‌شده</a>
+          <a class="btn primary" href="/api/swipe/export/marked.csv">⬇️ دانلود CSV نشانه‌گذاری‌شده</a>
+        </div>
+        <div class="cmd-box">
+          <code>python src/ingest/swipe_review_server.py</code>
+          <button type="button" onclick="copyCmd('python src/ingest/swipe_review_server.py')">کپی دستور</button>
+        </div>
+        <p class="small muted">خروجی نشانه‌گذاری‌شده متن پست را دارد و مخصوص تیم است؛ آن را به گیت اضافه نکنید. تصمیم‌ها روی همان پیکرهٔ ۱٬۸۵۸ پستی در <span class="ltr" style="font-family:var(--mono)">_saintiment_apify_three_layer_db</span> می‌مانند و با نمای <span class="ltr" style="font-family:var(--mono)">master_posts_marked</span> قابل خواندن‌اند.</p>
+      </div>
     </div>
-  </section>
+    </div>
+  </details>
 
 </div>
 
 <script>
 const STORAGE_KEY = 'saintiment_swipe_decisions_v1';
+const PENDING_KEY = 'saintiment_swipe_pending_v1';
+const REVIEWER_KEY = 'saintiment_swipe_reviewer_v1';
 const FONT_SIZE_KEY = 'saintiment_post_font_size_v1';
 
 const QUERIES = [
@@ -511,7 +581,10 @@ let FILTERED_POSTS = [];
 let currentIndex = 0;
 let activeDecisionFilter = 'unreviewed';
 let decisions = {};
+let pendingWrites = new Map();
 let historyStack = [];
+let syncState = 'offline';
+let syncChain = Promise.resolve();
 let currentFontSize = Number(localStorage.getItem(FONT_SIZE_KEY) || 16.5);
 
 document.documentElement.style.setProperty('--post-font-size', `${currentFontSize}px`);
@@ -539,13 +612,193 @@ function loadSavedDecisions() {
   } catch (e) {
     decisions = {};
   }
+  try {
+    const pending = JSON.parse(localStorage.getItem(PENDING_KEY) || '{}');
+    pendingWrites = new Map(Object.entries(pending));
+  } catch (e) {
+    pendingWrites = new Map();
+  }
+  const reviewer = document.getElementById('reviewerName');
+  if (reviewer) {
+    reviewer.value = localStorage.getItem(REVIEWER_KEY) || '';
+    reviewer.addEventListener('input', () => {
+      try { localStorage.setItem(REVIEWER_KEY, reviewer.value.trim()); } catch (e) {}
+    });
+  }
 }
 
 function saveDecisions() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(decisions));
+    localStorage.setItem(PENDING_KEY, JSON.stringify(Object.fromEntries(pendingWrites)));
   } catch (e) {}
   updateStatsUI();
+}
+
+function reviewerName() {
+  return (document.getElementById('reviewerName')?.value || '').trim();
+}
+
+function requireReviewer() {
+  const name = reviewerName();
+  if (name) return name;
+  const el = document.getElementById('reviewerName');
+  if (el) el.focus();
+  alert('قبل از نشانه‌گذاری، نام بازبین را بنویسید تا در دیتابیس معلوم باشد این تصمیم مال چه کسی است.');
+  return '';
+}
+
+function queueMark(id, status, reviewer, note) {
+  const timestamp = new Date().toISOString();
+  const payload = { status, timestamp, reviewer: reviewer || '', note: note || '', synced: false };
+  if (status) decisions[id] = payload;
+  else delete decisions[id];
+  pendingWrites.set(id, payload);
+  saveDecisions();
+  enqueueSync(() => flushWrites());
+}
+
+function enqueueSync(task) {
+  syncChain = syncChain.then(task, task);
+  return syncChain;
+}
+
+function adoptServerDecision(id, decision) {
+  if (decision && decision.status) {
+    decisions[id] = {
+      status: decision.status,
+      timestamp: decision.timestamp,
+      reviewer: decision.reviewer || '',
+      note: decision.note || '',
+      synced: true
+    };
+  } else {
+    delete decisions[id];
+  }
+}
+
+async function flushWrites() {
+  if (!pendingWrites.size) {
+    if (syncState !== 'offline') syncState = 'synced';
+    updateSyncUI();
+    return;
+  }
+  syncState = 'syncing';
+  updateSyncUI();
+  for (const [id, payload] of [...pendingWrites.entries()]) {
+    let response;
+    try {
+      response = await fetch('/api/swipe/decisions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source_post_id: id,
+          status: payload.status,
+          reviewer: payload.reviewer || reviewerName(),
+          note: payload.note || '',
+          decided_at: payload.timestamp
+        })
+      });
+    } catch (e) {
+      syncState = 'offline';
+      updateSyncUI();
+      return;
+    }
+    if (!response.ok) {
+      syncState = 'error';
+      updateSyncUI();
+      return;
+    }
+    const body = await response.json();
+    pendingWrites.delete(id);
+    adoptServerDecision(id, body.decision);
+    saveDecisions();
+  }
+  syncState = 'synced';
+  updateSyncUI();
+}
+
+async function pullRemoteDecisions() {
+  const beforeId = FILTERED_POSTS[currentIndex]?.source_post_id || null;
+  const beforeDec = beforeId ? JSON.stringify(decisions[beforeId] || null) : null;
+  let response;
+  try {
+    response = await fetch('/api/swipe/decisions', { cache: 'no-store' });
+  } catch (e) {
+    if (syncState !== 'error') syncState = 'offline';
+    updateSyncUI();
+    return;
+  }
+  if (!response.ok) {
+    syncState = 'error';
+    updateSyncUI();
+    return;
+  }
+  const body = await response.json();
+  const remote = body.decisions || {};
+  let changed = false;
+  for (const [id, remoteDec] of Object.entries(remote)) {
+    if (pendingWrites.has(id)) continue;
+    const local = decisions[id];
+    const remoteTime = remoteDec.timestamp || '';
+    const localTime = local?.timestamp || '';
+    if (!local || remoteTime > localTime) {
+      decisions[id] = {
+        status: remoteDec.status,
+        timestamp: remoteTime,
+        reviewer: remoteDec.reviewer || '',
+        note: remoteDec.note || '',
+        synced: true
+      };
+      changed = true;
+    }
+  }
+  for (const id of Object.keys(decisions)) {
+    if (pendingWrites.has(id) || !decisions[id].synced) continue;
+    if (!remote[id]) {
+      delete decisions[id];
+      changed = true;
+    }
+  }
+  syncState = pendingWrites.size ? 'syncing' : 'synced';
+  if (changed) {
+    saveDecisions();
+    applyFiltersAndResetIndex({ preserveId: beforeId, quiet: true });
+    const afterId = FILTERED_POSTS[currentIndex]?.source_post_id || null;
+    const afterDec = afterId ? JSON.stringify(decisions[afterId] || null) : null;
+    if (afterId !== beforeId || afterDec !== beforeDec) renderCurrentCard();
+  }
+  updateSyncUI();
+}
+
+function updateSyncUI() {
+  const pill = document.getElementById('syncStatusPill');
+  const hint = document.getElementById('syncHint');
+  const copy = document.getElementById('sharedDbCopy');
+  const downloads = document.getElementById('sharedDownloads');
+  if (!pill) return;
+  const waiting = pendingWrites.size;
+  if (syncState === 'synced' && waiting === 0) {
+    pill.className = 'pill green';
+    pill.textContent = '✓ ثبت‌شده در Neon';
+    if (hint) hint.textContent = 'هر swipe در curation_decisions ذخیره شد و برای بقیه تیم قابل دانلود است';
+    if (copy) copy.textContent = 'متصل به Neon. هر بماند/رد بلافاصله نشانه‌گذاری می‌شود. ایمان و مرتضی با اجرای همان سرور همین صف و همین نشانه‌ها را می‌بینند.';
+    if (downloads) downloads.style.display = 'flex';
+  } else if (syncState === 'syncing' || waiting > 0) {
+    pill.className = 'pill amber';
+    pill.textContent = `⏳ در حال ثبت ${waiting || ''} تصمیم در Neon`;
+    if (downloads) downloads.style.display = 'flex';
+  } else if (syncState === 'error') {
+    pill.className = 'pill red';
+    pill.textContent = '⚠️ خطا در ثبت دیتابیس؛ تصمیم در مرورگر مانده است';
+    if (copy) copy.textContent = 'سرور روشن است اما نوشتن در Neon ناموفق بود. تصمیم‌ها در این مرورگر مانده‌اند و با برقراری اتصال دوباره فرستاده می‌شوند.';
+  } else {
+    pill.className = 'pill';
+    pill.textContent = 'مرورگر فقط — هنوز به Neon وصل نیست';
+    if (hint) hint.textContent = 'برای ثبت مشترک، صفحه را با python src/ingest/swipe_review_server.py باز کنید';
+    if (copy) copy.textContent = 'این صفحه الان تصمیم را فقط در همین مرورگر نگه می‌دارد. برای ثبت در Neon و ادامهٔ کار توسط بقیه، سرور محلی را اجرا کنید و همان نشانی را باز کنید.';
+    if (downloads) downloads.style.display = 'none';
+  }
 }
 
 function escapeHtml(str) {
@@ -753,48 +1006,71 @@ function convertRawApifyItemsToUniquePosts(items) {
   });
 }
 
+function finishPostLoad(label, tone) {
+  const pill = document.getElementById('sourceStatusPill');
+  pill.className = 'pill ' + tone;
+  pill.textContent = label;
+  applyFiltersAndResetIndex();
+  enqueueSync(async () => {
+    await pullRemoteDecisions();
+    await flushWrites();
+  });
+  setInterval(() => {
+    enqueueSync(() => pullRemoteDecisions());
+  }, 15000);
+}
+
 async function initLoadPosts() {
   loadSavedDecisions();
   const pill = document.getElementById('sourceStatusPill');
+  updateSyncUI();
 
-  // 1. Instant local JS bundle (works even on file:// without CORS)
+  // 1. Shared Neon corpus via the local review server
+  try {
+    const remoteRes = await fetch('/api/swipe/posts', { cache: 'no-store' });
+    if (remoteRes.ok) {
+      const data = await remoteRes.json();
+      if (Array.isArray(data.posts) && data.posts.length > 0) {
+        ALL_POSTS = data.posts.map(normalizePostRecord);
+        finishPostLoad(`✅ پیکره Neon (${ALL_POSTS.length} پست کامل)`, 'green');
+        return;
+      }
+    }
+  } catch (e) {}
+
+  // 2. Instant local JS bundle (works even on file:// without CORS)
   if (Array.isArray(window.LOCAL_APIFY_POSTS) && window.LOCAL_APIFY_POSTS.length > 0) {
     ALL_POSTS = window.LOCAL_APIFY_POSTS.map(normalizePostRecord);
-    pill.className = 'pill green';
-    pill.textContent = `✅ بارگذاری آنی از دیتابیس لوکال (${ALL_POSTS.length} پست کامل)`;
-    applyFiltersAndResetIndex();
+    finishPostLoad(`✅ بارگذاری آنی از دیتابیس لوکال (${ALL_POSTS.length} پست کامل)`, 'green');
     return;
   }
 
-  // 2. Try local JSON via fetch (when served over http://localhost)
+  // 3. Try local JSON via fetch (when served over http://localhost)
   try {
     const localRes = await fetch('../data/local/linkedin-apify-2026-10-17/apify_three_layer_2026-10-18.json');
     if (localRes.ok) {
       const data = await localRes.json();
       if (Array.isArray(data) && data.length > 0) {
         ALL_POSTS = data.map(normalizePostRecord);
-        pill.className = 'pill green';
-        pill.textContent = `✅ بارگذاری‌شده از دیتابیس لوکال (${ALL_POSTS.length} پست کامل)`;
-        applyFiltersAndResetIndex();
+        finishPostLoad(`✅ بارگذاری‌شده از دیتابیس لوکال (${ALL_POSTS.length} پست کامل)`, 'green');
         return;
       }
     }
   } catch (e) {}
 
-  // 3. Fallback to live Apify dataset API (works on GitHub Pages)
+  // 4. Fallback to live Apify dataset API (works on GitHub Pages; retention may have expired)
   try {
     pill.textContent = '⏳ در حال دریافت متن کامل ۱٬۸۵۸ پست از سرور Apify...';
     const apiRes = await fetch('https://api.apify.com/v2/datasets/WUsK3RRYo7nKEOUbA/items?format=json&clean=true');
     if (!apiRes.ok) throw new Error('HTTP ' + apiRes.status);
     const items = await apiRes.json();
     ALL_POSTS = convertRawApifyItemsToUniquePosts(items);
-    pill.className = 'pill green';
-    pill.textContent = `✅ بارگذاری آنلاین (${ALL_POSTS.length} پست با متن کامل)`;
-    applyFiltersAndResetIndex();
+    finishPostLoad(`✅ بارگذاری آنلاین (${ALL_POSTS.length} پست با متن کامل)`, 'green');
   } catch (err) {
     pill.className = 'pill red';
     pill.textContent = '⚠️ خطا در دریافت خودکار — فایل JSON را انتخاب کنید';
-    document.getElementById('cardPostBody').textContent = 'امکان دریافت خودکار نبود. لطفاً با دکمه «بارگذاری فایل JSON دستی» در بالای صفحه، فایل JSON دیتاست را انتخاب کنید.';
+    document.getElementById('cardPostBody').textContent = 'امکان دریافت خودکار نبود. سرور بررسی را اجرا کنید (python src/ingest/swipe_review_server.py) یا فایل JSON پیکره را بارگذاری کنید.';
+    updateSyncUI();
   }
 }
 
@@ -857,7 +1133,9 @@ function setDecisionFilter(mode) {
   applyFiltersAndResetIndex();
 }
 
-function applyFiltersAndResetIndex() {
+function applyFiltersAndResetIndex(options) {
+  const preserveId = options && options.preserveId;
+  const quiet = options && options.quiet;
   const fam = document.getElementById('familyFilter').value;
   const qId = document.getElementById('queryFilter').value;
   const authType = document.getElementById('authorTypeFilter').value;
@@ -885,9 +1163,14 @@ function applyFiltersAndResetIndex() {
     FILTERED_POSTS.sort((a, b) => String(b.posted_at).localeCompare(String(a.posted_at)));
   }
 
-  currentIndex = 0;
+  if (preserveId) {
+    const idx = FILTERED_POSTS.findIndex(p => p.source_post_id === preserveId);
+    currentIndex = idx >= 0 ? idx : Math.min(currentIndex, Math.max(0, FILTERED_POSTS.length - 1));
+  } else {
+    currentIndex = 0;
+  }
   updateStatsUI();
-  renderCurrentCard();
+  if (!quiet) renderCurrentCard();
 }
 
 function renderCurrentCard() {
@@ -927,7 +1210,9 @@ function renderCurrentCard() {
   if (dec) {
     decPill.style.display = 'inline-flex';
     decPill.className = 'pill ' + (dec.status === 'keep' ? 'green' : 'red');
-    decPill.textContent = dec.status === 'keep' ? '✅ انتخاب‌شده' : '❌ ردشده';
+    const who = dec.reviewer ? ` · ${dec.reviewer}` : '';
+    const pending = dec.synced === false ? ' · در حال ثبت' : '';
+    decPill.textContent = (dec.status === 'keep' ? '✅ بماند' : '❌ رد') + who + pending;
   } else {
     decPill.style.display = 'none';
   }
@@ -1009,6 +1294,8 @@ function copyCurrentPostText() {
 
 function triggerDecision(status) {
   if (!FILTERED_POSTS.length || currentIndex >= FILTERED_POSTS.length) return;
+  const reviewer = requireReviewer();
+  if (!reviewer) return;
   const p = FILTERED_POSTS[currentIndex];
   const card = document.getElementById('swipeCard');
 
@@ -1017,11 +1304,7 @@ function triggerDecision(status) {
     prevDecision: decisions[p.source_post_id] ? { ...decisions[p.source_post_id] } : null
   });
 
-  decisions[p.source_post_id] = {
-    status,
-    timestamp: new Date().toISOString()
-  };
-  saveDecisions();
+  queueMark(p.source_post_id, status, reviewer, '');
 
   const flyClass = status === 'keep' ? 'fly-right' : 'fly-left';
   const stampEl = document.getElementById(status === 'keep' ? 'stampKeep' : 'stampReject');
@@ -1057,12 +1340,11 @@ function skipCurrentPost() {
 function undoLastDecision() {
   if (!historyStack.length) return;
   const last = historyStack.pop();
-  if (last.prevDecision) {
-    decisions[last.id] = last.prevDecision;
+  if (last.prevDecision && last.prevDecision.status) {
+    queueMark(last.id, last.prevDecision.status, reviewerName() || last.prevDecision.reviewer || '', last.prevDecision.note || '');
   } else {
-    delete decisions[last.id];
+    queueMark(last.id, null, reviewerName(), '');
   }
-  saveDecisions();
 
   const postObj = ALL_POSTS.find(x => x.source_post_id === last.id);
   if (postObj) {
@@ -1301,7 +1583,9 @@ async function exportSqliteDbInBrowser(btn) {
       CREATE TABLE curation_decisions (
         source_post_id TEXT PRIMARY KEY,
         status TEXT NOT NULL,
-        decided_at TEXT
+        decided_at TEXT,
+        reviewer TEXT,
+        note TEXT
       );
     `);
 
@@ -1322,9 +1606,10 @@ async function exportSqliteDbInBrowser(btn) {
     }
     pStmt.free();
 
-    const dStmt = db.prepare('INSERT INTO curation_decisions VALUES (?, ?, ?)');
+    const dStmt = db.prepare('INSERT INTO curation_decisions VALUES (?, ?, ?, ?, ?)');
     for (const [pid, d] of Object.entries(decisions)) {
-      dStmt.run([pid, d.status, d.timestamp || '']);
+      if (!d || (d.status !== 'keep' && d.status !== 'reject')) continue;
+      dStmt.run([pid, d.status, d.timestamp || '', d.reviewer || '', d.note || '']);
     }
     dStmt.free();
 
@@ -1369,11 +1654,13 @@ function importDecisionsFile(event) {
 }
 
 function resetAllDecisions() {
-  if (!confirm('آیا مطمئن هستید که می‌خواهید تمام تصمیم‌های ذخیره‌شده در مرورگر را پاک کنید؟')) return;
+  if (!confirm('تصمیم‌های ذخیره‌شده در همین مرورگر پاک شود؟ نشانه‌های ثبت‌شده در Neon پاک نمی‌شوند و با اتصال دوباره برمی‌گردند.')) return;
   decisions = {};
+  pendingWrites = new Map();
   historyStack = [];
   saveDecisions();
   applyFiltersAndResetIndex();
+  enqueueSync(() => pullRemoteDecisions());
 }
 
 function copyCmd(txt) {

@@ -68,6 +68,7 @@ Processing code commit and scripts: src/ingest/apify_to_neon.py (updated with 25
 Environment/interpreter: .venv/bin/python (Python 3.13, psycopg 3.3.6)
 Contents and labels: 2,158 result items across all 48 queries (48/48 queries returned >= 10 posts; 37/48 queries hit the maxPosts=50 cap; min 10, median 50, max 50); 1,858 unique post IDs; post dates 2023-01-10 to 2026-10-18
 Cost: USD 4.31605 (2,158 post events at USD 0.002 + start event USD 0.00005), covered by the FREE plan monthly allowance
+Known limitations: relevance is not yet judged. Swipe marks, when recorded, live in the same database as annotations (`curation_decisions`, `curation_decision_events`, view `master_posts_marked`) and do not replace this corpus. See project log section 53.
 ```
 
 ### Coresignal Employee Posts collect (2026-10-08)

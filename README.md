@@ -28,6 +28,12 @@ The Telegram group **Sentiment Analysis AI** is the team's main communication ch
 
 Looking for Iman’s code? Open the [code index](src/README.md#imans-submission-local-only). The complete source package now lives in `_local/submissions/2026-09-06-iman-protocol-drafts/`, not the historical archive. Baseline extracts remain local-only and must not be run in place; separate pilot snapshots are prepared.
 
+## Current Status — 5 November 2026 (Swipe review marks in Neon)
+
+- **Review screen:** [`docs/swipe-review.html`](docs/swipe-review.html) shows one post at a time. باشد stores `keep` and نباشد stores `reject`. On a phone the same single card and a fixed two-choice bar are used. Open it with `python src/ingest/swipe_review_server.py` and then `http://127.0.0.1:8765/`.
+- **Shared marks:** each swipe is written to Neon `_saintiment_apify_three_layer_db` (`curation_decisions`, history in `curation_decision_events`, readable through `master_posts_marked`). The 1,858 posts are not rewritten. No relevance judgments have been recorded yet. See [project log §53](research/project-log.md#53-shared-swipe-marks-and-one-post-review-screen-2026-11-05).
+- **Download for the team:** the review server serves decisions JSON/CSV and a marked SQLite/CSV. Files that contain post text stay local and out of git.
+
 ## Current Status — 18 October 2026 (Final Three-Layer Apify Extraction & Neon Sync)
 
 - **Final three-layer Apify keyword & query list (confirmed & executed 2026-10-18):** 55 keywords across 3 pillars (`Domain/Tools ∧ AI ∧ Skill/Cognition/Process/Education`) and **48 executable three-layer LinkedIn queries** (`<= 5` Boolean operators per query), documented in [`research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md`](research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) and [`queries.json`](research/keywords/linkedin-apify-2026-10-17/queries.json).

@@ -1,5 +1,7 @@
 # Project Log
 
+**Swipe review — 5 November 2026:** one-post keep/drop marks are stored on the three-layer Neon corpus. See [section 53](#53-shared-swipe-marks-and-one-post-review-screen-2026-11-05). No relevance judgments have been recorded.
+
 **Query list — 17 October 2026:** a 55-query working list for a later Apify pass is in [section 49](#49-apify-query-list-for-the-next-round-2026-10-17). No run was started. Query version 1 is not frozen.
 
 **Current closeout — 16 October 2026:** three-provider LinkedIn post pilot is complete in Neon `_saintiment_db`: Apify 1,137 + Coresignal 200 + Bright Data marketplace 200 master posts (1,537 total). Local 200-per-source review packs exist under `_local/work/2026-10-09-*` (git-ignored; personal data). Meeting/pilot deliverables from 25 September are published under `docs/`. No ethics/ToS clearance and no scientific findings from the provider pilots. See [section 48](#48-complete-three-provider-set-synced-2026-10-16).
@@ -737,3 +739,27 @@ The offline result records **four passing fake-browser scenarios** (already auth
    - Takes `saintiment_swipe_decisions.json` (or curated JSON) and builds a new 6-table local SQLite database (`data/local/linkedin-apify-2026-10-17/apify_curated_2026-10-19.db` containing `runs`, `queries`, `raw_items`, `master_posts`, `post_query_hits` filtered to kept posts, plus `curation_decisions`), alongside CSV/JSON exports, and supports `--push-neon` to populate a dedicated Neon Postgres database (`_saintiment_apify_curated_db`).
 
 **Verification:** tested `build_local_curated_sqlite` against `apify_three_layer_2026-10-18.db` in a temporary directory with sample `keep`/`reject` decisions; verified exact row filtering across `master_posts`, `raw_items`, `post_query_hits`, and `curation_decisions`.
+
+## 53. Shared swipe marks and one-post review screen (2026-11-05)
+
+**Request (Kaveh):** start the one-by-one swipe review, make sure each decision is stored and marked in the database, and keep that record shareable and downloadable for the rest of the team. The review screen should show one post at a time on a desktop page and on a phone, with a clear keep-or-drop choice.
+
+**Observation:** the 2026-10-19 page stored decisions only in the reviewer's browser. Neon had no `curation_decisions` rows, and `_saintiment_apify_curated_db` did not exist. The durable corpus is still `_saintiment_apify_three_layer_db` (1,858 `master_posts`, 2,158 `raw_items`). No relevance judgments were made by this change.
+
+**Changes:**
+1. On the three-layer Neon database: `curation_decisions` (current keep/reject mark, reviewer, note, time), `curation_decision_events` (append-only history), and view `master_posts_marked` (every post left-joined to its mark). The corpus tables are not rewritten.
+2. [`src/ingest/swipe_store.py`](../src/ingest/swipe_store.py) upserts a mark only when the incoming time is at least as new as the stored one, and can export a decisions manifest plus a SQLite/CSV copy with the mark on every post.
+3. [`src/ingest/swipe_review_server.py`](../src/ingest/swipe_review_server.py) serves the review page and writes each swipe to Neon. Downloads: decisions JSON/CSV and the marked SQLite/CSV.
+4. [`docs/swipe-review.html`](../docs/swipe-review.html) shows one post, with باشد / نباشد, and sends that choice to the server when the page is opened from the review server. Filters and export stay behind closed disclosures. The layout uses a fixed choice bar and a 680px layout for a phone. A reviewer name is required so the mark is attributable. Browser storage remains a fallback when the server is not running.
+
+**How the team continues:** from the repository root, with `DATABASE_URL` in the environment or `.env` (never committed):
+
+```text
+python src/ingest/swipe_review_server.py
+```
+
+Then open `http://127.0.0.1:8765/`. Another person running the same command against the same Neon database sees the same marks. `python src/ingest/swipe_store.py status` prints the counts. Exported files that contain post text stay under `data/local/` and out of git.
+
+**Verification:** `src/ingest/tests/test_swipe_store.py` passed. Against the live corpus, one existing post was marked `reject` through the phone layout (`rejected` 1, `events` 1, next post shown alone) and that probe mark and its history were then deleted, leaving 1,858 unreviewed. Desktop 1280×800 and phone 390×844 both showed one post body, no horizontal overflow, and both choice buttons. No scientific relevance coding is claimed.
+
+**Unresolved:** the team has not started the relevance judgments. GitHub Pages still cannot write to Neon; the shared record exists only through this server and `DATABASE_URL`. Downloaded post files must not be committed.
