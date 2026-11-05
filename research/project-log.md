@@ -760,6 +760,8 @@ python src/ingest/swipe_review_server.py
 
 Then open `http://127.0.0.1:8765/`. Another person running the same command against the same Neon database sees the same marks. `python src/ingest/swipe_store.py status` prints the counts. Exported files that contain post text stay under `data/local/` and out of git.
 
+**Phone (Kaveh, 2026-11-05):** the GitHub HTML link does not run the review. `python src/ingest/swipe_review_server.py --phone` listens on the computer's Wi-Fi address and prints a phone URL with an access key. The computer and the phone must be on the same Wi-Fi, and the command must keep running. The key is printed only in that window. It is not stored in git. A device that is not the computer itself is refused until it presents that key.
+
 **Verification:** `src/ingest/tests/test_swipe_store.py` passed. Against the live corpus, one existing post was marked `reject` through the phone layout (`rejected` 1, `events` 1, next post shown alone) and that probe mark and its history were then deleted, leaving 1,858 unreviewed. Desktop 1280×800 and phone 390×844 both showed one post body, no horizontal overflow, and both choice buttons. No scientific relevance coding is claimed.
 
 **Decision (Kaveh, 2026-11-05):** keep the review screen as the HTML file in this repository (`docs/swipe-review.html`). Do not publish it as a separate hosted app. The public HTML does not link to the Apify dataset, does not embed scraped posts, and does not load sql.js from a third-party CDN. Author, post, article, and image links accept only `http` and `https`.

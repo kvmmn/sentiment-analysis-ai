@@ -2,22 +2,32 @@
 
 Usage:
     python src/ingest/swipe_review_server.py
-    python src/ingest/swipe_review_server.py --port 8765
+    python src/ingest/swipe_review_server.py --phone
 
-Open http://127.0.0.1:8765/ . The page loads the 1,858 three-layer posts from
+On this computer, open http://127.0.0.1:8765/ . With --phone, the same Wi-Fi
+phone opens the address printed at startup. That address carries a one-time
+key so other devices on the network do not receive the posts. The key is not
+written to git and is not included in the request log.
+
+The page loads the 1,858 three-layer posts from
 `_saintiment_apify_three_layer_db` and upserts every swipe into
 `curation_decisions`. Downloads from that page are generated from the same
 database, so another person running this server sees and can export the same marks.
 
-Binds to 127.0.0.1. Post text is personal data and is not committed to git.
-`DATABASE_URL` is read from the environment or `.env` and is never printed.
+The default bind is 127.0.0.1. Post text is personal data and is not committed
+to git. `DATABASE_URL` is read from the environment or `.env` and is never printed.
 """
 from __future__ import annotations
 
 import argparse
+import hmac
 import json
+import os
+import re
+import secrets
+import socket
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 from swipe_store import (
     DecisionError,
@@ -38,6 +48,20 @@ from swipe_store import (
 )
 
 MAX_BODY = 32_768
+COOKIE_NAME = "saintiment_swipe_access"
+_KEY_IN_LOG = re.compile(r"([?&]k=)[^&\s]+")
+
+DENIED_HTML = """<!doctype html>
+<html lang="fa" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saintiment</title>
+<body style="font-family:Tahoma,sans-serif;padding:24px;line-height:1.7">
+<p>این آدرس پست‌ها را نشان نمی‌دهد.</p>
+<p>روی کامپیوتر دستور <code>python src/ingest/swipe_review_server.py --phone</code> را اجرا کنید و همان آدرسی را که آنجا چاپ می‌شود، در گوشی باز کنید. کامپیوتر و گوشی باید روی یک وای‌فای باشند و آن پنجره باز بماند.</p>
+</body>
+</html>
+""".encode("utf-8")
 
 
 def _html_path():
@@ -46,14 +70,94 @@ def _html_path():
     return Path(__file__).resolve().parents[2] / "docs" / "swipe-review.html"
 
 
+def keys_match(given: str, token: str) -> bool:
+    if not given or not token:
+        return False
+    given_b = given.encode("utf-8")
+    token_b = token.encode("utf-8")
+    if len(given_b) != len(token_b):
+        return False
+    return hmac.compare_digest(given_b, token_b)
+
+
+def cookie_token(cookie_header: str) -> str:
+    for part in (cookie_header or "").split(";"):
+        name, sep, value = part.strip().partition("=")
+        if sep and name == COOKIE_NAME:
+            return value
+    return ""
+
+
+def access_allowed(client_ip: str, token: str, query_key: str, header_key: str, cookie_header: str) -> bool:
+    """Loopback is the computer running the server. Every other device needs the key."""
+    if client_ip in {"127.0.0.1", "::1"}:
+        return True
+    if not token:
+        return False
+    return any(keys_match(candidate, token) for candidate in (query_key, header_key, cookie_token(cookie_header)))
+
+
+def redact_access_key(text: str) -> str:
+    return _KEY_IN_LOG.sub(r"\1redacted", text)
+
+
+def local_ipv4_addresses() -> list[str]:
+    found: list[str] = []
+
+    def add(ip: str) -> None:
+        if ip and not ip.startswith("127.") and ip not in found:
+            found.append(ip)
+
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.connect(("8.8.8.8", 80))
+            add(sock.getsockname()[0])
+    except OSError:
+        pass
+    try:
+        for info in socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET):
+            add(info[4][0])
+    except OSError:
+        pass
+    return found
+
+
 class SwipeHandler(BaseHTTPRequestHandler):
     server_version = "SaintimentSwipe/1.0"
+    access_token = ""
 
     def log_message(self, fmt: str, *args) -> None:
-        # Request lines only. Do not log bodies; they can contain post text or names.
-        super().log_message(fmt, *args)
+        # Request lines only. Do not log bodies or the phone access key.
+        super().log_message(fmt, *(redact_access_key(str(arg)) for arg in args))
+
+    def _query_key(self) -> str:
+        values = parse_qs(urlparse(self.path).query).get("k", [])
+        return values[0] if values else ""
+
+    def _allowed(self) -> bool:
+        return access_allowed(
+            self.client_address[0],
+            self.access_token,
+            self._query_key(),
+            self.headers.get("X-Swipe-Key", ""),
+            self.headers.get("Cookie", ""),
+        )
+
+    def _cookie_headers(self) -> list[tuple[str, str]]:
+        if not self.access_token:
+            return []
+        return [(
+            "Set-Cookie",
+            f"{COOKIE_NAME}={self.access_token}; Path=/; Max-Age=2592000; SameSite=Lax; HttpOnly",
+        )]
+
+    def _send_denied(self) -> None:
+        self._send_bytes(DENIED_HTML, "text/html; charset=utf-8", status=401)
 
     def do_GET(self) -> None:
+        if not self._allowed():
+            self._send_denied()
+            return
         path = urlparse(self.path).path
         if path in ("/", "/swipe-review.html"):
             self._send_bytes(_html_path().read_bytes(), "text/html; charset=utf-8")
@@ -82,6 +186,9 @@ class SwipeHandler(BaseHTTPRequestHandler):
         self._send_json({"error": "not found"}, status=404)
 
     def do_POST(self) -> None:
+        if not self._allowed():
+            self._send_denied()
+            return
         path = urlparse(self.path).path
         if path != "/api/swipe/decisions":
             self._send_json({"error": "not found"}, status=404)
@@ -150,6 +257,9 @@ class SwipeHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
+        if status != 401:
+            for name, value in self._cookie_headers():
+                self.send_header(name, value)
         if download_name:
             self.send_header("Content-Disposition", f'attachment; filename="{download_name}"')
         self.end_headers()
@@ -160,12 +270,29 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Serve Saintiment swipe review against the shared Neon corpus.")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--phone", action="store_true", help="Also accept a phone on the same Wi-Fi")
+    parser.add_argument("--token", default=os.environ.get("SWIPE_REVIEW_TOKEN", ""), help="Phone access key. Generated when omitted.")
     args = parser.parse_args()
+    if args.phone and args.host == "127.0.0.1":
+        args.host = "0.0.0.0"
+    token = args.token
+    if args.host not in {"127.0.0.1", "::1"} and not token:
+        token = secrets.token_urlsafe(12)
+    SwipeHandler.access_token = token
     with connect() as conn:
         ensure_schema(conn)
         summary = progress_summary(conn)
     httpd = ThreadingHTTPServer((args.host, args.port), SwipeHandler)
-    print(f"Saintiment swipe review: http://{args.host}:{args.port}/")
+    print(f"On this computer: http://127.0.0.1:{args.port}/")
+    if token:
+        phone_urls = [f"http://{ip}:{args.port}/?k={token}" for ip in local_ipv4_addresses()]
+        if phone_urls:
+            print("On your phone, same Wi-Fi:")
+            for url in phone_urls:
+                print(url)
+        else:
+            print("No Wi-Fi address found. The phone cannot open this server until the computer has a network address.")
+        print("Leave this window open. Do not commit or publish the phone address.")
     print(
         "Corpus {corpus} — {unreviewed} unreviewed, {kept} keep, {rejected} reject.".format(
             corpus=summary["corpus_database"],

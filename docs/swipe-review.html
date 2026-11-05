@@ -2,7 +2,7 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Saintiment — غربالگری تعاملی پست‌ها با نمایش متن کامل (Swipe Review)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -234,6 +234,8 @@ mark.hl-l3{background:#dcfce7;color:#14532d;padding:1px 5px;border-radius:5px;fo
   .top-bar .brand a.btn,
   .top-bar .brand .pill.blue,
   .top-bar .btn-row > button.btn{display:none}
+  .top-bar .btn-row{width:100%}
+  #reviewerName{width:100%;min-width:0}
   .status-panel{padding:8px 10px;gap:6px}
   .stats-grid,
   .status-panel .tools-disclosure,
@@ -504,6 +506,41 @@ const STORAGE_KEY = 'saintiment_swipe_decisions_v1';
 const PENDING_KEY = 'saintiment_swipe_pending_v1';
 const REVIEWER_KEY = 'saintiment_swipe_reviewer_v1';
 const FONT_SIZE_KEY = 'saintiment_post_font_size_v1';
+const ACCESS_KEY_STORAGE = 'saintiment_swipe_access_key';
+
+(function rememberPhoneKey() {
+  try {
+    const params = new URLSearchParams(location.search);
+    const key = params.get('k');
+    if (!key) return;
+    sessionStorage.setItem(ACCESS_KEY_STORAGE, key);
+    params.delete('k');
+    const query = params.toString();
+    history.replaceState(null, '', location.pathname + (query ? '?' + query : '') + location.hash);
+  } catch (e) {}
+})();
+
+function swipeFetch(url, options) {
+  const opts = options ? Object.assign({}, options) : {};
+  const headers = new Headers(opts.headers || {});
+  try {
+    const key = sessionStorage.getItem(ACCESS_KEY_STORAGE) || '';
+    if (key) headers.set('X-Swipe-Key', key);
+  } catch (e) {}
+  opts.headers = headers;
+  return fetch(url, opts);
+}
+
+function attachPhoneKeyToDownloads() {
+  let key = '';
+  try { key = sessionStorage.getItem(ACCESS_KEY_STORAGE) || ''; } catch (e) {}
+  if (!key) return;
+  document.querySelectorAll('a[href^="/api/swipe/"]').forEach(function (anchor) {
+    const href = anchor.getAttribute('href');
+    if (!href || href.indexOf('k=') !== -1) return;
+    anchor.setAttribute('href', href + (href.indexOf('?') === -1 ? '?' : '&') + 'k=' + encodeURIComponent(key));
+  });
+}
 
 const QUERIES = [
   {"id": "Q01", "family": "direct", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (skill OR skills)"},
@@ -682,7 +719,7 @@ async function flushWrites() {
   for (const [id, payload] of [...pendingWrites.entries()]) {
     let response;
     try {
-      response = await fetch('/api/swipe/decisions', {
+      response = await swipeFetch('/api/swipe/decisions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -717,7 +754,7 @@ async function pullRemoteDecisions() {
   const beforeDec = beforeId ? JSON.stringify(decisions[beforeId] || null) : null;
   let response;
   try {
-    response = await fetch('/api/swipe/decisions', { cache: 'no-store' });
+    response = await swipeFetch('/api/swipe/decisions', { cache: 'no-store' });
   } catch (e) {
     if (syncState !== 'error') syncState = 'offline';
     updateSyncUI();
@@ -1033,7 +1070,7 @@ async function initLoadPosts() {
 
   // 1. Shared Neon corpus via the local review server
   try {
-    const remoteRes = await fetch('/api/swipe/posts', { cache: 'no-store' });
+    const remoteRes = await swipeFetch('/api/swipe/posts', { cache: 'no-store' });
     if (remoteRes.ok) {
       const data = await remoteRes.json();
       if (Array.isArray(data.posts) && data.posts.length > 0) {
@@ -1507,6 +1544,7 @@ function copyCmd(txt) {
   navigator.clipboard.writeText(txt).then(() => alert('دستور کپی شد.'));
 }
 
+attachPhoneKeyToDownloads();
 initLoadPosts();
 </script>
 </body>
