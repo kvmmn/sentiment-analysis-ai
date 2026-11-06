@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fafaf9">
+<title>Saintiment Swipe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#fafaf9; --surface:#ffffff; --fg:#1c1917; --muted:#78716c; --faint:#a8a29e; --line:#e7e5e4;
+  --accent:#2563eb; --keep:#16a34a; --reject:#dc2626;
+  --font:"Vazirmatn",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Tahoma,sans-serif;
+  --post-size:17px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c0a09; --surface:#1c1917; --fg:#f5f5f4; --muted:#a8a29e; --faint:#78716c; --line:#292524;
+    --accent:#60a5fa; --keep:#4ade80; --reject:#f87171; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c0a09; --surface:#1c1917; --fg:#f5f5f4; --muted:#a8a29e; --faint:#78716c; --line:#292524;
+  --accent:#60a5fa; --keep:#4ade80; --reject:#f87171; color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font:400 15px/1.7 var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+a{color:var(--accent);text-decoration:none}
+.muted{color:var(--muted)}
+.ltr{direction:ltr;unicode-bidi:isolate}
+.screen{display:none;max-width:680px;margin:0 auto;padding:0 16px}
+.screen.active{display:block}
+
+/* Login */
+#loginScreen.active{display:grid;place-items:center;min-height:100dvh}
+.login{width:100%;max-width:340px;display:grid;gap:14px;text-align:center}
+.login h1{margin:0;font-size:20px;font-weight:700}
+.login input{font:500 16px var(--font);padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--fg);text-align:center;direction:ltr}
+.login input:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
+.primary{background:var(--fg);color:var(--bg);border-radius:12px;padding:13px;font-weight:700}
+.primary:disabled{opacity:.5}
+.err{color:var(--reject);font-size:13px;min-height:1.4em}
+
+/* Header */
+.head{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;align-items:center;gap:12px;padding:14px 0 10px}
+.head h1{margin:0;font-size:17px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
+.icon-btn:hover{background:var(--line);color:var(--fg)}
+.text-btn{font-size:13px;color:var(--muted);padding:6px 8px;border-radius:8px}
+.text-btn:hover{color:var(--fg);background:var(--line)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--keep);flex:none;transition:background .2s}
+.dot.wait{background:#d97706}
+.dot.bad{background:var(--reject)}
+.bar{height:3px;background:var(--line);border-radius:3px;overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .k{background:var(--keep)} .bar .r{background:var(--reject)}
+
+/* Sets */
+.sets{display:grid;gap:10px;padding:8px 0 32px}
+.set{display:grid;gap:10px;text-align:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.set:hover{border-color:var(--faint)}
+.set-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.set-name{font-size:17px;font-weight:700}
+.set-num{color:var(--faint);font-weight:500;margin-inline-end:6px}
+.set-meta{font-size:13px;color:var(--muted)}
+.foot{display:flex;justify-content:space-between;gap:8px;padding:4px 0 32px}
+
+/* Review */
+.progress{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);padding-bottom:6px}
+.progress .bar{flex:1}
+.progress span{white-space:nowrap}
+.tabs{display:flex;gap:4px;padding:6px 0 12px}
+.tab{font-size:13px;padding:5px 12px;border-radius:999px;color:var(--muted)}
+.tab.on{background:var(--fg);color:var(--bg)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 20px 18px;touch-action:pan-y;transition:transform .2s ease,opacity .2s ease;will-change:transform;position:relative}
+.card.drag{transition:none}
+.card.out-r{transform:translateX(110%) rotate(6deg)!important;opacity:0}
+.card.out-l{transform:translateX(-110%) rotate(-6deg)!important;opacity:0}
+.badge{position:absolute;top:16px;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;opacity:0;pointer-events:none}
+.badge.k{left:16px;color:var(--keep);border:1.5px solid var(--keep)}
+.badge.r{right:16px;color:var(--reject);border:1.5px solid var(--reject)}
+.author{direction:ltr;text-align:left;display:grid;gap:2px;margin-bottom:16px}
+.author b{font-size:15px;font-weight:700}
+.author span{font-size:13px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post{font-size:var(--post-size);line-height:1.85;overflow-wrap:anywhere}
+.post p{margin:0 0 .9em}
+.post p:last-child{margin:0}
+.tags{margin-top:12px;font-size:13px;color:var(--muted);direction:ltr;text-align:left}
+.attach{margin-top:14px;display:grid;gap:8px}
+.attach img{max-width:100%;max-height:220px;border-radius:10px;border:1px solid var(--line);object-fit:cover}
+.attach .art{font-size:13.5px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;direction:ltr;text-align:left}
+.meta{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);align-items:center}
+.meta a{margin-inline-start:auto}
+.state{font-weight:700}
+.state.k{color:var(--keep)} .state.r{color:var(--reject)}
+.empty{text-align:center;padding:48px 16px;color:var(--muted)}
+.spacer{height:110px}
+
+/* Action bar */
+.actions{position:fixed;bottom:0;left:0;right:0;z-index:6;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,transparent);display:flex;justify-content:center;align-items:center;gap:22px}
+.act{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.08);transition:transform .12s}
+.act:active{transform:scale(.92)}
+.act svg{width:28px;height:28px}
+.act.k{color:var(--keep)} .act.r{color:var(--reject)}
+.act.small{width:44px;height:44px;color:var(--muted);box-shadow:none}
+.act.small svg{width:20px;height:20px}
+.act:disabled{opacity:.35}
+.hint{position:fixed;bottom:calc(92px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:11.5px;color:var(--faint);pointer-events:none}
+@media (hover:none){.hint{display:none}}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<section class="screen" id="loginScreen">
+  <form class="login" onsubmit="doLogin(event)">
+    <h1>غربالگری پست‌ها</h1>
+    <div class="muted" style="font-size:13.5px">رمز تیم را وارد کنید</div>
+    <input type="password" id="passwordInput" autocomplete="current-password" required aria-label="رمز تیم">
+    <button type="submit" class="primary" id="loginBtn">ورود</button>
+    <div class="err" id="loginError"></div>
+  </form>
+</section>
+
+<!-- Sets -->
+<section class="screen" id="setsScreen">
+  <div class="head"><h1>مجموعه‌ها</h1></div>
+  <div class="sets" id="setsGrid"><div class="muted">…</div></div>
+  <div class="foot">
+    <a class="text-btn" href="/api/export">دانلود تصمیم‌ها (JSON)</a>
+    <button type="button" class="text-btn" onclick="doLogout()">خروج</button>
+  </div>
+</section>
+
+<!-- Review -->
+<section class="screen" id="reviewScreen">
+  <div class="head">
+    <button type="button" class="icon-btn" onclick="showSets()" aria-label="بازگشت">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <h1 id="setTitle">—</h1>
+    <span class="dot" id="syncDot" title="ذخیره شد"></span>
+  </div>
+  <div class="progress">
+    <span id="progressText" class="ltr">0 / 0</span>
+    <div class="bar"><i class="k" id="progKeep"></i><i class="r" id="progReject"></i></div>
+  </div>
+  <div class="tabs" role="tablist">
+    <button type="button" class="tab on" data-f="unreviewed" onclick="setDecisionFilter('unreviewed')">مانده <span id="cUnrev"></span></button>
+    <button type="button" class="tab" data-f="keep" onclick="setDecisionFilter('keep')">بماند <span id="cKeep"></span></button>
+    <button type="button" class="tab" data-f="reject" onclick="setDecisionFilter('reject')">حذف <span id="cReject"></span></button>
+  </div>
+
+  <article class="card" id="card">
+    <span class="badge k" id="badgeKeep">بماند</span>
+    <span class="badge r" id="badgeReject">حذف</span>
+    <div id="cardBody"><div class="empty">…</div></div>
+  </article>
+  <div class="spacer"></div>
+
+  <div class="hint">→ بماند · ← حذف · Z برگشت</div>
+  <!-- RTL: first child sits on the right, so keep (swipe right) comes first -->
+  <div class="actions">
+    <button type="button" class="act k" onclick="decide('keep')" aria-label="بماند">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+    </button>
+    <button type="button" class="act small" id="undoBtn" onclick="undo()" disabled aria-label="برگشت">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14l-4-4 4-4"/><path d="M5 10h9a5 5 0 010 10h-3"/></svg>
+    </button>
+    <button type="button" class="act r" onclick="decide('reject')" aria-label="حذف">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+</section>
+
+<script>
+const QUEUE_KEY = 'saintiment_team_swipe_queue_v1';
+const LAST_SET_KEY = 'saintiment_team_swipe_last_set_v1';
+const FA = '۰۱۲۳۴۵۶۷۸۹';
+const fa = n => String(n).replace(/\d/g, d => FA[d]);
+const $ = id => document.getElementById(id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+let SET_ID = null, POSTS = [], VIEW = [], idx = 0, filter = 'unreviewed', decisions = {}, history = [];
+
+function esc(s) {
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+  window.scrollTo(0, 0);
+}
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, {
+    credentials: 'same-origin',
+    headers: opts.body ? { 'Content-Type': 'application/json' } : {},
+    ...opts
+  });
+  if (res.status === 401 && path !== '/api/login') { showScreen('loginScreen'); throw new Error('unauthorized'); }
+  return res;
+}
+
+// ---- Login ----
+async function doLogin(e) {
+  e.preventDefault();
+  const btn = $('loginBtn'), err = $('loginError');
+  btn.disabled = true; err.textContent = '';
+  try {
+    const res = await api('/api/login', { method: 'POST', body: JSON.stringify({ password: $('passwordInput').value }) });
+    if (!res.ok) { err.textContent = res.status === 401 ? 'رمز اشتباه است' : 'خطای سرور'; return; }
+    $('passwordInput').value = '';
+    await showSets();
+  } catch (e2) { err.textContent = 'اتصال برقرار نشد'; }
+  finally { btn.disabled = false; }
+}
+async function doLogout() { await fetch('/api/logout', { method: 'POST' }); showScreen('loginScreen'); }
+
+// ---- Sets ----
+async function showSets() {
+  flushQueue();
+  showScreen('setsScreen');
+  try {
+    const { sets } = await (await api('/api/sets')).json();
+    const last = store.get(LAST_SET_KEY, null);
+    $('setsGrid').innerHTML = sets.map(s => {
+      const done = s.keep + s.reject;
+      return `<button type="button" class="set" onclick="openSet(${s.id}, '${esc(s.name)}')"${s.id === last ? ' style="border-color:var(--faint)"' : ''}>
+        <div class="set-row">
+          <span class="set-name"><span class="set-num">${fa(s.id)}</span>${esc(s.name)}</span>
+          <span class="set-meta ltr">${fa(done)} / ${fa(s.total)}</span>
+        </div>
+        <div class="bar"><i class="k" style="width:${s.total ? s.keep / s.total * 100 : 0}%"></i><i class="r" style="width:${s.total ? s.reject / s.total * 100 : 0}%"></i></div>
+        <div class="set-meta">${fa(s.keep)} بماند · ${fa(s.reject)} حذف · ${fa(s.total - done)} مانده</div>
+      </button>`;
+    }).join('');
+  } catch (e) {
+    if (e.message !== 'unauthorized') $('setsGrid').innerHTML = '<div class="err">بارگذاری نشد</div>';
+  }
+}
+
+async function openSet(id, name) {
+  SET_ID = id; history = [];
+  store.set(LAST_SET_KEY, id);
+  showScreen('reviewScreen');
+  $('setTitle').textContent = `${fa(id)}. ${name}`;
+  $('cardBody').innerHTML = '<div class="empty">در حال بارگذاری…</div>';
+  try {
+    const data = await (await api(`/api/posts?set=${id}`)).json();
+    POSTS = data.posts.map(p => ({ ...p, source_post_id: String(p.source_post_id) }));
+    decisions = {};
+    for (const p of POSTS) if (p.decision) decisions[p.source_post_id] = p.decision;
+    for (const q of queue) { if (q.status) decisions[q.source_post_id] = q.status; else delete decisions[q.source_post_id]; }
+    setDecisionFilter('unreviewed');
+  } catch (e) {
+    if (e.message !== 'unauthorized') $('cardBody').innerHTML = '<div class="empty">بارگذاری نشد — دوباره باز کنید</div>';
+  }
+}
+
+// ---- Saving: immediate PUT with an offline retry queue ----
+let queue = store.get(QUEUE_KEY, []), flushing = false;
+function setDot(state) {
+  const d = $('syncDot');
+  d.className = 'dot' + (state === 'ok' ? '' : ' ' + state);
+  d.title = state === 'ok' ? 'ذخیره شد' : state === 'wait' ? 'در حال ذخیره…' : 'ذخیره نشد — دوباره تلاش می‌شود';
+}
+function save(id, status) {
+  queue = queue.filter(q => q.source_post_id !== id);
+  queue.push({ source_post_id: id, status, by: SET_ID });
+  store.set(QUEUE_KEY, queue);
+  flushQueue();
+}
+async function flushQueue() {
+  if (flushing) return;
+  if (!queue.length) { setDot('ok'); return; }
+  flushing = true; setDot('wait');
+  try {
+    while (queue.length) {
+      const res = await api('/api/decision', { method: 'PUT', body: JSON.stringify(queue[0]) });
+      if (!res.ok && res.status !== 404) throw new Error('HTTP ' + res.status);
+      queue.shift(); store.set(QUEUE_KEY, queue);
+    }
+    setDot('ok');
+  } catch (e) { setDot('bad'); setTimeout(flushQueue, 4000); }
+  finally { flushing = false; }
+}
+window.addEventListener('online', flushQueue);
+
+// ---- View ----
+function setDecisionFilter(f) {
+  filter = f;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.f === f));
+  VIEW = POSTS.filter(p => (decisions[p.source_post_id] || 'unreviewed') === f);
+  idx = 0;
+  render();
+}
+
+function updateStats() {
+  let k = 0, r = 0;
+  for (const p of POSTS) { const d = decisions[p.source_post_id]; if (d === 'keep') k++; else if (d === 'reject') r++; }
+  const t = POSTS.length;
+  $('progressText').textContent = `${fa(k + r)} / ${fa(t)}`;
+  $('progKeep').style.width = t ? `${k / t * 100}%` : '0';
+  $('progReject').style.width = t ? `${r / t * 100}%` : '0';
+  $('cUnrev').textContent = fa(t - k - r);
+  $('cKeep').textContent = fa(k);
+  $('cReject').textContent = fa(r);
+  $('undoBtn').disabled = !history.length;
+}
+
+function formatText(raw) {
+  const text = String(raw || '').replace(/\r\n/g, '\n').trim();
+  if (!text) return { html: '<p class="muted">این پست متن ندارد (فقط تصویر، ویدیو یا بازنشر).</p>', tags: '' };
+  const lines = text.split('\n');
+  const tags = [];
+  while (lines.length) {
+    const last = lines[lines.length - 1].trim();
+    if (!last) { lines.pop(); continue; }
+    const tok = last.split(/\s+/);
+    if (tok.every(t => /^#[\w؀-ۿ-]+$/i.test(t))) { tags.unshift(...tok); lines.pop(); } else break;
+  }
+  const paras = lines.join('\n').split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+  return {
+    html: paras.map(p => `<p dir="auto">${esc(p).replace(/\n/g, '<br>')}</p>`).join(''),
+    tags: tags.join(' ')
+  };
+}
+
+function attachments(media) {
+  if (!media) return '';
+  try {
+    const m = typeof media === 'string' ? JSON.parse(media) : media;
+    let out = '';
+    if (m.article && m.article.title) {
+      out += `<div class="art">${esc(m.article.title)}${m.article.link ? ` · <a href="${esc(m.article.link)}" target="_blank" rel="noopener">link</a>` : ''}</div>`;
+    }
+    const img = Array.isArray(m.postImages) && m.postImages.find(i => i && i.url);
+    if (img) out += `<img src="${esc(img.url)}" alt="" loading="lazy">`;
+    return out ? `<div class="attach">${out}</div>` : '';
+  } catch (e) { return ''; }
+}
+
+function render() {
+  updateStats();
+  const body = $('cardBody');
+  if (!VIEW.length || idx >= VIEW.length) {
+    body.innerHTML = `<div class="empty">${filter === 'unreviewed' ? 'همهٔ پست‌های این مجموعه بررسی شد 🎉' : 'پستی در این بخش نیست'}</div>`;
+    return;
+  }
+  const p = VIEW[idx];
+  const { html, tags } = formatText(p.post_text);
+  const d = decisions[p.source_post_id];
+  const date = String(p.posted_at || '').slice(0, 10);
+  body.innerHTML = `
+    <div class="author">
+      <b>${esc(p.author_name || '—')}</b>
+      ${p.author_headline ? `<span>${esc(p.author_headline)}</span>` : ''}
+    </div>
+    <div class="post">${html}</div>
+    ${tags ? `<div class="tags">${esc(tags)}</div>` : ''}
+    ${attachments(p.media)}
+    <div class="meta">
+      <span class="ltr">${fa(idx + 1)} / ${fa(VIEW.length)}</span>
+      ${date ? `<span class="ltr">${esc(date)}</span>` : ''}
+      <span class="ltr">${esc(p.matched_query_codes || '')}</span>
+      ${d ? `<span class="state ${d === 'keep' ? 'k' : 'r'}">${d === 'keep' ? 'بماند' : 'حذف'}</span>` : ''}
+      ${p.post_url ? `<a href="${esc(p.post_url)}" target="_blank" rel="noopener">لینکدین ↗</a>` : ''}
+    </div>`;
+}
+
+// ---- Decisions ----
+function decide(status) {
+  if (!VIEW.length || idx >= VIEW.length) return;
+  const p = VIEW[idx], card = $('card');
+  history.push({ id: p.source_post_id, prev: decisions[p.source_post_id] || null, filter });
+  decisions[p.source_post_id] = status;
+  save(p.source_post_id, status);
+  card.classList.add(status === 'keep' ? 'out-r' : 'out-l');
+  setTimeout(() => {
+    card.classList.remove('out-r', 'out-l');
+    card.style.transform = '';
+    $('badgeKeep').style.opacity = 0; $('badgeReject').style.opacity = 0;
+    if (filter !== status) { VIEW.splice(idx, 1); if (idx >= VIEW.length) idx = Math.max(0, VIEW.length - 1); }
+    else idx++;
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 200);
+}
+
+function undo() {
+  const last = history.pop();
+  if (!last) return;
+  if (last.prev) decisions[last.id] = last.prev; else delete decisions[last.id];
+  save(last.id, last.prev);
+  const p = POSTS.find(x => x.source_post_id === last.id);
+  const at = VIEW.findIndex(x => x.source_post_id === last.id);
+  if (at !== -1) idx = at;
+  else if (p && (decisions[last.id] || 'unreviewed') === filter) VIEW.splice(idx, 0, p);
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function skip() { if (VIEW.length) { idx = (idx + 1) % VIEW.length; render(); } }
+
+// ---- Swipe gestures (anywhere on the card) ----
+(function () {
+  const card = $('card'), bk = $('badgeKeep'), br = $('badgeReject');
+  let x0 = 0, y0 = 0, dx = 0, tracking = false, horiz = false;
+  const start = (x, y, t) => { if (t.closest('a,button')) return; x0 = x; y0 = y; dx = 0; tracking = true; horiz = false; };
+  const move = (x, y) => {
+    if (!tracking) return;
+    const ddx = x - x0, ddy = y - y0;
+    if (!horiz) {
+      if (Math.abs(ddy) > 20 && Math.abs(ddy) > Math.abs(ddx)) { tracking = false; return; }
+      if (Math.abs(ddx) > 16 && Math.abs(ddx) > Math.abs(ddy) * 1.3) { horiz = true; card.classList.add('drag'); }
+      else return;
+    }
+    dx = ddx;
+    card.style.transform = `translateX(${dx}px) rotate(${dx * 0.03}deg)`;
+    const o = Math.min(1, Math.abs(dx) / 100);
+    bk.style.opacity = dx > 0 ? o : 0;
+    br.style.opacity = dx < 0 ? o : 0;
+  };
+  const end = () => {
+    if (!tracking) return;
+    tracking = false; card.classList.remove('drag');
+    if (horiz && dx > 100) decide('keep');
+    else if (horiz && dx < -100) decide('reject');
+    else { card.style.transform = ''; bk.style.opacity = 0; br.style.opacity = 0; }
+  };
+  card.addEventListener('mousedown', e => start(e.clientX, e.clientY, e.target));
+  window.addEventListener('mousemove', e => move(e.clientX, e.clientY));
+  window.addEventListener('mouseup', end);
+  card.addEventListener('touchstart', e => { if (e.touches.length === 1) start(e.touches[0].clientX, e.touches[0].clientY, e.target); }, { passive: true });
+  card.addEventListener('touchmove', e => { if (e.touches.length === 1) move(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+  card.addEventListener('touchend', end);
+})();
+
+window.addEventListener('keydown', e => {
+  if (!$('reviewScreen').classList.contains('active') || document.activeElement?.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); decide('keep'); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); decide('reject'); }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); skip(); }
+  else if (e.key === 'z' || e.key === 'Z' || e.key === 'Backspace') { e.preventDefault(); undo(); }
+});
+
+// ---- Boot ----
+(async () => {
+  try {
+    const res = await fetch('/api/me', { credentials: 'same-origin' });
+    if (res.ok) await showSets(); else showScreen('loginScreen');
+  } catch (e) { showScreen('loginScreen'); }
+})();
+</script>
+</body>
+</html>

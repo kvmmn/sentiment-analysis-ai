@@ -1,0 +1,14 @@
+{
+  "name": "saintiment-team-swipe",
+  "private": true,
+  "type": "module",
+  "description": "Team Swipe Review for Saintiment: three reviewers filter the LinkedIn posts into a shared Neon DB.",
+  "engines": { "node": "24.x" },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "express": "^5.1.0"
+  }
+}
