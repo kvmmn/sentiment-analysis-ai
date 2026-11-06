@@ -4,65 +4,72 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#fafaf9">
 <title>Saintiment Swipe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap">
 <style>
 :root{
-  --bg:#fafaf9; --surface:#ffffff; --fg:#1c1917; --muted:#78716c; --faint:#a8a29e; --line:#e7e5e4;
+  --bg:#fafaf9; --surface:#ffffff; --sunk:#f5f5f4; --fg:#1c1917; --muted:#78716c; --faint:#a8a29e; --line:#e7e5e4;
   --accent:#2563eb; --keep:#16a34a; --reject:#dc2626;
+  /* 3 keyword layers: architecture / AI / skill */
+  --l1-bg:#dbeafe; --l1-fg:#1e40af; --l2-bg:#ede9fe; --l2-fg:#5b21b6; --l3-bg:#dcfce7; --l3-fg:#166534;
   --font:"Vazirmatn",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Tahoma,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   --post-size:17px;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#0c0a09; --surface:#1c1917; --fg:#f5f5f4; --muted:#a8a29e; --faint:#78716c; --line:#292524;
-    --accent:#60a5fa; --keep:#4ade80; --reject:#f87171; color-scheme:dark;
+    --bg:#0c0a09; --surface:#1c1917; --sunk:#151311; --fg:#f5f5f4; --muted:#a8a29e; --faint:#78716c; --line:#292524;
+    --accent:#60a5fa; --keep:#4ade80; --reject:#f87171;
+    --l1-bg:#1e3a8a66; --l1-fg:#bfdbfe; --l2-bg:#4c1d9566; --l2-fg:#ddd6fe; --l3-bg:#14532d66; --l3-fg:#bbf7d0;
+    color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0c0a09; --surface:#1c1917; --fg:#f5f5f4; --muted:#a8a29e; --faint:#78716c; --line:#292524;
-  --accent:#60a5fa; --keep:#4ade80; --reject:#f87171; color-scheme:dark;
+  --bg:#0c0a09; --surface:#1c1917; --sunk:#151311; --fg:#f5f5f4; --muted:#a8a29e; --faint:#78716c; --line:#292524;
+  --accent:#60a5fa; --keep:#4ade80; --reject:#f87171;
+  --l1-bg:#1e3a8a66; --l1-fg:#bfdbfe; --l2-bg:#4c1d9566; --l2-fg:#ddd6fe; --l3-bg:#14532d66; --l3-fg:#bbf7d0;
+  color-scheme:dark;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--fg)}
 body{font:400 15px/1.7 var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button,select,input{font:inherit;color:inherit}
+button{background:none;border:0;cursor:pointer;padding:0}
 a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
 .muted{color:var(--muted)}
 .ltr{direction:ltr;unicode-bidi:isolate}
-.screen{display:none;max-width:680px;margin:0 auto;padding:0 16px}
+.screen{display:none;max-width:720px;margin:0 auto;padding:0 16px}
 .screen.active{display:block}
 
 /* Login */
 #loginScreen.active{display:grid;place-items:center;min-height:100dvh}
 .login{width:100%;max-width:340px;display:grid;gap:14px;text-align:center}
 .login h1{margin:0;font-size:20px;font-weight:700}
-.login input{font:500 16px var(--font);padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--fg);text-align:center;direction:ltr}
+.login input{font-size:16px;font-weight:500;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:center;direction:ltr}
 .login input:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
 .primary{background:var(--fg);color:var(--bg);border-radius:12px;padding:13px;font-weight:700}
 .primary:disabled{opacity:.5}
 .err{color:var(--reject);font-size:13px;min-height:1.4em}
 
 /* Header */
-.head{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;align-items:center;gap:12px;padding:14px 0 10px}
+.head{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;align-items:center;gap:10px;padding:14px 0 10px}
 .head h1{margin:0;font-size:17px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .icon-btn{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
-.icon-btn:hover{background:var(--line);color:var(--fg)}
+.icon-btn:hover,.icon-btn.on{background:var(--line);color:var(--fg)}
 .text-btn{font-size:13px;color:var(--muted);padding:6px 8px;border-radius:8px}
 .text-btn:hover{color:var(--fg);background:var(--line)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--keep);flex:none;transition:background .2s}
-.dot.wait{background:#d97706}
-.dot.bad{background:var(--reject)}
+.dot.wait{background:#d97706} .dot.bad{background:var(--reject)}
 .bar{height:3px;background:var(--line);border-radius:3px;overflow:hidden;display:flex}
 .bar i{display:block;height:100%}
 .bar .k{background:var(--keep)} .bar .r{background:var(--reject)}
 
 /* Sets */
-.sets{display:grid;gap:10px;padding:8px 0 32px}
+.sets{display:grid;gap:10px;padding:8px 0 24px}
 .set{display:grid;gap:10px;text-align:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .set:hover{border-color:var(--faint)}
 .set-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
@@ -71,40 +78,82 @@ a{color:var(--accent);text-decoration:none}
 .set-meta{font-size:13px;color:var(--muted)}
 .foot{display:flex;justify-content:space-between;gap:8px;padding:4px 0 32px}
 
-/* Review */
+/* Review: progress, tabs, filters */
 .progress{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);padding-bottom:6px}
 .progress .bar{flex:1}
 .progress span{white-space:nowrap}
-.tabs{display:flex;gap:4px;padding:6px 0 12px}
+.tabs{display:flex;gap:4px;padding:6px 0 10px;flex-wrap:wrap}
 .tab{font-size:13px;padding:5px 12px;border-radius:999px;color:var(--muted)}
 .tab.on{background:var(--fg);color:var(--bg)}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 20px 18px;touch-action:pan-y;transition:transform .2s ease,opacity .2s ease;will-change:transform;position:relative}
+.filters{display:none;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;padding:0 0 12px}
+.filters.open{display:grid}
+.filters select,.filters input{font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);min-width:0}
+.filters input{grid-column:1/-1}
+
+/* Card */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 20px 16px;touch-action:pan-y;transition:transform .2s ease,opacity .2s ease;will-change:transform;position:relative}
 .card.drag{transition:none}
 .card.out-r{transform:translateX(110%) rotate(6deg)!important;opacity:0}
 .card.out-l{transform:translateX(-110%) rotate(-6deg)!important;opacity:0}
-.badge{position:absolute;top:16px;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;opacity:0;pointer-events:none}
-.badge.k{left:16px;color:var(--keep);border:1.5px solid var(--keep)}
-.badge.r{right:16px;color:var(--reject);border:1.5px solid var(--reject)}
-.author{direction:ltr;text-align:left;display:grid;gap:2px;margin-bottom:16px}
-.author b{font-size:15px;font-weight:700}
-.author span{font-size:13px;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.post{font-size:var(--post-size);line-height:1.85;overflow-wrap:anywhere}
-.post p{margin:0 0 .9em}
-.post p:last-child{margin:0}
-.tags{margin-top:12px;font-size:13px;color:var(--muted);direction:ltr;text-align:left}
-.attach{margin-top:14px;display:grid;gap:8px}
-.attach img{max-width:100%;max-height:220px;border-radius:10px;border:1px solid var(--line);object-fit:cover}
-.attach .art{font-size:13.5px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;direction:ltr;text-align:left}
-.meta{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);align-items:center}
-.meta a{margin-inline-start:auto}
+.badge{position:absolute;top:14px;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;opacity:0;pointer-events:none;background:var(--surface)}
+.badge.k{left:14px;color:var(--keep);border:1.5px solid var(--keep)}
+.badge.r{right:14px;color:var(--reject);border:1.5px solid var(--reject)}
+
+.author{direction:ltr;text-align:left;display:grid;gap:2px}
+.author-name{font-size:15px;font-weight:700;color:var(--fg)}
+.author-name:hover{color:var(--accent)}
+.author-head{font-size:13px;color:var(--muted);line-height:1.5}
+.line{direction:ltr;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;font-size:12.5px;color:var(--muted);margin-top:8px}
+.line .open-post{margin-left:auto;font-weight:700}
 .state{font-weight:700}
 .state.k{color:var(--keep)} .state.r{color:var(--reject)}
+
+.tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:14px 0 10px;padding:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
+.tools .stats{margin-inline-end:auto}
+.tool-group{display:inline-flex;gap:4px;align-items:center}
+.chip-btn{font-size:12px;padding:3px 8px;border-radius:7px;color:var(--muted);border:1px solid var(--line)}
+.chip-btn:hover{color:var(--fg);border-color:var(--faint)}
+.chip-btn.on{color:var(--fg);background:var(--sunk)}
+
+.kws{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;direction:ltr}
+.kw{font:500 11.5px var(--mono);padding:1px 7px;border-radius:6px}
+.kw.l1,mark.hl-l1{background:var(--l1-bg);color:var(--l1-fg)}
+.kw.l2,mark.hl-l2{background:var(--l2-bg);color:var(--l2-fg)}
+.kw.l3,mark.hl-l3{background:var(--l3-bg);color:var(--l3-fg)}
+mark{padding:0 3px;border-radius:4px;font-weight:500}
+.kw-legend{font-size:11px;color:var(--faint);direction:rtl;width:100%}
+
+.post{font-size:var(--post-size);line-height:1.85;overflow-wrap:anywhere}
+.post-para{margin:0 0 .9em}
+.post-para:last-child{margin:0}
+.post-list-item{margin:0 0 .35em;padding-inline-start:12px;border-inline-start:2px solid var(--line)}
+.hashtag-block{margin-top:12px;display:flex;flex-wrap:wrap;gap:4px 8px;direction:ltr}
+.hashtag-chip{font-size:13px;color:var(--muted)}
+
+.attach{margin-top:14px;display:grid;gap:8px}
+.art{display:block;border:1px solid var(--line);border-radius:12px;padding:10px 12px;direction:ltr;text-align:left;color:var(--fg)}
+.art:hover{border-color:var(--faint);text-decoration:none}
+.art b{display:block;font-size:14px}
+.art span{display:block;font-size:12.5px;color:var(--muted)}
+.art em{font-style:normal;font-size:12px;color:var(--accent)}
+.imgs{display:flex;flex-wrap:wrap;gap:8px;direction:ltr}
+.imgs img{max-height:180px;max-width:100%;border-radius:10px;border:1px solid var(--line);object-fit:cover}
+.media-tags{display:flex;flex-wrap:wrap;gap:6px;direction:ltr}
+.media-tags a,.media-tags span{font-size:12px;padding:2px 8px;border-radius:7px;background:var(--sunk);color:var(--muted)}
+
+.prov{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);display:grid;gap:6px}
+.q-row{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;direction:ltr}
+.q-code{font:600 11.5px var(--mono);padding:1px 6px;border-radius:5px;background:var(--sunk);color:var(--fg)}
+.fam{font-size:11.5px;padding:1px 8px;border-radius:5px;color:var(--muted);border:1px solid var(--line)}
+.formula{font:400 11.5px/1.5 var(--mono);color:var(--muted);direction:ltr;text-align:left}
+.eng{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted);direction:ltr;margin-top:10px}
+
 .empty{text-align:center;padding:48px 16px;color:var(--muted)}
-.spacer{height:110px}
+.spacer{height:120px}
 
 /* Action bar */
-.actions{position:fixed;bottom:0;left:0;right:0;z-index:6;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,transparent);display:flex;justify-content:center;align-items:center;gap:22px}
-.act{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.08);transition:transform .12s}
+.actions{position:fixed;bottom:0;left:0;right:0;z-index:6;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,transparent);display:flex;justify-content:center;align-items:center;gap:18px}
+.act{width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.08);transition:transform .12s}
 .act:active{transform:scale(.92)}
 .act svg{width:28px;height:28px}
 .act.k{color:var(--keep)} .act.r{color:var(--reject)}
@@ -113,9 +162,12 @@ a{color:var(--accent);text-decoration:none}
 .act:disabled{opacity:.35}
 .hint{position:fixed;bottom:calc(92px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:11.5px;color:var(--faint);pointer-events:none}
 @media (hover:none){.hint{display:none}}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);font-size:13px;padding:6px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+.toast.show{opacity:1}
 </style>
 </head>
 <body>
+<div class="toast" id="toast"></div>
 
 <!-- Login -->
 <section class="screen" id="loginScreen">
@@ -141,20 +193,46 @@ a{color:var(--accent);text-decoration:none}
 <!-- Review -->
 <section class="screen" id="reviewScreen">
   <div class="head">
-    <button type="button" class="icon-btn" onclick="showSets()" aria-label="بازگشت">
+    <button type="button" class="icon-btn" onclick="showSets()" aria-label="بازگشت به مجموعه‌ها">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
     <h1 id="setTitle">—</h1>
+    <button type="button" class="icon-btn" id="filterToggle" onclick="toggleFilters()" aria-label="فیلتر و جستجو">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+    </button>
     <span class="dot" id="syncDot" title="ذخیره شد"></span>
   </div>
   <div class="progress">
     <span id="progressText" class="ltr">0 / 0</span>
     <div class="bar"><i class="k" id="progKeep"></i><i class="r" id="progReject"></i></div>
   </div>
-  <div class="tabs" role="tablist">
+  <div class="tabs">
     <button type="button" class="tab on" data-f="unreviewed" onclick="setDecisionFilter('unreviewed')">مانده <span id="cUnrev"></span></button>
     <button type="button" class="tab" data-f="keep" onclick="setDecisionFilter('keep')">بماند <span id="cKeep"></span></button>
     <button type="button" class="tab" data-f="reject" onclick="setDecisionFilter('reject')">حذف <span id="cReject"></span></button>
+    <button type="button" class="tab" data-f="all" onclick="setDecisionFilter('all')">همه <span id="cAll"></span></button>
+  </div>
+  <div class="filters" id="filters">
+    <select id="familyFilter" onchange="applyFilters()" aria-label="خانواده">
+      <option value="all">همه خانواده‌ها</option>
+      <option value="direct">مهارت مستقیم</option>
+      <option value="cognition">شناخت و طراحی</option>
+      <option value="process">فرآیند و نقش</option>
+      <option value="technical_and_pedagogy">فنی و آموزش</option>
+    </select>
+    <select id="queryFilter" onchange="applyFilters()" aria-label="کوئری"><option value="all">همه کوئری‌ها</option></select>
+    <select id="authorTypeFilter" onchange="applyFilters()" aria-label="نوع نویسنده">
+      <option value="all">همه نویسندگان</option>
+      <option value="profile">فقط افراد</option>
+      <option value="company">فقط شرکت‌ها</option>
+    </select>
+    <select id="sortOrder" onchange="applyFilters()" aria-label="ترتیب">
+      <option value="default">ترتیب پیش‌فرض</option>
+      <option value="reactions">بیشترین لایک</option>
+      <option value="chars_desc">طولانی‌ترین متن</option>
+      <option value="date_desc">جدیدترین</option>
+    </select>
+    <input type="search" id="searchInput" placeholder="جستجو در متن، نام یا عنوان شغلی…" oninput="applyFilters()">
   </div>
 
   <article class="card" id="card">
@@ -164,7 +242,7 @@ a{color:var(--accent);text-decoration:none}
   </article>
   <div class="spacer"></div>
 
-  <div class="hint">→ بماند · ← حذف · Z برگشت</div>
+  <div class="hint">→ بماند · ← حذف · ↓ بعدی · Z برگشت</div>
   <!-- RTL: first child sits on the right, so keep (swipe right) comes first -->
   <div class="actions">
     <button type="button" class="act k" onclick="decide('keep')" aria-label="بماند">
@@ -173,6 +251,9 @@ a{color:var(--accent);text-decoration:none}
     <button type="button" class="act small" id="undoBtn" onclick="undo()" disabled aria-label="برگشت">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14l-4-4 4-4"/><path d="M5 10h9a5 5 0 010 10h-3"/></svg>
     </button>
+    <button type="button" class="act small" onclick="skip()" aria-label="بعدی بدون تصمیم">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
     <button type="button" class="act r" onclick="decide('reject')" aria-label="حذف">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
@@ -180,8 +261,240 @@ a{color:var(--accent);text-decoration:none}
 </section>
 
 <script>
+const QUERIES = [
+  {"id": "Q01", "family": "direct", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (skill OR skills)"},
+  {"id": "Q02", "family": "direct", "operators": 5, "hits": 50, "exclusive": 33, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (skill OR skills)"},
+  {"id": "Q03", "family": "direct", "operators": 5, "hits": 50, "exclusive": 46, "query": "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (skill OR skills)"},
+  {"id": "Q04", "family": "direct", "operators": 5, "hits": 50, "exclusive": 46, "query": "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (skill OR skills)"},
+  {"id": "Q05", "family": "direct", "operators": 5, "hits": 50, "exclusive": 45, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)"},
+  {"id": "Q06", "family": "direct", "operators": 5, "hits": 50, "exclusive": 46, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)"},
+  {"id": "Q07", "family": "direct", "operators": 5, "hits": 13, "exclusive": 7, "query": "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (upskilling OR reskilling)"},
+  {"id": "Q08", "family": "direct", "operators": 5, "hits": 11, "exclusive": 5, "query": "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (upskilling OR reskilling)"},
+  {"id": "Q09", "family": "direct", "operators": 5, "hits": 50, "exclusive": 15, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")"},
+  {"id": "Q10", "family": "direct", "operators": 5, "hits": 34, "exclusive": 23, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")"},
+  {"id": "Q11", "family": "direct", "operators": 5, "hits": 14, "exclusive": 8, "query": "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (deskilling OR \"skill loss\")"},
+  {"id": "Q12", "family": "direct", "operators": 5, "hits": 10, "exclusive": 5, "query": "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (deskilling OR \"skill loss\")"},
+  {"id": "Q13", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")"},
+  {"id": "Q14", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 36, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")"},
+  {"id": "Q15", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 39, "query": "(Rendering OR archviz) AND (GenAI OR \"generative AI\") AND (creativity OR \"design thinking\")"},
+  {"id": "Q16", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 48, "query": "(Rendering OR archviz) AND (Midjourney OR ChatGPT) AND (creativity OR \"design thinking\")"},
+  {"id": "Q17", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 28, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)"},
+  {"id": "Q18", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 33, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)"},
+  {"id": "Q19", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 42, "query": "(BIM OR Revit) AND (GenAI OR \"generative AI\") AND (\"critical thinking\" OR intuition)"},
+  {"id": "Q20", "family": "cognition", "operators": 5, "hits": 47, "exclusive": 40, "query": "(BIM OR Revit) AND (Midjourney OR ChatGPT) AND (\"critical thinking\" OR intuition)"},
+  {"id": "Q21", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 36, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)"},
+  {"id": "Q22", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 30, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)"},
+  {"id": "Q23", "family": "cognition", "operators": 5, "hits": 30, "exclusive": 15, "query": "(Rhino OR Grasshopper) AND (GenAI OR \"generative AI\") AND (authorship OR judgment)"},
+  {"id": "Q24", "family": "cognition", "operators": 5, "hits": 37, "exclusive": 26, "query": "(Rhino OR Grasshopper) AND (Midjourney OR ChatGPT) AND (authorship OR judgment)"},
+  {"id": "Q25", "family": "process", "operators": 5, "hits": 50, "exclusive": 33, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (workflow OR automation)"},
+  {"id": "Q26", "family": "process", "operators": 5, "hits": 50, "exclusive": 29, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (workflow OR automation)"},
+  {"id": "Q27", "family": "process", "operators": 5, "hits": 50, "exclusive": 44, "query": "(Parametric OR \"generative design\") AND (GenAI OR \"generative AI\") AND (workflow OR automation)"},
+  {"id": "Q28", "family": "process", "operators": 5, "hits": 50, "exclusive": 40, "query": "(Parametric OR \"generative design\") AND (Midjourney OR ChatGPT) AND (workflow OR automation)"},
+  {"id": "Q29", "family": "process", "operators": 5, "hits": 50, "exclusive": 30, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)"},
+  {"id": "Q30", "family": "process", "operators": 5, "hits": 50, "exclusive": 31, "query": "(architect OR architectural) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)"},
+  {"id": "Q31", "family": "process", "operators": 5, "hits": 50, "exclusive": 34, "query": "(Rendering OR architecture) AND (GenAI OR \"generative AI\") AND (replace OR augmentation)"},
+  {"id": "Q32", "family": "process", "operators": 5, "hits": 50, "exclusive": 41, "query": "(Rendering OR architecture) AND (Midjourney OR ChatGPT) AND (replace OR augmentation)"},
+  {"id": "Q33", "family": "direct", "operators": 5, "hits": 50, "exclusive": 45, "query": "(architect OR architectural) AND (AI OR \"artificial intelligence\") AND (skill OR skills)"},
+  {"id": "Q34", "family": "process", "operators": 5, "hits": 50, "exclusive": 48, "query": "(BIM OR Revit) AND (AI OR \"artificial intelligence\") AND (workflow OR automation)"},
+  {"id": "Q35", "family": "process", "operators": 5, "hits": 50, "exclusive": 40, "query": "(BIM OR Revit) AND (Copilot OR ChatGPT) AND (workflow OR automation)"},
+  {"id": "Q36", "family": "direct", "operators": 4, "hits": 32, "exclusive": 28, "query": "(Rhino OR Grasshopper) AND Copilot AND (skill OR skills)"},
+  {"id": "Q37", "family": "direct", "operators": 5, "hits": 38, "exclusive": 14, "query": "(architect OR architects) AND (GenAI OR \"generative AI\") AND (downskilling OR deskilling)"},
+  {"id": "Q38", "family": "direct", "operators": 5, "hits": 50, "exclusive": 43, "query": "(\"architectural design\" OR \"computational design\") AND (GenAI OR ChatGPT) AND (skills OR expertise)"},
+  {"id": "Q39", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 39, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"cognitive offloading\" OR overreliance)"},
+  {"id": "Q40", "family": "cognition", "operators": 5, "hits": 42, "exclusive": 38, "query": "(architect OR architects) AND (Midjourney OR ChatGPT) AND (\"cognitive offloading\" OR overreliance)"},
+  {"id": "Q41", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 43, "query": "(architect OR architectural) AND (\"Stable Diffusion\" OR DALL-E) AND (creativity OR authorship)"},
+  {"id": "Q42", "family": "cognition", "operators": 5, "hits": 50, "exclusive": 40, "query": "(Rendering OR archviz) AND (\"AI rendering\" OR Midjourney) AND (creativity OR judgment)"},
+  {"id": "Q43", "family": "process", "operators": 5, "hits": 50, "exclusive": 35, "query": "(architect OR architects) AND (GenAI OR \"generative AI\") AND (\"human-in-the-loop\" OR \"role of the architect\")"},
+  {"id": "Q44", "family": "process", "operators": 5, "hits": 50, "exclusive": 35, "query": "(\"architectural design\" OR architecture) AND (GenAI OR \"generative AI\") AND (replacement OR augmentation)"},
+  {"id": "Q45", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 37, "query": "(architect OR architectural) AND (GenAI OR \"generative AI\") AND (\"technical skills\" OR \"environmental design\")"},
+  {"id": "Q46", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 48, "query": "(BIM OR \"architectural design\") AND (AI OR \"generative AI\") AND (\"building performance\" OR \"energy modeling\")"},
+  {"id": "Q47", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 39, "query": "(\"architectural education\" OR \"architecture students\") AND (GenAI OR \"generative AI\") AND (curriculum OR learning)"},
+  {"id": "Q48", "family": "technical_and_pedagogy", "operators": 5, "hits": 50, "exclusive": 38, "query": "(\"architectural education\" OR \"architecture students\") AND (Midjourney OR ChatGPT) AND (skills OR \"critical thinking\")"}
+];
+
+const QUERY_BY_TEXT = Object.fromEntries(QUERIES.map(q => [q.query.trim(), q]));
+const QUERY_BY_ID = Object.fromEntries(QUERIES.map(q => [q.id, q]));
+
+const FAMILY_LABELS = {
+  direct: "مهارت مستقیم (Direct Skill)",
+  cognition: "شناخت و طراحی (Cognition)",
+  process: "فرآیند و نقش (Process)",
+  technical_and_pedagogy: "فنی و آموزش (Tech & Pedagogy)"
+};
+
+const LAYER1_TERMS = ["architectural design","computational design","generative design","architectural education","architecture students","architectural","architecture","architects","architect","grasshopper","parametric","rendering","archviz","revit","rhino","bim"];
+const LAYER2_TERMS = ["artificial intelligence","stable diffusion","generative ai","ai rendering","midjourney","chatgpt","copilot","dall-e","genai","ai"];
+const LAYER3_TERMS = ["cognitive offloading","role of the architect","environmental design","building performance","human-in-the-loop","critical thinking","technical skills","design thinking","energy modeling","downskilling","overreliance","augmentation","replacement","upskilling","deskilling","reskilling","skill loss","creativity","authorship","curriculum","automation","expertise","intuition","judgment","workflow","learning","replace","skills","skill"];
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function highlightKeywordsInHtml(safeHtml, detected, enableMarks) {
+  const applyLayer = (terms, cls, bucket) => {
+    for (const term of terms) {
+      const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const re = new RegExp(`(\\b${escapedTerm}\\b)`, 'gi');
+      if (re.test(safeHtml)) {
+        bucket.add(term);
+        if (enableMarks) {
+          safeHtml = safeHtml.replace(re, `<mark class="${cls}">$1</mark>`);
+        }
+      }
+    }
+  };
+  applyLayer(LAYER1_TERMS, 'hl-l1', detected.l1);
+  applyLayer(LAYER2_TERMS, 'hl-l2', detected.l2);
+  applyLayer(LAYER3_TERMS, 'hl-l3', detected.l3);
+  return safeHtml;
+}
+
+function formatFullPostText(rawText, enableMarks) {
+  const detected = { l1: new Set(), l2: new Set(), l3: new Set() };
+  const cleaned = String(rawText || '').replace(/\r\n/g, '\n').trim();
+  if (!cleaned) {
+    return {
+      html: `<p class="muted">این پست متن ندارد (فقط تصویر، ویدیو، نظرسنجی یا بازنشر). پیوست‌ها را پایین ببینید یا پست را در لینکدین باز کنید.</p>`,
+      detected,
+      wordCount: 0,
+      lineCount: 0
+    };
+  }
+
+  const words = cleaned.split(/\s+/).filter(Boolean).length;
+  const rawLines = cleaned.split('\n');
+
+  // Separate trailing hashtag-only lines if present at the very end
+  const trailingHashtags = [];
+  while (rawLines.length > 0) {
+    const lastLine = rawLines[rawLines.length - 1].trim();
+    if (!lastLine) {
+      rawLines.pop();
+      continue;
+    }
+    const tokens = lastLine.split(/\s+/);
+    if (tokens.length >= 2 && tokens.every(t => /^#[\w\u0600-\u06FF-]+$/i.test(t))) {
+      trailingHashtags.unshift(...tokens);
+      rawLines.pop();
+    } else {
+      break;
+    }
+  }
+
+  // Group remaining lines into paragraphs separated by blank lines
+  const paragraphs = [];
+  let currentPara = [];
+  for (const line of rawLines) {
+    if (!line.trim()) {
+      if (currentPara.length) {
+        paragraphs.push(currentPara);
+        currentPara = [];
+      }
+    } else {
+      currentPara.push(line);
+    }
+  }
+  if (currentPara.length) paragraphs.push(currentPara);
+
+  const bulletRegex = /^(\s*)([•▪▫‣⁃\-–—→➔➢➣➤✓✔✅☑️🔹🔸🚀💡📌🎯🔑✨1-9️⃣]+|\d+[\.\)])\s+/;
+
+  const renderedBlocks = paragraphs.map(paraLines => {
+    // Check if lines inside this block are bullet items
+    const allBullets = paraLines.length > 1 && paraLines.every(l => bulletRegex.test(l));
+    if (allBullets) {
+      return paraLines.map(l => {
+        let safeLine = escapeHtml(l.trim());
+        safeLine = highlightKeywordsInHtml(safeLine, detected, enableMarks);
+        return `<div class="post-list-item" dir="auto">${safeLine}</div>`;
+      }).join('');
+    }
+
+    const innerHtml = paraLines.map(l => {
+      const isBullet = bulletRegex.test(l);
+      let safeLine = escapeHtml(l);
+      safeLine = highlightKeywordsInHtml(safeLine, detected, enableMarks);
+      if (isBullet) {
+        return `<div class="post-list-item" dir="auto">${safeLine}</div>`;
+      }
+      return safeLine;
+    }).join('<br>');
+
+    return `<div class="post-para" dir="auto">${innerHtml}</div>`;
+  });
+
+  // Also scan trailing hashtags for keyword matches
+  let hashtagHtml = '';
+  if (trailingHashtags.length > 0) {
+    const chips = trailingHashtags.map(tag => {
+      let safeTag = escapeHtml(tag);
+      safeTag = highlightKeywordsInHtml(safeTag, detected, enableMarks);
+      return `<span class="hashtag-chip">${safeTag}</span>`;
+    }).join('');
+    hashtagHtml = `<div class="hashtag-block">${chips}</div>`;
+  }
+
+  return {
+    html: renderedBlocks.join('') + hashtagHtml,
+    detected,
+    wordCount: words,
+    lineCount: rawLines.length
+  };
+}
+
+function normalizePostRecord(r) {
+  const fams = String(r.matched_families || 'direct').split(',').map(s => s.trim()).filter(Boolean);
+  const qCodes = String(r.matched_query_codes || '').split(',').map(s => s.trim()).filter(Boolean);
+  const fullText = String(r.post_text ?? r.content ?? '');
+  return {
+    ...r,
+    source: r.source || 'apify',
+    source_post_id: String(r.source_post_id || r.id || ''),
+    entity_id: r.entity_id || String(r.source_post_id || r.id || ''),
+    share_urn: r.share_urn || null,
+    post_type: r.post_type || 'post',
+    post_url: r.post_url || '',
+    share_url: r.share_url || r.post_url || '',
+    posted_at: String(r.posted_at || '').slice(0, 10) || '—',
+    posted_at_full: r.posted_at || null,
+    posted_timestamp_ms: r.posted_timestamp_ms ?? null,
+    post_text: fullText,
+    text_chars: fullText.length,
+    author_id: r.author_id || null,
+    author_type: r.author_type || 'profile',
+    author_name: r.author_name || '—',
+    author_public_id: r.author_public_id || '',
+    author_universal_name: r.author_universal_name || null,
+    author_url: r.author_url || '',
+    author_headline: r.author_headline || '—',
+    author_website: r.author_website || null,
+    author_urn: r.author_urn || null,
+    reactions: Number(r.reactions || 0),
+    comments: Number(r.comments || 0),
+    shares: Number(r.shares || 0),
+    reactions_breakdown: r.reactions_breakdown ?? null,
+    content_attributes: r.content_attributes ?? null,
+    newsletter_title: r.newsletter_title ?? null,
+    newsletter_url: r.newsletter_url ?? null,
+    repost_id: r.repost_id ?? null,
+    media: r.media || null,
+    first_raw_item_id: r.first_raw_item_id ?? null,
+    matched_query_count: Number(r.matched_query_count || qCodes.length || 1),
+    matched_query_codes: qCodes.join(','),
+    query_list: qCodes,
+    matched_families: fams.join(','),
+    families: fams,
+    primary_family: fams[0] || 'direct'
+  };
+}
+
+// ================= Team app =================
 const QUEUE_KEY = 'saintiment_team_swipe_queue_v1';
 const LAST_SET_KEY = 'saintiment_team_swipe_last_set_v1';
+const FONT_KEY = 'saintiment_post_font_size_v1';
+const HL_KEY = 'saintiment_team_swipe_highlight_v1';
 const FA = '۰۱۲۳۴۵۶۷۸۹';
 const fa = n => String(n).replace(/\d/g, d => FA[d]);
 const $ = id => document.getElementById(id);
@@ -189,11 +502,25 @@ const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 };
+const esc = escapeHtml;
 
 let SET_ID = null, POSTS = [], VIEW = [], idx = 0, filter = 'unreviewed', decisions = {}, history = [];
+let fontSize = store.get(FONT_KEY, 17);
+let highlightOn = store.get(HL_KEY, true);
+document.documentElement.style.setProperty('--post-size', `${fontSize}px`);
 
-function esc(s) {
-  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// Query dropdown (all 48 queries)
+for (const q of QUERIES) {
+  const o = document.createElement('option');
+  o.value = q.id;
+  o.textContent = `${q.id} — ${q.query.slice(0, 48)}…`;
+  $('queryFilter').appendChild(o);
+}
+
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 1400);
 }
 
 function showScreen(id) {
@@ -257,9 +584,9 @@ async function openSet(id, name) {
   $('cardBody').innerHTML = '<div class="empty">در حال بارگذاری…</div>';
   try {
     const data = await (await api(`/api/posts?set=${id}`)).json();
-    POSTS = data.posts.map(p => ({ ...p, source_post_id: String(p.source_post_id) }));
+    POSTS = data.posts.map(p => normalizePostRecord({ ...p, source_post_id: String(p.source_post_id) }));
     decisions = {};
-    for (const p of POSTS) if (p.decision) decisions[p.source_post_id] = p.decision;
+    for (const p of data.posts) if (p.decision) decisions[String(p.source_post_id)] = p.decision;
     for (const q of queue) { if (q.status) decisions[q.source_post_id] = q.status; else delete decisions[q.source_post_id]; }
     setDecisionFilter('unreviewed');
   } catch (e) {
@@ -296,11 +623,33 @@ async function flushQueue() {
 }
 window.addEventListener('online', flushQueue);
 
-// ---- View ----
+// ---- Filters ----
+function toggleFilters() {
+  const open = $('filters').classList.toggle('open');
+  $('filterToggle').classList.toggle('on', open);
+}
+
 function setDecisionFilter(f) {
   filter = f;
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.f === f));
-  VIEW = POSTS.filter(p => (decisions[p.source_post_id] || 'unreviewed') === f);
+  applyFilters();
+}
+
+function applyFilters() {
+  const fam = $('familyFilter').value, qId = $('queryFilter').value, aType = $('authorTypeFilter').value;
+  const sortKey = $('sortOrder').value, term = $('searchInput').value.trim().toLowerCase();
+  VIEW = POSTS.filter(p => {
+    const d = decisions[p.source_post_id] || 'unreviewed';
+    if (filter !== 'all' && d !== filter) return false;
+    if (fam !== 'all' && !p.families.includes(fam)) return false;
+    if (qId !== 'all' && !p.query_list.includes(qId)) return false;
+    if (aType !== 'all' && p.author_type !== aType) return false;
+    if (term && !`${p.post_text} ${p.author_name} ${p.author_headline} ${p.matched_query_codes}`.toLowerCase().includes(term)) return false;
+    return true;
+  });
+  if (sortKey === 'reactions') VIEW.sort((a, b) => b.reactions - a.reactions);
+  else if (sortKey === 'chars_desc') VIEW.sort((a, b) => b.text_chars - a.text_chars);
+  else if (sortKey === 'date_desc') VIEW.sort((a, b) => String(b.posted_at).localeCompare(String(a.posted_at)));
   idx = 0;
   render();
 }
@@ -315,66 +664,111 @@ function updateStats() {
   $('cUnrev').textContent = fa(t - k - r);
   $('cKeep').textContent = fa(k);
   $('cReject').textContent = fa(r);
+  $('cAll').textContent = fa(t);
   $('undoBtn').disabled = !history.length;
 }
 
-function formatText(raw) {
-  const text = String(raw || '').replace(/\r\n/g, '\n').trim();
-  if (!text) return { html: '<p class="muted">این پست متن ندارد (فقط تصویر، ویدیو یا بازنشر).</p>', tags: '' };
-  const lines = text.split('\n');
-  const tags = [];
-  while (lines.length) {
-    const last = lines[lines.length - 1].trim();
-    if (!last) { lines.pop(); continue; }
-    const tok = last.split(/\s+/);
-    if (tok.every(t => /^#[\w؀-ۿ-]+$/i.test(t))) { tags.unshift(...tok); lines.pop(); } else break;
-  }
-  const paras = lines.join('\n').split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
-  return {
-    html: paras.map(p => `<p dir="auto">${esc(p).replace(/\n/g, '<br>')}</p>`).join(''),
-    tags: tags.join(' ')
-  };
+// ---- Reader controls ----
+function adjustFontSize(delta) {
+  fontSize = delta === 0 ? 17 : Math.min(23, Math.max(13.5, fontSize + delta * 1.25));
+  document.documentElement.style.setProperty('--post-size', `${fontSize}px`);
+  store.set(FONT_KEY, fontSize);
+}
+function toggleHighlight() { highlightOn = !highlightOn; store.set(HL_KEY, highlightOn); render(); }
+function copyText() {
+  const p = VIEW[idx];
+  if (p) navigator.clipboard.writeText(p.post_text || '').then(() => toast('متن کپی شد'));
 }
 
-function attachments(media) {
+// ---- Attachments (article, images, video, document, poll, repost) ----
+function attachmentsHtml(media) {
   if (!media) return '';
-  try {
-    const m = typeof media === 'string' ? JSON.parse(media) : media;
-    let out = '';
-    if (m.article && m.article.title) {
-      out += `<div class="art">${esc(m.article.title)}${m.article.link ? ` · <a href="${esc(m.article.link)}" target="_blank" rel="noopener">link</a>` : ''}</div>`;
-    }
-    const img = Array.isArray(m.postImages) && m.postImages.find(i => i && i.url);
-    if (img) out += `<img src="${esc(img.url)}" alt="" loading="lazy">`;
-    return out ? `<div class="attach">${out}</div>` : '';
-  } catch (e) { return ''; }
+  let m;
+  try { m = typeof media === 'string' ? JSON.parse(media) : media; } catch (e) { return ''; }
+  let out = '';
+  if (m.article && (m.article.title || m.article.link)) {
+    const a = m.article;
+    const inner = `<b>${esc(a.title || a.link)}</b>${a.subtitle ? `<span>${esc(a.subtitle)}</span>` : ''}${a.description ? `<span>${esc(a.description)}</span>` : ''}${a.link ? `<em>${esc(a.link.replace(/^https?:\/\//, '').slice(0, 60))} ↗</em>` : ''}`;
+    out += a.link ? `<a class="art" href="${esc(a.link)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="art">${inner}</div>`;
+  }
+  if (Array.isArray(m.postImages)) {
+    const imgs = m.postImages.filter(i => i && i.url).slice(0, 6)
+      .map(i => `<a href="${esc(i.url)}" target="_blank" rel="noopener"><img src="${esc(i.url)}" alt="" loading="lazy"></a>`).join('');
+    if (imgs) out += `<div class="imgs">${imgs}</div>`;
+  }
+  const tags = [];
+  const linkOf = o => o && (o.url || o.link || o.linkedinUrl || o.coverPages?.[0]);
+  if (m.postVideo) { const u = linkOf(m.postVideo) || linkOf(m.postVideo[0]); tags.push(u ? `<a href="${esc(u)}" target="_blank" rel="noopener">▶ Video</a>` : '<span>▶ Video</span>'); }
+  if (m.document) { const u = linkOf(m.document); tags.push(u ? `<a href="${esc(u)}" target="_blank" rel="noopener">📄 ${esc(m.document.title || 'Document')}</a>` : `<span>📄 ${esc(m.document.title || 'Document')}</span>`); }
+  if (m.poll) tags.push(`<span>📊 Poll${m.poll.question ? ': ' + esc(m.poll.question) : ''}</span>`);
+  if (m.repost) { const u = linkOf(m.repost); tags.push(u ? `<a href="${esc(u)}" target="_blank" rel="noopener">🔁 Repost</a>` : '<span>🔁 Repost</span>'); }
+  if (tags.length) out += `<div class="media-tags">${tags.join('')}</div>`;
+  return out ? `<div class="attach">${out}</div>` : '';
 }
 
+// ---- Card ----
 function render() {
   updateStats();
   const body = $('cardBody');
   if (!VIEW.length || idx >= VIEW.length) {
-    body.innerHTML = `<div class="empty">${filter === 'unreviewed' ? 'همهٔ پست‌های این مجموعه بررسی شد 🎉' : 'پستی در این بخش نیست'}</div>`;
+    body.innerHTML = `<div class="empty">${filter === 'unreviewed' && POSTS.length ? 'همهٔ پست‌های این بخش بررسی شد 🎉' : 'پستی با این فیلتر نیست'}</div>`;
     return;
   }
   const p = VIEW[idx];
-  const { html, tags } = formatText(p.post_text);
   const d = decisions[p.source_post_id];
-  const date = String(p.posted_at || '').slice(0, 10);
+  const { html, detected, wordCount, lineCount } = formatFullPostText(p.post_text || '', highlightOn);
+
+  const kwPills = [
+    ...[...detected.l1].map(w => `<span class="kw l1" title="لایه ۱: معماری / ابزار">${esc(w)}</span>`),
+    ...[...detected.l2].map(w => `<span class="kw l2" title="لایه ۲: هوش مصنوعی">${esc(w)}</span>`),
+    ...[...detected.l3].map(w => `<span class="kw l3" title="لایه ۳: مهارت / شناخت / فرآیند">${esc(w)}</span>`)
+  ].join('');
+
+  const qBadges = p.query_list.map(c => `<span class="q-code">${esc(c)}</span>`).join('') +
+    p.families.map(f => `<span class="fam">${esc(FAMILY_LABELS[f] || f)}</span>`).join('');
+  const formulas = p.query_list.map(c => QUERY_BY_ID[c] ? `${c}: ${QUERY_BY_ID[c].query}` : c).join('\n');
+
+  const authorName = esc(p.author_name || '—');
   body.innerHTML = `
     <div class="author">
-      <b>${esc(p.author_name || '—')}</b>
-      ${p.author_headline ? `<span>${esc(p.author_headline)}</span>` : ''}
+      <div>${p.author_type === 'company' ? '🏢' : '👤'} ${p.author_url ? `<a class="author-name" href="${esc(p.author_url)}" target="_blank" rel="noopener">${authorName}</a>` : `<span class="author-name">${authorName}</span>`}</div>
+      ${p.author_headline && p.author_headline !== '—' ? `<div class="author-head">${esc(p.author_headline)}</div>` : ''}
     </div>
+    <div class="line">
+      <span>${fa(idx + 1)} / ${fa(VIEW.length)}</span>
+      ${p.posted_at && p.posted_at !== '—' ? `<span>${esc(p.posted_at)}</span>` : ''}
+      ${p.post_type && p.post_type !== 'post' ? `<span>${esc(p.post_type)}</span>` : ''}
+      ${d ? `<span class="state ${d === 'keep' ? 'k' : 'r'}">${d === 'keep' ? '✓ بماند' : '✕ حذف'}</span>` : ''}
+      ${p.post_url ? `<a class="open-post" href="${esc(p.post_url)}" target="_blank" rel="noopener">LinkedIn ↗</a>` : ''}
+    </div>
+
+    <div class="tools">
+      <span class="stats">${fa(wordCount)} کلمه · ${fa(p.text_chars)} کاراکتر · ${fa(lineCount)} خط</span>
+      <span class="tool-group">
+        <button type="button" class="chip-btn${highlightOn ? ' on' : ''}" onclick="toggleHighlight()">هایلایت</button>
+        <button type="button" class="chip-btn" onclick="copyText()">کپی</button>
+        <span class="tool-group ltr">
+          <button type="button" class="chip-btn" onclick="adjustFontSize(-1)" aria-label="کوچک‌تر">A−</button>
+          <button type="button" class="chip-btn" onclick="adjustFontSize(0)" aria-label="اندازهٔ پیش‌فرض">A</button>
+          <button type="button" class="chip-btn" onclick="adjustFontSize(1)" aria-label="بزرگ‌تر">A+</button>
+        </span>
+      </span>
+    </div>
+
+    ${kwPills
+      ? `<div class="kws">${kwPills}<div class="kw-legend">آبی: معماری · بنفش: هوش مصنوعی · سبز: مهارت و شناخت</div></div>`
+      : `<div class="kws"><span class="kw-legend">کلیدواژهٔ مستقیمی در متن نیست (شاید در لینک، عنوان یا بازنشر باشد)</span></div>`}
+
     <div class="post">${html}</div>
-    ${tags ? `<div class="tags">${esc(tags)}</div>` : ''}
-    ${attachments(p.media)}
-    <div class="meta">
-      <span class="ltr">${fa(idx + 1)} / ${fa(VIEW.length)}</span>
-      ${date ? `<span class="ltr">${esc(date)}</span>` : ''}
-      <span class="ltr">${esc(p.matched_query_codes || '')}</span>
-      ${d ? `<span class="state ${d === 'keep' ? 'k' : 'r'}">${d === 'keep' ? 'بماند' : 'حذف'}</span>` : ''}
-      ${p.post_url ? `<a href="${esc(p.post_url)}" target="_blank" rel="noopener">لینکدین ↗</a>` : ''}
+    ${attachmentsHtml(p.media)}
+
+    <div class="prov">
+      <div class="q-row">${qBadges}</div>
+      ${formulas ? `<div class="formula">${esc(formulas).replace(/\n/g, '<br>')}</div>` : ''}
+    </div>
+    <div class="eng">
+      <span>👍 ${fa(p.reactions)}</span><span>💬 ${fa(p.comments)}</span><span>🔁 ${fa(p.shares)}</span>
+      <span>${p.author_type === 'company' ? 'Company page' : 'Personal profile'}</span>
     </div>`;
 }
 
@@ -382,7 +776,7 @@ function render() {
 function decide(status) {
   if (!VIEW.length || idx >= VIEW.length) return;
   const p = VIEW[idx], card = $('card');
-  history.push({ id: p.source_post_id, prev: decisions[p.source_post_id] || null, filter });
+  history.push({ id: p.source_post_id, prev: decisions[p.source_post_id] || null });
   decisions[p.source_post_id] = status;
   save(p.source_post_id, status);
   card.classList.add(status === 'keep' ? 'out-r' : 'out-l');
@@ -390,7 +784,7 @@ function decide(status) {
     card.classList.remove('out-r', 'out-l');
     card.style.transform = '';
     $('badgeKeep').style.opacity = 0; $('badgeReject').style.opacity = 0;
-    if (filter !== status) { VIEW.splice(idx, 1); if (idx >= VIEW.length) idx = Math.max(0, VIEW.length - 1); }
+    if (filter !== 'all' && filter !== status) { VIEW.splice(idx, 1); if (idx >= VIEW.length) idx = Math.max(0, VIEW.length - 1); }
     else idx++;
     render();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -405,24 +799,24 @@ function undo() {
   const p = POSTS.find(x => x.source_post_id === last.id);
   const at = VIEW.findIndex(x => x.source_post_id === last.id);
   if (at !== -1) idx = at;
-  else if (p && (decisions[last.id] || 'unreviewed') === filter) VIEW.splice(idx, 0, p);
+  else if (p) VIEW.splice(idx, 0, p);
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function skip() { if (VIEW.length) { idx = (idx + 1) % VIEW.length; render(); } }
+function skip() { if (VIEW.length) { idx = (idx + 1) % VIEW.length; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }
 
-// ---- Swipe gestures (anywhere on the card) ----
+// ---- Swipe gestures (anywhere on the card, including over the text) ----
 (function () {
   const card = $('card'), bk = $('badgeKeep'), br = $('badgeReject');
   let x0 = 0, y0 = 0, dx = 0, tracking = false, horiz = false;
-  const start = (x, y, t) => { if (t.closest('a,button')) return; x0 = x; y0 = y; dx = 0; tracking = true; horiz = false; };
+  const start = (x, y, t) => { if (t.closest('a,button,input,select,label')) return; x0 = x; y0 = y; dx = 0; tracking = true; horiz = false; };
   const move = (x, y) => {
     if (!tracking) return;
     const ddx = x - x0, ddy = y - y0;
     if (!horiz) {
       if (Math.abs(ddy) > 20 && Math.abs(ddy) > Math.abs(ddx)) { tracking = false; return; }
-      if (Math.abs(ddx) > 16 && Math.abs(ddx) > Math.abs(ddy) * 1.3) { horiz = true; card.classList.add('drag'); }
+      if (Math.abs(ddx) > 16 && Math.abs(ddx) > Math.abs(ddy) * 1.3) { horiz = true; card.classList.add('drag'); window.getSelection()?.removeAllRanges(); }
       else return;
     }
     dx = ddx;
@@ -446,12 +840,15 @@ function skip() { if (VIEW.length) { idx = (idx + 1) % VIEW.length; render(); } 
   card.addEventListener('touchend', end);
 })();
 
+// ---- Keyboard (same keys as the original page) ----
 window.addEventListener('keydown', e => {
-  if (!$('reviewScreen').classList.contains('active') || document.activeElement?.tagName === 'INPUT') return;
-  if (e.key === 'ArrowRight') { e.preventDefault(); decide('keep'); }
-  else if (e.key === 'ArrowLeft') { e.preventDefault(); decide('reject'); }
-  else if (e.key === 'ArrowDown') { e.preventDefault(); skip(); }
-  else if (e.key === 'z' || e.key === 'Z' || e.key === 'Backspace') { e.preventDefault(); undo(); }
+  if (!$('reviewScreen').classList.contains('active')) return;
+  if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+  const k = e.key;
+  if (k === 'ArrowRight' || k === 'd' || k === 'D' || k === 'Enter') { e.preventDefault(); decide('keep'); }
+  else if (k === 'ArrowLeft' || k === 'a' || k === 'A') { e.preventDefault(); decide('reject'); }
+  else if (k === 'ArrowDown' || k === ' ') { e.preventDefault(); skip(); }
+  else if (k === 'z' || k === 'Z' || k === 'Backspace') { e.preventDefault(); undo(); }
 });
 
 // ---- Boot ----
