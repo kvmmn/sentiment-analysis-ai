@@ -5,7 +5,7 @@ Three reviewers (1. مرتضی, 2. ایمان, 3. کاوه) each go through thei
 straight away to a shared Neon database, so anyone can stop and continue later from any
 device.
 
-- **UI:** `public/index.html`, a single page for phone and laptop. Swipe right or press ✓ for keep, swipe left or press ✕ for reject, ↩ to undo. The sets screen and the review header link to `/kept`, which pages **kept** posts one by one. The only extra filter is who kept the post (مرتضی / ایمان / کاوه). A download button writes `saintiment_kept_posts.json` for the current filter; that file is post fields only and does **not** include who selected the post.
+- **UI:** `public/index.html`, a single page for phone and laptop. Swipe right or press ✓ for keep, swipe left or press ✕ for reject, ↩ to undo. At the **bottom** of the sets screen a green **پست‌های نگه داشته‌شده** card links to `/kept`, which pages **kept** posts one by one. The only extra filter is who kept the post (مرتضی / ایمان / کاوه). A download button writes `saintiment_kept_posts.json` for the current filter; that file is post fields only and does **not** include who selected the post.
 - **API:** `server.js` (Express). Routes: `POST /api/login`, `GET /api/sets`, `GET /api/posts?set=N`, `PUT /api/decision`, `GET /api/kept`, `GET /api/kept/export`, `GET /api/export`.
 - **DB:** Neon database `_saintiment_swipe_team_db`. It has three tables: `reviewers`, `posts` (with `reviewer_id` and `position`), and `decisions`. Who kept a post is `COALESCE(decisions.decided_by, decisions.reviewer_id)` for the viewer filter, and is stripped from `/api/kept/export`.
 
