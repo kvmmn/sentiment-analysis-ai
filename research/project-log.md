@@ -1,6 +1,8 @@
 # Project Log
 
-**Swipe review — 5 November 2026:** one-post keep/drop marks are stored on the three-layer Neon corpus. See [section 53](#53-shared-swipe-marks-and-one-post-review-screen-2026-11-05). No relevance judgments have been recorded.
+**Homepage — 12 November 2026:** the root README is the team entry point, with the Vercel review links, screening counts re-read from Neon, and query downloads. See [section 57](#57-team-homepage-and-query-downloads-2026-11-12). Version A (19) and Version B (85) are still not in the repository.
+
+**Swipe review — 5 November 2026:** one-post keep/drop marks are stored on the three-layer Neon corpus. See [section 53](#53-shared-swipe-marks-and-one-post-review-screen-2026-11-05). No relevance judgments have been recorded. The 12 November team-app counts live in `_saintiment_swipe_team_db`, not in that corpus table.
 
 **Query list — 17 October 2026:** a 55-query working list for a later Apify pass is in [section 49](#49-apify-query-list-for-the-next-round-2026-10-17). No run was started. Query version 1 is not frozen.
 
@@ -14,7 +16,7 @@
 
 **Earlier execution update:** Collector 005 was running with a narrowly changed feed-readiness check. Retry 003 exited 1 on the old `nav.global-nav` wait and contained zero rows. Separate diagnostic 006 confirmed a signed-in feed with generated navigation classes. Run 005 then passed readiness and exported 59 records after its first query; query 2 started. These are partial log observations, not completed collection or scientific validation. Analysis has not run. Originals remain unchanged. Copied local sessions are an explicit deviation from the fresh-profile workflow; screenshots and raw artifacts remain private. Prepared diagnostic 004 was not executed. Final results and synchronization are pending.
 
-This is the shared record of actions, decisions, rationale, and open questions. Entries begin with the work discussed on 2026-08-28 and continue chronologically; the latest closeout amendment is in [section 48](#48-complete-three-provider-set-synced-2026-10-16). Earlier [Current desk](#current-desk-2026-09-17) sections are preserved as historical context. They summarize dated conversation and file/tool checks; they are not a verbatim transcript or evidence that planned actions occurred. Keep earlier decisions visible when a later decision supersedes them.
+This is the shared record of actions, decisions, rationale, and open questions. Entries begin with the work discussed on 2026-08-28 and continue chronologically; the latest entry is [section 57](#57-team-homepage-and-query-downloads-2026-11-12). The 16 October closeout remains [section 48](#48-complete-three-provider-set-synced-2026-10-16). Earlier [Current desk](#current-desk-2026-09-17) sections are preserved as historical context. They summarize dated conversation and file/tool checks; they are not a verbatim transcript or evidence that planned actions occurred. Keep earlier decisions visible when a later decision supersedes them.
 
 Paths inside dated entries are historical: files have since been reorganized (keyword notes into `research/keywords/`, access reviews into `research/access/`, the sent team letter into `research/team/`, the scraper into `src/linkedin-scraper/`, and Iman's draft package into `_local/submissions/`). See the migration map in [docs/project-map.md](../docs/project-map.md) for the current locations.
 
@@ -799,3 +801,24 @@ Then open `http://127.0.0.1:8765/`. Another person running the same command agai
 **Change:** the sets screen uses a small text link, `href="/kept"`, in the same row as export and logout. The page no longer cancels that click in JavaScript, so the browser follows the address itself. Inactive screens no longer leave a fixed button bar that can cover taps. The undo list is no longer named `history`, which had shadowed the browser history object. The Persian font stylesheet no longer blocks the first paint.
 
 **Verification:** `cd web/swipe && npm test` (8/8). Chrome 1280×800 and 390×844: after a local dummy-password login the control is a 13px text link, about 34×145px, with no green fill and no horizontal overflow. Activating it loads `/kept`. Production deployment is checked in the same change on https://saintiment.vercel.app/. Downloaded files with post text must not be committed.
+
+## 57. Team homepage and query downloads (2026-11-12)
+
+**Request (Kaveh, 2026-11-12):** update the GitHub front page for the project team with the latest statistics, developments, and the Vercel links, and give the queries a complete place, including a precise reading of the files and their stats. Also make the query lists downloadable as JSON, Markdown, and YAML, and as Word if that did not need a new toolchain.
+
+**Change:**
+1. Rewrote [README.md](../README.md) as the team entry point: what Saintiment is, [https://saintiment.vercel.app/](https://saintiment.vercel.app/) and [/kept](https://saintiment.vercel.app/kept), the screening counts, and links to the query files. September pilot figures stay in the meeting documents rather than being copied again.
+2. Added [research/keywords/README.md](keywords/README.md) as the query index: how to read each field, the prose-number to Q-ID distinction, download links, and per-query hit counts.
+3. Generated Markdown, YAML, and Word from the two JSON files already in the repository. No query string was added.
+   - Q01–Q48: existing [queries.json](keywords/linkedin-apify-2026-10-17/queries.json); new [queries.md](keywords/linkedin-apify-2026-10-17/queries.md), [queries.yaml](keywords/linkedin-apify-2026-10-17/queries.yaml), [queries.docx](keywords/linkedin-apify-2026-10-17/queries.docx). The family-grouped [keywords-and-queries.md](keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) was already present and was not rewritten. Its numbers 1–48 are not Q IDs (prose 13 is Q33; Q13 is prose 17).
+   - 105 sub-queries: existing [subqueries.json](keywords/linkedin-boolean-2026-10-07/subqueries.json); new [subqueries.md](keywords/linkedin-boolean-2026-10-07/subqueries.md), [subqueries.yaml](keywords/linkedin-boolean-2026-10-07/subqueries.yaml), [subqueries.docx](keywords/linkedin-boolean-2026-10-07/subqueries.docx).
+4. Word files were written as Office Open XML with Python's `zipfile` module. No document package was added. A local YAML parser, not a project dependency, loaded each YAML file back to the source JSON.
+
+**Not created:** Version A (19) and Version B (85). There is no JSON for either list. Section 49 already records that the 19 option-A file was absent. No log entry names an 85-query list. `docs/layer2-query-decision-2026-10-16.html` is linked from `docs/index.html` and is not in the repository.
+
+**Verification (Neon project `cool-cake-91875024`, 12 November 2026, counts only):**
+- `_saintiment_swipe_team_db`: 1,858 posts, 1,858 decisions, 471 keep, 1,387 reject, 0 unmarked. By assigned reviewer, who also made the decision: Morteza 620 / 130 keep / 490 reject; Iman 619 / 167 / 452; Kaveh 619 / 174 / 445. Latest `decided_at` 2026-11-12 16:48 UTC.
+- `_saintiment_apify_three_layer_db`: 1,858 `master_posts`, 2,158 `raw_items`, 48 `queries`, `SUM(raw_hits_count)` 2,158, 0 `curation_decisions`. Family raw hits: direct 602, cognition 756, process 600, technical_and_pedagogy 200. Distinct posts by family: 544, 681, 538, 190. These distinct-post cells match `docs/index.html`; that page's family raw-hit cells (686, 732, 540, 200) do not match `SUM(raw_hits_count)`. 1,618 posts matched one query code and 240 matched more than one. Thirty-seven queries are at the cap of 50.
+- `_saintiment_db`: 3,354 `master_posts` (Apify 2,954, Coresignal 200, Bright Data 200) and 4,044 `raw_items`.
+
+**Unresolved:** Version A, Version B, the missing 16 October HTML note, what the 471 kept posts are for, query version 1, ethics and terms of use, and the article and thesis. The screening marks are not a relevance codebook.
