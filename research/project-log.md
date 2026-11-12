@@ -765,3 +765,21 @@ Then open `http://127.0.0.1:8765/`. Another person running the same command agai
 **Decision (Kaveh, 2026-11-05):** keep the review screen as the HTML file in this repository (`docs/swipe-review.html`). Do not publish it as a separate hosted app. The public HTML does not link to the Apify dataset, does not embed scraped posts, and does not load sql.js from a third-party CDN. Author, post, article, and image links accept only `http` and `https`.
 
 **Unresolved:** the team has not started the relevance judgments. Shared marks exist only through `swipe_review_server.py` and `DATABASE_URL`. Downloaded post files must not be committed.
+
+## 54. Kept-posts viewer on the team swipe app (2026-11-12)
+
+**Request (Kaveh, 2026-11-12, Europe/Berlin):** on the same hosted team swipe page, add a link to a page that shows **kept** posts with full details, one-by-one paging, a filter for who selected/kept the post (Morteza, Iman, Kaveh), and a download of the selected (kept) posts database that does **not** include who selected the post. Keep the current login/session, Persian RTL, and existing swipe review.
+
+**Surface:** the Vercel team app in [`web/swipe/`](../web/swipe/) (`https://saintiment.vercel.app/`), Neon `_saintiment_swipe_team_db` (`posts`, `decisions`, `reviewers`). This is distinct from the local `docs/swipe-review.html` + `swipe_review_server.py` corpus marks in §53.
+
+**Changes:**
+1. Sets header and review header link to `/kept`. That path still serves the same `public/index.html` shell and the same session cookie.
+2. `GET /api/kept` returns kept posts plus reviewer names for the filter. Who kept a post is `COALESCE(decisions.decided_by, decisions.reviewer_id)`.
+3. `GET /api/kept/export?by=1|2|3` (or all) downloads `saintiment_kept_posts.json` in the same JSON style as the existing decisions export. Post fields only; keeper/set/reviewer columns are stripped.
+4. The kept screen reuses the existing full-detail card (text, media, queries, highlight/copy/font). Paging is previous/next; keep/reject swipe on the review screen is unchanged.
+
+**Alternatives not taken:** a separate `kept.html` would duplicate CSS/JS; SQLite download would need a new runtime dependency on Vercel. JSON is the format `/api/export` already uses.
+
+**Verification:** `cd web/swipe && npm test` (8/8: export-strip unit tests, session required on kept routes, `/kept` serves the app shell, UI still contains review keep/reject). Chrome (1280×800 and 390×844) logged in with a throwaway password, opened `/kept` from the sets link, saw the who-kept filter, download control, and prev/next pager, then returned to sets; keep/reject markup stayed in the DOM. Live Neon paging of real kept posts was not run here (`DATABASE_URL` is not present). Downloaded files that contain post text must not be committed.
+
+**Unresolved:** the export is JSON, not CSV/SQLite. No claim that the keep/reject marks are completed relevance coding.

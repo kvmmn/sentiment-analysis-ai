@@ -77,6 +77,7 @@ a:hover{text-decoration:underline}
 .set-num{color:var(--faint);font-weight:500;margin-inline-end:6px}
 .set-meta{font-size:13px;color:var(--muted)}
 .foot{display:flex;justify-content:space-between;gap:8px;padding:4px 0 32px}
+.kept-dl{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:0 0 12px}
 
 /* Review: progress, tabs, filters */
 .progress{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);padding-bottom:6px}
@@ -182,7 +183,10 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
 
 <!-- Sets -->
 <section class="screen" id="setsScreen">
-  <div class="head"><h1>مجموعه‌ها</h1></div>
+  <div class="head">
+    <h1>مجموعه‌ها</h1>
+    <a class="text-btn" href="/kept">پست‌های نگه داشته‌شده</a>
+  </div>
   <div class="sets" id="setsGrid"><div class="muted">…</div></div>
   <div class="foot">
     <a class="text-btn" href="/api/export">دانلود تصمیم‌ها (JSON)</a>
@@ -193,10 +197,11 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
 <!-- Review -->
 <section class="screen" id="reviewScreen">
   <div class="head">
-    <button type="button" class="icon-btn" onclick="showSets()" aria-label="بازگشت به مجموعه‌ها">
+    <button type="button" class="icon-btn" onclick="goSets()" aria-label="بازگشت به مجموعه‌ها">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
     </button>
     <h1 id="setTitle">—</h1>
+    <a class="text-btn" href="/kept">نگه داشته‌شده</a>
     <button type="button" class="icon-btn" id="filterToggle" onclick="toggleFilters()" aria-label="فیلتر و جستجو">
       <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
     </button>
@@ -256,6 +261,41 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
     </button>
     <button type="button" class="act r" onclick="decide('reject')" aria-label="حذف">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+</section>
+
+<!-- Kept posts (one-by-one) -->
+<section class="screen" id="keptScreen">
+  <div class="head">
+    <button type="button" class="icon-btn" onclick="goSets()" aria-label="بازگشت به مجموعه‌ها">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <h1>پست‌های نگه داشته‌شده</h1>
+  </div>
+  <div class="filters open" id="keptFilters">
+    <select id="keptByFilter" onchange="applyKeptFilter()" aria-label="چه کسی نگه داشته">
+      <option value="all">چه کسی نگه داشته: همه</option>
+    </select>
+  </div>
+  <div class="kept-dl">
+    <button type="button" class="text-btn" onclick="downloadKept()">دانلود پست‌های نگه داشته‌شده (JSON)</button>
+    <span class="muted" style="font-size:12.5px">بدون اینکه چه کسی نگه داشته</span>
+  </div>
+  <div class="progress">
+    <span id="keptProgressText" class="ltr">0 / 0</span>
+  </div>
+  <article class="card" id="keptCard">
+    <div id="keptCardBody"><div class="empty">…</div></div>
+  </article>
+  <div class="spacer"></div>
+  <div class="hint">↓ بعدی · ↑ قبلی</div>
+  <div class="actions">
+    <button type="button" class="act small" id="keptPrevBtn" onclick="keptPage(-1)" aria-label="پست قبلی">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
+    <button type="button" class="act small" id="keptNextBtn" onclick="keptPage(1)" aria-label="پست بعدی">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
   </div>
 </section>
@@ -505,6 +545,7 @@ const store = {
 const esc = escapeHtml;
 
 let SET_ID = null, POSTS = [], VIEW = [], idx = 0, filter = 'unreviewed', decisions = {}, history = [];
+let KEPT_POSTS = [], KEPT_VIEW = [], keptIdx = 0, keptBy = 'all', KEPT_REVIEWERS = [];
 let fontSize = store.get(FONT_KEY, 17);
 let highlightOn = store.get(HL_KEY, true);
 document.documentElement.style.setProperty('--post-size', `${fontSize}px`);
@@ -528,6 +569,20 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
+function onKeptPath() {
+  return location.pathname.replace(/\/+$/, '') === '/kept';
+}
+
+function goSets() {
+  if (onKeptPath()) window.history.pushState({}, '', '/');
+  return showSets();
+}
+
+function goKept() {
+  if (!onKeptPath()) window.history.pushState({}, '', '/kept');
+  return showKept();
+}
+
 async function api(path, opts = {}) {
   const res = await fetch(path, {
     credentials: 'same-origin',
@@ -547,7 +602,7 @@ async function doLogin(e) {
     const res = await api('/api/login', { method: 'POST', body: JSON.stringify({ password: $('passwordInput').value }) });
     if (!res.ok) { err.textContent = res.status === 401 ? 'رمز اشتباه است' : 'خطای سرور'; return; }
     $('passwordInput').value = '';
-    await showSets();
+    await (onKeptPath() ? showKept() : showSets());
   } catch (e2) { err.textContent = 'اتصال برقرار نشد'; }
   finally { btn.disabled = false; }
 }
@@ -674,9 +729,14 @@ function adjustFontSize(delta) {
   document.documentElement.style.setProperty('--post-size', `${fontSize}px`);
   store.set(FONT_KEY, fontSize);
 }
-function toggleHighlight() { highlightOn = !highlightOn; store.set(HL_KEY, highlightOn); render(); }
+function toggleHighlight() {
+  highlightOn = !highlightOn;
+  store.set(HL_KEY, highlightOn);
+  if ($('keptScreen').classList.contains('active')) renderKept();
+  else render();
+}
 function copyText() {
-  const p = VIEW[idx];
+  const p = $('keptScreen').classList.contains('active') ? KEPT_VIEW[keptIdx] : VIEW[idx];
   if (p) navigator.clipboard.writeText(p.post_text || '').then(() => toast('متن کپی شد'));
 }
 
@@ -707,41 +767,29 @@ function attachmentsHtml(media) {
 }
 
 // ---- Card ----
-function render() {
-  updateStats();
-  const body = $('cardBody');
-  if (!VIEW.length || idx >= VIEW.length) {
-    body.innerHTML = `<div class="empty">${filter === 'unreviewed' && POSTS.length ? 'همهٔ پست‌های این بخش بررسی شد 🎉' : 'پستی با این فیلتر نیست'}</div>`;
-    return;
-  }
-  const p = VIEW[idx];
-  const d = decisions[p.source_post_id];
+function postCardHtml(p, { index, total, statusHtml }) {
   const { html, detected, wordCount, lineCount } = formatFullPostText(p.post_text || '', highlightOn);
-
   const kwPills = [
     ...[...detected.l1].map(w => `<span class="kw l1" title="لایه ۱: معماری / ابزار">${esc(w)}</span>`),
     ...[...detected.l2].map(w => `<span class="kw l2" title="لایه ۲: هوش مصنوعی">${esc(w)}</span>`),
     ...[...detected.l3].map(w => `<span class="kw l3" title="لایه ۳: مهارت / شناخت / فرآیند">${esc(w)}</span>`)
   ].join('');
-
   const qBadges = p.query_list.map(c => `<span class="q-code">${esc(c)}</span>`).join('') +
     p.families.map(f => `<span class="fam">${esc(FAMILY_LABELS[f] || f)}</span>`).join('');
   const formulas = p.query_list.map(c => QUERY_BY_ID[c] ? `${c}: ${QUERY_BY_ID[c].query}` : c).join('\n');
-
   const authorName = esc(p.author_name || '—');
-  body.innerHTML = `
+  return `
     <div class="author">
       <div>${p.author_type === 'company' ? '🏢' : '👤'} ${p.author_url ? `<a class="author-name" href="${esc(p.author_url)}" target="_blank" rel="noopener">${authorName}</a>` : `<span class="author-name">${authorName}</span>`}</div>
       ${p.author_headline && p.author_headline !== '—' ? `<div class="author-head">${esc(p.author_headline)}</div>` : ''}
     </div>
     <div class="line">
-      <span>${fa(idx + 1)} / ${fa(VIEW.length)}</span>
+      <span>${fa(index + 1)} / ${fa(total)}</span>
       ${p.posted_at && p.posted_at !== '—' ? `<span>${esc(p.posted_at)}</span>` : ''}
       ${p.post_type && p.post_type !== 'post' ? `<span>${esc(p.post_type)}</span>` : ''}
-      ${d ? `<span class="state ${d === 'keep' ? 'k' : 'r'}">${d === 'keep' ? '✓ بماند' : '✕ حذف'}</span>` : ''}
+      ${statusHtml || ''}
       ${p.post_url ? `<a class="open-post" href="${esc(p.post_url)}" target="_blank" rel="noopener">LinkedIn ↗</a>` : ''}
     </div>
-
     <div class="tools">
       <span class="stats">${fa(wordCount)} کلمه · ${fa(p.text_chars)} کاراکتر · ${fa(lineCount)} خط</span>
       <span class="tool-group">
@@ -754,14 +802,11 @@ function render() {
         </span>
       </span>
     </div>
-
     ${kwPills
       ? `<div class="kws">${kwPills}<div class="kw-legend">آبی: معماری · بنفش: هوش مصنوعی · سبز: مهارت و شناخت</div></div>`
       : `<div class="kws"><span class="kw-legend">کلیدواژهٔ مستقیمی در متن نیست (شاید در لینک، عنوان یا بازنشر باشد)</span></div>`}
-
     <div class="post">${html}</div>
     ${attachmentsHtml(p.media)}
-
     <div class="prov">
       <div class="q-row">${qBadges}</div>
       ${formulas ? `<div class="formula">${esc(formulas).replace(/\n/g, '<br>')}</div>` : ''}
@@ -770,6 +815,19 @@ function render() {
       <span>👍 ${fa(p.reactions)}</span><span>💬 ${fa(p.comments)}</span><span>🔁 ${fa(p.shares)}</span>
       <span>${p.author_type === 'company' ? 'Company page' : 'Personal profile'}</span>
     </div>`;
+}
+
+function render() {
+  updateStats();
+  const body = $('cardBody');
+  if (!VIEW.length || idx >= VIEW.length) {
+    body.innerHTML = `<div class="empty">${filter === 'unreviewed' && POSTS.length ? 'همهٔ پست‌های این بخش بررسی شد 🎉' : 'پستی با این فیلتر نیست'}</div>`;
+    return;
+  }
+  const p = VIEW[idx];
+  const d = decisions[p.source_post_id];
+  const statusHtml = d ? `<span class="state ${d === 'keep' ? 'k' : 'r'}">${d === 'keep' ? '✓ بماند' : '✕ حذف'}</span>` : '';
+  body.innerHTML = postCardHtml(p, { index: idx, total: VIEW.length, statusHtml });
 }
 
 // ---- Decisions ----
@@ -805,6 +863,94 @@ function undo() {
 }
 
 function skip() { if (VIEW.length) { idx = (idx + 1) % VIEW.length; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }
+
+// ---- Kept posts viewer ----
+function fillKeptByFilter() {
+  const sel = $('keptByFilter');
+  const prev = keptBy;
+  sel.innerHTML = '<option value="all">چه کسی نگه داشته: همه</option>';
+  for (const r of KEPT_REVIEWERS) {
+    const n = KEPT_POSTS.filter(p => Number(p.kept_by) === Number(r.id)).length;
+    const o = document.createElement('option');
+    o.value = String(r.id);
+    o.textContent = `چه کسی نگه داشته: ${r.name} (${fa(n)})`;
+    sel.appendChild(o);
+  }
+  sel.value = [...sel.options].some(o => o.value === prev) ? prev : 'all';
+  keptBy = sel.value;
+}
+
+async function showKept() {
+  showScreen('keptScreen');
+  $('keptCardBody').innerHTML = '<div class="empty">در حال بارگذاری…</div>';
+  try {
+    const res = await api('/api/kept');
+    if (!res.ok) throw new Error('load failed');
+    const data = await res.json();
+    KEPT_REVIEWERS = data.reviewers || [];
+    KEPT_POSTS = (data.posts || []).map(p => normalizePostRecord({
+      ...p,
+      source_post_id: String(p.source_post_id),
+      kept_by: p.kept_by,
+      kept_by_name: p.kept_by_name,
+      kept_by_name_en: p.kept_by_name_en
+    }));
+    fillKeptByFilter();
+    applyKeptFilter();
+  } catch (e) {
+    if (e.message !== 'unauthorized') $('keptCardBody').innerHTML = '<div class="empty">بارگذاری نشد — دوباره باز کنید</div>';
+  }
+}
+
+function applyKeptFilter() {
+  keptBy = $('keptByFilter').value;
+  KEPT_VIEW = keptBy === 'all' ? KEPT_POSTS.slice() : KEPT_POSTS.filter(p => String(p.kept_by) === keptBy);
+  keptIdx = 0;
+  renderKept();
+}
+
+function renderKept() {
+  const body = $('keptCardBody');
+  const total = KEPT_VIEW.length;
+  $('keptProgressText').textContent = `${fa(total ? keptIdx + 1 : 0)} / ${fa(total)}`;
+  $('keptPrevBtn').disabled = total < 2;
+  $('keptNextBtn').disabled = total < 2;
+  if (!total) {
+    body.innerHTML = `<div class="empty">${KEPT_POSTS.length ? 'پستی با این فیلتر نیست' : 'هنوز پستی نگه داشته نشده'}</div>`;
+    return;
+  }
+  if (keptIdx >= total) keptIdx = total - 1;
+  const p = KEPT_VIEW[keptIdx];
+  const who = p.kept_by_name ? esc(p.kept_by_name) : '';
+  const statusHtml = `<span class="state k">✓ بماند${who ? ' · ' + who : ''}</span>`;
+  body.innerHTML = postCardHtml(p, { index: keptIdx, total, statusHtml });
+}
+
+function keptPage(delta) {
+  if (!KEPT_VIEW.length) return;
+  keptIdx = (keptIdx + delta + KEPT_VIEW.length) % KEPT_VIEW.length;
+  renderKept();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function downloadKept() {
+  try {
+    const q = keptBy === 'all' ? '' : `?by=${encodeURIComponent(keptBy)}`;
+    const res = await api('/api/kept/export' + q);
+    if (!res.ok) throw new Error('export failed');
+    const blob = await res.blob();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'saintiment_kept_posts.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    toast('دانلود شد');
+  } catch (e) {
+    if (e.message !== 'unauthorized') toast('دانلود نشد');
+  }
+}
 
 // ---- Swipe gestures (anywhere on the card, including over the text) ----
 (function () {
@@ -842,20 +988,39 @@ function skip() { if (VIEW.length) { idx = (idx + 1) % VIEW.length; render(); wi
 
 // ---- Keyboard (same keys as the original page) ----
 window.addEventListener('keydown', e => {
-  if (!$('reviewScreen').classList.contains('active')) return;
   if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
   const k = e.key;
+  if ($('keptScreen').classList.contains('active')) {
+    if (k === 'ArrowDown' || k === 'ArrowLeft' || k === ' ') { e.preventDefault(); keptPage(1); }
+    else if (k === 'ArrowUp' || k === 'ArrowRight') { e.preventDefault(); keptPage(-1); }
+    return;
+  }
+  if (!$('reviewScreen').classList.contains('active')) return;
   if (k === 'ArrowRight' || k === 'd' || k === 'D' || k === 'Enter') { e.preventDefault(); decide('keep'); }
   else if (k === 'ArrowLeft' || k === 'a' || k === 'A') { e.preventDefault(); decide('reject'); }
   else if (k === 'ArrowDown' || k === ' ') { e.preventDefault(); skip(); }
   else if (k === 'z' || k === 'Z' || k === 'Backspace') { e.preventDefault(); undo(); }
 });
 
+window.addEventListener('popstate', () => {
+  if (onKeptPath()) showKept();
+  else if ($('loginScreen').classList.contains('active')) return;
+  else showSets();
+});
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href="/kept"]');
+  if (!a) return;
+  e.preventDefault();
+  goKept();
+});
+
 // ---- Boot ----
 (async () => {
   try {
     const res = await fetch('/api/me', { credentials: 'same-origin' });
-    if (res.ok) await showSets(); else showScreen('loginScreen');
+    if (res.ok) await (onKeptPath() ? showKept() : showSets());
+    else showScreen('loginScreen');
   } catch (e) { showScreen('loginScreen'); }
 })();
 </script>

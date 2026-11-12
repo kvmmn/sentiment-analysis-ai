@@ -28,6 +28,11 @@ The Telegram group **Sentiment Analysis AI** is the team's main communication ch
 
 Looking for Iman’s code? Open the [code index](src/README.md#imans-submission-local-only). The complete source package now lives in `_local/submissions/2026-09-06-iman-protocol-drafts/`, not the historical archive. Baseline extracts remain local-only and must not be run in place; separate pilot snapshots are prepared.
 
+## Current Status — 12 November 2026 (Team swipe kept-posts viewer)
+
+- **Team app:** the hosted review at [saintiment.vercel.app](https://saintiment.vercel.app/) (`web/swipe/`) still uses the shared team password and Neon `_saintiment_swipe_team_db`. Keep/reject review of assigned sets is unchanged.
+- **Kept posts page:** `/kept` pages every post marked `keep`, with full details, one at a time. The only filter is who kept it (مرتضی, ایمان, کاوه). Download is `saintiment_kept_posts.json` for the current filter and omits who selected the post. See [web/swipe/README.md](web/swipe/README.md) and [project log §54](research/project-log.md#54-kept-posts-viewer-on-the-team-swipe-app-2026-11-12).
+
 ## Current Status — 5 November 2026 (Swipe review marks in Neon)
 
 - **Review screen:** [`docs/swipe-review.html`](docs/swipe-review.html) is the HTML page in this repository. It is not published as a separate app. The page shows one post at a time. باشد stores `keep` and نباشد stores `reject`. On a phone the same single card and a fixed two-choice bar are used. Shared Neon marks need `python src/ingest/swipe_review_server.py` and then `http://127.0.0.1:8765/`.
