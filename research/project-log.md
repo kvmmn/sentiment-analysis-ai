@@ -791,3 +791,11 @@ Then open `http://127.0.0.1:8765/`. Another person running the same command agai
 **Change:** removed the small header text links (sets header and review header). The sets screen now has a full-width green **پست‌های نگه داشته‌شده** card under the reviewer sets and above the existing decisions-export / logout row. Review keep/reject UI is otherwise unchanged.
 
 **Verification:** `cd web/swipe && npm test` (8/8). Chrome: production login at https://saintiment.vercel.app/ loads; `/kept` stays behind the team password (`/api/kept` 401 without session). Local dummy-password login showed the new green card **below** the sets list; clicking it opened `/kept` with the who-kept filter, JSON download, and prev/next. Vercel MCP does not decrypt `TEAM_PASSWORD` (sensitive, empty value), so authenticated production filter/paging/download was not completed here. Neon `_saintiment_swipe_team_db` currently has 471 keep / 1,387 reject of 1,858 posts (counts only; no post text pulled). Downloaded files with post text must not be committed.
+
+## 56. Quiet kept-posts link that navigates in every browser (2026-11-12)
+
+**Request (Kaveh):** the team swipe app must open completely on any desktop or phone browser. The large green **پست‌های نگه داشته‌شده** card is too conspicuous; make that control smaller. The copy that matters is the Vercel production site (`https://saintiment.vercel.app/`), not a Cursor or Grok host.
+
+**Change:** the sets screen uses a small text link, `href="/kept"`, in the same row as export and logout. The page no longer cancels that click in JavaScript, so the browser follows the address itself. Inactive screens no longer leave a fixed button bar that can cover taps. The undo list is no longer named `history`, which had shadowed the browser history object. The Persian font stylesheet no longer blocks the first paint.
+
+**Verification:** `cd web/swipe && npm test` (8/8). Chrome 1280×800 and 390×844: after a local dummy-password login the control is a 13px text link, about 34×145px, with no green fill and no horizontal overflow. Activating it loads `/kept`. Production deployment is checked in the same change on https://saintiment.vercel.app/. Downloaded files with post text must not be committed.

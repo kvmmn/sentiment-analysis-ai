@@ -7,7 +7,8 @@
 <title>Saintiment Swipe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap"></noscript>
 <style>
 :root{
   --bg:#fafaf9; --surface:#ffffff; --sunk:#f5f5f4; --fg:#1c1917; --muted:#78716c; --faint:#a8a29e; --line:#e7e5e4;
@@ -44,9 +45,10 @@ a:hover{text-decoration:underline}
 .ltr{direction:ltr;unicode-bidi:isolate}
 .screen{display:none;max-width:720px;margin:0 auto;padding:0 16px}
 .screen.active{display:block}
+.screen:not(.active) .actions,.screen:not(.active) .hint{display:none!important;pointer-events:none!important}
 
 /* Login */
-#loginScreen.active{display:grid;place-items:center;min-height:100dvh}
+#loginScreen.active{display:grid;place-items:center;min-height:100vh;min-height:100dvh}
 .login{width:100%;max-width:340px;display:grid;gap:14px;text-align:center}
 .login h1{margin:0;font-size:20px;font-weight:700}
 .login input{font-size:16px;font-weight:500;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:center;direction:ltr}
@@ -77,14 +79,8 @@ a:hover{text-decoration:underline}
 .set-num{color:var(--faint);font-weight:500;margin-inline-end:6px}
 .set-meta{font-size:13px;color:var(--muted)}
 .foot{display:flex;justify-content:space-between;gap:8px;padding:4px 0 32px}
-.kept-entry{
-  display:grid;gap:6px;text-align:start;text-decoration:none;
-  background:var(--keep);color:var(--bg);
-  border:2px solid var(--keep);border-radius:14px;padding:18px 20px;margin:0 0 14px;
-}
-.kept-entry:hover{text-decoration:none;filter:brightness(0.93)}
-.kept-entry-title{font-size:17px;font-weight:700;color:var(--bg)}
-.kept-entry-meta{font-size:13px;font-weight:500;color:var(--bg);opacity:.88}
+.kept-link{color:var(--keep);font-weight:600}
+.kept-link:hover{text-decoration:none;color:var(--fg)}
 .kept-dl{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:0 0 12px}
 
 /* Review: progress, tabs, filters */
@@ -195,11 +191,8 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
     <h1>مجموعه‌ها</h1>
   </div>
   <div class="sets" id="setsGrid"><div class="muted">…</div></div>
-  <a class="kept-entry" href="/kept">
-    <span class="kept-entry-title">پست‌های نگه داشته‌شده</span>
-    <span class="kept-entry-meta">مشاهدهٔ کامل، یک‌به‌یک، فیلتر بر اساس نگه دارنده، و دانلود JSON</span>
-  </a>
   <div class="foot">
+    <a class="text-btn kept-link" href="/kept">پست‌های نگه داشته‌شده</a>
     <a class="text-btn" href="/api/export">دانلود تصمیم‌ها (JSON)</a>
     <button type="button" class="text-btn" onclick="doLogout()">خروج</button>
   </div>
@@ -554,7 +547,7 @@ const store = {
 };
 const esc = escapeHtml;
 
-let SET_ID = null, POSTS = [], VIEW = [], idx = 0, filter = 'unreviewed', decisions = {}, history = [];
+let SET_ID = null, POSTS = [], VIEW = [], idx = 0, filter = 'unreviewed', decisions = {}, undoStack = [];
 let KEPT_POSTS = [], KEPT_VIEW = [], keptIdx = 0, keptBy = 'all', KEPT_REVIEWERS = [];
 let fontSize = store.get(FONT_KEY, 17);
 let highlightOn = store.get(HL_KEY, true);
@@ -575,7 +568,12 @@ function toast(msg) {
 }
 
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+  document.querySelectorAll('.screen').forEach(s => {
+    const on = s.id === id;
+    s.classList.toggle('active', on);
+    if (on) s.removeAttribute('inert');
+    else s.setAttribute('inert', '');
+  });
   window.scrollTo(0, 0);
 }
 
@@ -642,7 +640,7 @@ async function showSets() {
 }
 
 async function openSet(id, name) {
-  SET_ID = id; history = [];
+  SET_ID = id; undoStack = [];
   store.set(LAST_SET_KEY, id);
   showScreen('reviewScreen');
   $('setTitle').textContent = `${fa(id)}. ${name}`;
@@ -730,7 +728,7 @@ function updateStats() {
   $('cKeep').textContent = fa(k);
   $('cReject').textContent = fa(r);
   $('cAll').textContent = fa(t);
-  $('undoBtn').disabled = !history.length;
+  $('undoBtn').disabled = !undoStack.length;
 }
 
 // ---- Reader controls ----
@@ -844,7 +842,7 @@ function render() {
 function decide(status) {
   if (!VIEW.length || idx >= VIEW.length) return;
   const p = VIEW[idx], card = $('card');
-  history.push({ id: p.source_post_id, prev: decisions[p.source_post_id] || null });
+  undoStack.push({ id: p.source_post_id, prev: decisions[p.source_post_id] || null });
   decisions[p.source_post_id] = status;
   save(p.source_post_id, status);
   card.classList.add(status === 'keep' ? 'out-r' : 'out-l');
@@ -860,7 +858,7 @@ function decide(status) {
 }
 
 function undo() {
-  const last = history.pop();
+  const last = undoStack.pop();
   if (!last) return;
   if (last.prev) decisions[last.id] = last.prev; else delete decisions[last.id];
   save(last.id, last.prev);
@@ -1018,12 +1016,6 @@ window.addEventListener('popstate', () => {
   else showSets();
 });
 
-document.addEventListener('click', e => {
-  const a = e.target.closest('a[href="/kept"]');
-  if (!a) return;
-  e.preventDefault();
-  goKept();
-});
 
 // ---- Boot ----
 (async () => {
