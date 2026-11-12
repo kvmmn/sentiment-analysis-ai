@@ -71,7 +71,11 @@ test('kept export rejects an unknown reviewer without querying', async () => {
 
 test('public UI has the kept page, who-kept filter, and download control', () => {
   assert.match(html, /id="keptScreen"/);
-  assert.match(html, /href="\/kept"/);
+  assert.match(html, /class="kept-entry" href="\/kept"/);
+  assert.match(html, /id="setsGrid"/);
+  assert.ok(html.indexOf('id="setsGrid"') < html.indexOf('class="kept-entry" href="/kept"'));
+  assert.ok(html.indexOf('class="kept-entry" href="/kept"') < html.indexOf('href="/api/export"'));
+  assert.doesNotMatch(html, /id="setTitle"[\s\S]{0,80}href="\/kept"/);
   assert.match(html, /id="keptByFilter"/);
   assert.match(html, /downloadKept\(/);
   assert.match(html, /دانلود پست‌های نگه داشته‌شده/);

@@ -783,3 +783,11 @@ Then open `http://127.0.0.1:8765/`. Another person running the same command agai
 **Verification:** `cd web/swipe && npm test` (8/8: export-strip unit tests, session required on kept routes, `/kept` serves the app shell, UI still contains review keep/reject). Chrome (1280×800 and 390×844) logged in with a throwaway password, opened `/kept` from the sets link, saw the who-kept filter, download control, and prev/next pager, then returned to sets; keep/reject markup stayed in the DOM. Live Neon paging of real kept posts was not run here (`DATABASE_URL` is not present). Downloaded files that contain post text must not be committed.
 
 **Unresolved:** the export is JSON, not CSV/SQLite. No claim that the keep/reject marks are completed relevance coding.
+
+## 55. Kept-posts link moved to the bottom of the sets screen (2026-11-12)
+
+**Request (Kaveh):** the `/kept` link on the team swipe app was easy to miss in the header. Move it to the **bottom** of the swipe (sets) page and make it more visible. Then click through production/preview: open `/kept`, filter, paging, anonymized JSON download.
+
+**Change:** removed the small header text links (sets header and review header). The sets screen now has a full-width green **پست‌های نگه داشته‌شده** card under the reviewer sets and above the existing decisions-export / logout row. Review keep/reject UI is otherwise unchanged.
+
+**Verification:** `cd web/swipe && npm test` (8/8). Chrome: production login at https://saintiment.vercel.app/ loads; `/kept` stays behind the team password (`/api/kept` 401 without session). Local dummy-password login showed the new green card **below** the sets list; clicking it opened `/kept` with the who-kept filter, JSON download, and prev/next. Vercel MCP does not decrypt `TEAM_PASSWORD` (sensitive, empty value), so authenticated production filter/paging/download was not completed here. Neon `_saintiment_swipe_team_db` currently has 471 keep / 1,387 reject of 1,858 posts (counts only; no post text pulled). Downloaded files with post text must not be committed.
