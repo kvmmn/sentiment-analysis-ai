@@ -72,6 +72,19 @@ On GitHub, open the file and use Raw or Download. These paths are the files in t
 
 YAML, `queries.md`, and the Word file were generated from `queries.json` on 12 November 2026. A check with a local YAML parser loaded the YAML back to the same JSON object. The Word file contains every Q ID and every Boolean string. No query was added. The Word file was written with Python's standard library, not a new project dependency.
 
+### Keywords in that executed list (55)
+
+The 55 terms are the `keywords` object in `queries.json`, the same terms as section 1 of `keywords-and-queries.md`. The 12 post-filters are in the same downloads, under `post_filters_not_in_the_query`. They were not part of the Boolean strings. No term was added.
+
+| Format | File |
+| --- | --- |
+| JSON | [keywords.json](research/keywords/linkedin-apify-2026-10-17/keywords.json) |
+| Markdown | [keywords.md](research/keywords/linkedin-apify-2026-10-17/keywords.md) |
+| YAML | [keywords.yaml](research/keywords/linkedin-apify-2026-10-17/keywords.yaml) |
+| Word | [keywords.docx](research/keywords/linkedin-apify-2026-10-17/keywords.docx) |
+
+`keywords.yaml` loads back to the same JSON object as `keywords.json`. The Word file lists every term in those groups and every post-filter. Python's standard library wrote the Word file.
+
 Family totals from `queries.raw_hits_count` and distinct `post_query_hits.post_id`, same database read. Distinct posts overlap across families, so the last column does not sum to 1,858.
 
 | Family | Queries | Raw hits | Distinct posts |
@@ -99,12 +112,21 @@ This is the decomposition used for Apify run `tKJavW6tIKBOP7NlO` (1,486 raw item
 
 Markdown, YAML, and Word were generated from `subqueries.json` on 12 November 2026. The YAML loads back to the same 105 strings. Recomputed from those strings, each has 3–5 `AND` / `OR` / `NOT` operators.
 
+The three term lists that `decompose.py` multiplies into those 105 strings are separate downloads. Counts in the source: domain 10, AI 5, labor/competency 13. No term was added.
+
+| Format | File |
+| --- | --- |
+| JSON | [term-blocks.json](research/keywords/linkedin-boolean-2026-10-07/term-blocks.json) |
+| Markdown | [term-blocks.md](research/keywords/linkedin-boolean-2026-10-07/term-blocks.md) |
+| YAML | [term-blocks.yaml](research/keywords/linkedin-boolean-2026-10-07/term-blocks.yaml) |
+| Word | [term-blocks.docx](research/keywords/linkedin-boolean-2026-10-07/term-blocks.docx) |
+
 ### Version A (19) and Version B (85)
 
 The team has not yet decided these lists. They are **not in this repository**, so this page does not link a download for them.
 
-- **Version A, 19 sub-queries.** [Project log §49](research/project-log.md#49-apify-query-list-for-the-next-round-2026-10-17) says a file referred to as the 19 option-A queries was not in the repository and was not found in Drive. `build_queries.py` mentions a Tier 2 two-layer Option A in its header comment and then writes only the 48 three-layer queries. TODO: the 19 strings, when the team supplies the file.
-- **Version B, 85 queries.** No file, commit, or project-log entry in this repository names an 85-query list. TODO.
+- **Version A, 19 sub-queries.** [Project log §49](research/project-log.md#49-apify-query-list-for-the-next-round-2026-10-17) says a file referred to as the 19 option-A queries was not in the repository and was not found in Drive. `build_queries.py` on this branch writes only the 48 three-layer queries. Commit `4d14c48` is not on `main`. It is on `cursor/apify-query-round-c795` (tip `ce2e6f0`), whose README calls its 19 option-A strings a reconstruction because the original file was missing. Those strings are Q37–Q55 with tier `tier2_two_layer` on that branch only. They are not copied here, and they are not relabeled as the missing 16 October file. `subqueries_version_a.json` is still absent. TODO: the original 19 strings, when the team supplies the file.
+- **Version B, 85 queries.** No file on any branch is named `subqueries_version_b.json`. No project-log entry in this repository names an 85-query list. TODO.
 
 Query version 1 is not frozen.
 
@@ -132,6 +154,7 @@ The September pilot numbers, including the Run 013 analysis of 1,076 posts, stay
 - [Code index](src/README.md), including [Iman's local submission](src/README.md#imans-submission-local-only)
 - [Experiment workflow](experiments/README.md) and [live-pilot plan](experiments/2026-09-17-iman-live-pilot.md)
 - [15 September team letter](research/team/team-feedback-to-team-2026-09-15-FA.md)
+- Keyword-instrument downloads (literature strings, discourse catalog, lexicon, legacy scraper phrases) are linked from the [research index](research/README.md#historical-keyword-instruments--august-proposals). The lists are not copied onto this page. The annotation codebook stays in the local submission and is not in this public repository, so it has no download here.
 
 ## Where files belong
 

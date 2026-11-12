@@ -2,6 +2,8 @@
 
 Status: **sourced retrieval catalog**, 2026-08-31. Terms for **permitted** discourse retrieval when platform access exists. This is **not a harvest plan**, **not a collection licence**, and **not** the sentiment coding lexicon.
 
+**Downloads (generated 2026-11-12 from this file):** [JSON](discourse-terms.json) · [Markdown](discourse-terms.md) · [YAML](discourse-terms.yaml) · [Word](discourse-terms.docx). Tables, bullets, and the Layer B comma list. Other prose stays in this file.
+
 **Status notice — 2026-09-17:** The two-layer sampling rules below preserve the historical August proposal. On 2026-09-10, Kaveh adopted **Domain ∧ Technology ∧ Labor/Competency** as the three-pillar working frame for review. Queries and individual terms are **not frozen**; the catalog terms are preserved, not a current collection protocol. See [current working method and history](../README.md).
 
 **Critical rule:** **Sentiment lemmas belong in DO-NOT-RETRIEVE** — use [keyword-lexicon.md](keyword-lexicon.md) for post-sample coding only.

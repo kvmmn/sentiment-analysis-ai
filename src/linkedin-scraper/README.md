@@ -28,6 +28,8 @@ For any separately approved future run, the launch working directory (CWD) must 
 
 The legacy flow reads `keywords.txt` (one phrase per line, `#` comments ignored), opens a persistent Chrome context for manual login, searches and scrolls results, and writes `linkedin_posts.db` and `linkedin_posts.csv`. Do not initiate that flow merely because the folder was relocated.
 
+Downloads of those seven phrases, generated from `keywords.txt` on 2026-11-12: [JSON](keywords.json) · [Markdown](keywords.md) · [YAML](keywords.yaml) · [Word](keywords.docx). No phrase was added. This remains the historical exploratory list.
+
 ## Historical configuration (not revalidated)
 
 The original guide documented these settings in the `CONFIG` section of `scraper.py`; this table is not a new verification of the implementation:

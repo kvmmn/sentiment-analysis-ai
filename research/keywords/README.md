@@ -155,3 +155,17 @@ A hit count of 50 is the `maxPosts` cap recorded for the run. Eleven queries are
 ## Other keyword notes
 
 Literature strings, the August discourse catalog, the lexicon, and the September working-frame decision stay in the [research index](../README.md). Those notes are not the executed Apify lists above.
+
+Downloads generated from those working copies on 12 November 2026, without adding terms:
+
+| List | JSON | Markdown | YAML | Word |
+| --- | --- | --- | --- | --- |
+| 55 executed keywords and the post-filters | [keywords.json](linkedin-apify-2026-10-17/keywords.json) | [keywords.md](linkedin-apify-2026-10-17/keywords.md) | [keywords.yaml](linkedin-apify-2026-10-17/keywords.yaml) | [keywords.docx](linkedin-apify-2026-10-17/keywords.docx) |
+| 7 October term blocks (10 / 5 / 13) | [term-blocks.json](linkedin-boolean-2026-10-07/term-blocks.json) | [term-blocks.md](linkedin-boolean-2026-10-07/term-blocks.md) | [term-blocks.yaml](linkedin-boolean-2026-10-07/term-blocks.yaml) | [term-blocks.docx](linkedin-boolean-2026-10-07/term-blocks.docx) |
+| Literature strings | [literature-strings.json](literature-strings.json) | [literature-strings.md](literature-strings.md) | [literature-strings.yaml](literature-strings.yaml) | [literature-strings.docx](literature-strings.docx) |
+| Discourse catalog lists | [discourse-terms.json](discourse-terms.json) | [discourse-terms.md](discourse-terms.md) | [discourse-terms.yaml](discourse-terms.yaml) | [discourse-terms.docx](discourse-terms.docx) |
+| Lexicon tables and middle-dot lists | [lexicon.json](lexicon.json) | [lexicon.md](lexicon.md) | [lexicon.yaml](lexicon.yaml) | [lexicon.docx](lexicon.docx) |
+
+The generator is [export_working_lists.py](export_working_lists.py). It reads the existing sources only.
+
+Version A and Version B are still absent here. Commit `4d14c48` is not on `main`. It is on `cursor/apify-query-round-c795` (tip `ce2e6f0`), which still has `tier2_two_layer`. That branch's README says the 19 option-A strings are a reconstruction because the original 16 October file was missing. Q37–Q55 on that branch are that reconstruction. This index does not relabel them as `subqueries_version_a.json`. `subqueries_version_b.json` and `docs/layer2-query-decision-2026-10-16.html` are still absent from every branch.

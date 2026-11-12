@@ -1,0 +1,400 @@
+generated: "2026-11-12"
+source: "research/keywords/keyword-discourse-catalog.md"
+note: "Tables, bullet lines, and the Layer B comma list from that file. Other prose stays in the source. No lemma was added. GAP rows are copied as written."
+tables:
+  - heading: "Host ruling details (03 conflict)"
+    columns:
+      - "Ruling"
+      - "Outcome"
+    rows:
+      -
+        - "FA `هوش مصنوعی مولد`"
+        - "**KEEP** — sourced journal/CPD use; not Farhangestan-approved; not invented calque"
+      -
+        - "FA legal office"
+        - "**دفتر مهندسی** (INBR) — not `دفتر معماری`"
+      -
+        - "FA BIM (both INSO)"
+        - "**Not Layer A**"
+      -
+        - "DE `Dequalifizierung`, `Architektur`+KI"
+        - "Layer B / pairing rules per host"
+      -
+        - "EN `archviz`, `AI rendering`, skill terms"
+        - "DISCOURSE-NOT-CONTROLLED or Layer B rules per host"
+      -
+        - "FA `دانشجوی معماری`"
+        - "Optional collocation — not required Layer A"
+      -
+        - "FA `مهارت‌زدایی`"
+        - "**GAP** (Braverman) — English `deskilling` in mixed FA scholarly queries"
+  - heading: "Layer model (discourse)"
+    columns:
+      - "Layer"
+      - "EN role"
+      - "Retrieval"
+    rows:
+      -
+        - "**A**"
+        - "Architecture object **AND** GenAI"
+        - "Required for neutral discovery"
+      -
+        - "**B**"
+        - "Deskilling, authorship, judgment, labour, professional identity"
+        - "Second filter only — **must not select RQ1 sample**"
+  - heading: "DISCOURSE-NOT-CONTROLLED — optional Layer A recall"
+    columns:
+      - "Term"
+      - "Layer"
+      - "Notes"
+    rows:
+      -
+        - "archviz"
+        - "A (optional)"
+        - "EN only — no FA/DE calque"
+      -
+        - "AI rendering"
+        - "A (optional)"
+        - "Pair with architecture object"
+      -
+        - "architectural visualization"
+        - "A (optional)"
+        - "US spelling variant"
+      -
+        - "architectural visualisation"
+        - "A (optional)"
+        - "UK spelling variant"
+  - heading: "Layer B — inside Layer A only"
+    columns:
+      - "Term"
+      - "Layer"
+      - "Notes"
+    rows:
+      -
+        - "skill loss"
+        - "B"
+        - "Plain-language variant — **not** Braverman's technical lemma"
+      -
+        - "industry leader"
+        - "—"
+        - "**GAP** as controlled retrieval vocab — **code role after retrieval** (RQ4)"
+  - heading: "Hashtags (EN) — high noise"
+    columns:
+      - "Tag / pattern"
+      - "Status"
+    rows:
+      -
+        - "architecture + GenAI combined hashtags"
+        - "High noise — pilot before scale"
+      -
+        - "`#constructionAI`"
+        - "Adjacent-AEC (teammate); not primary architecture"
+      -
+        - "`#GenAIandBuiltEnvironment`"
+        - "Adjacent-AEC; **no scholarly hit** (see [keyword-source-identification.md](keyword-source-identification.md))"
+      -
+        - "`#GenerativeAI`, `#GenAi`"
+        - "Broad GenAI noise"
+  - heading: "Persian / Farsi (FA) — sourced lemmas"
+    columns:
+      - "Lemma (Persian)"
+      - "Transliteration"
+      - "Source"
+      - "Layer"
+      - "Notes"
+    rows:
+      -
+        - "معمار / معماری"
+        - "memar / memari"
+        - "Farhangestan"
+        - "A"
+        - "Architecture / architect"
+      -
+        - "مهندس معمار"
+        - "mohandes-e memar"
+        - "IRCEO (1374 Law)"
+        - "A"
+        - "Licensed architect engineer"
+      -
+        - "رشته معمار"
+        - "reshte-ye memari"
+        - "IRCEO"
+        - "A"
+        - "Architecture discipline"
+      -
+        - "دفتر مهندسی"
+        - "daftar-e mohandesi"
+        - "INBR"
+        - "A"
+        - "**INBR legal office term** — do **not** invent `دفتر معماری` as Nezam terminology"
+      -
+        - "هوش مصنوعی مولد"
+        - "hush-e masnui-ye movalled"
+        - "Honar-ha-ye Ziba; IRCEO LMS 1180313"
+        - "A"
+        - "Sourced — https://jfaup.ut.ac.ir/p_generative-ai ; syllabus `آشنایی با هوش مصنوعی مولد` — **not** Farhangestan-approved; **not** invented calque"
+      -
+        - "پرامپت‌نویسی + ChatGPT"
+        - "prompt-nevisi"
+        - "IRCEO"
+        - "A"
+        - "Prompt-writing with ChatGPT"
+      -
+        - "نویسندگی"
+        - "nevisandegi"
+        - "IRCEO / discourse"
+        - "B"
+        - "Writing / authorship"
+      -
+        - "تفکر نقادانه"
+        - "tafakkur-e naqqadane"
+        - "Architecture education"
+        - "B"
+        - "Critical thinking"
+      -
+        - "استودیو"
+        - "ostudiyo"
+        - "Studio context"
+        - "A"
+        - "Weak alone — pair with memari"
+      -
+        - "دانشجوی معماری"
+        - "daneshjoo-ye memari"
+        - "Discourse collocation"
+        - "A (optional)"
+        - "**Not** Academy controlled vocab — do **not** require in Layer A"
+  - heading: "FA — BIM (both INSO wordings; not Layer A)"
+    columns:
+      - "Lemma (Persian)"
+      - "Standard"
+      - "Layer"
+      - "Notes"
+    rows:
+      -
+        - "مدلسازی اطلاعات ساخت"
+        - "**INSO 23198-1**"
+        - "—"
+        - "**Not Layer A**"
+      -
+        - "مدل سازی اطلاعات ساختمان"
+        - "**INSO 12690-1**"
+        - "—"
+        - "**Not Layer A** — keep **both** wordings"
+  - heading: "FA — NOT approved / GAP"
+    columns:
+      - "Item"
+      - "Status"
+    rows:
+      -
+        - "hushvare / humas for GenAI"
+        - "**NOT approved** (Mehr 1405) — do not retrieve"
+      -
+        - "مهارت‌زدایی"
+        - "**GAP** as Braverman deskilling equivalent — use **English** `deskilling` in mixed FA scholarly queries"
+      -
+        - "deskilling (FA lemma)"
+        - "**GAP**"
+      -
+        - "hashtag set"
+        - "**GAP** — do not invent"
+      -
+        - "validated FA architecture sentiment dictionary"
+        - "**GAP**"
+      -
+        - "ISO 6707 FA"
+        - "**GAP**"
+      -
+        - "UNESCO FA architecture terms"
+        - "**GAP**"
+      -
+        - "`دفتر معماری` as Nezam terminology"
+        - "**Do not invent** — use `دفتر مهندسی` (INBR)"
+  - heading: "German (DE) — sourced lemmas"
+    columns:
+      - "Lemma"
+      - "Source"
+      - "Layer"
+      - "Notes"
+    rows:
+      -
+        - "Künstliche Intelligenz"
+        - "Standard"
+        - "A"
+        - "AI"
+      -
+        - "generative KI"
+        - "Standard / BAK"
+        - "A"
+        - "GenAI"
+      -
+        - "KI-Bildgeneratoren"
+        - "BAK/AKNW"
+        - "A"
+        - "Image generators"
+      -
+        - "Prompts"
+        - "BAK"
+        - "A"
+        - "Prompt engineering"
+      -
+        - "ChatGPT"
+        - "Duden"
+        - "A"
+        - "Proper noun in Duden"
+      -
+        - "Architekturbüro"
+        - "Professional"
+        - "A"
+        - "Architecture office"
+      -
+        - "Architektinnen und Architekten"
+        - "Professional"
+        - "A"
+        - "Gender-inclusive profession"
+      -
+        - "Architektenschaft"
+        - "Professional"
+        - "A"
+        - "Profession collective"
+      -
+        - "Planende"
+        - "BAK"
+        - "A"
+        - "Planning professionals"
+      -
+        - "Entwerfen"
+        - "Design process"
+        - "A"
+        - "Designing"
+      -
+        - "Gebäudevisualisierungen"
+        - "BAK/AKNW"
+        - "A"
+        - "Building visualizations"
+      -
+        - "Bauwerksinformationsmodellierung"
+        - "DIN EN ISO 19650"
+        - "—"
+        - "BIM — **not Layer A** unless paired with GenAI"
+  - heading: "DE — Layer B only"
+    columns:
+      - "Lemma"
+      - "Source"
+      - "Notes"
+    rows:
+      -
+        - "Deskilling (loanword)"
+        - "Discourse"
+        - "English loan"
+      -
+        - "Dequalifizierung"
+        - "Duden"
+        - "**Layer B only** — host ruling"
+      -
+        - "Kompetenzverlust"
+        - "Duden"
+        - "Skill loss"
+      -
+        - "Urheberrecht"
+        - "Legal"
+        - "Copyright"
+      -
+        - "Autorschaft"
+        - "Legal/professional"
+        - "Authorship"
+      -
+        - "Verantwortung"
+        - "Professional ethics"
+        - "Responsibility"
+      -
+        - "Berufsbild"
+        - "Professional identity"
+        - "Professional profile"
+  - heading: "DE — warnings"
+    columns:
+      - "Item"
+      - "Rule"
+    rows:
+      -
+        - "**Architektur** alone"
+        - "Hits IT / software architecture — always **AND** with **KI** or **`Architekt*`** + exclusion set"
+      -
+        - "**archviz**"
+        - "Stay **EN**; no FA/DE calque"
+      -
+        - "Dequalifizierung / deskilling lemmas"
+        - "**Layer B only** — never sample selector"
+      -
+        - "Hashtag set"
+        - "**GAP** — do not invent"
+      -
+        - "validated DE architecture sentiment dictionary"
+        - "**GAP**"
+  - heading: "Warrants (professional — not retrieval strings)"
+    columns:
+      - "Source"
+      - "Use in project"
+    rows:
+      -
+        - "RIBA AI Report 2025"
+        - "Professional judgment, human creativity framing"
+      -
+        - "AIA AI Firm Toolkit"
+        - "Firm governance of GenAI"
+      -
+        - "ARB competency outcomes"
+        - "Regulatory skill expectations"
+      -
+        - "BAK KI FAQ"
+        - "German chamber AI guidance"
+      -
+        - "Braverman / SBTC"
+        - "Layer 2 labour-market vocabulary only"
+bullets:
+  - heading: "Host ruling details (03 conflict)"
+    text: "**`دفتر مهندسی`** is the **INBR** legal office term; do **not** invent **`دفتر معماری`** as Nezam terminology."
+  - heading: "Host ruling details (03 conflict)"
+    text: "**BIM (FA):** keep **both** INSO 23198-1 **`مدلسازی اطلاعات ساخت`** and INSO 12690-1 **`مدل سازی اطلاعات ساختمان`**; **not Layer A**."
+  - heading: "Host ruling details (03 conflict)"
+    text: "**`هوش مصنوعی مولد`** is sourced to https://jfaup.ut.ac.ir/p_generative-ai and IRCEO LMS course **1180313** syllabus (**`آشنایی با هوش مصنوعی مولد`** — https://lmsiriceo.ir/course/show/470/d98d61b1b9f19d88849096542a221190); **not** Farhangestan-approved; **not** an invented calque."
+  - heading: "Layer A — architecture + GenAI (controlled core)"
+    text: "architect, architectural, architectural design, architecture firm, architecture student, architectural education, design studio, architectural practice, architecture practice"
+  - heading: "Layer A — architecture + GenAI (controlled core)"
+    text: "generative AI, GenAI, Midjourney, ChatGPT, DALL-E, Stable Diffusion, text-to-image, LLM"
+  - heading: "Not Layer A — optional Layer B only"
+    text: "design thinking"
+  - heading: "Not Layer A — optional Layer B only"
+    text: "computational design"
+  - heading: "Not Layer A — optional Layer B only"
+    text: "hand drawing"
+  - heading: "Exclusions (EN)"
+    text: "software architect, software architecture, solutions architect, enterprise architecture, cloud architect, computer architecture, IT architect, data architect, network architect, security architect, systems architect"
+  - heading: "Exclusions (EN)"
+    text: "Generic AI with **no architecture object**"
+  - heading: "Exclusions (EN)"
+    text: "BIM-only posts with **no GenAI** cue"
+  - heading: "Exclusions (EN)"
+    text: "Job ads / promotional templates (low-authenticity screen per teammate description)"
+  - heading: "FA — GenAI lemma sources (`هوش مصنوعی مولد`)"
+    text: "Honar-ha-ye Ziba (_Me'mari va Shahrsazi_): generative-AI policy page — heading and body use `هوش مصنوعی مولد` — https://jfaup.ut.ac.ir/p_generative-ai"
+  - heading: "FA — GenAI lemma sources (`هوش مصنوعی مولد`)"
+    text: "IRCEO LMS course 1180313 syllabus: `آشنایی با هوش مصنوعی مولد` — https://lmsiriceo.ir/course/show/470/d98d61b1b9f19d88849096542a221190 (same syllabus on Nezam Qom news 1796)"
+  - heading: "DO-NOT-RETRIEVE (all languages)"
+    text: "excited, terrified, hype, threat, fear, optimism, positive sentiment, negative sentiment, stance markers, emotion lexicons"
+  - heading: "Gaps summary"
+    text: "Two 03 drafts recorded; conflicts resolved per host — not silent merge"
+  - heading: "Gaps summary"
+    text: "Larbi (2026) methods unread — no import of their discourse lemmas"
+  - heading: "Gaps summary"
+    text: "Teammate LinkedIn 71/6173 unpublished"
+  - heading: "Gaps summary"
+    text: "FA `مهارت‌زدایی`, FA/DE hashtags, ISO 6707 FA/DE, UNESCO FA"
+  - heading: "Gaps summary"
+    text: "EN `industry leader` as controlled retrieval vocab"
+  - heading: "Gaps summary"
+    text: "No live platform query tests on 2026-08-31"
+  - heading: "Gaps summary"
+    text: "No validated FA/DE sentiment dictionaries for architecture discourse"
+plain_term_lines:
+  - heading: "Layer B — inside Layer A only"
+    text: "Deskilling, de-skilling, upskilling, reskilling, authorship, professional judgment, creativity, critical thinking, Urheberrecht (when DE cross-pass), competency / ARB outcomes language."
