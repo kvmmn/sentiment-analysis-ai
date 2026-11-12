@@ -842,6 +842,11 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 
 **Not created:** `subqueries_version_a.json`, `subqueries_version_b.json`, and `docs/layer2-query-decision-2026-10-16.html`. A search of branches and git objects still does not find those paths. Commit `4d14c48` is not on `main`. It is on `origin/cursor/apify-query-round-c795` (tip `ce2e6f0`), which still has `tier2_two_layer`. That branch's README says the 19 option-A strings are a reconstruction because the original 16 October file was missing. Q37–Q55 there are that reconstruction. They were not copied onto `main` and were not relabeled as the missing file.
 
-**Pull requests:** #1–#8, #10, #11, and #13–#15 and #17–#18 were already merged, or were already closed with a reason (#1 closed unmerged; #6 closed as superseded by #7; #12 closed as replaced by the branch that became #13). Open leftovers are recorded on the pull requests themselves: #16 is the earlier kept-posts button fix superseded by merged #17, and #9 is the 17 October draft whose executed 48-query list is already on `main` while the reconstruction stays only on that branch.
+**Pull requests:** #2–#5, #7, #8, #10, #11, #13–#15, #17, and #18 are merged. #1, #6, and #12 were already closed without merge (#6’s comment says it was superseded by #7; #12’s comment says it was replaced by the branch that became #13). #1 has no comment; its PDF never landed, and this change does not add one.
+
+#9 and #16 were still open. Closing them from this session failed: GitHub returned 403 for issue comments, so no close comment could be posted. They were left open. The reasons, for someone who can close them:
+
+- **#16.** Superseded by merged #17. Main already has the small `href="/kept"` link, `undoStack`, `window.history.pushState`, and `inert` on inactive screens. #16 still proposes the earlier green button and does not merge cleanly. Close as a duplicate of #17. Do not copy the green button back.
+- **#9.** Abandoned draft. The executed 48 three-layer queries are already on `main`. This branch (`cursor/apify-query-round-c795`, tip `ce2e6f0`, including commit `4d14c48`) still has `tier2_two_layer`. Its README calls the 19 option-A strings a reconstruction. Close it without copying Q37–Q55 onto `main`, and without calling that reconstruction the missing 16 October file.
 
 **Unresolved:** the original Version A and Version B files, the 16 October HTML note, query version 1, what the 471 kept posts are for, ethics and terms of use, and the article and thesis.
