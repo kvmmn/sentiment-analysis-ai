@@ -1,0 +1,14 @@
+{
+  "generated": "2026-11-12",
+  "source": "src/linkedin-scraper/keywords.txt",
+  "note": "One phrase per non-comment line of the legacy scraper keyword file. Historical exploratory list, not an approved collection set. No phrase was added.",
+  "phrases": [
+    "\"generative AI\" architecture",
+    "\"AI rendering\" architect",
+    "\"Midjourney\" architect",
+    "\"ChatGPT\" architecture",
+    "\"AI assisted design\"",
+    "\"future of architects\"",
+    "\"deskilling\" architecture"
+  ]
+}

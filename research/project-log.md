@@ -1,6 +1,6 @@
 # Project Log
 
-**Homepage — 12 November 2026:** the root README is the team entry point, with the Vercel review links, screening counts re-read from Neon, and query downloads. See [section 57](#57-team-homepage-and-query-downloads-2026-11-12). Version A (19) and Version B (85) are still not in the repository.
+**Homepage — 12 November 2026:** the root README is the team entry point, with the Vercel review links, screening counts re-read from Neon, and query downloads. See [section 57](#57-team-homepage-and-query-downloads-2026-11-12). Keyword-list downloads for the other working copies are in [section 58](#58-keyword-list-downloads-and-pull-request-review-2026-11-12). Version A (19) and Version B (85) are still not in the repository. Commit `4d14c48` is on `cursor/apify-query-round-c795`, not on `main`.
 
 **Swipe review — 5 November 2026:** one-post keep/drop marks are stored on the three-layer Neon corpus. See [section 53](#53-shared-swipe-marks-and-one-post-review-screen-2026-11-05). No relevance judgments have been recorded. The 12 November team-app counts live in `_saintiment_swipe_team_db`, not in that corpus table.
 
@@ -822,3 +822,31 @@ Then open `http://127.0.0.1:8765/`. Another person running the same command agai
 - `_saintiment_db`: 3,354 `master_posts` (Apify 2,954, Coresignal 200, Bright Data 200) and 4,044 `raw_items`.
 
 **Unresolved:** Version A, Version B, the missing 16 October HTML note, what the 471 kept posts are for, query version 1, ethics and terms of use, and the article and thesis. The screening marks are not a relevance codebook.
+
+## 58. Keyword-list downloads and pull-request review (2026-11-12)
+
+**Request (Kaveh, 2026-11-12):** give the other list-like working copies the same JSON, Markdown, YAML, and Word downloads as the query lists, linked from the README section each list belongs to, and review open and closed pull requests. Do not invent strings. Do not treat a reconstruction as the missing 16 October file.
+
+**Change:** [export_working_lists.py](keywords/export_working_lists.py) reads existing sources and writes the downloads with the standard library (Word is a `.docx` zip). No package was added. No term or query string was added.
+
+| List | Source already in the repository | Downloads |
+| --- | --- | --- |
+| 55 executed keywords and 12 post-filters | `queries.json` | `linkedin-apify-2026-10-17/keywords.json`, `.md`, `.yaml`, `.docx` |
+| 7 October term blocks (10, 5, and 13) | `decompose.py` | `linkedin-boolean-2026-10-07/term-blocks.json`, `.md`, `.yaml`, `.docx` |
+| Literature paste strings and the tables in that file | `keyword-literature-strings.md` | `literature-strings.json`, `.md`, `.yaml`, `.docx` |
+| Discourse tables, bullets, and the Layer B comma line | `keyword-discourse-catalog.md` | `discourse-terms.json`, `.md`, `.yaml`, `.docx` |
+| Lexicon term tables, middle-dot lists, and the Counts table as written | `keyword-lexicon.md` | `lexicon.json`, `.md`, `.yaml`, `.docx` |
+| Seven legacy scraper phrases | `src/linkedin-scraper/keywords.txt` | `keywords.json`, `.md`, `.yaml`, `.docx` beside that file |
+
+YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105-subquery downloads from section 57 were left in place. The annotation codebook remains local-only and was not exported. Keyword-systems, search-storage, and source-identification notes were not turned into a second list.
+
+**Not created:** `subqueries_version_a.json`, `subqueries_version_b.json`, and `docs/layer2-query-decision-2026-10-16.html`. A search of branches and git objects still does not find those paths. Commit `4d14c48` is not on `main`. It is on `origin/cursor/apify-query-round-c795` (tip `ce2e6f0`), which still has `tier2_two_layer`. That branch's README says the 19 option-A strings are a reconstruction because the original 16 October file was missing. Q37–Q55 there are that reconstruction. They were not copied onto `main` and were not relabeled as the missing file.
+
+**Pull requests:** #2–#5, #7, #8, #10, #11, #13–#15, #17, and #18 are merged. #1, #6, and #12 were already closed without merge (#6’s comment says it was superseded by #7; #12’s comment says it was replaced by the branch that became #13). #1 has no comment; its PDF never landed, and this change does not add one.
+
+#9 and #16 were still open. Closing them from this session failed: GitHub returned 403 for issue comments, so no close comment could be posted. They were left open. The reasons, for someone who can close them:
+
+- **#16.** Superseded by merged #17. Main already has the small `href="/kept"` link, `undoStack`, `window.history.pushState`, and `inert` on inactive screens. #16 still proposes the earlier green button and does not merge cleanly. Close as a duplicate of #17. Do not copy the green button back.
+- **#9.** Abandoned draft. The executed 48 three-layer queries are already on `main`. This branch (`cursor/apify-query-round-c795`, tip `ce2e6f0`, including commit `4d14c48`) still has `tier2_two_layer`. Its README calls the 19 option-A strings a reconstruction. Close it without copying Q37–Q55 onto `main`, and without calling that reconstruction the missing 16 October file.
+
+**Unresolved:** the original Version A and Version B files, the 16 October HTML note, query version 1, what the 471 kept posts are for, ethics and terms of use, and the article and thesis.

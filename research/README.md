@@ -25,9 +25,24 @@ The two-layer architecture + GenAI, then skill-filter sampling proposal is histo
 | [Keyword lexicon](keywords/keyword-lexicon.md)                     | Preserved categorized terms and coding vocabulary; not a validated thesaurus                   |
 | [Search scope and storage](keywords/keywords-search-storage.md)    | Historical sampling sketches and proposed handling requirements                                |
 | [Source identification](keywords/keyword-source-identification.md) | Dated comparison of teammate claims and published analogues, including unresolved evidence     |
-| [LinkedIn Boolean sub-queries, 2026-10-07](keywords/linkedin-boolean-2026-10-07/subqueries.json) | 105 executable sub-queries and the script that generated them from the agreed three-block query; terms only, no collected data |
-| [Apify three-layer list, 2026-10-17 / finalized 2026-10-18](keywords/linkedin-apify-2026-10-17/README.md) | Confirmed final list for the Apify pass; the [clean three-layer file](keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) writes all 55 keywords and 48 three-layer queries in full |
-| [HTML catalog](../docs/archive/2026-09-25-historical-keyword-catalog.html) | Presentation of the historical August catalog, with current status notice (archived 2026-09-25; `docs/index.html` now redirects to the 2026-09-25 team meeting guide) |
+| [LinkedIn Boolean sub-queries, 2026-10-07](keywords/linkedin-boolean-2026-10-07/subqueries.json) | 105 executable sub-queries and the script that generated them from the agreed three-block query; terms only, no collected data. Downloads: [JSON](keywords/linkedin-boolean-2026-10-07/subqueries.json), [Markdown](keywords/linkedin-boolean-2026-10-07/subqueries.md), [YAML](keywords/linkedin-boolean-2026-10-07/subqueries.yaml), [Word](keywords/linkedin-boolean-2026-10-07/subqueries.docx). The A/B/C term blocks: [JSON](keywords/linkedin-boolean-2026-10-07/term-blocks.json), [Markdown](keywords/linkedin-boolean-2026-10-07/term-blocks.md), [YAML](keywords/linkedin-boolean-2026-10-07/term-blocks.yaml), [Word](keywords/linkedin-boolean-2026-10-07/term-blocks.docx) |
+| [Apify three-layer list, 2026-10-17 / finalized 2026-10-18](keywords/linkedin-apify-2026-10-17/README.md) | Confirmed final list for the Apify pass; the [clean three-layer file](keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) writes all 55 keywords and 48 three-layer queries in full. Query downloads are in the [query index](keywords/README.md#downloads). The 55 keywords plus post-filters: [JSON](keywords/linkedin-apify-2026-10-17/keywords.json), [Markdown](keywords/linkedin-apify-2026-10-17/keywords.md), [YAML](keywords/linkedin-apify-2026-10-17/keywords.yaml), [Word](keywords/linkedin-apify-2026-10-17/keywords.docx) |
+| [HTML catalog](../docs/archive/2026-09-25-historical-keyword-catalog.html) | Presentation of the historical August catalog, with current status notice (archived 2026-09-25; `docs/index.html` now redirects to the 2026-09-25 team meeting guide). The working copies are the Markdown instruments below, not this HTML page |
+
+## Downloads for the list files
+
+Generated 2026-11-12 from the file already in that row. JSON, Markdown, YAML, and Word carry the same extracted lists. Word was written with Python's standard library. No term or string was added. Keyword systems, search scope, and source identification are notes, so the Markdown file is the copy.
+
+| List | JSON | Markdown | YAML | Word |
+| --- | --- | --- | --- | --- |
+| Literature strings | [JSON](keywords/literature-strings.json) | [Markdown](keywords/literature-strings.md) | [YAML](keywords/literature-strings.yaml) | [Word](keywords/literature-strings.docx) |
+| Discourse catalog | [JSON](keywords/discourse-terms.json) | [Markdown](keywords/discourse-terms.md) | [YAML](keywords/discourse-terms.yaml) | [Word](keywords/discourse-terms.docx) |
+| Lexicon | [JSON](keywords/lexicon.json) | [Markdown](keywords/lexicon.md) | [YAML](keywords/lexicon.yaml) | [Word](keywords/lexicon.docx) |
+| Legacy scraper phrases | [JSON](../src/linkedin-scraper/keywords.json) | [Markdown](../src/linkedin-scraper/keywords.md) | [YAML](../src/linkedin-scraper/keywords.yaml) | [Word](../src/linkedin-scraper/keywords.docx) |
+
+The annotation codebook named above is local-only (`_local/submissions/2026-09-06-iman-protocol-drafts/working-copies/03_ANNOTATION_CODEBOOK_AND_GUIDELINES.txt`). It is not in the public tree, so these formats were not generated for it.
+
+Version A (19) and Version B (85) are still not files in this repository. Commit `4d14c48` is on `cursor/apify-query-round-c795`, not on `main`. That branch's README calls its 19 option-A strings a reconstruction. They stay on that branch.
 
 ## Access and privacy
 
