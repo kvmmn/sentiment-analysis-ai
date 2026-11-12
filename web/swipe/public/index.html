@@ -587,7 +587,12 @@ function goSets() {
 }
 
 function goKept() {
-  if (!onKeptPath()) window.history.pushState({}, '', '/kept');
+  try {
+    if (!onKeptPath()) window.history.pushState({}, '', '/kept');
+  } catch {
+    location.assign('/kept');
+    return;
+  }
   return showKept();
 }
 
@@ -1015,7 +1020,6 @@ window.addEventListener('popstate', () => {
   else if ($('loginScreen').classList.contains('active')) return;
   else showSets();
 });
-
 
 // ---- Boot ----
 (async () => {

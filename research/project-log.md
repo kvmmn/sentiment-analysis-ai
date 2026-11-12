@@ -850,3 +850,15 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 - **#9.** Abandoned draft. The executed 48 three-layer queries are already on `main`. This branch (`cursor/apify-query-round-c795`, tip `ce2e6f0`, including commit `4d14c48`) still has `tier2_two_layer`. Its README calls the 19 option-A strings a reconstruction. Close it without copying Q37–Q55 onto `main`, and without calling that reconstruction the missing 16 October file.
 
 **Unresolved:** the original Version A and Version B files, the 16 October HTML note, query version 1, what the 471 kept posts are for, ethics and terms of use, and the article and thesis.
+
+## 59. Pull request #16 merged with main without restoring the green button (2026-11-12)
+
+**Request (Kaveh):** resolve merge conflicts on [#16](https://github.com/kvmmn/sentiment-analysis-ai/pull/16) against current `main`. Do not silently pick one side when intents conflict.
+
+**Conflict of intent:** #16 still proposed a full-width green **پست‌های نگه داشته‌شده** `<button>` plus a document click handler that `preventDefault()`s `/kept`. Merged [#17](https://github.com/kvmmn/sentiment-analysis-ai/pull/17) (project-log §56) already replaced that card with a small native `href="/kept"` text link and told later work not to copy the green button back.
+
+**Kept from `main` / #17:** the small `kept-link`, no JS click interceptor, `undoStack`, `inert` on inactive screens, and the font stylesheet that does not block first paint.
+
+**Kept from #16 only where it does not fight #17:** `goKept` still falls back to `location.assign('/kept')` if `pushState` throws. The green button, its CSS, and the click interceptor were not restored.
+
+**Verification:** `cd web/swipe && npm test`. This pull request was not merged. No force push. TEAM_PASSWORD was not printed.

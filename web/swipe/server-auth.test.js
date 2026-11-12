@@ -86,6 +86,8 @@ test('public UI has the kept page, who-kept filter, and download control', () =>
   assert.match(html, /\/api\/export/);
   assert.match(html, /onclick="decide\('keep'\)"/);
   assert.match(html, /window\.history\.pushState/);
+  assert.match(html, /undoStack/);
+  assert.doesNotMatch(html, /let [^=]*\bhistory\b/);
 });
 
 test('Express serves /kept as the same app shell', async () => {
