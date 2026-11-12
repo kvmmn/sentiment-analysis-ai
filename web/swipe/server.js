@@ -6,10 +6,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import { neon } from '@neondatabase/serverless';
+import { keptExportPayload, parseKeptBy } from './kept-export.js';
 
 const COOKIE = 'swipe_session';
 const SESSION_DAYS = 30;
 const REVIEWER_IDS = new Set([1, 2, 3]);
+const THIS_FILE = fileURLToPath(import.meta.url);
 
 let sqlClient;
 function sql() {
@@ -61,6 +63,46 @@ function readCookie(req, name) {
 function requireSession(req, res, next) {
   if (validToken(readCookie(req, COOKIE))) return next();
   res.status(401).json({ error: 'unauthorized' });
+}
+
+function isDirectRun() {
+  const entry = process.argv[1] && path.resolve(process.argv[1]);
+  return Boolean(entry) && path.resolve(entry) === THIS_FILE;
+}
+
+async function fetchKeptRows(by) {
+  if (by == null) {
+    return sql()`
+      SELECT p.source_post_id, p.post_type, p.post_url, p.posted_at, p.post_text, p.text_chars,
+             p.author_type, p.author_name, p.author_headline, p.author_url,
+             p.reactions, p.comments, p.shares, p.media,
+             p.matched_query_count, p.matched_query_codes, p.matched_families,
+             COALESCE(d.decided_by, d.reviewer_id) AS kept_by,
+             COALESCE(kb.name, r.name) AS kept_by_name,
+             COALESCE(kb.name_en, r.name_en) AS kept_by_name_en,
+             d.updated_at AS kept_at
+      FROM decisions d
+      JOIN posts p ON p.source_post_id = d.source_post_id
+      JOIN reviewers r ON r.id = d.reviewer_id
+      LEFT JOIN reviewers kb ON kb.id = d.decided_by
+      WHERE d.status = 'keep'
+      ORDER BY d.updated_at, p.source_post_id`;
+  }
+  return sql()`
+    SELECT p.source_post_id, p.post_type, p.post_url, p.posted_at, p.post_text, p.text_chars,
+           p.author_type, p.author_name, p.author_headline, p.author_url,
+           p.reactions, p.comments, p.shares, p.media,
+           p.matched_query_count, p.matched_query_codes, p.matched_families,
+           COALESCE(d.decided_by, d.reviewer_id) AS kept_by,
+           COALESCE(kb.name, r.name) AS kept_by_name,
+           COALESCE(kb.name_en, r.name_en) AS kept_by_name_en,
+           d.updated_at AS kept_at
+    FROM decisions d
+    JOIN posts p ON p.source_post_id = d.source_post_id
+    JOIN reviewers r ON r.id = d.reviewer_id
+    LEFT JOIN reviewers kb ON kb.id = d.decided_by
+    WHERE d.status = 'keep' AND COALESCE(d.decided_by, d.reviewer_id) = ${by}
+    ORDER BY d.updated_at, p.source_post_id`;
 }
 
 const app = express();
@@ -159,6 +201,32 @@ app.put('/api/decision', requireSession, async (req, res, next) => {
   }
 });
 
+app.get('/api/kept/export', requireSession, async (req, res, next) => {
+  const by = parseKeptBy(req.query.by);
+  if (by === undefined) return res.status(400).json({ error: 'bad_set' });
+  try {
+    const rows = await fetchKeptRows(by);
+    res.set('Content-Disposition', 'attachment; filename="saintiment_kept_posts.json"');
+    res.json(keptExportPayload(rows));
+  } catch (e) {
+    next(e);
+  }
+});
+
+app.get('/api/kept', requireSession, async (req, res, next) => {
+  const by = parseKeptBy(req.query.by);
+  if (by === undefined) return res.status(400).json({ error: 'bad_set' });
+  try {
+    const [reviewers, rows] = await Promise.all([
+      sql()`SELECT id, name, name_en FROM reviewers ORDER BY id`,
+      fetchKeptRows(by),
+    ]);
+    res.json({ by: by ?? 'all', reviewers, posts: rows });
+  } catch (e) {
+    next(e);
+  }
+});
+
 app.get('/api/export', requireSession, async (req, res, next) => {
   try {
     const rows = await sql()`
@@ -196,7 +264,7 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'not_found' }));
 
 // The UI is a single static page. In services mode it isn't emitted to the CDN,
 // so Express serves it (the file is bundled into the function).
-const PUBLIC_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), 'public');
+const PUBLIC_DIR = path.join(path.dirname(THIS_FILE), 'public');
 app.use(express.static(PUBLIC_DIR, { maxAge: 0 }));
 app.get('/{*splat}', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'index.html')));
 
@@ -207,7 +275,7 @@ app.use((err, req, res, next) => {
 });
 
 // Local run: `node --env-file=.env.local server.js`. On Vercel the exported app is used.
-if (!process.env.VERCEL) {
+if (!process.env.VERCEL && isDirectRun()) {
   const port = Number(process.env.PORT || 3000);
   app.listen(port, () => console.log(`Swipe review on http://localhost:${port}`));
 }

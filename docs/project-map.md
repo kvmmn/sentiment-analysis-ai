@@ -22,6 +22,7 @@ Structure adopted: 2026-09-17. Start at the [root README](../README.md) for curr
 | `writing/`                    | Article and thesis; both cite the same source and experiment IDs                             | Public drafts            |
 | `assets/`                     | Public artwork and its provenance, not data dumps                                            | Public                   |
 | `docs/`                       | Project navigation and public derived presentations; HTML catalog is dated                   | Public                   |
+| `web/swipe/`                  | Hosted team swipe-review app (Express + public UI on Vercel); post text stays in Neon        | Public code; data in Neon |
 | `_local/submissions/`         | Preserved incoming packages plus provenance and extracts                                     | Ignored                  |
 | `_local/archive/`             | Dated past reports, reviews and team summaries                                               | Ignored                  |
 | `_local/work/`                | Editable work for a named experiment, created when needed                                    | Ignored                  |

@@ -5,7 +5,8 @@
   "description": "Team Swipe Review for Saintiment: three reviewers filter the LinkedIn posts into a shared Neon DB.",
   "engines": { "node": "24.x" },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test kept-export.test.js server-auth.test.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",
