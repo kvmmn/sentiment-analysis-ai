@@ -36,6 +36,8 @@ A cross-repository review of [`keyword-lexicon.md`](../keyword-lexicon.md), the 
 
 ## Keyword list for this round (55 terms across 3 pillars)
 
+Downloads of this keyword object and the post-filter list, generated from `queries.json` on 2026-11-12: [JSON](keywords.json) · [Markdown](keywords.md) · [YAML](keywords.yaml) · [Word](keywords.docx). The terms below are the same list.
+
 | Pillar | Group | Terms |
 | --- | --- | --- |
 | Domain and tools (16) | Profession, software, education | architect, architects, architecture, architectural, "architectural design", "computational design", BIM, Revit, Rhino, Grasshopper, Parametric, "generative design", Rendering, archviz, "architectural education", "architecture students" |

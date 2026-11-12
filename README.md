@@ -1,12 +1,12 @@
 # Saintiment
 
-A collaborative research and development project working toward two intended outputs: a scientific article and a master's final thesis. Both will draw on shared research, code, data documentation, and experiment records.
+Shared research project for a scientific article and a master's thesis. Both outputs use the same research notes, code, data documentation, and experiment records.
 
-Kaveh intends to use this research as part of his master's dissertation at **Arden University**, but that integration is not yet finalized. This is an intention, not a claim of university approval, sponsorship, or responsibility for the research.
+Kaveh intends to use this research in his master's dissertation at **Arden University**. That integration is not finalized. This repository does not claim university approval, sponsorship, or responsibility for the research.
 
-Shared project reference: [kvmmn/sentiment-analysis-ai](https://github.com/kvmmn/sentiment-analysis-ai).
+Project and LinkedIn app display name: **Saintiment**, chosen by Kaveh on 2026-08-28. Earlier names **Sentiment AI** and **GenAI Architecture Discourse Research** stay in historical records. The repository URL and the local folder name are unchanged.
 
-Project and LinkedIn app display name: **Saintiment**, chosen by Kaveh on 2026-08-28. This replaces the earlier project name **Sentiment AI** and proposed app name **GenAI Architecture Discourse Research**. The repository URL and local folder name remain unchanged.
+Shared reference: [kvmmn/sentiment-analysis-ai](https://github.com/kvmmn/sentiment-analysis-ai).
 
 ## Team
 
@@ -14,83 +14,175 @@ Project and LinkedIn app display name: **Saintiment**, chosen by Kaveh on 2026-0
 - [Morteza Hazbei](https://www.linkedin.com/in/morteza-hazbei/)
 - [Kaveh Momeni](https://linkedin.com/in/kvmmn)
 
-Roles and publication authorship are not yet specified. This list does not establish author order or thesis authorship.
+Roles, publication author order, and thesis authorship are not specified.
 
-Project and privacy contact: Kaveh Momeni — [kaveh.momeni@gmail.com](mailto:kaveh.momeni@gmail.com) is his confirmed primary, long-term contact; [25199053@ardenuniversity.ac.uk](mailto:25199053@ardenuniversity.ac.uk) remains an additional contact. Kaveh supplied both for publication. Other members' email addresses will be added when provided and authorized. An email address does not establish institutional sponsorship or an approved research affiliation.
-
-## Communication
+Project and privacy contact: Kaveh Momeni — [kaveh.momeni@gmail.com](mailto:kaveh.momeni@gmail.com) is his confirmed primary contact; [25199053@ardenuniversity.ac.uk](mailto:25199053@ardenuniversity.ac.uk) is an additional contact. Kaveh supplied both for publication. Other members' email addresses will be added when provided and authorized. An email address does not establish institutional sponsorship.
 
 The Telegram group **Sentiment Analysis AI** is the team's main communication channel for now.
 
-## Start Here
+## Review the posts
 
-**[Project map and filing rules](docs/project-map.md)** · **[Research index](research/README.md)** · **[Code index](src/README.md)** · **[Experiment workflow](experiments/README.md)** · **[Per-invocation run guide](experiments/runs/README.md)** · **[Live-pilot plan](experiments/2026-09-17-iman-live-pilot.md)** · **[📊 2026-09-25 Meeting Guide](docs/team-meeting-guide-2026-09-25.html)** · **[📘 Full Technical Benchmark](docs/team-meeting-analysis-2026-09-25.html)** · **[🎓 Thesis Methodology Draft](docs/kaveh-independent-methodology.md)**
+The hosted team app is [https://saintiment.vercel.app/](https://saintiment.vercel.app/). Sign in with the shared team password. Each person reviews an assigned share of the 1,858 Apify posts and marks keep or reject. Decisions are stored in Neon `_saintiment_swipe_team_db`.
 
-Looking for Iman’s code? Open the [code index](src/README.md#imans-submission-local-only). The complete source package now lives in `_local/submissions/2026-09-06-iman-protocol-drafts/`, not the historical archive. Baseline extracts remain local-only and must not be run in place; separate pilot snapshots are prepared.
+Kept posts, one at a time, with a filter for who kept the post: [https://saintiment.vercel.app/kept](https://saintiment.vercel.app/kept). The download from that page is `saintiment_kept_posts.json` for the current filter. It contains post fields and does not include who selected the post.
 
-## Current Status — 12 November 2026 (Team swipe kept-posts viewer)
+How the app is built: [web/swipe/README.md](web/swipe/README.md). Post text stays in Neon, not in this public repository.
 
-- **Team app:** the hosted review at [saintiment.vercel.app](https://saintiment.vercel.app/) (`web/swipe/`) still uses the shared team password and Neon `_saintiment_swipe_team_db`. Keep/reject review of assigned sets is unchanged.
-- **Kept posts page:** `/kept` pages every post marked `keep`, with full details, one at a time. The only filter is who kept it (مرتضی, ایمان, کاوه). Download is `saintiment_kept_posts.json` for the current filter and omits who selected the post. See [web/swipe/README.md](web/swipe/README.md) and [project log §54](research/project-log.md#54-kept-posts-viewer-on-the-team-swipe-app-2026-11-12).
+The HTML page [docs/swipe-review.html](docs/swipe-review.html) is a separate local review screen. It is not the Vercel app. As of the database read on 12 November 2026, its Neon table `curation_decisions` on `_saintiment_apify_three_layer_db` had **0 rows**. The keep/reject counts below are from the team app database, not from that local screen.
 
-## Current Status — 5 November 2026 (Swipe review marks in Neon)
+## Screening counts
 
-- **Review screen:** [`docs/swipe-review.html`](docs/swipe-review.html) is the HTML page in this repository. It is not published as a separate app. The page shows one post at a time. باشد stores `keep` and نباشد stores `reject`. On a phone the same single card and a fixed two-choice bar are used. Shared Neon marks need `python src/ingest/swipe_review_server.py` and then `http://127.0.0.1:8765/`.
-- **Shared marks:** each swipe is written to Neon `_saintiment_apify_three_layer_db` (`curation_decisions`, history in `curation_decision_events`, readable through `master_posts_marked`). The 1,858 posts are not rewritten. No relevance judgments have been recorded yet. See [project log §53](research/project-log.md#53-shared-swipe-marks-and-one-post-review-screen-2026-11-05).
-- **Download for the team:** the review server serves decisions JSON/CSV and a marked SQLite/CSV. Files that contain post text stay local and out of git.
+Read on **12 November 2026** from Neon project `cool-cake-91875024`, database `_saintiment_swipe_team_db`. Counts only; no post text was read. Every assigned post had one decision. The latest `decided_at` in that table was **2026-11-12 16:48 UTC**. `decided_by` matched the assigned reviewer on every row.
 
-## Current Status — 18 October 2026 (Final Three-Layer Apify Extraction & Neon Sync)
+| | Posts | Keep | Reject |
+| --- | ---: | ---: | ---: |
+| All three reviewers | 1,858 | 471 | 1,387 |
+| Morteza (stored name مرتضی, reviewer 1) | 620 | 130 | 490 |
+| Iman (stored name ایمان, reviewer 2) | 619 | 167 | 452 |
+| Kaveh (stored name کاوه, reviewer 3) | 619 | 174 | 445 |
 
-- **Final three-layer Apify keyword & query list (confirmed & executed 2026-10-18):** 55 keywords across 3 pillars (`Domain/Tools ∧ AI ∧ Skill/Cognition/Process/Education`) and **48 executable three-layer LinkedIn queries** (`<= 5` Boolean operators per query), documented in [`research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md`](research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) and [`queries.json`](research/keywords/linkedin-apify-2026-10-17/queries.json).
-- **Apify three-layer extraction run (`X2gdX05u8rP41b4rG`, dataset `WUsK3RRYo7nKEOUbA`, 2026-10-18):** all **48/48 queries** returned posts (`maxPosts: 50`, `postedLimitDate: "2022-11-30"`, `sortBy: "date"`), yielding **2,158 raw items** (**1,858 unique posts** in this run; **1,817 net-new unique Apify posts**). Loaded into Neon `_saintiment_db`, bringing total unique `master_posts` across providers to **3,354** (Apify `2,954` + Coresignal `200` + Bright Data `200`) and `raw_items` to **4,044**; see [project log §51](research/project-log.md#51-apify-48-query-three-layer-run-executed-and-loaded-into-neon-2026-10-18) and [data README](data/README.md).
-- **Pilot dataset analysis (25 September 2026):** evaluated 1,076 raw posts from verified Run 013 snapshot (`data/linkedin_genai_architecture_discourse_2026-09-20_run013.db`, SHA-256 `f0ea0952ed5ed806...`).
-- **Independent analytical pipeline:** implemented in [`src/analysis/kaveh_analytical_pipeline.py`](src/analysis/kaveh_analytical_pipeline.py) with 7/7 passing unit tests (`src/analysis/tests/test_kaveh_pipeline.py`). Features Clause-Level Context-Window ABSA (±5 tokens), a 2D continuous Discursive Stance framework (Human Agency $\times$ Discourse Valence), and Multi-Signal Stakeholder Inference.
-- **Empirical findings:**
-  - **H1 (Bimodality):** Naive whole-post lexicons produce an artificial bimodal artifact ($BC = 0.586$) from zero-inflation; context-window ABSA demonstrates unimodality ($BC = 0.450 < 0.555$) centered around pragmatic caution.
-  - **H2 (Creativity vs. Judgment):** Validated with strong significance ($p = 1.48 \times 10^{-7}$, Mann-Whitney $U = 42,018.0$); Creativity/Ideation polarity is positive (+0.219), whereas Cognitive Judgment/Oversight is negative/critical (-0.001).
-  - **Stakeholder Inference:** Recovered 68.2% (734/1,076) of posts across four cohorts using credential heuristics and textual cues, bypassing empty raw headline metadata.
-  - **Deskilling vs. Offloading:** Validated that architects express concern over *Cognitive Offloading* (delegating critical thinking) rather than manual deskilling.
-- **Meeting materials:** produced minimalist, self-contained interactive meeting guide in Persian with Rubik typography and live in-browser editing: [`docs/team-meeting-guide-2026-09-25.html`](docs/team-meeting-guide-2026-09-25.html), backed by 5 high-resolution figures in [`docs/figures_pilot_2026-09-25/`](docs/figures_pilot_2026-09-25/).
+These marks are the team's keep/reject screening. They are not a finished relevance codebook, and they are not a scientific finding. An earlier read of the same totals is in [project log §55](research/project-log.md#55-kept-posts-link-moved-to-the-bottom-of-the-sets-screen-2026-11-12). This README uses the 12 November read above.
 
-## Historical Status — 18 September 2026 (local; executions 17 September UTC)
+## Queries
 
-- **Study:** sentiment about GenAI and skills in architectural discourse. Questions and methods remain provisional; see [research notes](research/notes.md).
-- **Working retrieval frame:** Domain ∧ Technology ∧ Labor/Competency, adopted for review on 10 September. Query version 1 is **not frozen**. The August two-layer catalog is a historical alternative, not the current sampling instruction.
-- **Latest team record:** [Kaveh’s sent 15 September feedback](research/team/team-feedback-to-team-2026-09-15-FA.md), including its Google Doc source. Proposed fixes are not yet implemented results. Morteza’s keyword check remains unconfirmed.
-- **Engineering:** [005](experiments/runs/2026-09-17-iman-live-pilot/005-collector-readiness.md) stopped on its watchdog; [007 resume](experiments/runs/2026-09-17-iman-live-pilot/007-collector-resume.md) completed with **1,237 DB/CSV rows and unique stored IDs**, net +56. [002 analysis](experiments/runs/2026-09-17-iman-live-pilot/002-analysis.md) failed on an empty contingency table; the separate [008 guarded analysis](experiments/runs/2026-09-17-iman-live-pilot/008-analysis-guarded.md) completed, preserving 1,237 enriched rows and producing descriptive/status outputs. [009 synthetic guards](experiments/runs/2026-09-17-iman-live-pilot/009-analysis-guard-tests.md) passed 8/8; no live collection. Baselines remain intact; no new dependencies.
-- **Data limitation:** all 1,237 author headlines are empty and all rows classify as `Unclassified`; stakeholder inference is impossible. The analysis guard skips unsupported tests, **not repairs missing fields**. A source-level newline/whitespace extraction defect was reproduced by an isolated synthetic Node expression, not a full DOM test. No metadata collector fix, checkpoint implementation or further live run was completed; earlier proposals remain proposals. No scientific findings or access approval follow. Raw data, private scripts and profiles remain ignored/local-only; Git synchronization is pending.
-- **Earlier evidence:** 001's assistant-initiated interruption and incomplete provenance remain historical. The separate [offline test](experiments/2026-09-17-iman-collector-offline.md) passed four fake-browser scenarios but failed the duplicate-upsert reporting probe; it did not run real DOM JavaScript or validate the whole collector.
-- **Access:** LinkedIn DSA case Open on the last receipt (28 August); no substantive response or research/API approval recorded. The submitted three months concerns expected storage, not an approved retention exception or collection window. App creation and Page verification are confirmed; last Auth evidence shows no permissions or redirect URLs. Kaveh operates LinkedIn manually. See [application record](research/access/linkedin-application-worksheet.md).
-- **Outputs:** article and thesis remain outlines. Dataset selection, models, university requirements and publication venue remain open.
-- **Organization:** files grouped by purpose on 17 September; see the [old → new location map](docs/project-map.md#relocations--17-september-2026). No research scripts were run during reorganization.
+The complete reading guide, the prose-number to Q-ID map, and the per-query hit counts are in **[research/keywords/README.md](research/keywords/README.md)**. Boolean strings are not copied into this page.
 
-## Project Guide
+### How to read a query file
 
-| Location                                                       | Purpose                                                                              |
-| -------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| [Project map](docs/project-map.md)                             | Where files belong, stable IDs, source-to-result traceability, relocation map        |
-| [Research](research/README.md)                                 | Questions, keyword work, access/privacy evidence, team correspondence and references |
-| [Code](src/README.md)                                          | Shared implementations and links to preserved local submissions, with status labels  |
-| [Experiments](experiments/README.md)                           | Plans and run records, provenance template, one branch per experiment                |
-| [Data](data/README.md)                                         | Public-safe dataset metadata; private versioned inputs and outputs                   |
-| [Article](writing/article.md) / [Thesis](writing/thesis.md)    | Separate outputs using shared research and experiment evidence                       |
-| [Local workspace](_local/README.md)                            | Private submissions, historical reports, editable work and helper scripts            |
-| [Assets](assets/README.md)                                     | Public logo and its provenance                                                       |
-| [Project log](research/project-log.md)                         | Dated decisions, actions, verification and unresolved issues                         |
-| [Working principles](AGENTS.md) / [Privacy policy](PRIVACY.md) | Collaboration rules and preparation-stage public notice                              |
+- **Q01–Q48** are the `id` values in [`queries.json`](research/keywords/linkedin-apify-2026-10-17/queries.json), in that array order. `searchQueries` is the same 48 strings in the same order, without family or operator fields. Use `queries[]` when the family matters.
+- [`keywords-and-queries.md`](research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) contains the same 48 strings, grouped by family. Its numbers 1–48 follow that grouped order. Number 13 in that file is **not** Q13. The map is in [`queries.md`](research/keywords/linkedin-apify-2026-10-17/queries.md).
+- A quoted term is stored with the quote characters included, for example `"generative AI"`.
+- `post_filters_not_in_the_query` was not part of the executed Boolean string.
+- The JSON field `status` still says no run was started in that commit, and the key `recommended_actor_input_not_executed` still has that name. [Project log §51](research/project-log.md#51-apify-48-query-three-layer-run-executed-and-loaded-into-neon-2026-10-18) records that this list was executed on 18 October 2026 with `maxPosts` 50, `postedLimitDate` `2022-11-30`, and `sortBy` `date`. The exports below copy those fields as stored.
+- The 7 October file is a JSON array of strings. It has no ids. A number in its Markdown or Word file is 1-based file order only.
 
-## Next Steps
+### Executed list: 48 three-layer queries (18 October 2026)
 
-1. Complete Morteza’s keyword check and agree the four pre-run fixes in the [sent letter](research/team/team-feedback-to-team-2026-09-15-FA.md): OR parentheses; Adaptation + downskilling; education/H4; three-pillar labels. Do not silently freeze query version 1.
-2. Review the [current run queue](experiments/runs/README.md) and [pilot results](experiments/2026-09-17-iman-live-pilot.md). Before any recollection, prepare a separate tested collector derivative for missing metadata; preserve baselines and earlier failures. Guarded analysis completion does not restore stakeholder data or validate the whole pipeline.
-3. Keep the letter's proposed 2–3-vector study pilot distinct from the current 24-query source-reviewed engineering configuration. No query fixes or platform permission are implied. Await a substantive LinkedIn response or establish another permitted source before treating research access as granted; legacy output is not an approved corpus.
-4. Refine protocol, annotation, evaluation and research questions with the team. Record verified literature in [references](research/references.md).
-5. Confirm university and publication requirements; develop article and thesis from shared evidence, not planned results.
+This is the list behind the 1,858-post screening set. Run `X2gdX05u8rP41b4rG`, dataset `WUsK3RRYo7nKEOUbA`. On 12 November 2026, `_saintiment_apify_three_layer_db` still had 48 `queries`, 2,158 `raw_items`, and 1,858 `master_posts`.
 
-## Working Format
+| Format | File |
+| --- | --- |
+| JSON | [queries.json](research/keywords/linkedin-apify-2026-10-17/queries.json) |
+| Markdown, Q-ID order | [queries.md](research/keywords/linkedin-apify-2026-10-17/queries.md) |
+| Markdown, family groups | [keywords-and-queries.md](research/keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) |
+| YAML | [queries.yaml](research/keywords/linkedin-apify-2026-10-17/queries.yaml) |
+| Word | [queries.docx](research/keywords/linkedin-apify-2026-10-17/queries.docx) |
 
-Use plain Markdown and keep the structure small. Add tools and dependencies only when needed. Maintain one shared evidence base for both writing outputs; use relative links to reference it.
+On GitHub, open the file and use Raw or Download. These paths are the files in the repository; there is no separate download app.
 
-GitHub is the shared reference for publishable project work. Keep completed changes committed and synchronized, and report any sync failure. No background synchronization service is configured.
+YAML, `queries.md`, and the Word file were generated from `queries.json` on 12 November 2026. A check with a local YAML parser loaded the YAML back to the same JSON object. The Word file contains every Q ID and every Boolean string. No query was added. The Word file was written with Python's standard library, not a new project dependency.
 
-Local dataset contents and common credential files are excluded by `.gitignore`. Review files before sharing or committing: ignore rules do not detect every secret or protect already tracked files. Personal research data and credentials do not belong in this public repository.
+### Keywords in that executed list (55)
+
+The 55 terms are the `keywords` object in `queries.json`, the same terms as section 1 of `keywords-and-queries.md`. The 12 post-filters are in the same downloads, under `post_filters_not_in_the_query`. They were not part of the Boolean strings. No term was added.
+
+| Format | File |
+| --- | --- |
+| JSON | [keywords.json](research/keywords/linkedin-apify-2026-10-17/keywords.json) |
+| Markdown | [keywords.md](research/keywords/linkedin-apify-2026-10-17/keywords.md) |
+| YAML | [keywords.yaml](research/keywords/linkedin-apify-2026-10-17/keywords.yaml) |
+| Word | [keywords.docx](research/keywords/linkedin-apify-2026-10-17/keywords.docx) |
+
+`keywords.yaml` loads back to the same JSON object as `keywords.json`. The Word file lists every term in those groups and every post-filter. Python's standard library wrote the Word file.
+
+Family totals from `queries.raw_hits_count` and distinct `post_query_hits.post_id`, same database read. Distinct posts overlap across families, so the last column does not sum to 1,858.
+
+| Family | Queries | Raw hits | Distinct posts |
+| --- | ---: | ---: | ---: |
+| direct | 16 | 602 | 544 |
+| cognition | 16 | 756 | 681 |
+| process | 12 | 600 | 538 |
+| technical_and_pedagogy | 4 | 200 | 190 |
+| All | 48 | 2,158 | 1,858 |
+
+1,618 posts matched one query code and 240 matched more than one. For each single Q ID, the distinct-post count equalled `raw_hits_count`. Thirty-seven queries are at the cap of 50; eleven are below it (Q07 13, Q08 11, Q10 34, Q11 14, Q12 10, Q20 47, Q23 30, Q24 37, Q36 32, Q37 38, Q40 42). The full Q-ID table is in the [query index](research/keywords/README.md#hit-counts).
+
+[docs/index.html](docs/index.html) prints different family raw-hit cells (686, 732, 540, 200). Its distinct-post cells match the table above. Use the Neon figures in this README for raw hits. That HTML page also links to `docs/layer2-query-decision-2026-10-16.html`, which is **not in this repository**. TODO: the 16 October note, if the team still has it.
+
+### Earlier executed list: 105 sub-queries (7 October 2026)
+
+This is the decomposition used for Apify run `tKJavW6tIKBOP7NlO` (1,486 raw items, 1,137 unique posts in [project log §42](research/project-log.md#42-apify-full-run-downloaded-and-loaded-into-neon-2026-10-07)). It is not the list behind the 1,858-post screening set, and it is not Version A or Version B.
+
+| Format | File |
+| --- | --- |
+| JSON | [subqueries.json](research/keywords/linkedin-boolean-2026-10-07/subqueries.json) |
+| Markdown | [subqueries.md](research/keywords/linkedin-boolean-2026-10-07/subqueries.md) |
+| YAML | [subqueries.yaml](research/keywords/linkedin-boolean-2026-10-07/subqueries.yaml) |
+| Word | [subqueries.docx](research/keywords/linkedin-boolean-2026-10-07/subqueries.docx) |
+
+Markdown, YAML, and Word were generated from `subqueries.json` on 12 November 2026. The YAML loads back to the same 105 strings. Recomputed from those strings, each has 3–5 `AND` / `OR` / `NOT` operators.
+
+The three term lists that `decompose.py` multiplies into those 105 strings are separate downloads. Counts in the source: domain 10, AI 5, labor/competency 13. No term was added.
+
+| Format | File |
+| --- | --- |
+| JSON | [term-blocks.json](research/keywords/linkedin-boolean-2026-10-07/term-blocks.json) |
+| Markdown | [term-blocks.md](research/keywords/linkedin-boolean-2026-10-07/term-blocks.md) |
+| YAML | [term-blocks.yaml](research/keywords/linkedin-boolean-2026-10-07/term-blocks.yaml) |
+| Word | [term-blocks.docx](research/keywords/linkedin-boolean-2026-10-07/term-blocks.docx) |
+
+### Version A (19) and Version B (85)
+
+The team has not yet decided these lists. They are **not in this repository**, so this page does not link a download for them.
+
+- **Version A, 19 sub-queries.** [Project log §49](research/project-log.md#49-apify-query-list-for-the-next-round-2026-10-17) says a file referred to as the 19 option-A queries was not in the repository and was not found in Drive. `build_queries.py` on this branch writes only the 48 three-layer queries. Commit `4d14c48` is not on `main`. It is on `cursor/apify-query-round-c795` (tip `ce2e6f0`), whose README calls its 19 option-A strings a reconstruction because the original file was missing. Those strings are Q37–Q55 with tier `tier2_two_layer` on that branch only. They are not copied here, and they are not relabeled as the missing 16 October file. `subqueries_version_a.json` is still absent. TODO: the original 19 strings, when the team supplies the file.
+- **Version B, 85 queries.** No file on any branch is named `subqueries_version_b.json`. No project-log entry in this repository names an 85-query list. TODO.
+
+Query version 1 is not frozen.
+
+## Collected posts
+
+Not an approved research corpus. Ethics and terms of use are still open. No scientific finding is claimed from these loads.
+
+| Database | What was re-read on 12 November 2026 |
+| --- | --- |
+| `_saintiment_apify_three_layer_db` | 1,858 `master_posts`, 2,158 `raw_items`, 48 `queries`, 0 `curation_decisions` |
+| `_saintiment_db` | 3,354 `master_posts` (Apify 2,954, Coresignal 200, Bright Data 200), 4,044 `raw_items` |
+| `_saintiment_swipe_team_db` | 1,858 posts, 471 keep, 1,387 reject |
+
+The 18 October run record, costs, and file hashes remain in [project log §51](research/project-log.md#51-apify-48-query-three-layer-run-executed-and-loaded-into-neon-2026-10-18) and [data/README.md](data/README.md). Post text and author names are not in git.
+
+## Earlier records
+
+The September pilot numbers, including the Run 013 analysis of 1,076 posts, stay in the meeting documents. They are not restated here.
+
+- [Research index](research/README.md)
+- [Project log](research/project-log.md)
+- [25 September meeting guide](docs/team-meeting-guide-2026-09-25.html)
+- [25 September technical benchmark](docs/team-meeting-analysis-2026-09-25.html)
+- [Methodology draft](docs/kaveh-independent-methodology.md)
+- [Code index](src/README.md), including [Iman's local submission](src/README.md#imans-submission-local-only)
+- [Experiment workflow](experiments/README.md) and [live-pilot plan](experiments/2026-09-17-iman-live-pilot.md)
+- [15 September team letter](research/team/team-feedback-to-team-2026-09-15-FA.md)
+- Keyword-instrument downloads (literature strings, discourse catalog, lexicon, legacy scraper phrases) are linked from the [research index](research/README.md#historical-keyword-instruments--august-proposals). The lists are not copied onto this page. The annotation codebook stays in the local submission and is not in this public repository, so it has no download here.
+
+## Where files belong
+
+| Location | Purpose |
+| --- | --- |
+| [Project map](docs/project-map.md) | Locations, provenance, relocation map |
+| [Query index](research/keywords/README.md) | How to read query files, downloads, hit counts |
+| [Research](research/README.md) | Questions, keywords, access, correspondence |
+| [Code](src/README.md) | Shared code and local-only submissions |
+| [Experiments](experiments/README.md) | Plans and run records |
+| [Data](data/README.md) | Dataset registry; private rows stay local |
+| [Article](writing/article.md) / [Thesis](writing/thesis.md) | Separate writing outputs |
+| [Swipe app](web/swipe/README.md) | Vercel review app |
+| [Project log](research/project-log.md) | Dated decisions and verification |
+| [Working principles](AGENTS.md) / [Privacy policy](PRIVACY.md) | Collaboration rules and public notice |
+
+## Open
+
+1. Decide what the 471 kept posts are for. The screening marks are recorded; a relevance protocol is not.
+2. Supply Version A (19) and Version B (85) if those lists are still wanted. They cannot be exported until the strings are in the repository.
+3. Keep query version 1 unfrozen until the team says otherwise.
+4. Ethics and terms of use before treating any pull as a research corpus. LinkedIn access approval is not established on the last recorded evidence.
+5. Article, thesis, university requirements, and publication venue remain open.
+
+## Working format
+
+Plain Markdown. Add a tool only when the task needs it. One evidence base for both writing outputs. Relative links.
+
+GitHub is the shared reference for publishable work. Commit completed changes and report a sync failure. No background synchronization service is configured.
+
+Local dataset contents and common credential files are excluded by `.gitignore`. Ignore rules do not detect every secret. Personal research data and credentials do not belong in this public repository.

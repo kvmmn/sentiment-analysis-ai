@@ -71,11 +71,12 @@ test('kept export rejects an unknown reviewer without querying', async () => {
 
 test('public UI has the kept page, who-kept filter, and download control', () => {
   assert.match(html, /id="keptScreen"/);
-  assert.match(html, /id="keptEntryBtn"/);
-  assert.match(html, /class="kept-entry"[^>]*onclick="goKept\(event\)"/);
+  assert.match(html, /class="text-btn kept-link" href="\/kept"/);
   assert.match(html, /id="setsGrid"/);
-  assert.ok(html.indexOf('id="setsGrid"') < html.indexOf('id="keptEntryBtn"'));
-  assert.ok(html.indexOf('id="keptEntryBtn"') < html.indexOf('href="/api/export"'));
+  assert.ok(html.indexOf('id="setsGrid"') < html.indexOf('href="/kept"'));
+  assert.ok(html.indexOf('href="/kept"') < html.indexOf('href="/api/export"'));
+  assert.doesNotMatch(html, /class="kept-entry"/);
+  assert.doesNotMatch(html, /closest\('a\[href="\/kept"\]'\)/);
   assert.doesNotMatch(html, /id="setTitle"[\s\S]{0,80}href="\/kept"/);
   assert.match(html, /id="keptByFilter"/);
   assert.match(html, /downloadKept\(/);

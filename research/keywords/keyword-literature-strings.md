@@ -6,6 +6,8 @@ Status: **working retrieval protocol v0**, 2026-08-31. Copy-paste strings for li
 
 Host decisions: [keyword-systems.md](keyword-systems.md). Warrants: [references.md](../references.md).
 
+**Downloads (generated 2026-11-12 from this file):** [JSON](literature-strings.json) · [Markdown](literature-strings.md) · [YAML](literature-strings.yaml) · [Word](literature-strings.docx). The strings are not repeated in the README.
+
 ---
 
 ## Primary RQ1 strings (architecture + GenAI)

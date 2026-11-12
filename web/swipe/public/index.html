@@ -7,7 +7,8 @@
 <title>Saintiment Swipe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap"></noscript>
 <style>
 :root{
   --bg:#fafaf9; --surface:#ffffff; --sunk:#f5f5f4; --fg:#1c1917; --muted:#78716c; --faint:#a8a29e; --line:#e7e5e4;
@@ -47,7 +48,7 @@ a:hover{text-decoration:underline}
 .screen:not(.active) .actions,.screen:not(.active) .hint{display:none!important;pointer-events:none!important}
 
 /* Login */
-#loginScreen.active{display:grid;place-items:center;min-height:100dvh}
+#loginScreen.active{display:grid;place-items:center;min-height:100vh;min-height:100dvh}
 .login{width:100%;max-width:340px;display:grid;gap:14px;text-align:center}
 .login h1{margin:0;font-size:20px;font-weight:700}
 .login input{font-size:16px;font-weight:500;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:center;direction:ltr}
@@ -78,17 +79,8 @@ a:hover{text-decoration:underline}
 .set-num{color:var(--faint);font-weight:500;margin-inline-end:6px}
 .set-meta{font-size:13px;color:var(--muted)}
 .foot{display:flex;justify-content:space-between;gap:8px;padding:4px 0 32px}
-.kept-entry{
-  display:grid;gap:6px;width:100%;text-align:start;text-decoration:none;
-  font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;
-  background:var(--keep);color:var(--bg);
-  border:2px solid var(--keep);border-radius:14px;padding:18px 20px;margin:0 0 14px;
-}
-@media (hover:hover){
-  .kept-entry:hover{text-decoration:none;filter:brightness(0.93)}
-}
-.kept-entry-title{font-size:17px;font-weight:700;color:var(--bg)}
-.kept-entry-meta{font-size:13px;font-weight:500;color:var(--bg);opacity:.88}
+.kept-link{color:var(--keep);font-weight:600}
+.kept-link:hover{text-decoration:none;color:var(--fg)}
 .kept-dl{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:0 0 12px}
 
 /* Review: progress, tabs, filters */
@@ -199,11 +191,8 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
     <h1>مجموعه‌ها</h1>
   </div>
   <div class="sets" id="setsGrid"><div class="muted">…</div></div>
-  <button type="button" class="kept-entry" id="keptEntryBtn" onclick="goKept(event)">
-    <span class="kept-entry-title">پست‌های نگه داشته‌شده</span>
-    <span class="kept-entry-meta">مشاهدهٔ کامل، یک‌به‌یک، فیلتر بر اساس نگه دارنده، و دانلود JSON</span>
-  </button>
   <div class="foot">
+    <a class="text-btn kept-link" href="/kept">پست‌های نگه داشته‌شده</a>
     <a class="text-btn" href="/api/export">دانلود تصمیم‌ها (JSON)</a>
     <button type="button" class="text-btn" onclick="doLogout()">خروج</button>
   </div>
@@ -597,8 +586,7 @@ function goSets() {
   return showSets();
 }
 
-function goKept(ev) {
-  if (ev) ev.preventDefault();
+function goKept() {
   try {
     if (!onKeptPath()) window.history.pushState({}, '', '/kept');
   } catch {
@@ -1031,12 +1019,6 @@ window.addEventListener('popstate', () => {
   if (onKeptPath()) showKept();
   else if ($('loginScreen').classList.contains('active')) return;
   else showSets();
-});
-
-document.addEventListener('click', e => {
-  const el = e.target && e.target.closest && e.target.closest('#keptEntryBtn, a[href="/kept"]');
-  if (!el) return;
-  goKept(e);
 });
 
 // ---- Boot ----

@@ -1,6 +1,8 @@
 # Project Log
 
-**Swipe review — 5 November 2026:** one-post keep/drop marks are stored on the three-layer Neon corpus. See [section 53](#53-shared-swipe-marks-and-one-post-review-screen-2026-11-05). No relevance judgments have been recorded.
+**Homepage — 12 November 2026:** the root README is the team entry point, with the Vercel review links, screening counts re-read from Neon, and query downloads. See [section 57](#57-team-homepage-and-query-downloads-2026-11-12). Keyword-list downloads for the other working copies are in [section 58](#58-keyword-list-downloads-and-pull-request-review-2026-11-12). Version A (19) and Version B (85) are still not in the repository. Commit `4d14c48` is on `cursor/apify-query-round-c795`, not on `main`.
+
+**Swipe review — 5 November 2026:** one-post keep/drop marks are stored on the three-layer Neon corpus. See [section 53](#53-shared-swipe-marks-and-one-post-review-screen-2026-11-05). No relevance judgments have been recorded. The 12 November team-app counts live in `_saintiment_swipe_team_db`, not in that corpus table.
 
 **Query list — 17 October 2026:** a 55-query working list for a later Apify pass is in [section 49](#49-apify-query-list-for-the-next-round-2026-10-17). No run was started. Query version 1 is not frozen.
 
@@ -14,7 +16,7 @@
 
 **Earlier execution update:** Collector 005 was running with a narrowly changed feed-readiness check. Retry 003 exited 1 on the old `nav.global-nav` wait and contained zero rows. Separate diagnostic 006 confirmed a signed-in feed with generated navigation classes. Run 005 then passed readiness and exported 59 records after its first query; query 2 started. These are partial log observations, not completed collection or scientific validation. Analysis has not run. Originals remain unchanged. Copied local sessions are an explicit deviation from the fresh-profile workflow; screenshots and raw artifacts remain private. Prepared diagnostic 004 was not executed. Final results and synchronization are pending.
 
-This is the shared record of actions, decisions, rationale, and open questions. Entries begin with the work discussed on 2026-08-28 and continue chronologically; the latest closeout amendment is in [section 48](#48-complete-three-provider-set-synced-2026-10-16). Earlier [Current desk](#current-desk-2026-09-17) sections are preserved as historical context. They summarize dated conversation and file/tool checks; they are not a verbatim transcript or evidence that planned actions occurred. Keep earlier decisions visible when a later decision supersedes them.
+This is the shared record of actions, decisions, rationale, and open questions. Entries begin with the work discussed on 2026-08-28 and continue chronologically; the latest entry is [section 57](#57-team-homepage-and-query-downloads-2026-11-12). The 16 October closeout remains [section 48](#48-complete-three-provider-set-synced-2026-10-16). Earlier [Current desk](#current-desk-2026-09-17) sections are preserved as historical context. They summarize dated conversation and file/tool checks; they are not a verbatim transcript or evidence that planned actions occurred. Keep earlier decisions visible when a later decision supersedes them.
 
 Paths inside dated entries are historical: files have since been reorganized (keyword notes into `research/keywords/`, access reviews into `research/access/`, the sent team letter into `research/team/`, the scraper into `src/linkedin-scraper/`, and Iman's draft package into `_local/submissions/`). See the migration map in [docs/project-map.md](../docs/project-map.md) for the current locations.
 
@@ -792,12 +794,71 @@ Then open `http://127.0.0.1:8765/`. Another person running the same command agai
 
 **Verification:** `cd web/swipe && npm test` (8/8). Chrome: production login at https://saintiment.vercel.app/ loads; `/kept` stays behind the team password (`/api/kept` 401 without session). Local dummy-password login showed the new green card **below** the sets list; clicking it opened `/kept` with the who-kept filter, JSON download, and prev/next. Vercel MCP does not decrypt `TEAM_PASSWORD` (sensitive, empty value), so authenticated production filter/paging/download was not completed here. Neon `_saintiment_swipe_team_db` currently has 471 keep / 1,387 reject of 1,858 posts (counts only; no post text pulled). Downloaded files with post text must not be committed.
 
-## 56. Kept-posts green button did not navigate (2026-11-12)
+## 56. Quiet kept-posts link that navigates in every browser (2026-11-12)
 
-**Request (Kaveh):** after PR #15 on production (`https://saintiment.vercel.app/`), the kept-posts button/link does not work. Reproduce, fix, new PR, do not merge.
+**Request (Kaveh):** the team swipe app must open completely on any desktop or phone browser. The large green **پست‌های نگه داشته‌شده** card is too conspicuous; make that control smaller. The copy that matters is the Vercel production site (`https://saintiment.vercel.app/`), not a Cursor or Grok host.
 
-**What was broken:** the sets-screen control was an `<a href="/kept">` whose document-level click handler always `preventDefault()`d and then called `goKept()`. Two landmines made that a no-op for some taps: (1) the undo list was a top-level `let history = []`, which shadows the History API in the page script (a previous `history.pushState` bug); (2) `:hover { filter }` on the green card plus cancelled native navigation is a first-tap miss on touch. Inactive review/kept `position:fixed` action bars also stayed `pointer-events: auto` even while their parent screen was hidden.
+**Change:** the sets screen uses a small text link, `href="/kept"`, in the same row as export and logout. The page no longer cancels that click in JavaScript, so the browser follows the address itself. Inactive screens no longer leave a fixed button bar that can cover taps. The undo list is no longer named `history`, which had shadowed the browser history object. The Persian font stylesheet no longer blocks the first paint.
 
-**Change:** the green control is a `<button type="button" onclick="goKept(event)">`. `goKept` uses `window.history.pushState` and falls back to `location.assign('/kept')`. The undo list is `undoStack`. Hover filter is limited to `@media (hover:hover)`. Hidden screens mark `inert` and force `.actions { pointer-events: none }`.
+**Verification:** `cd web/swipe && npm test` (8/8). Chrome 1280×800 and 390×844: after a local dummy-password login the control is a 13px text link, about 34×145px, with no green fill and no horizontal overflow. Activating it loads `/kept`. Production deployment is checked in the same change on https://saintiment.vercel.app/. Downloaded files with post text must not be committed.
 
-**Verification:** `cd web/swipe && npm test` (8/8). Chrome 390×844 and 1280×800 against a local server on the live Neon swipe DB: login → open a reviewer set (this used to assign `history = []`) → back to sets → click the green **پست‌های نگه داشته‌شده** button → `/kept` showed 1/471 with full card → filter کاوه → next → 2/174 → back to sets. After the rename, `history === window.history` is true and `undoStack` is the undo list. TEAM_PASSWORD was not printed. Downloaded files that contain post text must not be committed.
+## 57. Team homepage and query downloads (2026-11-12)
+
+**Request (Kaveh, 2026-11-12):** update the GitHub front page for the project team with the latest statistics, developments, and the Vercel links, and give the queries a complete place, including a precise reading of the files and their stats. Also make the query lists downloadable as JSON, Markdown, and YAML, and as Word if that did not need a new toolchain.
+
+**Change:**
+1. Rewrote [README.md](../README.md) as the team entry point: what Saintiment is, [https://saintiment.vercel.app/](https://saintiment.vercel.app/) and [/kept](https://saintiment.vercel.app/kept), the screening counts, and links to the query files. September pilot figures stay in the meeting documents rather than being copied again.
+2. Added [research/keywords/README.md](keywords/README.md) as the query index: how to read each field, the prose-number to Q-ID distinction, download links, and per-query hit counts.
+3. Generated Markdown, YAML, and Word from the two JSON files already in the repository. No query string was added.
+   - Q01–Q48: existing [queries.json](keywords/linkedin-apify-2026-10-17/queries.json); new [queries.md](keywords/linkedin-apify-2026-10-17/queries.md), [queries.yaml](keywords/linkedin-apify-2026-10-17/queries.yaml), [queries.docx](keywords/linkedin-apify-2026-10-17/queries.docx). The family-grouped [keywords-and-queries.md](keywords/linkedin-apify-2026-10-17/keywords-and-queries.md) was already present and was not rewritten. Its numbers 1–48 are not Q IDs (prose 13 is Q33; Q13 is prose 17).
+   - 105 sub-queries: existing [subqueries.json](keywords/linkedin-boolean-2026-10-07/subqueries.json); new [subqueries.md](keywords/linkedin-boolean-2026-10-07/subqueries.md), [subqueries.yaml](keywords/linkedin-boolean-2026-10-07/subqueries.yaml), [subqueries.docx](keywords/linkedin-boolean-2026-10-07/subqueries.docx).
+4. Word files were written as Office Open XML with Python's `zipfile` module. No document package was added. A local YAML parser, not a project dependency, loaded each YAML file back to the source JSON.
+
+**Not created:** Version A (19) and Version B (85). There is no JSON for either list. Section 49 already records that the 19 option-A file was absent. No log entry names an 85-query list. `docs/layer2-query-decision-2026-10-16.html` is linked from `docs/index.html` and is not in the repository.
+
+**Verification (Neon project `cool-cake-91875024`, 12 November 2026, counts only):**
+- `_saintiment_swipe_team_db`: 1,858 posts, 1,858 decisions, 471 keep, 1,387 reject, 0 unmarked. By assigned reviewer, who also made the decision: Morteza 620 / 130 keep / 490 reject; Iman 619 / 167 / 452; Kaveh 619 / 174 / 445. Latest `decided_at` 2026-11-12 16:48 UTC.
+- `_saintiment_apify_three_layer_db`: 1,858 `master_posts`, 2,158 `raw_items`, 48 `queries`, `SUM(raw_hits_count)` 2,158, 0 `curation_decisions`. Family raw hits: direct 602, cognition 756, process 600, technical_and_pedagogy 200. Distinct posts by family: 544, 681, 538, 190. These distinct-post cells match `docs/index.html`; that page's family raw-hit cells (686, 732, 540, 200) do not match `SUM(raw_hits_count)`. 1,618 posts matched one query code and 240 matched more than one. Thirty-seven queries are at the cap of 50.
+- `_saintiment_db`: 3,354 `master_posts` (Apify 2,954, Coresignal 200, Bright Data 200) and 4,044 `raw_items`.
+
+**Unresolved:** Version A, Version B, the missing 16 October HTML note, what the 471 kept posts are for, query version 1, ethics and terms of use, and the article and thesis. The screening marks are not a relevance codebook.
+
+## 58. Keyword-list downloads and pull-request review (2026-11-12)
+
+**Request (Kaveh, 2026-11-12):** give the other list-like working copies the same JSON, Markdown, YAML, and Word downloads as the query lists, linked from the README section each list belongs to, and review open and closed pull requests. Do not invent strings. Do not treat a reconstruction as the missing 16 October file.
+
+**Change:** [export_working_lists.py](keywords/export_working_lists.py) reads existing sources and writes the downloads with the standard library (Word is a `.docx` zip). No package was added. No term or query string was added.
+
+| List | Source already in the repository | Downloads |
+| --- | --- | --- |
+| 55 executed keywords and 12 post-filters | `queries.json` | `linkedin-apify-2026-10-17/keywords.json`, `.md`, `.yaml`, `.docx` |
+| 7 October term blocks (10, 5, and 13) | `decompose.py` | `linkedin-boolean-2026-10-07/term-blocks.json`, `.md`, `.yaml`, `.docx` |
+| Literature paste strings and the tables in that file | `keyword-literature-strings.md` | `literature-strings.json`, `.md`, `.yaml`, `.docx` |
+| Discourse tables, bullets, and the Layer B comma line | `keyword-discourse-catalog.md` | `discourse-terms.json`, `.md`, `.yaml`, `.docx` |
+| Lexicon term tables, middle-dot lists, and the Counts table as written | `keyword-lexicon.md` | `lexicon.json`, `.md`, `.yaml`, `.docx` |
+| Seven legacy scraper phrases | `src/linkedin-scraper/keywords.txt` | `keywords.json`, `.md`, `.yaml`, `.docx` beside that file |
+
+YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105-subquery downloads from section 57 were left in place. The annotation codebook remains local-only and was not exported. Keyword-systems, search-storage, and source-identification notes were not turned into a second list.
+
+**Not created:** `subqueries_version_a.json`, `subqueries_version_b.json`, and `docs/layer2-query-decision-2026-10-16.html`. A search of branches and git objects still does not find those paths. Commit `4d14c48` is not on `main`. It is on `origin/cursor/apify-query-round-c795` (tip `ce2e6f0`), which still has `tier2_two_layer`. That branch's README says the 19 option-A strings are a reconstruction because the original 16 October file was missing. Q37–Q55 there are that reconstruction. They were not copied onto `main` and were not relabeled as the missing file.
+
+**Pull requests:** #2–#5, #7, #8, #10, #11, #13–#15, #17, and #18 are merged. #1, #6, and #12 were already closed without merge (#6’s comment says it was superseded by #7; #12’s comment says it was replaced by the branch that became #13). #1 has no comment; its PDF never landed, and this change does not add one.
+
+#9 and #16 were still open. Closing them from this session failed: GitHub returned 403 for issue comments, so no close comment could be posted. They were left open. The reasons, for someone who can close them:
+
+- **#16.** Superseded by merged #17. Main already has the small `href="/kept"` link, `undoStack`, `window.history.pushState`, and `inert` on inactive screens. #16 still proposes the earlier green button and does not merge cleanly. Close as a duplicate of #17. Do not copy the green button back.
+- **#9.** Abandoned draft. The executed 48 three-layer queries are already on `main`. This branch (`cursor/apify-query-round-c795`, tip `ce2e6f0`, including commit `4d14c48`) still has `tier2_two_layer`. Its README calls the 19 option-A strings a reconstruction. Close it without copying Q37–Q55 onto `main`, and without calling that reconstruction the missing 16 October file.
+
+**Unresolved:** the original Version A and Version B files, the 16 October HTML note, query version 1, what the 471 kept posts are for, ethics and terms of use, and the article and thesis.
+
+## 59. Pull request #16 merged with main without restoring the green button (2026-11-12)
+
+**Request (Kaveh):** resolve merge conflicts on [#16](https://github.com/kvmmn/sentiment-analysis-ai/pull/16) against current `main`. Do not silently pick one side when intents conflict.
+
+**Conflict of intent:** #16 still proposed a full-width green **پست‌های نگه داشته‌شده** `<button>` plus a document click handler that `preventDefault()`s `/kept`. Merged [#17](https://github.com/kvmmn/sentiment-analysis-ai/pull/17) (project-log §56) already replaced that card with a small native `href="/kept"` text link and told later work not to copy the green button back.
+
+**Kept from `main` / #17:** the small `kept-link`, no JS click interceptor, `undoStack`, `inert` on inactive screens, and the font stylesheet that does not block first paint.
+
+**Kept from #16 only where it does not fight #17:** `goKept` still falls back to `location.assign('/kept')` if `pushState` throws. The green button, its CSS, and the click interceptor were not restored.
+
+**Verification:** `cd web/swipe && npm test`. This pull request was not merged. No force push. TEAM_PASSWORD was not printed.

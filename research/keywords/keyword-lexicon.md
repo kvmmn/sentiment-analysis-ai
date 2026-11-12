@@ -2,6 +2,8 @@
 
 Status: **working catalog**, 2026-08-29 (English tables unchanged 2026-08-31). This is the **sentiment / stance coding lexicon**: categorized to match the research questions, sorted inside each category. It is not a literature-validated thesaurus and not permission to collect.
 
+**Downloads (generated 2026-11-12 from this file):** [JSON](lexicon.json) · [Markdown](lexicon.md) · [YAML](lexicon.yaml) · [Word](lexicon.docx). Tables and middle-dot lists only. The Counts table is copied as written.
+
 **Status notice — 2026-09-17:** The two-layer sampling guidance below is the historical August proposal, not the current working frame. On 2026-09-10, Kaveh adopted **Domain ∧ Technology ∧ Labor/Competency** for the three-pillar review. Queries and individual terms are **not frozen**. Terms and tables remain preserved for review; sentiment coding vocabulary is not retrieval vocabulary. See [current working method and history](../README.md).
 
 ## Keyword systems map (2026-08-31)
