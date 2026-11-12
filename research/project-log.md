@@ -791,3 +791,13 @@ Then open `http://127.0.0.1:8765/`. Another person running the same command agai
 **Change:** removed the small header text links (sets header and review header). The sets screen now has a full-width green **پست‌های نگه داشته‌شده** card under the reviewer sets and above the existing decisions-export / logout row. Review keep/reject UI is otherwise unchanged.
 
 **Verification:** `cd web/swipe && npm test` (8/8). Chrome: production login at https://saintiment.vercel.app/ loads; `/kept` stays behind the team password (`/api/kept` 401 without session). Local dummy-password login showed the new green card **below** the sets list; clicking it opened `/kept` with the who-kept filter, JSON download, and prev/next. Vercel MCP does not decrypt `TEAM_PASSWORD` (sensitive, empty value), so authenticated production filter/paging/download was not completed here. Neon `_saintiment_swipe_team_db` currently has 471 keep / 1,387 reject of 1,858 posts (counts only; no post text pulled). Downloaded files with post text must not be committed.
+
+## 56. Kept-posts green button did not navigate (2026-11-12)
+
+**Request (Kaveh):** after PR #15 on production (`https://saintiment.vercel.app/`), the kept-posts button/link does not work. Reproduce, fix, new PR, do not merge.
+
+**What was broken:** the sets-screen control was an `<a href="/kept">` whose document-level click handler always `preventDefault()`d and then called `goKept()`. Two landmines made that a no-op for some taps: (1) the undo list was a top-level `let history = []`, which shadows the History API in the page script (a previous `history.pushState` bug); (2) `:hover { filter }` on the green card plus cancelled native navigation is a first-tap miss on touch. Inactive review/kept `position:fixed` action bars also stayed `pointer-events: auto` even while their parent screen was hidden.
+
+**Change:** the green control is a `<button type="button" onclick="goKept(event)">`. `goKept` uses `window.history.pushState` and falls back to `location.assign('/kept')`. The undo list is `undoStack`. Hover filter is limited to `@media (hover:hover)`. Hidden screens mark `inert` and force `.actions { pointer-events: none }`.
+
+**Verification:** `cd web/swipe && npm test` (8/8). Chrome 390×844 and 1280×800 against a local server on the live Neon swipe DB: login → open a reviewer set (this used to assign `history = []`) → back to sets → click the green **پست‌های نگه داشته‌شده** button → `/kept` showed 1/471 with full card → filter کاوه → next → 2/174 → back to sets. After the rename, `history === window.history` is true and `undoStack` is the undo list. TEAM_PASSWORD was not printed. Downloaded files that contain post text must not be committed.

@@ -44,6 +44,7 @@ a:hover{text-decoration:underline}
 .ltr{direction:ltr;unicode-bidi:isolate}
 .screen{display:none;max-width:720px;margin:0 auto;padding:0 16px}
 .screen.active{display:block}
+.screen:not(.active) .actions,.screen:not(.active) .hint{display:none!important;pointer-events:none!important}
 
 /* Login */
 #loginScreen.active{display:grid;place-items:center;min-height:100dvh}
@@ -78,11 +79,14 @@ a:hover{text-decoration:underline}
 .set-meta{font-size:13px;color:var(--muted)}
 .foot{display:flex;justify-content:space-between;gap:8px;padding:4px 0 32px}
 .kept-entry{
-  display:grid;gap:6px;text-align:start;text-decoration:none;
+  display:grid;gap:6px;width:100%;text-align:start;text-decoration:none;
+  font:inherit;cursor:pointer;-webkit-appearance:none;appearance:none;
   background:var(--keep);color:var(--bg);
   border:2px solid var(--keep);border-radius:14px;padding:18px 20px;margin:0 0 14px;
 }
-.kept-entry:hover{text-decoration:none;filter:brightness(0.93)}
+@media (hover:hover){
+  .kept-entry:hover{text-decoration:none;filter:brightness(0.93)}
+}
 .kept-entry-title{font-size:17px;font-weight:700;color:var(--bg)}
 .kept-entry-meta{font-size:13px;font-weight:500;color:var(--bg);opacity:.88}
 .kept-dl{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:0 0 12px}
@@ -195,10 +199,10 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
     <h1>مجموعه‌ها</h1>
   </div>
   <div class="sets" id="setsGrid"><div class="muted">…</div></div>
-  <a class="kept-entry" href="/kept">
+  <button type="button" class="kept-entry" id="keptEntryBtn" onclick="goKept(event)">
     <span class="kept-entry-title">پست‌های نگه داشته‌شده</span>
     <span class="kept-entry-meta">مشاهدهٔ کامل، یک‌به‌یک، فیلتر بر اساس نگه دارنده، و دانلود JSON</span>
-  </a>
+  </button>
   <div class="foot">
     <a class="text-btn" href="/api/export">دانلود تصمیم‌ها (JSON)</a>
     <button type="button" class="text-btn" onclick="doLogout()">خروج</button>
@@ -554,7 +558,7 @@ const store = {
 };
 const esc = escapeHtml;
 
-let SET_ID = null, POSTS = [], VIEW = [], idx = 0, filter = 'unreviewed', decisions = {}, history = [];
+let SET_ID = null, POSTS = [], VIEW = [], idx = 0, filter = 'unreviewed', decisions = {}, undoStack = [];
 let KEPT_POSTS = [], KEPT_VIEW = [], keptIdx = 0, keptBy = 'all', KEPT_REVIEWERS = [];
 let fontSize = store.get(FONT_KEY, 17);
 let highlightOn = store.get(HL_KEY, true);
@@ -575,7 +579,12 @@ function toast(msg) {
 }
 
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+  document.querySelectorAll('.screen').forEach(s => {
+    const on = s.id === id;
+    s.classList.toggle('active', on);
+    if (on) s.removeAttribute('inert');
+    else s.setAttribute('inert', '');
+  });
   window.scrollTo(0, 0);
 }
 
@@ -588,8 +597,14 @@ function goSets() {
   return showSets();
 }
 
-function goKept() {
-  if (!onKeptPath()) window.history.pushState({}, '', '/kept');
+function goKept(ev) {
+  if (ev) ev.preventDefault();
+  try {
+    if (!onKeptPath()) window.history.pushState({}, '', '/kept');
+  } catch {
+    location.assign('/kept');
+    return;
+  }
   return showKept();
 }
 
@@ -642,7 +657,7 @@ async function showSets() {
 }
 
 async function openSet(id, name) {
-  SET_ID = id; history = [];
+  SET_ID = id; undoStack = [];
   store.set(LAST_SET_KEY, id);
   showScreen('reviewScreen');
   $('setTitle').textContent = `${fa(id)}. ${name}`;
@@ -730,7 +745,7 @@ function updateStats() {
   $('cKeep').textContent = fa(k);
   $('cReject').textContent = fa(r);
   $('cAll').textContent = fa(t);
-  $('undoBtn').disabled = !history.length;
+  $('undoBtn').disabled = !undoStack.length;
 }
 
 // ---- Reader controls ----
@@ -844,7 +859,7 @@ function render() {
 function decide(status) {
   if (!VIEW.length || idx >= VIEW.length) return;
   const p = VIEW[idx], card = $('card');
-  history.push({ id: p.source_post_id, prev: decisions[p.source_post_id] || null });
+  undoStack.push({ id: p.source_post_id, prev: decisions[p.source_post_id] || null });
   decisions[p.source_post_id] = status;
   save(p.source_post_id, status);
   card.classList.add(status === 'keep' ? 'out-r' : 'out-l');
@@ -860,7 +875,7 @@ function decide(status) {
 }
 
 function undo() {
-  const last = history.pop();
+  const last = undoStack.pop();
   if (!last) return;
   if (last.prev) decisions[last.id] = last.prev; else delete decisions[last.id];
   save(last.id, last.prev);
@@ -1019,10 +1034,9 @@ window.addEventListener('popstate', () => {
 });
 
 document.addEventListener('click', e => {
-  const a = e.target.closest('a[href="/kept"]');
-  if (!a) return;
-  e.preventDefault();
-  goKept();
+  const el = e.target && e.target.closest && e.target.closest('#keptEntryBtn, a[href="/kept"]');
+  if (!el) return;
+  goKept(e);
 });
 
 // ---- Boot ----
