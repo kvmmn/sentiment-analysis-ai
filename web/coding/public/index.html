@@ -343,9 +343,28 @@ a:hover { text-decoration: underline; }
   background: var(--fg); color: var(--bg); padding: 7px 14px; border-radius: 999px;
   font-size: 12.5px; z-index: 40; pointer-events: none;
 }
+.app-nav { border-bottom: 1px solid var(--line); background: var(--bg); }
+.app-nav-inner { max-width: 740px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.app-brand { font-weight: 700; font-size: 13.5px; color: var(--fg); letter-spacing: -0.01em; text-decoration: none; }
+.app-brand:hover { text-decoration: none; }
+.app-nav-links { display: flex; align-items: center; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.app-nav-links::-webkit-scrollbar { display: none; }
+.app-nav-link { padding: 5px 11px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); white-space: nowrap; text-decoration: none; }
+.app-nav-link:hover { color: var(--fg); background: var(--sunk); text-decoration: none; }
+.app-nav-link.on { background: var(--fg); color: var(--bg); font-weight: 600; }
 </style>
 </head>
 <body>
+<nav class="app-nav hidden" id="appNav" aria-label="بخش‌های پروژه">
+  <div class="app-nav-inner">
+    <a class="app-brand ltr" href="/">Saintiment</a>
+    <div class="app-nav-links">
+      <a class="app-nav-link" data-nav="swipe" href="/">غربالگری</a>
+      <a class="app-nav-link" data-nav="kept" href="/kept">منتخب‌ها</a>
+      <a class="app-nav-link on" data-nav="code" href="/code/">کدگذاری</a>
+    </div>
+  </div>
+</nav>
 
 <!-- 1. Login Screen -->
 <section id="loginScreen" class="screen">
@@ -371,8 +390,7 @@ a:hover { text-decoration: underline; }
 
     <div id="coderCards" class="coder-list"></div>
 
-    <div class="picker-foot">
-      <a href="/">← بازگشت به Swipe Review</a>
+    <div class="picker-foot" style="justify-content:flex-end">
       <a href="/api/coding/export" download="saintiment_coding_50_export.json">دانلود خروجی کامل (JSON) ↓</a>
     </div>
   </div>
@@ -605,6 +623,8 @@ async function api(url, opts = {}) {
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+  const nav = $('appNav');
+  if (nav) nav.classList.toggle('hidden', id === 'loginScreen');
 }
 
 function escapeHtml(s) {

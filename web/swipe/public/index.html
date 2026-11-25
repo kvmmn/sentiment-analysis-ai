@@ -169,9 +169,29 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
 @media (hover:none){.hint{display:none}}
 .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);font-size:13px;padding:6px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
 .toast.show{opacity:1}
+.hidden{display:none!important}
+.app-nav{border-bottom:1px solid var(--line);background:var(--bg)}
+.app-nav-inner{max-width:720px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.app-brand{font-weight:700;font-size:13.5px;color:var(--fg);letter-spacing:-.01em;text-decoration:none}
+.app-brand:hover{text-decoration:none}
+.app-nav-links{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none}
+.app-nav-links::-webkit-scrollbar{display:none}
+.app-nav-link{padding:5px 11px;border-radius:999px;font-size:13px;font-weight:500;color:var(--muted);white-space:nowrap;text-decoration:none}
+.app-nav-link:hover{color:var(--fg);background:var(--sunk);text-decoration:none}
+.app-nav-link.on{background:var(--fg);color:var(--bg);font-weight:600}
 </style>
 </head>
 <body>
+<nav class="app-nav hidden" id="appNav" aria-label="بخش‌های پروژه">
+  <div class="app-nav-inner">
+    <a class="app-brand ltr" href="/">Saintiment</a>
+    <div class="app-nav-links">
+      <a class="app-nav-link on" data-nav="swipe" href="/">غربالگری</a>
+      <a class="app-nav-link" data-nav="kept" href="/kept">منتخب‌ها</a>
+      <a class="app-nav-link" data-nav="code" href="/code/">کدگذاری</a>
+    </div>
+  </div>
+</nav>
 <div class="toast" id="toast"></div>
 
 <!-- Login -->
@@ -574,6 +594,12 @@ function showScreen(id) {
     if (on) s.removeAttribute('inert');
     else s.setAttribute('inert', '');
   });
+  const nav = $('appNav');
+  if (nav) {
+    nav.classList.toggle('hidden', id === 'loginScreen');
+    const activeKey = id === 'keptScreen' ? 'kept' : 'swipe';
+    nav.querySelectorAll('.app-nav-link').forEach(a => a.classList.toggle('on', a.dataset.nav === activeKey));
+  }
   window.scrollTo(0, 0);
 }
 
