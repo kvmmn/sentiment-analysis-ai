@@ -1,0 +1,14 @@
+{
+  "name": "saintiment-coding-studio",
+  "private": true,
+  "type": "module",
+  "description": "Team Qualitative Coding Studio for Saintiment (50 stratified posts + external sources in Neon).",
+  "engines": { "node": "24.x" },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0",
+    "express": "^5.1.0"
+  }
+}

@@ -4,9 +4,16 @@
     "swipe": {
       "root": "web/swipe/",
       "framework": "express"
+    },
+    "coding": {
+      "root": "web/coding/",
+      "framework": "express"
     }
   },
   "rewrites": [
+    { "source": "/code", "destination": { "service": "coding" } },
+    { "source": "/code/(.*)", "destination": { "service": "coding" } },
+    { "source": "/api/coding/(.*)", "destination": { "service": "coding" } },
     { "source": "/(.*)", "destination": { "service": "swipe" } }
   ]
 }

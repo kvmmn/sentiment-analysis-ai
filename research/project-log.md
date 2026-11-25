@@ -862,3 +862,21 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 **Kept from #16 only where it does not fight #17:** `goKept` still falls back to `location.assign('/kept')` if `pushState` throws. The green button, its CSS, and the click interceptor were not restored.
 
 **Verification:** `cd web/swipe && npm test`. This pull request was not merged. No force push. TEAM_PASSWORD was not printed.
+
+## 60. Coding Studio: fixes to adding, editing and deleting codes (2026-11-25)
+
+**Request (Kaveh):** the coding (کدگذاری) part of the Vercel app is buggy and should be easier to use; fix adding, removing and editing codes following UI/UX best practice. An earlier pass on the swipe screen was not what was meant and is not part of this change.
+
+**Bugs fixed in `web/coding/public/index.html`:**
+- Selecting a phrase that appears twice in a paragraph saved the first copy's position, so the highlight landed on the wrong words. Offsets now come from the actual selection, ignoring the code-label tags drawn inside the text.
+- Pressing Enter twice (or ✓ then Enter) saved the same highlight twice. Saving is now guarded and the inline box is disabled while it saves.
+- Every failed save (network, 500, expired session) failed silently, and colour, theme and "coded" changes stayed on screen as if saved. Failures now show a red message and those optimistic changes are rolled back.
+- Renaming a code to another code's name created two codes with the same label. It now offers to merge them.
+- Merging two codes happened with no confirmation, although it cannot be undone. It now asks first, with the number of segments that move.
+- The bottom bar was not full width (`inset-x` is not valid CSS) and `flex-none` was invalid.
+- Any login error, including a network failure, said "wrong password". Errors are now told apart, and a load failure after login no longer drops the user back to the login screen.
+- Coder names were injected into an inline `onclick` string.
+
+**Usability and accessibility:** while typing a code the tray says whether Enter will reuse an existing code or create a new one; toast after a code is applied or created; Esc closes the inline box, editor or confirm strip; ←/→ move between posts; the phone back button returns to the coder list (`#coder-N`); post position and coded count in the footer; selection works on phones (long-press); a hint on how to code; deleting a theme that still has codes asks first; Enter submits the theme and link-code fields; autocomplete for the link-code field; larger colour swatches; loading skeletons and retry buttons; visible save status text; focus outlines, ARIA labels and states; `prefers-reduced-motion`.
+
+**Verification:** headless Chromium against a mocked in-memory API at desktop and phone sizes: second-occurrence selection saved at offset 39 (the original saved 0), double Enter created one highlight (the original created two), rename-to-duplicate showed the merge prompt, a failed colour change rolled back with an error message, the footer spans the full width, ←/→ and back navigation worked, no page errors. The live deployment sits behind the team password and was not used.
