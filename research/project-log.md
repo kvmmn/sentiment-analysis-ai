@@ -862,3 +862,21 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 **Kept from #16 only where it does not fight #17:** `goKept` still falls back to `location.assign('/kept')` if `pushState` throws. The green button, its CSS, and the click interceptor were not restored.
 
 **Verification:** `cd web/swipe && npm test`. This pull request was not merged. No force push. TEAM_PASSWORD was not printed.
+
+## 60. Team Swipe UI bug fixes and usability pass (2026-11-25)
+
+**Request (Kaveh):** the Vercel swipe app has many UI bugs and should be easier to use; fix them following UI/UX best practice.
+
+**Bugs fixed in `web/swipe/public/index.html`:**
+- Pressing keep/reject twice during the 200 ms fly-out decided the same post twice and silently skipped the next one. Decisions are now ignored while the card animates.
+- Ctrl/Cmd+A (select all) rejected the current post, and Enter on a focused button both clicked it and kept the post. Modifier shortcuts and focused buttons are now left alone.
+- A/D/Z did nothing on a Persian keyboard layout. Keys are also matched by physical position (`e.code`).
+- Dragging across the text with a mouse to select it could keep or reject the post. Swipe is now touch-only; desktop uses buttons and keys.
+- With extra filters on, the empty unreviewed tab said "all posts reviewed 🎉" even when posts remained. Empty states now say what actually happened and offer the next step.
+- The phone back gesture left the app from a set. Each set now has its own URL (`/set/N`), so back returns to the sets list and a reload stays in the set.
+- Set names were injected into an inline `onclick` string; a name with an apostrophe would break the button. Buttons now use `data-set`.
+- A server error on `/api/sets` crashed rendering; failed loads now show a retry button. A 401 no longer causes an endless save-retry loop.
+
+**Usability and accessibility:** visible labels under the action buttons, disabled actions when there is no post, short toast after each decision and undo, filter indicator dot, result count and reset button, debounced search, visible "not saved" text next to the sync dot, warning before leaving with unsaved decisions, password show/hide, loading skeletons, team-wide progress and "your last set" tag on the sets screen, larger touch targets, visible keyboard focus, ARIA states (`aria-pressed`, `aria-expanded`, live regions), higher-contrast secondary text, and `prefers-reduced-motion`.
+
+**Verification:** `cd web/swipe && npm test` (8 pass). Login, sets, review, filter and back navigation were checked in headless Chromium at phone and desktop sizes against mocked API data; the live deployment sits behind the team password and was not used.

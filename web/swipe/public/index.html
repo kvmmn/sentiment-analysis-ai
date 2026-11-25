@@ -39,6 +39,11 @@ html,body{margin:0;background:var(--bg);color:var(--fg)}
 body{font:400 15px/1.7 var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 button,select,input{font:inherit;color:inherit}
 button{background:none;border:0;cursor:pointer;padding:0}
+button:disabled{cursor:default}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 .muted{color:var(--muted)}
@@ -51,21 +56,34 @@ a:hover{text-decoration:underline}
 #loginScreen.active{display:grid;place-items:center;min-height:100vh;min-height:100dvh}
 .login{width:100%;max-width:340px;display:grid;gap:14px;text-align:center}
 .login h1{margin:0;font-size:20px;font-weight:700}
-.login input{font-size:16px;font-weight:500;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:center;direction:ltr}
+.pw{position:relative}
+.login input{width:100%;font-size:16px;font-weight:500;padding:13px 48px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:center;direction:ltr}
 .login input:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
+.pw-toggle{position:absolute;top:50%;left:6px;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
+.pw-toggle:hover{color:var(--fg);background:var(--sunk)}
 .primary{background:var(--fg);color:var(--bg);border-radius:12px;padding:13px;font-weight:700}
-.primary:disabled{opacity:.5}
+.primary:disabled{opacity:.6}
+.primary:not(:disabled):hover{opacity:.9}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:40px;padding:8px 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:14px;font-weight:500}
+.btn:hover{border-color:var(--faint)}
 .err{color:var(--reject);font-size:13px;min-height:1.4em}
 
 /* Header */
 .head{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;align-items:center;gap:10px;padding:14px 0 10px}
 .head h1{margin:0;font-size:17px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.icon-btn{width:36px;height:36px;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
+.head-sub{font-size:12.5px;color:var(--muted);font-weight:400}
+.icon-btn{position:relative;width:40px;height:40px;flex:none;display:grid;place-items:center;border-radius:10px;color:var(--muted)}
+.icon-btn .badge-dot{position:absolute;top:7px;inset-inline-end:7px;width:8px;height:8px;border-radius:50%;background:var(--accent);display:none}
+.icon-btn.has-filter .badge-dot{display:block}
 .icon-btn:hover,.icon-btn.on{background:var(--line);color:var(--fg)}
-.text-btn{font-size:13px;color:var(--muted);padding:6px 8px;border-radius:8px}
+.text-btn{display:inline-flex;align-items:center;min-height:36px;font-size:13px;color:var(--muted);padding:6px 10px;border-radius:8px}
 .text-btn:hover{color:var(--fg);background:var(--line)}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--keep);flex:none;transition:background .2s}
 .dot.wait{background:#d97706} .dot.bad{background:var(--reject)}
+.sync{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);white-space:nowrap}
+.sync-label{display:none}
+.sync.bad .sync-label{display:inline;color:var(--reject)}
+.sync.wait .sync-label{display:inline}
 .bar{height:3px;background:var(--line);border-radius:3px;overflow:hidden;display:flex}
 .bar i{display:block;height:100%}
 .bar .k{background:var(--keep)} .bar .r{background:var(--reject)}
@@ -74,11 +92,14 @@ a:hover{text-decoration:underline}
 .sets{display:grid;gap:10px;padding:8px 0 12px}
 .set{display:grid;gap:10px;text-align:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
 .set:hover{border-color:var(--faint)}
+.set.last{border-color:var(--accent)}
+.last-tag{font-size:11.5px;font-weight:500;color:var(--accent);margin-inline-start:8px}
+.set-total{font-size:13px;color:var(--muted);padding:2px 0 4px}
 .set-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .set-name{font-size:17px;font-weight:700}
-.set-num{color:var(--faint);font-weight:500;margin-inline-end:6px}
+.set-num{color:var(--muted);font-weight:500;margin-inline-end:6px}
 .set-meta{font-size:13px;color:var(--muted)}
-.foot{display:flex;justify-content:space-between;gap:8px;padding:4px 0 32px}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;padding:4px 0 32px}
 .kept-link{color:var(--keep);font-weight:600}
 .kept-link:hover{text-decoration:none;color:var(--fg)}
 .kept-dl{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;padding:0 0 12px}
@@ -88,18 +109,22 @@ a:hover{text-decoration:underline}
 .progress .bar{flex:1}
 .progress span{white-space:nowrap}
 .tabs{display:flex;gap:4px;padding:6px 0 10px;flex-wrap:wrap}
-.tab{font-size:13px;padding:5px 12px;border-radius:999px;color:var(--muted)}
+.tab{font-size:13px;min-height:36px;padding:6px 14px;border-radius:999px;color:var(--muted);border:1px solid transparent}
+.tab:hover{border-color:var(--line);color:var(--fg)}
 .tab.on{background:var(--fg);color:var(--bg)}
 .filters{display:none;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;padding:0 0 12px}
 .filters.open{display:grid}
 .filters select,.filters input{font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);min-width:0}
 .filters input{grid-column:1/-1}
+.filters select,.filters input{min-height:40px}
+.filter-foot{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
 
 /* Card */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px 20px 16px;touch-action:pan-y;transition:transform .2s ease,opacity .2s ease;will-change:transform;position:relative}
 .card.drag{transition:none}
 .card.out-r{transform:translateX(110%) rotate(6deg)!important;opacity:0}
 .card.out-l{transform:translateX(-110%) rotate(-6deg)!important;opacity:0}
+.card:focus-visible{outline-offset:4px}
 .badge{position:absolute;top:14px;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;opacity:0;pointer-events:none;background:var(--surface)}
 .badge.k{left:14px;color:var(--keep);border:1.5px solid var(--keep)}
 .badge.r{right:14px;color:var(--reject);border:1.5px solid var(--reject)}
@@ -116,7 +141,7 @@ a:hover{text-decoration:underline}
 .tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:14px 0 10px;padding:8px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:12px;color:var(--muted)}
 .tools .stats{margin-inline-end:auto}
 .tool-group{display:inline-flex;gap:4px;align-items:center}
-.chip-btn{font-size:12px;padding:3px 8px;border-radius:7px;color:var(--muted);border:1px solid var(--line)}
+.chip-btn{font-size:12px;min-height:32px;min-width:32px;padding:4px 10px;border-radius:8px;color:var(--muted);border:1px solid var(--line)}
 .chip-btn:hover{color:var(--fg);border-color:var(--faint)}
 .chip-btn.on{color:var(--fg);background:var(--sunk)}
 
@@ -126,7 +151,7 @@ a:hover{text-decoration:underline}
 .kw.l2,mark.hl-l2{background:var(--l2-bg);color:var(--l2-fg)}
 .kw.l3,mark.hl-l3{background:var(--l3-bg);color:var(--l3-fg)}
 mark{padding:0 3px;border-radius:4px;font-weight:500}
-.kw-legend{font-size:11px;color:var(--faint);direction:rtl;width:100%}
+.kw-legend{font-size:11.5px;color:var(--muted);direction:rtl;width:100%}
 
 .post{font-size:var(--post-size);line-height:1.85;overflow-wrap:anywhere}
 .post-para{margin:0 0 .9em}
@@ -153,8 +178,13 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
 .formula{font:400 11.5px/1.5 var(--mono);color:var(--muted);direction:ltr;text-align:left}
 .eng{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12.5px;color:var(--muted);direction:ltr;margin-top:10px}
 
-.empty{text-align:center;padding:48px 16px;color:var(--muted)}
-.spacer{height:120px}
+.empty{text-align:center;padding:48px 16px;color:var(--muted);display:grid;gap:14px;justify-items:center}
+.empty-title{font-size:16px;font-weight:700;color:var(--fg)}
+.skel{display:grid;gap:10px}
+.skel i{display:block;height:12px;border-radius:6px;background:var(--sunk);animation:pulse 1.2s ease-in-out infinite}
+.skel i:nth-child(1){width:40%;height:16px}.skel i:nth-child(2){width:65%}.skel i:nth-child(3){width:95%;margin-top:14px}.skel i:nth-child(4){width:90%}.skel i:nth-child(5){width:75%}
+@keyframes pulse{50%{opacity:.45}}
+.spacer{height:150px}
 
 /* Action bar */
 .actions{position:fixed;bottom:0;left:0;right:0;z-index:6;padding:14px 16px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 70%,transparent);display:flex;justify-content:center;align-items:center;gap:18px}
@@ -164,33 +194,43 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
 .act.k{color:var(--keep)} .act.r{color:var(--reject)}
 .act.small{width:44px;height:44px;color:var(--muted);box-shadow:none}
 .act.small svg{width:20px;height:20px}
-.act:disabled{opacity:.35}
-.hint{position:fixed;bottom:calc(92px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:11.5px;color:var(--faint);pointer-events:none}
+.act:disabled{opacity:.35;box-shadow:none}
+.act-col{display:grid;justify-items:center;gap:4px;font-size:11.5px;color:var(--muted)}
+.act-col.k{color:var(--keep)} .act-col.r{color:var(--reject)}
+.act-col.small-col{color:var(--muted)}
+.hint{position:fixed;bottom:calc(112px + env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:12px;color:var(--muted);pointer-events:none}
+.hint kbd{font:500 11px var(--mono);padding:0 5px;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
 @media (hover:none){.hint{display:none}}
-.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);font-size:13px;padding:6px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+.toast{position:fixed;bottom:calc(150px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);font-size:13px;padding:6px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9;max-width:calc(100% - 32px);text-align:center}
 .toast.show{opacity:1}
 </style>
 </head>
 <body>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- Login -->
 <section class="screen" id="loginScreen">
   <form class="login" onsubmit="doLogin(event)">
     <h1>غربالگری پست‌ها</h1>
-    <div class="muted" style="font-size:13.5px">رمز تیم را وارد کنید</div>
-    <input type="password" id="passwordInput" autocomplete="current-password" required aria-label="رمز تیم">
+    <label for="passwordInput" class="muted" style="font-size:13.5px">رمز تیم را وارد کنید</label>
+    <div class="pw">
+      <input type="password" id="passwordInput" autocomplete="current-password" required autofocus aria-describedby="loginError">
+      <button type="button" class="pw-toggle" id="pwToggle" onclick="togglePassword()" aria-label="نمایش رمز" aria-pressed="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
     <button type="submit" class="primary" id="loginBtn">ورود</button>
-    <div class="err" id="loginError"></div>
+    <div class="err" id="loginError" role="alert"></div>
   </form>
 </section>
 
 <!-- Sets -->
 <section class="screen" id="setsScreen">
   <div class="head">
-    <h1>مجموعه‌ها</h1>
+    <h1>مجموعه‌ها <span class="head-sub">· مجموعهٔ خودتان را انتخاب کنید</span></h1>
   </div>
-  <div class="sets" id="setsGrid"><div class="muted">…</div></div>
+  <div class="set-total" id="setsTotal" aria-live="polite"></div>
+  <div class="sets" id="setsGrid" aria-busy="true"><div class="set skel" aria-hidden="true"><i></i><i></i></div><div class="set skel" aria-hidden="true"><i></i><i></i></div><div class="set skel" aria-hidden="true"><i></i><i></i></div></div>
   <div class="foot">
     <a class="text-btn kept-link" href="/kept">پست‌های نگه داشته‌شده</a>
     <a class="text-btn" href="/api/export">دانلود تصمیم‌ها (JSON)</a>
@@ -202,23 +242,24 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
 <section class="screen" id="reviewScreen">
   <div class="head">
     <button type="button" class="icon-btn" onclick="goSets()" aria-label="بازگشت به مجموعه‌ها">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
     </button>
     <h1 id="setTitle">—</h1>
-    <button type="button" class="icon-btn" id="filterToggle" onclick="toggleFilters()" aria-label="فیلتر و جستجو">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+    <span class="sync" id="sync" role="status" aria-live="polite"><span class="sync-label" id="syncLabel">ذخیره شد</span><span class="dot" id="syncDot" title="ذخیره شد" aria-hidden="true"></span></span>
+    <button type="button" class="icon-btn" id="filterToggle" onclick="toggleFilters()" aria-label="فیلتر و جستجو" aria-expanded="false" aria-controls="filters">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+      <span class="badge-dot"></span>
     </button>
-    <span class="dot" id="syncDot" title="ذخیره شد"></span>
   </div>
   <div class="progress">
     <span id="progressText" class="ltr">0 / 0</span>
     <div class="bar"><i class="k" id="progKeep"></i><i class="r" id="progReject"></i></div>
   </div>
-  <div class="tabs">
-    <button type="button" class="tab on" data-f="unreviewed" onclick="setDecisionFilter('unreviewed')">مانده <span id="cUnrev"></span></button>
-    <button type="button" class="tab" data-f="keep" onclick="setDecisionFilter('keep')">بماند <span id="cKeep"></span></button>
-    <button type="button" class="tab" data-f="reject" onclick="setDecisionFilter('reject')">حذف <span id="cReject"></span></button>
-    <button type="button" class="tab" data-f="all" onclick="setDecisionFilter('all')">همه <span id="cAll"></span></button>
+  <div class="tabs" role="group" aria-label="وضعیت پست‌ها">
+    <button type="button" class="tab on" data-f="unreviewed" aria-pressed="true" onclick="setDecisionFilter('unreviewed')">مانده <span id="cUnrev"></span></button>
+    <button type="button" class="tab" data-f="keep" aria-pressed="false" onclick="setDecisionFilter('keep')">بماند <span id="cKeep"></span></button>
+    <button type="button" class="tab" data-f="reject" aria-pressed="false" onclick="setDecisionFilter('reject')">حذف <span id="cReject"></span></button>
+    <button type="button" class="tab" data-f="all" aria-pressed="false" onclick="setDecisionFilter('all')">همه <span id="cAll"></span></button>
   </div>
   <div class="filters" id="filters">
     <select id="familyFilter" onchange="applyFilters()" aria-label="خانواده">
@@ -240,31 +281,47 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
       <option value="chars_desc">طولانی‌ترین متن</option>
       <option value="date_desc">جدیدترین</option>
     </select>
-    <input type="search" id="searchInput" placeholder="جستجو در متن، نام یا عنوان شغلی…" oninput="applyFilters()">
+    <input type="search" id="searchInput" placeholder="جستجو در متن، نام یا عنوان شغلی…" aria-label="جستجو" oninput="onSearchInput()">
+    <div class="filter-foot">
+      <span id="filterCount" aria-live="polite"></span>
+      <button type="button" class="text-btn" id="resetFilters" onclick="resetFilters()" hidden>پاک کردن فیلترها</button>
+    </div>
   </div>
 
-  <article class="card" id="card">
+  <article class="card" id="card" aria-live="polite" aria-label="پست فعلی">
     <span class="badge k" id="badgeKeep">بماند</span>
     <span class="badge r" id="badgeReject">حذف</span>
     <div id="cardBody"><div class="empty">…</div></div>
   </article>
   <div class="spacer"></div>
 
-  <div class="hint">→ بماند · ← حذف · ↓ بعدی · Z برگشت</div>
+  <div class="hint"><kbd>→</kbd>/<kbd>D</kbd> بماند · <kbd>←</kbd>/<kbd>A</kbd> حذف · <kbd>↓</kbd> بعدی · <kbd>Z</kbd> برگشت</div>
   <!-- RTL: first child sits on the right, so keep (swipe right) comes first -->
   <div class="actions">
-    <button type="button" class="act k" onclick="decide('keep')" aria-label="بماند">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
-    </button>
-    <button type="button" class="act small" id="undoBtn" onclick="undo()" disabled aria-label="برگشت">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14l-4-4 4-4"/><path d="M5 10h9a5 5 0 010 10h-3"/></svg>
-    </button>
-    <button type="button" class="act small" onclick="skip()" aria-label="بعدی بدون تصمیم">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-    </button>
-    <button type="button" class="act r" onclick="decide('reject')" aria-label="حذف">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
-    </button>
+    <div class="act-col k">
+      <button type="button" class="act k" id="keepBtn" onclick="decide('keep')" aria-label="بماند" title="بماند (→ یا D)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+      </button>
+      <span aria-hidden="true">بماند</span>
+    </div>
+    <div class="act-col small-col">
+      <button type="button" class="act small" id="undoBtn" onclick="undo()" disabled aria-label="برگشت" title="برگشت (Z)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14l-4-4 4-4"/><path d="M5 10h9a5 5 0 010 10h-3"/></svg>
+      </button>
+      <span aria-hidden="true">برگشت</span>
+    </div>
+    <div class="act-col small-col">
+      <button type="button" class="act small" id="skipBtn" onclick="skip()" aria-label="بعدی بدون تصمیم" title="بعدی بدون تصمیم (↓)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <span aria-hidden="true">رد شدن</span>
+    </div>
+    <div class="act-col r">
+      <button type="button" class="act r" id="rejectBtn" onclick="decide('reject')" aria-label="حذف" title="حذف (← یا A)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <span aria-hidden="true">حذف</span>
+    </div>
   </div>
 </section>
 
@@ -272,7 +329,7 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
 <section class="screen" id="keptScreen">
   <div class="head">
     <button type="button" class="icon-btn" onclick="goSets()" aria-label="بازگشت به مجموعه‌ها">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
     </button>
     <h1>پست‌های نگه داشته‌شده</h1>
   </div>
@@ -288,18 +345,24 @@ mark{padding:0 3px;border-radius:4px;font-weight:500}
   <div class="progress">
     <span id="keptProgressText" class="ltr">0 / 0</span>
   </div>
-  <article class="card" id="keptCard">
+  <article class="card" id="keptCard" aria-live="polite" aria-label="پست نگه داشته‌شده">
     <div id="keptCardBody"><div class="empty">…</div></div>
   </article>
   <div class="spacer"></div>
-  <div class="hint">↓ بعدی · ↑ قبلی</div>
+  <div class="hint"><kbd>↓</kbd> بعدی · <kbd>↑</kbd> قبلی</div>
   <div class="actions">
-    <button type="button" class="act small" id="keptPrevBtn" onclick="keptPage(-1)" aria-label="پست قبلی">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-    <button type="button" class="act small" id="keptNextBtn" onclick="keptPage(1)" aria-label="پست بعدی">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
+    <div class="act-col small-col">
+      <button type="button" class="act small" id="keptPrevBtn" onclick="keptPage(-1)" aria-label="پست قبلی">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <span aria-hidden="true">قبلی</span>
+    </div>
+    <div class="act-col small-col">
+      <button type="button" class="act small" id="keptNextBtn" onclick="keptPage(1)" aria-label="پست بعدی">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <span aria-hidden="true">بعدی</span>
+    </div>
   </div>
 </section>
 
@@ -548,6 +611,9 @@ const store = {
 const esc = escapeHtml;
 
 let SET_ID = null, POSTS = [], VIEW = [], idx = 0, filter = 'unreviewed', decisions = {}, undoStack = [];
+let SET_NAMES = {}, animating = false, searchTimer = null;
+const SKELETON = '<div class="skel" aria-label="در حال بارگذاری…"><i></i><i></i><i></i><i></i><i></i></div>';
+const errorBox = (msg, retry) => `<div class="empty" role="alert"><div class="empty-title">${msg}</div><button type="button" class="btn" onclick="${retry}">دوباره تلاش کنید</button></div>`;
 let KEPT_POSTS = [], KEPT_VIEW = [], keptIdx = 0, keptBy = 'all', KEPT_REVIEWERS = [];
 let fontSize = store.get(FONT_KEY, 17);
 let highlightOn = store.get(HL_KEY, true);
@@ -580,9 +646,21 @@ function showScreen(id) {
 function onKeptPath() {
   return location.pathname.replace(/\/+$/, '') === '/kept';
 }
+function setFromPath() {
+  const m = location.pathname.match(/^\/set\/([123])\/?$/);
+  return m ? Number(m[1]) : null;
+}
+// Which screen the current URL asks for (used on boot, after login and on back/forward).
+function routeFromPath() {
+  flushQueue();
+  if (onKeptPath()) return showKept();
+  const set = setFromPath();
+  if (set) return openSet(set, { push: false });
+  return showSets();
+}
 
 function goSets() {
-  if (onKeptPath()) window.history.pushState({}, '', '/');
+  if (location.pathname !== '/') window.history.pushState({}, '', '/');
   return showSets();
 }
 
@@ -602,7 +680,10 @@ async function api(path, opts = {}) {
     headers: opts.body ? { 'Content-Type': 'application/json' } : {},
     ...opts
   });
-  if (res.status === 401 && path !== '/api/login') { showScreen('loginScreen'); throw new Error('unauthorized'); }
+  if (res.status === 401 && path !== '/api/login') {
+    if (!$('loginScreen').classList.contains('active')) { showScreen('loginScreen'); $('passwordInput').focus(); }
+    throw new Error('unauthorized');
+  }
   return res;
 }
 
@@ -610,55 +691,92 @@ async function api(path, opts = {}) {
 async function doLogin(e) {
   e.preventDefault();
   const btn = $('loginBtn'), err = $('loginError');
-  btn.disabled = true; err.textContent = '';
+  btn.disabled = true; btn.textContent = 'در حال ورود…'; err.textContent = '';
   try {
     const res = await api('/api/login', { method: 'POST', body: JSON.stringify({ password: $('passwordInput').value }) });
     if (!res.ok) { err.textContent = res.status === 401 ? 'رمز اشتباه است' : 'خطای سرور'; return; }
     $('passwordInput').value = '';
-    await (onKeptPath() ? showKept() : showSets());
-  } catch (e2) { err.textContent = 'اتصال برقرار نشد'; }
-  finally { btn.disabled = false; }
+    await routeFromPath();
+  } catch (e2) { err.textContent = 'اتصال برقرار نشد. اینترنت را بررسی کنید و دوباره تلاش کنید.'; }
+  finally { btn.disabled = false; btn.textContent = 'ورود'; }
 }
-async function doLogout() { await fetch('/api/logout', { method: 'POST' }); showScreen('loginScreen'); }
+function togglePassword() {
+  const inp = $('passwordInput'), btn = $('pwToggle');
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.setAttribute('aria-pressed', String(show));
+  btn.setAttribute('aria-label', show ? 'پنهان کردن رمز' : 'نمایش رمز');
+  inp.focus();
+}
+async function doLogout() {
+  if (queue.length && !confirm('چند تصمیم هنوز ذخیره نشده. با خروج ممکن است از دست بروند. خارج می‌شوید؟')) return;
+  try { await fetch('/api/logout', { method: 'POST' }); } catch (e) {}
+  if (location.pathname !== '/') window.history.replaceState({}, '', '/');
+  showScreen('loginScreen');
+  $('passwordInput').focus();
+}
 
 // ---- Sets ----
 async function showSets() {
   flushQueue();
   showScreen('setsScreen');
+  const grid = $('setsGrid');
   try {
-    const { sets } = await (await api('/api/sets')).json();
+    const res = await api('/api/sets');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const { sets } = await res.json();
     const last = store.get(LAST_SET_KEY, null);
-    $('setsGrid').innerHTML = sets.map(s => {
+    let allDone = 0, allTotal = 0;
+    for (const s of sets) { SET_NAMES[s.id] = s.name; allDone += s.keep + s.reject; allTotal += s.total; }
+    $('setsTotal').textContent = allTotal ? `پیشرفت کل تیم: ${fa(allDone)} از ${fa(allTotal)} (${fa(Math.round(allDone / allTotal * 100))}٪)` : '';
+    grid.innerHTML = sets.map(s => {
       const done = s.keep + s.reject;
-      return `<button type="button" class="set" onclick="openSet(${s.id}, '${esc(s.name)}')"${s.id === last ? ' style="border-color:var(--faint)"' : ''}>
+      const pct = s.total ? Math.round(done / s.total * 100) : 0;
+      return `<button type="button" class="set${s.id === last ? ' last' : ''}" data-set="${Number(s.id)}" aria-label="${esc(`مجموعهٔ ${s.name}: ${done} از ${s.total} بررسی شده`)}">
         <div class="set-row">
-          <span class="set-name"><span class="set-num">${fa(s.id)}</span>${esc(s.name)}</span>
-          <span class="set-meta ltr">${fa(done)} / ${fa(s.total)}</span>
+          <span class="set-name"><span class="set-num">${fa(s.id)}</span>${esc(s.name)}${s.id === last ? '<span class="last-tag">آخرین مجموعهٔ شما</span>' : ''}</span>
+          <span class="set-meta">${fa(done)} از ${fa(s.total)} · ${fa(pct)}٪</span>
         </div>
         <div class="bar"><i class="k" style="width:${s.total ? s.keep / s.total * 100 : 0}%"></i><i class="r" style="width:${s.total ? s.reject / s.total * 100 : 0}%"></i></div>
         <div class="set-meta">${fa(s.keep)} بماند · ${fa(s.reject)} حذف · ${fa(s.total - done)} مانده</div>
       </button>`;
     }).join('');
+    grid.removeAttribute('aria-busy');
   } catch (e) {
-    if (e.message !== 'unauthorized') $('setsGrid').innerHTML = '<div class="err">بارگذاری نشد</div>';
+    if (e.message !== 'unauthorized') grid.innerHTML = errorBox('مجموعه‌ها بارگذاری نشد', 'showSets()');
   }
 }
+$('setsGrid').addEventListener('click', e => {
+  const b = e.target.closest('[data-set]');
+  if (b) openSet(Number(b.dataset.set));
+});
 
-async function openSet(id, name) {
-  SET_ID = id; undoStack = [];
+async function openSet(id, { push = true } = {}) {
+  SET_ID = id; undoStack = []; POSTS = []; VIEW = []; idx = 0;
   store.set(LAST_SET_KEY, id);
+  if (push && location.pathname !== `/set/${id}`) window.history.pushState({}, '', `/set/${id}`);
   showScreen('reviewScreen');
-  $('setTitle').textContent = `${fa(id)}. ${name}`;
-  $('cardBody').innerHTML = '<div class="empty">در حال بارگذاری…</div>';
+  $('setTitle').textContent = SET_NAMES[id] ? `${fa(id)}. ${SET_NAMES[id]}` : `مجموعهٔ ${fa(id)}`;
+  $('cardBody').innerHTML = SKELETON;
+  updateActions();
   try {
-    const data = await (await api(`/api/posts?set=${id}`)).json();
+    if (!SET_NAMES[id]) {
+      api('/api/sets').then(r => r.ok ? r.json() : null).then(d => {
+        for (const s of d?.sets || []) SET_NAMES[s.id] = s.name;
+        if (SET_ID === id && SET_NAMES[id]) $('setTitle').textContent = `${fa(id)}. ${SET_NAMES[id]}`;
+      }).catch(() => {});
+    }
+    const res = await api(`/api/posts?set=${id}`);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (SET_ID !== id) return;
     POSTS = data.posts.map(p => normalizePostRecord({ ...p, source_post_id: String(p.source_post_id) }));
     decisions = {};
     for (const p of data.posts) if (p.decision) decisions[String(p.source_post_id)] = p.decision;
     for (const q of queue) { if (q.status) decisions[q.source_post_id] = q.status; else delete decisions[q.source_post_id]; }
     setDecisionFilter('unreviewed');
   } catch (e) {
-    if (e.message !== 'unauthorized') $('cardBody').innerHTML = '<div class="empty">بارگذاری نشد — دوباره باز کنید</div>';
+    if (e.message !== 'unauthorized') $('cardBody').innerHTML = errorBox('پست‌ها بارگذاری نشد', `openSet(${Number(id)}, { push: false })`);
   }
 }
 
@@ -666,8 +784,11 @@ async function openSet(id, name) {
 let queue = store.get(QUEUE_KEY, []), flushing = false;
 function setDot(state) {
   const d = $('syncDot');
+  const label = state === 'ok' ? 'ذخیره شد' : state === 'wait' ? 'در حال ذخیره…' : 'ذخیره نشد، دوباره تلاش می‌شود';
   d.className = 'dot' + (state === 'ok' ? '' : ' ' + state);
-  d.title = state === 'ok' ? 'ذخیره شد' : state === 'wait' ? 'در حال ذخیره…' : 'ذخیره نشد — دوباره تلاش می‌شود';
+  d.title = label;
+  $('sync').className = 'sync' + (state === 'ok' ? '' : ' ' + state);
+  $('syncLabel').textContent = state === 'bad' ? 'ذخیره نشد' : label;
 }
 function save(id, status) {
   queue = queue.filter(q => q.source_post_id !== id);
@@ -686,21 +807,47 @@ async function flushQueue() {
       queue.shift(); store.set(QUEUE_KEY, queue);
     }
     setDot('ok');
-  } catch (e) { setDot('bad'); setTimeout(flushQueue, 4000); }
+  } catch (e) {
+    setDot('bad');
+    // A logged-out session can't save; retry after the next login instead of looping.
+    if (e.message !== 'unauthorized') setTimeout(flushQueue, 4000);
+  }
   finally { flushing = false; }
 }
 window.addEventListener('online', flushQueue);
+window.addEventListener('beforeunload', e => { if (queue.length) { e.preventDefault(); e.returnValue = ''; } });
 
 // ---- Filters ----
 function toggleFilters() {
   const open = $('filters').classList.toggle('open');
   $('filterToggle').classList.toggle('on', open);
+  $('filterToggle').setAttribute('aria-expanded', String(open));
+  if (open) $('searchInput').focus();
 }
 
 function setDecisionFilter(f) {
   filter = f;
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.f === f));
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('on', t.dataset.f === f);
+    t.setAttribute('aria-pressed', String(t.dataset.f === f));
+  });
   applyFilters();
+}
+
+function extraFiltersActive() {
+  return $('familyFilter').value !== 'all' || $('queryFilter').value !== 'all' ||
+    $('authorTypeFilter').value !== 'all' || $('sortOrder').value !== 'default' || $('searchInput').value.trim() !== '';
+}
+
+function resetFilters() {
+  $('familyFilter').value = 'all'; $('queryFilter').value = 'all'; $('authorTypeFilter').value = 'all';
+  $('sortOrder').value = 'default'; $('searchInput').value = '';
+  applyFilters();
+}
+
+function onSearchInput() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(applyFilters, 180);
 }
 
 function applyFilters() {
@@ -719,7 +866,20 @@ function applyFilters() {
   else if (sortKey === 'chars_desc') VIEW.sort((a, b) => b.text_chars - a.text_chars);
   else if (sortKey === 'date_desc') VIEW.sort((a, b) => String(b.posted_at).localeCompare(String(a.posted_at)));
   idx = 0;
+  const active = extraFiltersActive();
+  $('filterToggle').classList.toggle('has-filter', active);
+  $('resetFilters').hidden = !active;
+  $('filterCount').textContent = `${fa(VIEW.length)} پست با این فیلترها`;
   render();
+}
+
+function updateActions() {
+  const reviewing = $('reviewScreen').classList.contains('active');
+  const has = reviewing && VIEW.length > 0 && idx < VIEW.length;
+  $('keepBtn').disabled = !has;
+  $('rejectBtn').disabled = !has;
+  $('skipBtn').disabled = !(reviewing && VIEW.length > 1);
+  $('undoBtn').disabled = !undoStack.length;
 }
 
 function updateStats() {
@@ -733,7 +893,7 @@ function updateStats() {
   $('cKeep').textContent = fa(k);
   $('cReject').textContent = fa(r);
   $('cAll').textContent = fa(t);
-  $('undoBtn').disabled = !undoStack.length;
+  updateActions();
 }
 
 // ---- Reader controls ----
@@ -750,7 +910,9 @@ function toggleHighlight() {
 }
 function copyText() {
   const p = $('keptScreen').classList.contains('active') ? KEPT_VIEW[keptIdx] : VIEW[idx];
-  if (p) navigator.clipboard.writeText(p.post_text || '').then(() => toast('متن کپی شد'));
+  if (!p) return;
+  if (!navigator.clipboard) { toast('مرورگر اجازهٔ کپی نمی‌دهد'); return; }
+  navigator.clipboard.writeText(p.post_text || '').then(() => toast('متن کپی شد'), () => toast('کپی نشد'));
 }
 
 // ---- Attachments (article, images, video, document, poll, repost) ----
@@ -766,7 +928,7 @@ function attachmentsHtml(media) {
   }
   if (Array.isArray(m.postImages)) {
     const imgs = m.postImages.filter(i => i && i.url).slice(0, 6)
-      .map(i => `<a href="${esc(i.url)}" target="_blank" rel="noopener"><img src="${esc(i.url)}" alt="" loading="lazy"></a>`).join('');
+      .map((i, n) => `<a href="${esc(i.url)}" target="_blank" rel="noopener" aria-label="تصویر ${fa(n + 1)} پست در برگهٔ جدید"><img src="${esc(i.url)}" alt="" loading="lazy" onerror="this.parentElement.remove()"></a>`).join('');
     if (imgs) out += `<div class="imgs">${imgs}</div>`;
   }
   const tags = [];
@@ -806,7 +968,7 @@ function postCardHtml(p, { index, total, statusHtml }) {
     <div class="tools">
       <span class="stats">${fa(wordCount)} کلمه · ${fa(p.text_chars)} کاراکتر · ${fa(lineCount)} خط</span>
       <span class="tool-group">
-        <button type="button" class="chip-btn${highlightOn ? ' on' : ''}" onclick="toggleHighlight()">هایلایت</button>
+        <button type="button" class="chip-btn${highlightOn ? ' on' : ''}" onclick="toggleHighlight()" aria-pressed="${highlightOn}">هایلایت</button>
         <button type="button" class="chip-btn" onclick="copyText()">کپی</button>
         <span class="tool-group ltr">
           <button type="button" class="chip-btn" onclick="adjustFontSize(-1)" aria-label="کوچک‌تر">A−</button>
@@ -834,18 +996,30 @@ function render() {
   updateStats();
   const body = $('cardBody');
   if (!VIEW.length || idx >= VIEW.length) {
-    body.innerHTML = `<div class="empty">${filter === 'unreviewed' && POSTS.length ? 'همهٔ پست‌های این بخش بررسی شد 🎉' : 'پستی با این فیلتر نیست'}</div>`;
+    const anyLeft = POSTS.some(p => !decisions[p.source_post_id]);
+    let msg, action = '';
+    if (!POSTS.length) msg = 'این مجموعه پستی ندارد';
+    else if (VIEW.length && idx >= VIEW.length) { msg = 'به انتهای این فهرست رسیدید'; action = `<button type="button" class="btn" onclick="idx = 0; render()">از اول</button>`; }
+    else if (extraFiltersActive()) { msg = 'پستی با این فیلترها پیدا نشد'; action = `<button type="button" class="btn" onclick="resetFilters()">پاک کردن فیلترها</button>`; }
+    else if (filter === 'unreviewed' && !anyLeft) { msg = 'همهٔ پست‌های این مجموعه بررسی شد 🎉'; action = `<button type="button" class="btn" onclick="goSets()">بازگشت به مجموعه‌ها</button>`; }
+    else msg = filter === 'keep' ? 'هنوز پستی نگه داشته نشده' : filter === 'reject' ? 'هنوز پستی حذف نشده' : 'پستی نیست';
+    body.innerHTML = `<div class="empty"><div class="empty-title">${msg}</div>${action}</div>`;
+    updateActions();
     return;
   }
   const p = VIEW[idx];
   const d = decisions[p.source_post_id];
   const statusHtml = d ? `<span class="state ${d === 'keep' ? 'k' : 'r'}">${d === 'keep' ? '✓ بماند' : '✕ حذف'}</span>` : '';
   body.innerHTML = postCardHtml(p, { index: idx, total: VIEW.length, statusHtml });
+  updateActions();
 }
 
 // ---- Decisions ----
 function decide(status) {
-  if (!VIEW.length || idx >= VIEW.length) return;
+  // Ignore repeat presses while the card is flying out, so one post is never decided twice
+  // and the next one is never skipped.
+  if (animating || !VIEW.length || idx >= VIEW.length) return;
+  animating = true;
   const p = VIEW[idx], card = $('card');
   undoStack.push({ id: p.source_post_id, prev: decisions[p.source_post_id] || null });
   decisions[p.source_post_id] = status;
@@ -857,12 +1031,15 @@ function decide(status) {
     $('badgeKeep').style.opacity = 0; $('badgeReject').style.opacity = 0;
     if (filter !== 'all' && filter !== status) { VIEW.splice(idx, 1); if (idx >= VIEW.length) idx = Math.max(0, VIEW.length - 1); }
     else idx++;
+    animating = false;
     render();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, 200);
+  toast(status === 'keep' ? '✓ بماند' : '✕ حذف شد');
 }
 
 function undo() {
+  if (animating) return;
   const last = undoStack.pop();
   if (!last) return;
   if (last.prev) decisions[last.id] = last.prev; else delete decisions[last.id];
@@ -873,9 +1050,10 @@ function undo() {
   else if (p) VIEW.splice(idx, 0, p);
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  toast('برگشت انجام شد');
 }
 
-function skip() { if (VIEW.length) { idx = (idx + 1) % VIEW.length; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }
+function skip() { if (!animating && VIEW.length > 1) { idx = (idx + 1) % VIEW.length; render(); window.scrollTo({ top: 0, behavior: 'smooth' }); } }
 
 // ---- Kept posts viewer ----
 function fillKeptByFilter() {
@@ -895,7 +1073,8 @@ function fillKeptByFilter() {
 
 async function showKept() {
   showScreen('keptScreen');
-  $('keptCardBody').innerHTML = '<div class="empty">در حال بارگذاری…</div>';
+  $('keptCardBody').innerHTML = SKELETON;
+  $('keptPrevBtn').disabled = true; $('keptNextBtn').disabled = true;
   try {
     const res = await api('/api/kept');
     if (!res.ok) throw new Error('load failed');
@@ -911,7 +1090,7 @@ async function showKept() {
     fillKeptByFilter();
     applyKeptFilter();
   } catch (e) {
-    if (e.message !== 'unauthorized') $('keptCardBody').innerHTML = '<div class="empty">بارگذاری نشد — دوباره باز کنید</div>';
+    if (e.message !== 'unauthorized') $('keptCardBody').innerHTML = errorBox('پست‌های نگه داشته‌شده بارگذاری نشد', 'showKept()');
   }
 }
 
@@ -969,7 +1148,7 @@ async function downloadKept() {
 (function () {
   const card = $('card'), bk = $('badgeKeep'), br = $('badgeReject');
   let x0 = 0, y0 = 0, dx = 0, tracking = false, horiz = false;
-  const start = (x, y, t) => { if (t.closest('a,button,input,select,label')) return; x0 = x; y0 = y; dx = 0; tracking = true; horiz = false; };
+  const start = (x, y, t) => { if (animating || t.closest('a,button,input,select,label')) return; x0 = x; y0 = y; dx = 0; tracking = true; horiz = false; };
   const move = (x, y) => {
     if (!tracking) return;
     const ddx = x - x0, ddy = y - y0;
@@ -991,18 +1170,23 @@ async function downloadKept() {
     else if (horiz && dx < -100) decide('reject');
     else { card.style.transform = ''; bk.style.opacity = 0; br.style.opacity = 0; }
   };
-  card.addEventListener('mousedown', e => start(e.clientX, e.clientY, e.target));
-  window.addEventListener('mousemove', e => move(e.clientX, e.clientY));
-  window.addEventListener('mouseup', end);
+  // Touch only: with a mouse, dragging across the text to select it used to keep/reject the post.
+  // Desktop users have the buttons and the keyboard.
   card.addEventListener('touchstart', e => { if (e.touches.length === 1) start(e.touches[0].clientX, e.touches[0].clientY, e.target); }, { passive: true });
   card.addEventListener('touchmove', e => { if (e.touches.length === 1) move(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
   card.addEventListener('touchend', end);
+  card.addEventListener('touchcancel', () => { tracking = false; card.classList.remove('drag'); card.style.transform = ''; bk.style.opacity = 0; br.style.opacity = 0; });
 })();
 
 // ---- Keyboard (same keys as the original page) ----
 window.addEventListener('keydown', e => {
   if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
-  const k = e.key;
+  // Leave browser shortcuts alone (Ctrl/Cmd+A must not reject a post) and let a focused
+  // button or link handle its own Enter/Space.
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.closest?.('button,a')) return;
+  // Letter keys by physical position too, so A/D/Z also work on a Persian keyboard layout.
+  const k = { KeyA: 'a', KeyD: 'd', KeyZ: 'z' }[e.code] || e.key;
   if ($('keptScreen').classList.contains('active')) {
     if (k === 'ArrowDown' || k === 'ArrowLeft' || k === ' ') { e.preventDefault(); keptPage(1); }
     else if (k === 'ArrowUp' || k === 'ArrowRight') { e.preventDefault(); keptPage(-1); }
@@ -1016,18 +1200,17 @@ window.addEventListener('keydown', e => {
 });
 
 window.addEventListener('popstate', () => {
-  if (onKeptPath()) showKept();
-  else if ($('loginScreen').classList.contains('active')) return;
-  else showSets();
+  if ($('loginScreen').classList.contains('active')) return;
+  routeFromPath();
 });
 
 // ---- Boot ----
 (async () => {
   try {
     const res = await fetch('/api/me', { credentials: 'same-origin' });
-    if (res.ok) await (onKeptPath() ? showKept() : showSets());
-    else showScreen('loginScreen');
-  } catch (e) { showScreen('loginScreen'); }
+    if (res.ok) await routeFromPath();
+    else { showScreen('loginScreen'); $('passwordInput').focus(); }
+  } catch (e) { showScreen('loginScreen'); $('passwordInput').focus(); }
 })();
 </script>
 </body>
