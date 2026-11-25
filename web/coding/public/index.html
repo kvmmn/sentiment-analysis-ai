@@ -10,406 +10,271 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap"></noscript>
 <style>
+/* ============================================================
+   Saintiment Coding Studio
+   Interaction model (one way to do each thing):
+   - Code text: select words (or click a sentence)  -> side panel asks "which code?"
+                type to search, Enter/click applies, or creates the code if it is new.
+   - Edit a coded segment: click the coloured text -> side panel lists its codes:
+                remove (with undo), swap, or add another code.
+   - Manage codes: side panel "Codebook": rename, colour, theme, merge, delete.
+   The post text is never modified by UI (no labels/inputs inside it), so the
+   character offsets saved in the DB always match what is on screen.
+   ============================================================ */
 :root {
-  --bg: #fafaf9;
-  --surface: #ffffff;
-  --sunk: #f5f5f4;
-  --fg: #1c1917;
-  --muted: #78716c;
-  --faint: #a8a29e;
-  --line: #e7e5e4;
-  --accent: #2563eb;
-  --ok: #16a34a;
-  --warn: #b45309;
-  --danger: #dc2626;
-  --c1: #2563eb; --c1-bg: rgba(37, 99, 235, 0.12);
-  --c2: #0d9488; --c2-bg: rgba(13, 148, 136, 0.13);
-  --c3: #d97706; --c3-bg: rgba(217, 119, 6, 0.13);
-  --c4: #7c3aed; --c4-bg: rgba(124, 58, 237, 0.12);
-  --c5: #db2777; --c5-bg: rgba(219, 39, 119, 0.12);
-  --c6: #16a34a; --c6-bg: rgba(22, 163, 74, 0.12);
+  --bg: #fafaf9; --surface: #ffffff; --sunk: #f5f5f4; --fg: #1c1917; --muted: #6b6560; --faint: #a8a29e; --line: #e7e5e4;
+  --accent: #2563eb; --accent-bg: rgba(37,99,235,.08); --ok: #15803d; --warn: #b45309; --danger: #dc2626;
+  --c1: #2563eb; --c1-bg: rgba(37,99,235,.16);
+  --c2: #0d9488; --c2-bg: rgba(13,148,136,.17);
+  --c3: #d97706; --c3-bg: rgba(217,119,6,.18);
+  --c4: #7c3aed; --c4-bg: rgba(124,58,237,.16);
+  --c5: #db2777; --c5-bg: rgba(219,39,119,.16);
+  --c6: #16a34a; --c6-bg: rgba(22,163,74,.16);
   --font: "Vazirmatn", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --prose-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --prose: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --radius: 12px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0c0a09; --surface: #171513; --sunk: #1e1b18; --fg: #f5f5f4; --muted: #a8a29e; --faint: #78716c; --line: #292524;
-    --accent: #60a5fa; --ok: #4ade80; --warn: #fbbf24; --danger: #f87171;
-    --c1: #60a5fa; --c1-bg: rgba(96, 165, 250, 0.20);
-    --c2: #2dd4bf; --c2-bg: rgba(45, 212, 191, 0.19);
-    --c3: #fbbf24; --c3-bg: rgba(251, 191, 36, 0.19);
-    --c4: #a78bfa; --c4-bg: rgba(167, 139, 250, 0.20);
-    --c5: #f472b6; --c5-bg: rgba(244, 114, 182, 0.20);
-    --c6: #4ade80; --c6-bg: rgba(74, 222, 128, 0.19);
+    --bg: #0c0a09; --surface: #171513; --sunk: #211e1b; --fg: #f5f5f4; --muted: #a8a29e; --faint: #78716c; --line: #2e2a26;
+    --accent: #60a5fa; --accent-bg: rgba(96,165,250,.12); --ok: #4ade80; --warn: #fbbf24; --danger: #f87171;
+    --c1: #60a5fa; --c1-bg: rgba(96,165,250,.24); --c2: #2dd4bf; --c2-bg: rgba(45,212,191,.22);
+    --c3: #fbbf24; --c3-bg: rgba(251,191,36,.22); --c4: #a78bfa; --c4-bg: rgba(167,139,250,.24);
+    --c5: #f472b6; --c5-bg: rgba(244,114,182,.24); --c6: #4ade80; --c6-bg: rgba(74,222,128,.22);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0c0a09; --surface: #171513; --sunk: #1e1b18; --fg: #f5f5f4; --muted: #a8a29e; --faint: #78716c; --line: #292524;
-  --accent: #60a5fa; --ok: #4ade80; --warn: #fbbf24; --danger: #f87171;
-  --c1: #60a5fa; --c1-bg: rgba(96, 165, 250, 0.20);
-  --c2: #2dd4bf; --c2-bg: rgba(45, 212, 191, 0.19);
-  --c3: #fbbf24; --c3-bg: rgba(251, 191, 36, 0.19);
-  --c4: #a78bfa; --c4-bg: rgba(167, 139, 250, 0.20);
-  --c5: #f472b6; --c5-bg: rgba(244, 114, 182, 0.20);
-  --c6: #4ade80; --c6-bg: rgba(74, 222, 128, 0.19);
+  --bg: #0c0a09; --surface: #171513; --sunk: #211e1b; --fg: #f5f5f4; --muted: #a8a29e; --faint: #78716c; --line: #2e2a26;
+  --accent: #60a5fa; --accent-bg: rgba(96,165,250,.12); --ok: #4ade80; --warn: #fbbf24; --danger: #f87171;
+  --c1: #60a5fa; --c1-bg: rgba(96,165,250,.24); --c2: #2dd4bf; --c2-bg: rgba(45,212,191,.22);
+  --c3: #fbbf24; --c3-bg: rgba(251,191,36,.22); --c4: #a78bfa; --c4-bg: rgba(167,139,250,.24);
+  --c5: #f472b6; --c5-bg: rgba(244,114,182,.24); --c6: #4ade80; --c6-bg: rgba(74,222,128,.22);
   color-scheme: dark;
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; background: var(--bg); color: var(--fg); }
-body { font: 400 14px/1.7 var(--font); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { font: 400 14px/1.7 var(--font); -webkit-font-smoothing: antialiased; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { background: none; border: 0; cursor: pointer; padding: 0; }
-button:disabled { cursor: default; opacity: .55; }
-:focus { outline: none; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; } }
+button:disabled { cursor: default; opacity: .5; }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
-.ltr { direction: ltr; unicode-bidi: isolate; }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
 .hidden { display: none !important; }
+.ltr { direction: ltr; unicode-bidi: isolate; }
+.muted { color: var(--muted); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
 
+/* Buttons & inputs */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 36px; padding: 0 12px;
+  border-radius: 9px; border: 1px solid var(--line); background: var(--surface); font-size: 13px; font-weight: 500; white-space: nowrap; }
+.btn:hover:not(:disabled) { background: var(--sunk); }
+.btn.primary { background: var(--fg); color: var(--bg); border-color: transparent; font-weight: 600; }
+.btn.primary:hover:not(:disabled) { background: var(--fg); opacity: .88; }
+.btn.danger { color: var(--danger); }
+.btn.danger-solid { background: var(--danger); color: #fff; border-color: transparent; font-weight: 600; }
+.btn.small { min-height: 30px; padding: 0 9px; font-size: 12.5px; }
+.btn.ghost { border-color: transparent; background: transparent; color: var(--muted); }
+.btn.ghost:hover:not(:disabled) { background: var(--sunk); color: var(--fg); }
+.icon-btn { width: 36px; height: 36px; display: inline-grid; place-items: center; border-radius: 9px; color: var(--muted); flex: none; }
+.icon-btn:hover { background: var(--sunk); color: var(--fg); }
+.field { width: 100%; min-height: 38px; padding: 6px 11px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); font-size: 13.5px; }
+.field:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-bg); }
+select.field { padding-inline: 8px; }
+
+/* App nav (shared with /, /kept) */
+.app-nav { border-bottom: 1px solid var(--line); background: var(--bg); }
+.app-nav-inner { max-width: 1240px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.app-brand { font-weight: 700; font-size: 13.5px; color: var(--fg); }
+.app-brand:hover { text-decoration: none; }
+.app-nav-links { display: flex; gap: 4px; }
+.app-nav-link { display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.app-nav-link:hover { background: var(--sunk); color: var(--fg); text-decoration: none; }
+.app-nav-link.on { background: var(--fg); color: var(--bg); }
+
+/* Screens */
 .screen { display: none; }
 .screen.active { display: block; }
-
-/* Login */
-#loginScreen.active { display: grid; place-items: center; min-height: 100dvh; padding: 20px; }
-.login-box { width: 100%; max-width: 340px; display: grid; gap: 14px; text-align: center; }
-.login-box h1 { margin: 0; font-size: 20px; font-weight: 700; }
-.login-box p { margin: 0; font-size: 13px; color: var(--muted); }
-.login-box input {
-  font-size: 16px; padding: 13px 14px; border: 1px solid var(--line); border-radius: 12px;
-  background: var(--surface); text-align: center; direction: ltr;
-}
-.login-box input:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
-.btn-solid {
-  background: var(--fg); color: var(--bg); border-radius: 12px; padding: 12px 16px;
-  font-weight: 700; min-height: 44px;
-}
-.btn-solid:disabled { opacity: 0.5; }
+#loginScreen.active { display: grid; place-items: center; min-height: 80dvh; padding: 20px; }
+.login-box { width: 100%; max-width: 340px; display: grid; gap: 12px; text-align: center; }
+.login-box h1 { margin: 0; font-size: 20px; }
+.login-box .field { text-align: center; direction: ltr; font-size: 16px; min-height: 46px; }
 .err { color: var(--danger); font-size: 13px; min-height: 1.4em; }
 
-/* Coder Picker */
-.picker-wrap { max-width: 680px; margin: 0 auto; padding: 18px 16px 40px; }
-.top-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0 18px; }
-.top-nav h1 { margin: 0; font-size: 18px; font-weight: 700; }
-.icon-btn {
-  min-width: 38px; min-height: 38px; display: inline-grid; place-items: center;
-  border-radius: 10px; color: var(--muted); padding: 0 8px; font-size: 13px;
-}
-.icon-btn:hover { background: var(--sunk); color: var(--fg); }
+.picker { max-width: 680px; margin: 0 auto; padding: 22px 16px 48px; }
+.picker-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+.picker-head h1 { margin: 0; font-size: 18px; }
 .coder-list { display: grid; gap: 10px; }
-.coder-card {
-  display: grid; gap: 10px; text-align: start; background: var(--surface);
-  border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; transition: border-color .15s;
-}
+.coder-card { display: grid; gap: 10px; width: 100%; text-align: start; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
 .coder-card:hover { border-color: var(--faint); }
+.coder-card.last { border-color: var(--accent); }
 .coder-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
 .coder-name { font-size: 17px; font-weight: 700; }
-.coder-meta { font-size: 13px; color: var(--muted); }
+.tag-last { font-size: 11.5px; font-weight: 500; color: var(--accent); margin-inline-start: 6px; }
+.meta { font-size: 13px; color: var(--muted); }
 .bar { height: 4px; background: var(--line); border-radius: 4px; overflow: hidden; }
-.bar > i { display: block; height: 100%; background: var(--ok); transition: width .2s; }
-.picker-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding-top: 20px; font-size: 13px; color: var(--muted); }
+.bar > i { display: block; height: 100%; background: var(--ok); }
 
-/* Studio Sticky Header + Code Tray */
-.studio-head {
-  position: sticky; top: 0; z-index: 20;
-  background: color-mix(in srgb, var(--bg) 94%, transparent);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--line);
-}
-.studio-head-inner { max-width: 740px; margin: 0 auto; padding: 10px 16px; display: grid; gap: 8px; }
-.head-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.head-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.head-title h2 { margin: 0; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.head-actions { display: flex; align-items: center; gap: 6px; flex: none; }
-.sync { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); white-space: nowrap; }
-.sync-label { display: none; }
-.sync.wait .sync-label, .sync.bad .sync-label { display: inline; }
-.sync.bad .sync-label { color: var(--danger); }
-.tray-hint { font-size: 12px; color: var(--muted); direction: rtl; }
-.tray-hint b { font-family: var(--mono); color: var(--fg); direction: ltr; unicode-bidi: isolate; }
-.editor-label { font-size: 12px; color: var(--muted); }
-.empty-box { display: grid; gap: 12px; justify-items: center; text-align: center; padding: 28px 12px; color: var(--muted); }
-.skel { display: grid; gap: 10px; padding: 4px 0; }
-.skel i { display: block; height: 12px; border-radius: 6px; background: var(--sunk); animation: pulse 1.2s ease-in-out infinite; }
-.skel i:nth-child(1) { width: 90%; } .skel i:nth-child(2) { width: 96%; } .skel i:nth-child(3) { width: 70%; }
-@keyframes pulse { 50% { opacity: .45; } }
-.kbd-hint { font-size: 11.5px; color: var(--muted); text-align: center; }
-.kbd-hint kbd { font: 500 11px var(--mono); padding: 0 5px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
-@media (hover: none) { .kbd-hint { display: none; } }
-@media (max-width: 480px) { #postPos { display: none; } }
-.pill-btn {
-  min-height: 34px; padding: 0 11px; border-radius: 9px; border: 1px solid var(--line);
-  background: var(--surface); font-size: 12.5px; font-weight: 500;
-  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
-}
-.pill-btn:hover { background: var(--sunk); }
-.pill-btn.active { border-color: var(--accent); color: var(--accent); }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex: none; }
-.dot.wait { background: var(--warn); }
-.dot.bad { background: var(--danger); }
+/* Studio layout */
+.studio-head { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.studio-head-inner { max-width: 1240px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; gap: 10px; }
+.studio-head h2 { margin: 0; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.head-spacer { flex: 1; }
+.progress-chip { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+.sync { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.sync i { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+.sync.wait i { background: var(--warn); } .sync.bad i { background: var(--danger); }
+.sync.bad { color: var(--danger); }
 
-/* Code Tray */
-.tray-box {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-  padding: 9px 12px; display: grid; gap: 8px;
-}
-.tray-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
-.tray-chips { display: flex; flex-wrap: wrap; gap: 6px; max-height: 160px; overflow-y: auto; padding: 2px 0; }
-.tray-chips.collapsed { display: none; }
-.code-chip {
-  display: inline-flex; align-items: center; gap: 6px; min-height: 30px;
-  padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line);
-  background: var(--bg); font-size: 12.5px; direction: ltr; transition: border-color .12s, background .12s;
-}
-.code-chip:hover { background: var(--sunk); }
-.code-chip.editing { border-color: var(--accent); background: var(--sunk); font-weight: 600; }
-.tray-box.assign-mode {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
-}
-.code-chip.pickable {
-  border-style: dashed;
-  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
-}
-.code-chip.pickable:hover {
-  border-style: solid;
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
-}
-.code-chip.current-code {
-  border-style: solid;
-  border-color: var(--ok);
-  background: color-mix(in srgb, var(--ok) 12%, var(--bg));
-  font-weight: 600;
-}
-.code-chip.dim { opacity: 0.35; }
-.c-plus { font-weight: 700; color: var(--accent); font-size: 13px; line-height: 1; }
-.c-cur { font-weight: 700; color: var(--ok); font-size: 12px; line-height: 1; }
-.c-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
-.c-cnt { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+.studio { max-width: 1240px; margin: 0 auto; padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 18px; align-items: start; }
+.reader { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding-bottom: 90px; }
+.post-card, .segs, #segList, .panel-body { grid-template-columns: minmax(0, 1fr); }
+.panel { position: sticky; top: 64px; max-height: calc(100dvh - 80px); display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
 
-/* Inline Tray Editor & Theme Drawer */
-.tray-editor {
-  border-top: 1px solid var(--line); padding-top: 9px; display: grid; gap: 8px;
-}
-.editor-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-.editor-input {
-  flex: 1; min-width: 150px; min-height: 34px; padding: 4px 10px; border-radius: 8px;
-  border: 1px solid var(--line); background: var(--bg); font-size: 13px; direction: ltr;
-}
-.editor-input:focus { outline: 1.5px solid var(--accent); border-color: transparent; }
-.color-dots { display: inline-flex; align-items: center; gap: 5px; }
-.color-opt {
-  width: 26px; height: 26px; border-radius: 50%; border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line); transition: transform .1s;
-}
-.color-opt.on { box-shadow: 0 0 0 2px var(--fg); }
-.theme-sel {
-  min-height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--line);
-  background: var(--bg); font-size: 12.5px;
-}
-.quotes-box { display: grid; gap: 5px; max-height: 150px; overflow-y: auto; }
-.quote-item {
-  text-align: left; direction: ltr; padding: 7px 10px; border-radius: 8px;
-  border: 1px solid var(--line); background: var(--bg); font-size: 12.5px; line-height: 1.5;
-}
-.quote-item:hover { border-color: var(--accent); }
-
-.themes-drawer {
-  border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 10px;
-  max-height: 55vh; overflow-y: auto;
-}
-.themes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
-.theme-card {
-  border: 1px solid var(--line); border-radius: 10px; background: var(--bg); padding: 10px; display: grid; gap: 7px;
-}
-.theme-card-head { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; font-weight: 600; }
-
-/* Main Editorial Reading Column */
-.studio-main { max-width: 740px; margin: 0 auto; padding: 20px 16px 110px; display: grid; gap: 16px; }
-.post-card {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
-  padding: 22px 20px; display: grid; gap: 18px;
-}
-@media (min-width: 640px) { .post-card { padding: 30px 34px; gap: 22px; } }
-
-.post-meta {
-  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 10px;
-  padding-bottom: 14px; border-bottom: 1px solid var(--line);
-}
-.author-block { display: grid; gap: 3px; text-align: left; direction: ltr; min-width: 0; }
+/* Post card */
+.post-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px 24px; display: grid; gap: 16px; }
+.post-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 14px; padding-bottom: 14px; border-bottom: 1px solid var(--line); direction: ltr; }
+.author { display: grid; gap: 2px; min-width: 0; }
 .author-top { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
-.sid-badge {
-  font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 2px 7px;
-  border-radius: 6px; background: var(--sunk); color: var(--fg);
-}
+.sid { font: 700 12px var(--mono); padding: 2px 7px; border-radius: 6px; background: var(--sunk); }
 .author-name { font-size: 15px; font-weight: 700; }
-.meta-tag {
-  font-size: 11.5px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted);
-}
-.meta-tag.ext { border-color: color-mix(in srgb, var(--warn) 40%, transparent); color: var(--warn); background: color-mix(in srgb, var(--warn) 10%, transparent); }
-.author-headline { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
-.post-date-link { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); direction: ltr; }
+.pill { font-size: 11.5px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.pill.warn { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, transparent); }
+.author-headline { font-size: 12.5px; color: var(--muted); }
+.post-links { font-size: 12.5px; color: var(--muted); display: flex; gap: 8px; align-items: flex-start; }
 
-/* External Link Bar */
-.ext-bar {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 10px 12px; border-radius: 12px; background: var(--sunk); border: 1px solid var(--line);
-}
-.seg-switch { display: inline-flex; padding: 2px; border-radius: 9px; background: var(--bg); border: 1px solid var(--line); }
-.seg-btn {
-  min-height: 32px; padding: 0 12px; border-radius: 7px; font-size: 12.5px; font-weight: 500; color: var(--muted);
-}
-.seg-btn.on { background: var(--fg); color: var(--bg); }
-.ext-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12.5px; }
-.ext-check {
-  display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px;
-  border-radius: 8px; background: var(--surface); border: 1px solid var(--line); cursor: pointer;
-}
-.ext-info { font-size: 12.5px; color: var(--muted); direction: ltr; text-align: left; line-height: 1.5; }
+.source-bar { display: grid; gap: 8px; padding: 10px 12px; border-radius: 12px; background: var(--sunk); border: 1px solid var(--line); }
+.source-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.seg { display: inline-flex; padding: 2px; border-radius: 9px; background: var(--bg); border: 1px solid var(--line); }
+.seg button { min-height: 32px; padding: 0 12px; border-radius: 7px; font-size: 12.5px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.check { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; min-height: 32px; padding: 0 10px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); cursor: pointer; }
+.source-info { font-size: 12.5px; color: var(--muted); direction: ltr; text-align: left; }
 
-/* Editorial Prose Body */
-.prose {
-  direction: ltr; text-align: left; font-family: var(--prose-font);
-  font-size: 16.5px; line-height: 1.92; letter-spacing: 0.004em;
-  display: grid; gap: 18px; user-select: text;
-}
-.prose p { margin: 0; overflow-wrap: anywhere; }
-.sent {
-  border-radius: 4px; cursor: pointer; transition: background-color 110ms ease;
-}
-.sent:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+.how { font-size: 12.5px; color: var(--muted); }
+.prose { direction: ltr; text-align: left; font: 16.5px/1.9 var(--prose); display: grid; gap: 16px; }
+.prose p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; cursor: text; }
+.prose ::selection { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+.hl { border-radius: 3px; padding: 1px 0; cursor: pointer; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.hl:hover { filter: brightness(.95); }
+.hl.multi { text-decoration: underline double; text-decoration-color: var(--fg); text-underline-offset: 4px; }
+.hl.active { outline: 2px solid var(--accent); outline-offset: 1px; }
+.draft { background: var(--accent-bg); border-bottom: 2px dashed var(--accent); }
+.pulse { animation: pulse 1.2s ease 2; }
+@keyframes pulse { 50% { outline: 3px solid var(--accent); } }
 
-.hl {
-  border-radius: 4px; padding: 1px 3px; cursor: pointer;
-  box-decoration-break: clone; -webkit-box-decoration-break: clone;
-  transition: filter 120ms ease, box-shadow 120ms ease;
-}
-.hl:hover { filter: brightness(0.94); }
-.hl.pulse { box-shadow: 0 0 0 2px var(--accent); }
-.hl-tag {
-  font-family: var(--mono); font-size: 11px; font-weight: 600;
-  padding: 0 5px; margin-left: 4px; border-radius: 4px; vertical-align: 1px;
-}
+.manual-box { border: 1px dashed var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 8px; font-size: 13px; }
+.manual-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.manual-row .field { flex: 1; min-width: 150px; direction: ltr; }
 
-/* ULTRA-MINIMAL IN-PLACE INLINE CODING PILL (appears right at end of phrase) */
-.inline-coder {
-  position: relative; display: inline-flex; align-items: center; gap: 4px;
-  margin-left: 6px; vertical-align: baseline;
-  background: var(--surface); border: 1.5px solid var(--accent);
-  border-radius: 999px; padding: 2px 5px 2px 10px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-  direction: ltr; z-index: 15;
-}
-.inline-coder input {
-  width: 155px; max-width: 44vw; border: 0; outline: 0; background: transparent;
-  font-family: var(--mono); font-size: 13px; line-height: 1.3; padding: 3px 0; color: var(--fg);
-}
-.inline-coder .ic-btn {
-  width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center;
-  font-size: 12px; font-weight: 700; flex: none;
-}
-.inline-coder .ic-ok { background: var(--fg); color: var(--bg); }
-.inline-coder .ic-sep { width: 1px; height: 14px; background: var(--line); margin: 0 2px; flex: none; }
-.inline-coder .ic-trash { color: var(--danger); }
-.inline-coder .ic-trash:hover, .inline-coder .ic-cancel:hover { background: var(--sunk); }
-.inline-coder .ic-cancel { color: var(--muted); }
+.segs { border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: 6px; }
+.segs-head { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted); }
+.seg-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px 6px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); direction: ltr; }
+.seg-item .jump { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; text-align: left; }
+.seg-item .q { color: var(--muted); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.confirm-strip {
-  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 8px 10px; border-radius: 9px;
-  border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
-  background: color-mix(in srgb, var(--danger) 8%, var(--bg));
-  font-size: 12.5px;
-}
-.btn-danger-solid {
-  min-height: 30px; padding: 0 11px; border-radius: 8px;
-  background: var(--danger); color: #ffffff; font-size: 12px; font-weight: 600;
-}
-.seg-del {
-  width: 28px; height: 28px; border-radius: 7px; display: inline-grid; place-items: center;
-  color: var(--muted); flex: none;
-}
-.seg-del:hover { color: var(--danger); background: var(--sunk); }
+.code-tag { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 1px 9px; border-radius: 999px; font: 600 12px var(--mono); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: none; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 
-/* Post Coded Segments & Manual External Fallback */
-.segments-sec {
-  border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 8px;
-}
-.seg-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 7px 10px; border-radius: 9px; background: var(--bg); border: 1px solid var(--line);
-  font-size: 12.5px; direction: ltr;
-}
-.seg-jump {
-  display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; text-align: left;
-}
-.seg-quote { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Bottom post navigation */
+.post-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 25; background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(8px); border-top: 1px solid var(--line); }
+.post-nav-inner { max-width: 1240px; margin: 0 auto; padding: 8px 16px calc(8px + env(safe-area-inset-bottom)); display: flex; align-items: center; gap: 8px; }
+.post-nav select { max-width: 150px; }
+.mark { min-height: 40px; }
+.mark[aria-pressed="true"] { background: color-mix(in srgb, var(--ok) 14%, var(--surface)); border-color: color-mix(in srgb, var(--ok) 45%, transparent); color: var(--ok); }
+.nav-arrow { min-width: 42px; min-height: 40px; font-size: 16px; }
 
-.ext-fallback {
-  border: 1px dashed var(--line); border-radius: 11px; padding: 12px 14px; display: grid; gap: 8px;
-  background: var(--bg); font-size: 13px;
-}
+/* Side panel */
+.panel-tabs { display: flex; gap: 4px; padding: 8px; border-bottom: 1px solid var(--line); }
+.panel-tabs button { flex: 1; min-height: 34px; border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--muted); }
+.panel-tabs button[aria-selected="true"] { background: var(--sunk); color: var(--fg); font-weight: 600; }
+.panel-body { overflow-y: auto; padding: 12px; display: grid; gap: 12px; align-content: start; }
+.panel-title { font-size: 13px; font-weight: 700; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.quote { direction: ltr; text-align: left; font: 13.5px/1.6 var(--prose); padding: 8px 10px; border-radius: 9px; background: var(--sunk); border-inline-start: 3px solid var(--accent); max-height: 120px; overflow-y: auto; }
 
-/* Sticky Bottom Navigation Bar */
-.studio-foot {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
-  background: color-mix(in srgb, var(--bg) 95%, transparent);
-  backdrop-filter: blur(8px);
-  border-top: 1px solid var(--line);
-}
-.studio-foot-inner {
-  max-width: 740px; margin: 0 auto; padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-}
-.foot-nav { display: flex; align-items: center; gap: 6px; min-width: 0; }
-.jump-sel {
-  min-height: 38px; padding: 0 8px; border-radius: 9px; border: 1px solid var(--line);
-  background: var(--surface); font-size: 12.5px; max-width: 145px;
-}
-.mark-btn {
-  min-height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line);
-  background: var(--surface); font-size: 13px; font-weight: 600; white-space: nowrap;
-}
-.mark-btn.done {
-  background: color-mix(in srgb, var(--ok) 15%, transparent);
-  border-color: color-mix(in srgb, var(--ok) 45%, transparent);
-  color: var(--ok);
-}
-.nav-arrow {
-  min-width: 42px; min-height: 40px; border-radius: 10px; border: 1px solid var(--line);
-  background: var(--surface); font-size: 15px; font-weight: 600; display: inline-grid; place-items: center;
-}
-.nav-arrow.primary { background: var(--fg); color: var(--bg); border-color: transparent; }
+/* Combobox */
+.combo { display: grid; gap: 6px; }
+.combo input { direction: ltr; text-align: left; font-family: var(--mono); font-size: 13.5px; }
+.combo input:placeholder-shown { direction: rtl; text-align: right; font-family: var(--font); }
+#bookSearch:placeholder-shown { direction: rtl !important; text-align: right !important; }
+.opts { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; max-height: 300px; overflow-y: auto; }
+.opt { display: flex; align-items: center; gap: 8px; min-height: 36px; padding: 4px 10px; border-radius: 8px; cursor: pointer; direction: ltr; font-size: 13.5px; }
+.opt[aria-selected="true"] { background: var(--accent-bg); outline: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+.opt .lbl { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--mono); }
+.opt .cnt { font: 11.5px var(--mono); color: var(--muted); }
+.opt.create { color: var(--accent); font-weight: 600; }
+.opt.on-seg { opacity: .55; cursor: default; }
+.hint { font-size: 12px; color: var(--muted); }
+.hint kbd { font: 500 11px var(--mono); padding: 0 5px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
 
-.toast {
-  position: fixed; bottom: calc(72px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); max-width: calc(100% - 32px);
-  background: var(--fg); color: var(--bg); padding: 7px 14px; border-radius: 999px;
-  font-size: 12.5px; z-index: 40; pointer-events: auto;
-  display: inline-flex; align-items: center; gap: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
+.cur-codes { display: grid; gap: 6px; }
+.cur-code { display: flex; align-items: center; gap: 6px; padding: 5px 6px 5px 10px; border-radius: 9px; border: 1px solid var(--line); direction: ltr; }
+.cur-code .code-tag { flex: 1; justify-content: flex-start; }
+
+/* Codebook */
+.book-search { position: sticky; top: -12px; background: var(--surface); padding-bottom: 4px; z-index: 1; display: grid; gap: 6px; }
+.book { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.book-row { border: 1px solid transparent; border-radius: 10px; }
+.book-row.open { border-color: var(--line); background: var(--bg); }
+.book-main { width: 100%; display: flex; align-items: center; gap: 8px; min-height: 38px; padding: 4px 10px; border-radius: 10px; direction: ltr; text-align: left; }
+.book-main:hover { background: var(--sunk); }
+.book-main .lbl { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 13.5px var(--mono); }
+.book-main .cnt { font: 11.5px var(--mono); color: var(--muted); }
+.book-edit { padding: 4px 10px 12px; display: grid; gap: 10px; }
+.row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.row > .field { flex: 1; min-width: 120px; }
+.swatches { display: flex; gap: 6px; }
+.swatch { width: 28px; height: 28px; border-radius: 50%; border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line); }
+.swatch[aria-checked="true"] { box-shadow: 0 0 0 2px var(--fg); }
+.quotes { display: grid; gap: 4px; max-height: 180px; overflow-y: auto; }
+.quotes button { text-align: left; direction: ltr; font-size: 12.5px; padding: 6px 8px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); }
+.quotes button:hover { border-color: var(--accent); }
+.theme-group { display: grid; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
+.theme-group h4 { margin: 0; font-size: 13px; display: flex; justify-content: space-between; align-items: center; }
+.empty { text-align: center; color: var(--muted); padding: 18px 8px; font-size: 13px; display: grid; gap: 10px; justify-items: center; }
+
+.skel { display: grid; gap: 10px; }
+.skel i { display: block; height: 12px; border-radius: 6px; background: var(--sunk); animation: sk 1.2s ease-in-out infinite; }
+.skel i:nth-child(2) { width: 92%; } .skel i:nth-child(3) { width: 70%; }
+@keyframes sk { 50% { opacity: .45; } }
+
+/* Toast & modal */
+.toast { position: fixed; bottom: calc(76px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); z-index: 60;
+  background: var(--fg); color: var(--bg); padding: 8px 8px 8px 16px; border-radius: 999px; font-size: 13px; display: inline-flex; align-items: center; gap: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18); max-width: calc(100% - 32px); }
+.toast.error { background: var(--danger); color: #fff; padding-inline-start: 16px; }
+.toast button { color: inherit; font-weight: 700; padding: 4px 12px; border-radius: 999px; background: color-mix(in srgb, currentColor 18%, transparent); }
+dialog { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--fg); padding: 20px; max-width: 420px; width: calc(100% - 32px); }
+dialog::backdrop { background: rgba(0,0,0,.4); }
+dialog h3 { margin: 0 0 8px; font-size: 16px; }
+dialog p { margin: 0 0 16px; font-size: 13.5px; color: var(--muted); }
+dialog .row { justify-content: flex-start; }
+
+/* Mobile: the panel becomes a bottom sheet */
+.sheet-handle { display: none; }
+@media (max-width: 900px) {
+  .studio { grid-template-columns: minmax(0, 1fr); padding: 12px; }
+  .post-card { padding: 16px; }
+  .panel { position: fixed; top: auto; left: 0; right: 0; bottom: 0; z-index: 40; max-height: 70dvh; border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 30px rgba(0,0,0,.18); transform: translateY(105%); transition: transform .2s ease; }
+  .panel.open { transform: none; }
+  .sheet-handle { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px 0; }
+  .sheet-handle::before { content: ""; width: 40px; height: 4px; border-radius: 4px; background: var(--line); position: absolute; top: 6px; left: 50%; transform: translateX(-50%); }
+  .progress-chip { display: none; }
+  .field, .combo input { font-size: 16px; }   /* below 16px phones zoom the page on focus */
+  .post-nav-inner { padding-inline: 10px; gap: 6px; }
+  .post-nav select { flex: 1 1 0; min-width: 0; max-width: none; }
+  .post-nav .head-spacer, .mark .long { display: none; }
+  .mark { padding: 0 10px; }
 }
-.toast.error { background: var(--danger); color: #fff; }
-.toast-undo {
-  background: color-mix(in srgb, var(--bg) 18%, transparent);
-  color: var(--bg); font-weight: 700; font-size: 12px;
-  padding: 3px 10px; border-radius: 999px;
-}
-.toast-undo:hover { background: color-mix(in srgb, var(--bg) 30%, transparent); }
-.app-nav { border-bottom: 1px solid var(--line); background: var(--bg); }
-.app-nav-inner { max-width: 740px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.app-brand { font-weight: 700; font-size: 13.5px; color: var(--fg); letter-spacing: -0.01em; text-decoration: none; }
-.app-brand:hover { text-decoration: none; }
-.app-nav-links { display: flex; align-items: center; gap: 4px; overflow-x: auto; scrollbar-width: none; }
-.app-nav-links::-webkit-scrollbar { display: none; }
-.app-nav-link { display: inline-flex; align-items: center; min-height: 34px; padding: 5px 11px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); white-space: nowrap; text-decoration: none; }
-.app-nav-link:hover { color: var(--fg); background: var(--sunk); text-decoration: none; }
-.app-nav-link.on { background: var(--fg); color: var(--bg); font-weight: 600; }
+@media (min-width: 901px) { .mobile-only { display: none !important; } }
 </style>
 </head>
 <body>
@@ -417,1520 +282,979 @@ a:hover { text-decoration: underline; }
   <div class="app-nav-inner">
     <a class="app-brand ltr" href="/">Saintiment</a>
     <div class="app-nav-links">
-      <a class="app-nav-link" data-nav="swipe" href="/">غربالگری</a>
-      <a class="app-nav-link" data-nav="kept" href="/kept">منتخب‌ها</a>
-      <a class="app-nav-link on" data-nav="code" href="/code/">کدگذاری</a>
+      <a class="app-nav-link" href="/">غربالگری</a>
+      <a class="app-nav-link" href="/kept">منتخب‌ها</a>
+      <a class="app-nav-link on" href="/code/" aria-current="page">کدگذاری</a>
     </div>
   </div>
 </nav>
 
-<!-- 1. Login Screen -->
-<section id="loginScreen" class="screen">
-  <form class="login-box" onsubmit="doLogin(event)">
-    <h1>Saintiment Coding Studio</h1>
-    <label for="pwInput"><p>ورود با رمز تیم (مشترک با صفحهٔ غربالگری)</p></label>
-    <input id="pwInput" type="password" placeholder="Password" autocomplete="current-password" required aria-describedby="pwErr">
-    <button id="pwBtn" type="submit" class="btn-solid">ورود</button>
+<!-- Login -->
+<section id="loginScreen" class="screen" aria-labelledby="loginTitle">
+  <form class="login-box" id="loginForm">
+    <h1 id="loginTitle">کدگذاری کیفی Saintiment</h1>
+    <label for="pwInput" class="muted">رمز تیم (همان رمز صفحهٔ غربالگری)</label>
+    <input id="pwInput" class="field" type="password" autocomplete="current-password" required aria-describedby="pwErr">
+    <button id="pwBtn" type="submit" class="btn primary" style="min-height:46px">ورود</button>
     <div id="pwErr" class="err" role="alert"></div>
   </form>
 </section>
 
-<!-- 2. Coder Picker Screen -->
+<!-- Coder picker -->
 <section id="pickerScreen" class="screen">
-  <div class="picker-wrap">
-    <div class="top-nav">
+  <div class="picker">
+    <div class="picker-head">
       <h1>کدگذاری کیفی (۵۰ پست نمونه)</h1>
-      <div style="display:flex;align-items:center;gap:6px">
-        <button type="button" class="icon-btn" onclick="toggleTheme()" title="حالت روشن/تیره" aria-label="حالت روشن/تیره"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
-        <button type="button" class="icon-btn" onclick="doLogout()">خروج</button>
+      <div class="row">
+        <button type="button" class="icon-btn" data-action="toggle-theme" aria-label="حالت روشن/تیره" title="حالت روشن/تیره"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+        <button type="button" class="btn ghost" data-action="logout">خروج</button>
       </div>
     </div>
-
-    <div id="coderCards" class="coder-list" aria-busy="true"><div class="coder-card skel" aria-hidden="true"><i></i><i></i></div><div class="coder-card skel" aria-hidden="true"><i></i><i></i></div><div class="coder-card skel" aria-hidden="true"><i></i><i></i></div></div>
-
-    <div class="picker-foot" style="justify-content:flex-end">
-      <a href="/api/coding/export" download="saintiment_coding_50_export.json">دانلود خروجی کامل (JSON) ↓</a>
-    </div>
+    <p class="meta" style="margin:0 0 12px">نام خودتان را انتخاب کنید. هر نفر کدها و برچسب‌های جداگانهٔ خودش را دارد.</p>
+    <div id="coderList" class="coder-list" aria-busy="true"><div class="coder-card skel"><i></i><i></i></div><div class="coder-card skel"><i></i><i></i></div></div>
+    <p style="margin-top:20px;text-align:left"><a href="/api/coding/export" download="saintiment_coding_50_export.json">دانلود خروجی کامل (JSON) ↓</a></p>
   </div>
 </section>
 
-<!-- 3. Coding Workspace Screen -->
+<!-- Studio -->
 <section id="studioScreen" class="screen">
   <header class="studio-head">
     <div class="studio-head-inner">
-      <div class="head-bar">
-        <div class="head-title">
-          <button type="button" class="icon-btn" onclick="backToPicker()" title="بازگشت به کدگذارها" aria-label="بازگشت به کدگذارها">→</button>
-          <h2 id="coderHeaderTitle">…</h2>
-          <span id="sync" class="sync" role="status" aria-live="polite"><span id="syncDot" class="dot" title="ذخیره شد" aria-hidden="true"></span><span id="syncLabel" class="sync-label">ذخیره شد</span></span>
-        </div>
-        <div class="head-actions">
-          <button type="button" id="btnThemesDrawer" class="pill-btn" onclick="toggleThemesDrawer()" aria-expanded="false" aria-controls="themesDrawer">دسته‌بندی تم‌ها</button>
-          <button type="button" class="icon-btn" onclick="toggleTheme()" title="حالت روشن/تیره" aria-label="حالت روشن/تیره"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
-        </div>
-      </div>
-
-      <!-- Sticky Code Tray (Full list visible + Collapse/Expand toggle) -->
-      <div id="trayBox" class="tray-box">
-        <div class="tray-bar">
-          <span id="traySummary" aria-live="polite">۰ کد · ۰ قطعه</span>
-          <button type="button" id="btnToggleTray" class="pill-btn" style="min-height:28px;padding:0 9px;font-size:12px" onclick="toggleTrayCollapse()">
-            جمع کردن ▲
-          </button>
-        </div>
-
-        <div id="trayChips" class="tray-chips" role="group" aria-label="کدها"></div>
-
-        <!-- Inline Code Chip Editor (opens cleanly inside tray) -->
-        <div id="trayEditor" class="tray-editor hidden">
-          <div class="editor-row">
-            <input id="editCodeLabel" class="editor-input" type="text" placeholder="نام کد..." aria-label="نام کد" maxlength="120" onkeydown="if(event.key==='Enter'){event.preventDefault();saveCodeEdit();}">
-            <div id="editCodeColors" class="color-dots" role="radiogroup" aria-label="رنگ کد"></div>
-            <select id="editCodeTheme" class="theme-sel" aria-label="تم"></select>
-          </div>
-          <div id="mergeRow" class="editor-row hidden" style="font-size:12px;color:var(--muted)">
-            <span>ادغام با:</span>
-            <select id="mergeTargetSelect" class="theme-sel" style="flex:1;min-width:140px;direction:ltr" aria-label="کد مقصد ادغام"></select>
-            <button type="button" class="pill-btn" onclick="requestMergeEditingCode()">ادغام…</button>
-          </div>
-          <div class="editor-row" style="justify-content:space-between">
-            <div style="display:flex;gap:6px">
-              <button type="button" class="pill-btn active" id="btnSaveCode" onclick="saveCodeEdit()">ذخیره</button>
-              <button type="button" class="pill-btn" id="btnCodeQuotes" onclick="toggleCodeQuotes()">نقل‌قول‌ها</button>
-            </div>
-            <div style="display:flex;gap:6px">
-              <button type="button" class="pill-btn" style="color:var(--danger)" onclick="requestDeleteEditingCode()">حذف کد</button>
-              <button type="button" class="pill-btn" onclick="closeCodeEditor()">بستن</button>
-            </div>
-          </div>
-          <div id="deleteConfirmBox" class="confirm-strip hidden" role="alertdialog" aria-labelledby="deleteConfirmText">
-            <span id="deleteConfirmText"></span>
-            <div style="display:flex;gap:6px">
-              <button type="button" class="btn-danger-solid" id="btnConfirmAction" onclick="runConfirmAction()">بله، حذف شود</button>
-              <button type="button" class="pill-btn" style="min-height:30px" onclick="hideConfirm()">انصراف</button>
-            </div>
-          </div>
-          <div id="editCodeQuotes" class="quotes-box hidden"></div>
-        </div>
-
-        <!-- Stage 2 Theme Grouping Drawer -->
-        <div id="themesDrawer" class="themes-drawer hidden">
-          <div class="editor-row" style="justify-content:space-between">
-            <span style="font-size:12.5px;font-weight:600">گروه‌بندی کدها زیر تم‌ها (مرحلهٔ بعد)</span>
-            <div style="display:flex;gap:6px">
-              <input id="newThemeName" class="editor-input" style="min-width:130px;direction:auto" type="text" placeholder="نام تم جدید..." aria-label="نام تم جدید" maxlength="120" onkeydown="if(event.key==='Enter'){event.preventDefault();createTheme();}">
-              <button type="button" class="pill-btn" onclick="createTheme()">+ تم</button>
-            </div>
-          </div>
-          <div id="themesGrid" class="themes-grid"></div>
-        </div>
-      </div>
+      <button type="button" class="icon-btn" data-action="to-picker" aria-label="بازگشت به فهرست کدگذارها" title="بازگشت">→</button>
+      <h2 id="coderTitle">…</h2>
+      <span id="sync" class="sync" role="status" aria-live="polite"><i aria-hidden="true"></i><span id="syncText">ذخیره شد</span></span>
+      <span class="head-spacer"></span>
+      <span id="progressChip" class="progress-chip"></span>
+      <button type="button" class="btn small mobile-only" data-action="open-book">کدها <span id="bookCountMobile"></span></button>
+      <button type="button" class="icon-btn" data-action="toggle-theme" aria-label="حالت روشن/تیره" title="حالت روشن/تیره"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
     </div>
   </header>
 
-  <main class="studio-main">
-    <article class="post-card">
-      <div class="post-meta">
-        <div class="author-block">
-          <div class="author-top">
-            <span id="postSampleId" class="sid-badge">S01</span>
-            <span id="postAuthorName" class="author-name"></span>
-            <span id="postAuthorType" class="meta-tag"></span>
-            <span id="postExtBadge" class="meta-tag ext hidden">لینک بیرونی</span>
+  <div class="studio">
+    <main class="reader">
+      <article class="post-card" id="postCard" aria-live="polite">
+        <div class="post-meta">
+          <div class="author">
+            <div class="author-top">
+              <span class="sid" id="pSid"></span>
+              <span class="author-name" id="pAuthor"></span>
+              <span class="pill" id="pType"></span>
+              <span class="pill warn hidden" id="pExt">external link</span>
+            </div>
+            <div class="author-headline" id="pHeadline"></div>
           </div>
-          <div id="postHeadline" class="author-headline"></div>
+          <div class="post-links"><span id="pDate"></span><a id="pUrl" href="#" target="_blank" rel="noopener">LinkedIn ↗</a></div>
         </div>
-        <div class="post-date-link">
-          <span id="postDate"></span>
-          <span>·</span>
-          <a id="postLinkedInUrl" href="#" target="_blank" rel="noopener">LinkedIn ↗</a>
-        </div>
-      </div>
 
-      <!-- External Source Switcher (shown when post has external link / article) -->
-      <div id="extBar" class="ext-bar hidden">
-        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;width:100%">
-          <div id="sourceSwitcher" class="seg-switch">
-            <button type="button" id="segPost" class="seg-btn on" onclick="setSourceTab('post')" aria-pressed="true">متن پست</button>
-            <button type="button" id="segExt" class="seg-btn" onclick="setSourceTab('external')" aria-pressed="false">مقالهٔ استخراج‌شده</button>
+        <div class="source-bar hidden" id="sourceBar">
+          <div class="source-row">
+            <div class="seg" id="sourceSeg" role="group" aria-label="متن">
+              <button type="button" data-action="source" data-source="post" aria-pressed="true">متن پست</button>
+              <button type="button" data-action="source" data-source="external" aria-pressed="false">مقالهٔ لینک‌شده</button>
+            </div>
+            <div class="row">
+              <a class="btn small" id="extUrl" href="#" target="_blank" rel="noopener">باز کردن لینک ↗</a>
+              <label class="check"><input type="checkbox" id="linkReviewed"> لینک بررسی شد</label>
+            </div>
           </div>
-          <div class="ext-actions">
-            <a id="extOriginalUrl" class="pill-btn" href="#" target="_blank" rel="noopener">لینک اصلی ↗</a>
-            <label class="ext-check">
-              <input id="chkLinkReviewed" type="checkbox" onchange="toggleLinkReviewed(this.checked)">
-              <span>لینک بررسی شد</span>
-            </label>
+          <div class="source-info" id="sourceInfo"></div>
+        </div>
+
+        <div class="how" id="howTo">برای کدگذاری، چند کلمه را انتخاب کنید یا روی یک جمله بزنید. برای ویرایش، روی متن رنگی بزنید.</div>
+        <div class="prose" id="prose"></div>
+
+        <div class="manual-box hidden" id="manualBox">
+          <div class="muted">متن این لینک خودکار استخراج نشد. اگر در لینک نکتهٔ مهمی بود، آن را باز کنید و اینجا کدش را ثبت کنید:</div>
+          <div class="manual-row">
+            <input class="field" id="manualQuote" placeholder="نقل‌قول یا نکتهٔ کلیدی…" maxlength="2000" aria-label="نقل‌قول از لینک">
+            <input class="field" id="manualCode" placeholder="code" maxlength="120" list="codeList" aria-label="کد">
+            <button type="button" class="btn" data-action="manual-add">ثبت کد</button>
           </div>
         </div>
-        <div id="extMetaInfo" class="ext-info"></div>
-      </div>
 
-      <!-- High-Readability Prose Body (Post OR Extracted External Article) -->
-      <div id="proseHint" class="tray-hint">برای کدگذاری روی یک جمله بزنید، یا بخشی از متن را با ماوس/انگشت انتخاب کنید.</div>
-      <div id="proseBody" class="prose"></div>
-
-      <!-- Secondary Fallback when external link could not be extracted -->
-      <div id="extFallbackBox" class="ext-fallback hidden">
-        <div id="extFallbackMsg" style="color:var(--muted)"></div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px">
-          <input id="extManualQuote" class="editor-input" style="flex:2;min-width:170px" type="text" placeholder="نقل‌قول یا نکتهٔ کلیدی از لینک..." aria-label="نقل‌قول از لینک" maxlength="2000">
-          <input id="extManualCode" class="editor-input" style="flex:1;min-width:130px" type="text" placeholder="کد (مثلاً policy-gap)..." aria-label="کد" maxlength="120" list="codeLabelList" onkeydown="if(event.key==='Enter'){event.preventDefault();addManualExternalCode();}">
-          <datalist id="codeLabelList"></datalist>
-          <button type="button" class="pill-btn active" onclick="addManualExternalCode()">ثبت کد از لینک</button>
+        <div class="segs">
+          <div class="segs-head"><span>بخش‌های کدگذاری‌شدهٔ این پست</span><span id="segCount"></span></div>
+          <div id="segList" style="display:grid;gap:6px"></div>
         </div>
-      </div>
+      </article>
+    </main>
 
-      <!-- Compact List of Coded Segments on This Post -->
-      <div class="segments-sec">
-        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)">
-          <span>کدهای ثبت‌شده روی این پست</span>
-          <span id="postSegCount"></span>
-        </div>
-        <div id="postSegmentsList" style="display:grid;gap:6px"></div>
+    <aside class="panel" id="panel" aria-label="پنل کدها">
+      <div class="sheet-handle mobile-only"><span></span><button type="button" class="icon-btn" data-action="close-sheet" aria-label="بستن">✕</button></div>
+      <div class="panel-tabs" role="tablist" id="panelTabs">
+        <button type="button" role="tab" data-tab="code" aria-selected="false" class="hidden" id="tabCode">کدگذاری</button>
+        <button type="button" role="tab" data-tab="book" aria-selected="true">کدها <span id="bookCount"></span></button>
+        <button type="button" role="tab" data-tab="themes" aria-selected="false">تم‌ها</button>
       </div>
-    </article>
-  </main>
+      <div class="panel-body" id="panelBody"></div>
+    </aside>
+  </div>
 
-  <footer class="studio-foot">
-    <div class="studio-foot-inner">
-      <div class="foot-nav">
-        <button id="btnFilterToggle" type="button" class="icon-btn" style="border:1px solid var(--line);background:var(--surface)" onclick="togglePostFilter()" aria-label="فیلتر پست‌ها" title="فیلتر پست‌ها">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
-        </button>
-        <select id="filterSelect" class="jump-sel hidden" onchange="applyPostFilter()" aria-label="فیلتر پست‌ها">
-          <option value="all">همه (۵۰)</option>
-          <option value="uncoded">کدگذاری‌نشده</option>
-          <option value="coded">کدگذاری‌شده</option>
-          <option value="link">لینک‌دار</option>
-        </select>
-        <select id="postSelect" class="jump-sel" onchange="jumpToPost(this.value)" aria-label="رفتن به پست"></select>
-        <span id="postPos" class="tray-hint" style="white-space:nowrap"></span>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <button type="button" id="btnMarkCoded" class="mark-btn" onclick="toggleMarkCoded()" aria-pressed="false">کدگذاری شد</button>
-        <button type="button" class="nav-arrow" onclick="stepPost(-1)" aria-label="پست قبلی" title="پست قبلی (→)">→</button>
-        <button type="button" class="nav-arrow primary" onclick="stepPost(1)" aria-label="پست بعدی" title="پست بعدی (←)">←</button>
-      </div>
+  <footer class="post-nav">
+    <div class="post-nav-inner">
+      <select class="field" id="filterSel" aria-label="نمایش کدام پست‌ها" style="width:auto">
+        <option value="all">همه</option>
+        <option value="uncoded">انجام‌نشده</option>
+        <option value="coded">انجام‌شده</option>
+        <option value="link">لینک‌دار</option>
+      </select>
+      <select class="field" id="postSel" aria-label="رفتن به پست" style="width:auto"></select>
+      <span class="head-spacer"></span>
+      <button type="button" class="btn mark" id="markBtn" data-action="mark" aria-pressed="false"><span class="long">کدگذاری این پست </span>تمام شد</button>
+      <button type="button" class="btn nav-arrow" data-action="prev" aria-label="پست قبلی" title="پست قبلی (→)">→</button>
+      <button type="button" class="btn primary nav-arrow" data-action="next" aria-label="پست بعدی" title="پست بعدی (←)">←</button>
     </div>
   </footer>
 </section>
 
+<datalist id="codeList"></datalist>
 <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <h3 id="dlgTitle"></h3>
+  <p id="dlgText"></p>
+  <div class="row"><button type="button" class="btn danger-solid" id="dlgOk"></button><button type="button" class="btn" id="dlgCancel">انصراف</button></div>
+</dialog>
 
 <script>
+'use strict';
 const $ = id => document.getElementById(id);
 const THEME_KEY = 'saintiment_theme';
-const TRAY_KEY = 'saintiment_coding_tray_collapsed';
 const CODER_KEY = 'saintiment_coding_last_coder';
-
 const COLORS = [1, 2, 3, 4, 5, 6];
-let state = {
-  coderId: null,
-  coderName: '',
-  posts: [],
-  extBySample: {},
-  themes: [],
-  codes: [],
-  highlights: [],
-  statusBySample: {},
-  filteredIds: [],
-  currentSampleId: null,
-  sourceTab: 'post', // 'post' | 'external'
-  editingCodeId: null,
-  trayCollapsed: localStorage.getItem(TRAY_KEY) === '1',
-  themesOpen: false,
-  inlineDraft: null, // { sampleId, source, extSourceId, pIdx, start, end, quote, hlId }
-  lastDeletedHighlight: null,
-  pendingCalls: 0,
-  saving: false,        // guards double submit of a code (Enter pressed twice → duplicate highlight)
-  confirmAction: null,  // what the red confirm strip does when accepted
+const fa = n => String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+const col = idx => { const n = Math.min(6, Math.max(1, Number(idx) || 1)); return { fg: `var(--c${n})`, bg: `var(--c${n}-bg)` }; };
+const same = (a, b) => String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
+
+// ---------- Data normalisation ----------
+// Postgres BIGSERIAL / BIGINT columns arrive from Neon as strings ("12"), SMALLINT/INTEGER as numbers.
+// Every id is turned into a Number here, once, so comparisons anywhere in the UI are reliable.
+const num = v => (v === null || v === undefined || v === '' ? null : Number(v));
+const normCode = c => ({ ...c, id: num(c.id), color_idx: num(c.color_idx) || 1, theme_id: num(c.theme_id) });
+const normTheme = t => ({ ...t, id: num(t.id) });
+const normHl = h => ({ ...h, id: num(h.id), code_id: num(h.code_id), external_source_id: num(h.external_source_id),
+  paragraph_idx: num(h.paragraph_idx) ?? 0, start_offset: num(h.start_offset) ?? 0, end_offset: num(h.end_offset) ?? 0 });
+const normExt = e => ({ ...e, id: num(e.id) });
+
+const S = {
+  coderId: null, coderName: '', coders: {},
+  posts: [], extBySample: {}, themes: [], codes: [], hls: [], status: {},
+  view: [], sid: null, source: 'post',
+  tab: 'book',          // 'code' | 'book' | 'themes'
+  sel: null,            // new selection: {sampleId, source, extId, p, start, end, quote}
+  seg: null,            // clicked segment: {sampleId, source, p, start, end, quote, replaceId}
+  openCode: null,       // codebook row being edited
+  query: '', active: 0, bookQuery: '',
+  busy: false, pending: 0,
 };
+window.S = S; // handy for debugging in the console and for tests
 
-// ---- Theme ----
-function applyTheme(t) {
-  if (t) document.documentElement.setAttribute('data-theme', t);
-  else document.documentElement.removeAttribute('data-theme');
-}
-function toggleTheme() {
-  const cur = document.documentElement.getAttribute('data-theme') ||
-    (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
-  const next = cur === 'dark' ? 'light' : 'dark';
-  localStorage.setItem(THEME_KEY, next);
-  applyTheme(next);
-}
+// ---------- Small UI services ----------
+function applyTheme(t) { t ? document.documentElement.setAttribute('data-theme', t) : document.documentElement.removeAttribute('data-theme'); }
 applyTheme(localStorage.getItem(THEME_KEY));
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  localStorage.setItem(THEME_KEY, next); applyTheme(next);
+}
 
-function showToast(msg, undoFn = null, isError = false) {
+let toastTimer;
+function toast(msg, { undo = null, error = false } = {}) {
   const el = $('toast');
   el.innerHTML = '';
-  el.classList.toggle('error', isError);
-  const txt = document.createElement('span');
-  txt.textContent = msg;
-  el.appendChild(txt);
-  if (undoFn) {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'toast-undo';
-    btn.textContent = 'بازگشت';
-    btn.onclick = undoFn;
-    el.appendChild(btn);
+  el.classList.toggle('error', error);
+  const t = document.createElement('span'); t.textContent = msg; el.appendChild(t);
+  if (undo) {
+    const b = document.createElement('button'); b.type = 'button'; b.textContent = 'برگرداندن';
+    b.onclick = () => { el.classList.add('hidden'); run(undo); };
+    el.appendChild(b);
   }
   el.classList.remove('hidden');
-  clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => el.classList.add('hidden'), undoFn ? 6500 : isError ? 4500 : 2200);
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.add('hidden'), undo ? 7000 : error ? 5000 : 2200);
 }
 
-function setSync(mode) {
-  const d = $('syncDot');
-  const label = mode === 'ok' ? 'ذخیره شد' : mode === 'wait' ? 'در حال ذخیره…' : 'ذخیره نشد';
-  d.className = 'dot' + (mode === 'ok' ? '' : ' ' + mode);
-  d.title = label;
-  $('sync').className = 'sync' + (mode === 'ok' ? '' : ' ' + mode);
-  $('syncLabel').textContent = label;
+function confirmBox(title, text, okText) {
+  const d = $('dlg');
+  $('dlgTitle').textContent = title; $('dlgText').textContent = text; $('dlgOk').textContent = okText;
+  return new Promise(resolve => {
+    const done = v => { d.close(); $('dlgOk').onclick = $('dlgCancel').onclick = null; d.onclose = null; resolve(v); };
+    $('dlgOk').onclick = () => done(true);
+    $('dlgCancel').onclick = () => done(false);
+    d.onclose = () => resolve(false);
+    d.showModal();
+    $('dlgCancel').focus();
+  });
 }
 
-// Any save that fails tells the user instead of failing silently in the console.
-const ERROR_TEXT = {
+function setSync() {
+  const el = $('sync');
+  const state = S.pending ? 'wait' : el.dataset.bad ? 'bad' : 'ok';
+  el.className = 'sync' + (state === 'ok' ? '' : ' ' + state);
+  $('syncText').textContent = state === 'wait' ? 'در حال ذخیره…' : state === 'bad' ? 'ذخیره نشد' : 'ذخیره شد';
+}
+
+const ERRORS = {
   unauthorized: 'نشست شما تمام شده؛ دوباره وارد شوید',
   missing_label: 'نام کد نمی‌تواند خالی باشد',
   not_found: 'این مورد دیگر وجود ندارد؛ صفحه را تازه کنید',
   bad_code: 'این کد دیگر وجود ندارد؛ صفحه را تازه کنید',
+  network: 'اتصال برقرار نشد؛ اینترنت را بررسی کنید',
 };
-function reportError(e) {
-  const msg = ERROR_TEXT[e?.message] || (e instanceof TypeError ? 'اتصال برقرار نشد؛ اینترنت را بررسی کنید' : 'ذخیره نشد؛ دوباره تلاش کنید');
-  showToast(msg, null, true);
-}
-// Only failed requests made by this page count. Browser extensions (wallets, password managers…)
-// run code in the page too, and their own failed promises must not show up as "not saved".
-window.addEventListener('unhandledrejection', ev => {
-  if (!ev.reason?.fromApi) return;
-  ev.preventDefault();
-  reportError(ev.reason);
-});
 
 async function api(url, opts = {}) {
-  state.pendingCalls++;
-  setSync('wait');
+  const write = opts.method && opts.method !== 'GET';
+  if (write) { S.pending++; setSync(); }
+  let res;
   try {
-    const res = await fetch(url, {
-      ...opts,
-      headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
-    });
-    if (res.status === 401 && !url.endsWith('/login') && !url.endsWith('/me')) {
-      showScreen('loginScreen');
-      setTimeout(() => $('pwInput').focus(), 50);
-      throw new Error('unauthorized');
-    }
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || ('HTTP ' + res.status));
-    }
-    setSync('ok');
-    return await res.json();
-  } catch (e) {
-    if (e.message !== 'unauthorized') setSync('bad');
-    e.fromApi = true;
-    throw e;
-  } finally {
-    state.pendingCalls = Math.max(0, state.pendingCalls - 1);
-    if (state.pendingCalls === 0 && !$('syncDot').classList.contains('bad')) setSync('ok');
+    res = await fetch(url, { credentials: 'same-origin', ...opts, headers: opts.body ? { 'Content-Type': 'application/json' } : {} });
+  } catch {
+    if (write) { S.pending--; $('sync').dataset.bad = '1'; setSync(); }
+    throw new Error('network');
   }
+  const data = await res.json().catch(() => ({}));
+  if (write) { S.pending--; if (res.ok) delete $('sync').dataset.bad; else $('sync').dataset.bad = '1'; setSync(); }
+  if (res.status === 401 && !url.endsWith('/login') && !url.endsWith('/me')) { showScreen('loginScreen'); throw new Error('unauthorized'); }
+  if (!res.ok) throw new Error(data.error || 'HTTP ' + res.status);
+  return data;
+}
+
+// Every user action goes through run(): one at a time, errors are shown, never swallowed.
+async function run(fn) {
+  if (S.busy) return;
+  S.busy = true;
+  document.body.style.cursor = 'progress';
+  try { await fn(); }
+  catch (e) { console.error(e); toast(ERRORS[e.message] || 'ذخیره نشد؛ دوباره تلاش کنید', { error: true }); }
+  finally { S.busy = false; document.body.style.cursor = ''; }
 }
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
-  const nav = $('appNav');
-  if (nav) nav.classList.toggle('hidden', id === 'loginScreen');
+  $('appNav').classList.toggle('hidden', id === 'loginScreen');
+  if (id === 'loginScreen') setTimeout(() => $('pwInput').focus(), 30);
 }
 
-function escapeHtml(s) {
-  return String(s ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function colorCss(idx) {
-  const n = Math.min(6, Math.max(1, Number(idx) || 1));
-  return { fg: `var(--c${n})`, bg: `var(--c${n}-bg)` };
-}
-
-function faNum(n) {
-  return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
-}
-
-// ---- Auth & Picker ----
-function coderFromHash() {
-  const m = location.hash.match(/^#coder-([123])$/);
-  return m ? Number(m[1]) : null;
-}
-
-// Opens whatever the URL asks for: #coder-N is a coder's workspace, otherwise the picker.
-async function route() {
-  const id = coderFromHash();
-  if (id) return openCoder(id, { push: false });
-  return loadCoders({ push: false });
-}
-
-async function boot() {
-  let authed = false;
-  try {
-    await api('/api/coding/me');
-    authed = true;
-  } catch {
-    showScreen('loginScreen');
-    setTimeout(() => $('pwInput').focus(), 50);
-  }
-  if (authed) await route();
-}
-
-async function doLogin(e) {
+// ---------- Auth & coder picker ----------
+$('loginForm').addEventListener('submit', async e => {
   e.preventDefault();
-  $('pwErr').textContent = '';
-  $('pwBtn').disabled = true;
-  $('pwBtn').textContent = 'در حال ورود…';
-  let ok = false;
+  $('pwErr').textContent = ''; $('pwBtn').disabled = true; $('pwBtn').textContent = 'در حال ورود…';
   try {
     await api('/api/coding/login', { method: 'POST', body: JSON.stringify({ password: $('pwInput').value }) });
-    ok = true;
-  } catch (err) {
-    $('pwErr').textContent = err.message === 'wrong_password' ? 'رمز اشتباه است' :
-      err instanceof TypeError ? 'اتصال برقرار نشد؛ اینترنت را بررسی کنید' : 'خطای سرور؛ کمی بعد دوباره تلاش کنید';
-  } finally {
-    $('pwBtn').disabled = false;
-    $('pwBtn').textContent = 'ورود';
-  }
-  if (ok) {
     $('pwInput').value = '';
     await route();
-  }
-}
+  } catch (err) {
+    $('pwErr').textContent = err.message === 'wrong_password' ? 'رمز اشتباه است' : err.message === 'network' ? ERRORS.network : 'خطای سرور؛ کمی بعد دوباره تلاش کنید';
+  } finally { $('pwBtn').disabled = false; $('pwBtn').textContent = 'ورود'; }
+});
 
-async function doLogout() {
+async function logout() {
   await api('/api/coding/logout', { method: 'POST' }).catch(() => {});
   history.replaceState(null, '', location.pathname);
   showScreen('loginScreen');
-  setTimeout(() => $('pwInput').focus(), 50);
 }
 
-async function loadCoders({ push = true } = {}) {
+async function loadCoders() {
+  const d = await api('/api/coding/coders');
+  for (const c of d.coders) S.coders[Number(c.id)] = c.name;
+  return d.coders;
+}
+
+async function showPicker({ push = true } = {}) {
   if (push && location.hash) history.pushState(null, '', location.pathname);
   showScreen('pickerScreen');
-  const box = $('coderCards');
-  let data;
+  const box = $('coderList');
   try {
-    data = await api('/api/coding/coders');
+    const coders = await loadCoders();
+    const last = Number(localStorage.getItem(CODER_KEY));
+    box.removeAttribute('aria-busy');
+    box.innerHTML = coders.map(c => {
+      const id = Number(c.id), coded = Number(c.coded_count) || 0, total = Number(c.total_posts) || 0;
+      return `<button type="button" class="coder-card${id === last ? ' last' : ''}" data-action="open-coder" data-id="${id}">
+        <div class="coder-top"><span class="coder-name">${fa(id)}. ${esc(c.name)}${id === last ? '<span class="tag-last">آخرین بار</span>' : ''}</span>
+          <span class="meta">${fa(coded)} از ${fa(total)} پست</span></div>
+        <div class="bar"><i style="width:${total ? coded / total * 100 : 0}%"></i></div>
+        <div class="meta">${fa(Number(c.codes_count) || 0)} کد · ${fa(Number(c.highlights_count) || 0)} بخش کدگذاری‌شده</div>
+      </button>`;
+    }).join('');
   } catch (e) {
-    if (e.message !== 'unauthorized') {
-      box.innerHTML = `<div class="empty-box" role="alert"><span>فهرست کدگذارها بارگذاری نشد.</span><button type="button" class="pill-btn" onclick="loadCoders({ push: false })">دوباره تلاش کنید</button></div>`;
-    }
-    return;
+    if (e.message !== 'unauthorized') box.innerHTML = `<div class="empty"><span>فهرست بارگذاری نشد.</span><button type="button" class="btn" data-action="reload-picker">دوباره تلاش کنید</button></div>`;
   }
-  box.removeAttribute('aria-busy');
-  const last = Number(localStorage.getItem(CODER_KEY));
-  box.innerHTML = data.coders.map(c => {
-    const pct = c.total_posts ? (c.coded_count / c.total_posts) * 100 : 0;
-    return `
-      <button type="button" class="coder-card" data-coder="${Number(c.id)}" style="${c.id === last ? 'border-color:var(--accent)' : ''}">
-        <div class="coder-top">
-          <span class="coder-name">${faNum(c.id)}. ${escapeHtml(c.name)}${c.id === last ? ' <span style="font-size:11.5px;font-weight:500;color:var(--accent)">آخرین بار</span>' : ''}</span>
-          <span class="coder-meta">${faNum(c.coded_count)} از ${faNum(c.total_posts)} پست</span>
-        </div>
-        <div class="bar"><i style="width:${pct}%"></i></div>
-        <div class="coder-meta">${faNum(c.codes_count)} کد یکتا · ${faNum(c.highlights_count)} قطعه کدگذاری‌شده</div>
-      </button>
-    `;
-  }).join('');
-  for (const c of data.coders) CODER_NAMES[c.id] = c.name;
 }
-const CODER_NAMES = {};
-$('coderCards').addEventListener('click', e => {
-  const b = e.target.closest('[data-coder]');
-  if (b) openCoder(Number(b.dataset.coder));
-});
 
-async function openCoder(coderId, { push = true } = {}) {
-  if (push && location.hash !== `#coder-${coderId}`) history.pushState(null, '', `#coder-${coderId}`);
-  state.coderId = coderId;
-  state.coderName = CODER_NAMES[coderId] || '';
-  localStorage.setItem(CODER_KEY, String(coderId));
-  $('coderHeaderTitle').textContent = state.coderName ? `${faNum(coderId)}. ${state.coderName}` : `کدگذار ${faNum(coderId)}`;
-  if (!state.coderName) {
-    api('/api/coding/coders').then(d => {
-      for (const c of d.coders) CODER_NAMES[c.id] = c.name;
-      if (state.coderId === coderId && CODER_NAMES[coderId]) {
-        state.coderName = CODER_NAMES[coderId];
-        $('coderHeaderTitle').textContent = `${faNum(coderId)}. ${state.coderName}`;
-      }
-    }).catch(() => {});
-  }
+async function openCoder(id, { push = true } = {}) {
+  if (push && location.hash !== `#coder-${id}`) history.pushState(null, '', `#coder-${id}`);
+  localStorage.setItem(CODER_KEY, String(id));
+  Object.assign(S, { coderId: id, sel: null, seg: null, openCode: null, tab: 'book', query: '', bookQuery: '' });
+  if (!S.coders[id]) await loadCoders().catch(() => {});
+  S.coderName = S.coders[id] || `کدگذار ${fa(id)}`;
+  $('coderTitle').textContent = `${fa(id)}. ${S.coderName}`;
   showScreen('studioScreen');
-  closeCodeEditor();
-  $('proseBody').innerHTML = '<div class="skel" aria-label="در حال بارگذاری…"><i></i><i></i><i></i></div>';
-  $('postSegmentsList').innerHTML = '';
-
+  $('prose').innerHTML = '<div class="skel"><i></i><i></i><i></i></div>';
+  $('panelBody').innerHTML = '';
   let ws;
-  try {
-    ws = await api(`/api/coding/workspace?coder=${coderId}`);
-  } catch (e) {
-    if (e.message !== 'unauthorized') {
-      $('proseBody').innerHTML = `<div class="empty-box" role="alert" style="direction:rtl"><span>داده‌های کدگذاری بارگذاری نشد.</span><button type="button" class="pill-btn" onclick="openCoder(${Number(coderId)}, { push: false })">دوباره تلاش کنید</button></div>`;
-    }
+  try { ws = await api(`/api/coding/workspace?coder=${id}`); }
+  catch (e) {
+    if (e.message !== 'unauthorized') $('prose').innerHTML = `<div class="empty" style="direction:rtl"><span>داده‌ها بارگذاری نشد.</span><button type="button" class="btn" data-action="reload-coder">دوباره تلاش کنید</button></div>`;
     return;
   }
-  if (state.coderId !== coderId) return;
-  state.posts = ws.posts;
-  state.extBySample = {};
-  for (const ex of ws.external_sources) {
-    (state.extBySample[ex.sample_id] ||= []).push(ex);
-  }
-  state.themes = ws.themes;
-  state.codes = ws.codes;
-  state.highlights = ws.highlights;
-  state.statusBySample = {};
-  for (const st of ws.post_status) {
-    state.statusBySample[st.sample_id] = st;
-  }
-  state.editingCodeId = null;
-  state.inlineDraft = null;
-  applyPostFilter(true);
-  renderAll();
+  if (S.coderId !== id) return;
+  S.posts = ws.posts;
+  S.extBySample = {};
+  for (const x of ws.external_sources.map(normExt)) (S.extBySample[x.sample_id] ||= []).push(x);
+  S.themes = ws.themes.map(normTheme);
+  S.codes = ws.codes.map(normCode);
+  S.hls = ws.highlights.map(normHl);
+  S.status = {};
+  for (const st of ws.post_status) S.status[st.sample_id] = st;
+  const firstOpen = S.posts.find(p => !statusOf(p.sample_id).is_coded);
+  S.sid = (firstOpen || S.posts[0])?.sample_id || null;
+  S.source = 'post';
+  applyFilter(false);
 }
 
-function backToPicker() {
-  state.inlineDraft = null;
-  closeCodeEditor();
-  loadCoders();
-}
-window.addEventListener('popstate', () => {
-  if ($('loginScreen').classList.contains('active')) return;
-  state.inlineDraft = null;
-  route();
-});
+function coderFromHash() { const m = location.hash.match(/^#coder-([123])$/); return m ? Number(m[1]) : null; }
+async function route() { const id = coderFromHash(); return id ? openCoder(id, { push: false }) : showPicker({ push: false }); }
+window.addEventListener('popstate', () => { if (!$('loginScreen').classList.contains('active')) route(); });
 
-// ---- Filtering & Navigation ----
-function postStatusOf(sampleId) {
-  return state.statusBySample[sampleId] || { sample_id: sampleId, is_coded: false, link_reviewed: false, coder_notes: '' };
-}
+// ---------- Posts & navigation ----------
+const statusOf = sid => S.status[sid] || { sample_id: sid, is_coded: false, link_reviewed: false, coder_notes: '' };
+const post = () => S.posts.find(p => p.sample_id === S.sid) || null;
+const extractedOf = sid => (S.extBySample[sid] || []).find(e => e.fetch_status === 'extracted' && e.extracted_text) || null;
 
-function syncFilterButton() {
-  const open = !$('filterSelect').classList.contains('hidden');
-  const active = $('filterSelect').value !== 'all';
-  const btn = $('btnFilterToggle');
-  if (!btn) return;
-  btn.style.borderColor = (open || active) ? 'var(--accent)' : 'var(--line)';
-  btn.style.color = (open || active) ? 'var(--accent)' : 'var(--muted)';
-  btn.setAttribute('aria-expanded', String(open));
-}
-
-function togglePostFilter() {
-  const sel = $('filterSelect');
-  sel.classList.toggle('hidden');
-  syncFilterButton();
-  if (!sel.classList.contains('hidden')) sel.focus();
-}
-
-function applyPostFilter(pickFirstUncoded = false) {
-  const f = $('filterSelect').value;
-  syncFilterButton();
-  state.filteredIds = state.posts.filter(p => {
-    const st = postStatusOf(p.sample_id);
+function applyFilter(keepCurrent = true) {
+  const f = $('filterSel').value;
+  S.view = S.posts.filter(p => {
+    const st = statusOf(p.sample_id);
     if (f === 'uncoded') return !st.is_coded;
     if (f === 'coded') return st.is_coded;
-    if (f === 'link') return p.has_external_link;
+    if (f === 'link') return p.has_external_link || (S.extBySample[p.sample_id] || []).length;
     return true;
   }).map(p => p.sample_id);
-
-  if (!state.filteredIds.includes(state.currentSampleId)) {
-    if (pickFirstUncoded) {
-      const firstUncoded = state.posts.find(p => !postStatusOf(p.sample_id).is_coded);
-      state.currentSampleId = firstUncoded ? firstUncoded.sample_id : (state.filteredIds[0] || state.posts[0]?.sample_id);
-    } else {
-      state.currentSampleId = state.filteredIds[0] || state.posts[0]?.sample_id || null;
-    }
-    state.sourceTab = 'post';
-    state.inlineDraft = null;
-  }
-  renderPostSelector();
-  renderPost();
+  if (!keepCurrent || !S.view.includes(S.sid)) S.sid = S.view[0] || null;
+  goTo(S.sid);
 }
 
-function renderPostSelector() {
-  const sel = $('postSelect');
-  sel.innerHTML = state.filteredIds.map(sid => {
-    const st = postStatusOf(sid);
-    const mark = st.is_coded ? '✓ ' : '';
-    const p = state.posts.find(x => x.sample_id === sid);
-    const link = p?.has_external_link ? ' 🔗' : '';
-    return `<option value="${escapeHtml(sid)}" ${sid === state.currentSampleId ? 'selected' : ''}>${mark}${escapeHtml(sid)}${link}</option>`;
-  }).join('') || '<option value="">موردی نیست</option>';
-  const pos = state.filteredIds.indexOf(state.currentSampleId);
-  const codedCount = state.posts.filter(p => postStatusOf(p.sample_id).is_coded).length;
-  $('postPos').textContent = state.filteredIds.length
-    ? `${faNum(pos + 1)}/${faNum(state.filteredIds.length)} · ${faNum(codedCount)} انجام‌شده`
-    : '';
-}
-
-function jumpToPost(sid) {
-  if (!sid) return;
-  state.currentSampleId = sid;
-  state.sourceTab = 'post';
-  state.inlineDraft = null;
-  renderPostSelector();
+function goTo(sid) {
+  S.sid = sid; S.source = 'post'; S.sel = null; S.seg = null;
+  if (S.tab === 'code') S.tab = 'book';
   renderAll();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function stepPost(delta) {
-  if (!state.filteredIds.length) return;
-  const idx = state.filteredIds.indexOf(state.currentSampleId);
-  const nextIdx = (idx + delta + state.filteredIds.length) % state.filteredIds.length;
-  jumpToPost(state.filteredIds[nextIdx]);
-}
-
-// ---- Top Code Tray ----
-function toggleTrayCollapse() {
-  state.trayCollapsed = !state.trayCollapsed;
-  localStorage.setItem(TRAY_KEY, state.trayCollapsed ? '1' : '0');
-  renderTray();
-}
-
-function renderTray() {
-  const countByCode = {};
-  for (const h of state.highlights) {
-    countByCode[h.code_id] = (countByCode[h.code_id] || 0) + 1;
-  }
-  const assigning = Boolean(state.inlineDraft);
-  const currentHl = assigning && state.inlineDraft.hlId
-    ? state.highlights.find(h => h.id === state.inlineDraft.hlId)
-    : null;
-  const q = assigning ? (state.inlineDraft.query || '').trim().toLowerCase() : '';
-
-  $('trayBox').classList.toggle('assign-mode', assigning);
-  const typed = assigning ? (state.inlineDraft.query || '').trim() : '';
-  const exact = typed ? state.codes.find(c => c.label.toLowerCase() === typed.toLowerCase()) : null;
-  if (assigning && typed) {
-    // Tell the coder, before they press Enter, whether it reuses a code or makes a new one.
-    $('traySummary').innerHTML = exact
-      ? `Enter ← همان کد موجود <b class="ltr">${escapeHtml(exact.label)}</b> اعمال می‌شود`
-      : `Enter ← کد جدید <b class="ltr">${escapeHtml(typed)}</b> ساخته می‌شود`;
-  } else {
-    $('traySummary').textContent = assigning
-      ? (currentHl ? 'کد فعلی با ✓ مشخص است؛ برای تعویض روی کد دیگری بزنید یا نام تازه بنویسید' : `یک کد را بزنید یا نام کد تازه را بنویسید (${faNum(state.codes.length)} کد)`)
-      : `${faNum(state.codes.length)} کد · ${faNum(state.highlights.length)} قطعه · برای ویرایش، ادغام یا حذف روی کد بزنید`;
-  }
-  $('btnToggleTray').textContent = state.trayCollapsed && !assigning
-    ? `نمایش همه کدها (${faNum(state.codes.length)}) ▼`
-    : 'جمع کردن ▲';
-
-  const chips = $('trayChips');
-  chips.classList.toggle('collapsed', state.trayCollapsed && !assigning);
-
-  if (!state.codes.length) {
-    chips.innerHTML = '<span style="font-size:12px;color:var(--muted)">هنوز کدی ثبت نشده — روی هر جمله کلیک کنید و کدش را همان‌جا تایپ کنید.</span>';
-  } else {
-    chips.innerHTML = state.codes.map(c => {
-      const col = colorCss(c.color_idx);
-      const cnt = countByCode[c.id] || 0;
-      const editing = !assigning && state.editingCodeId === c.id;
-      const isCurrent = Boolean(currentHl && currentHl.code_id === c.id);
-      const dim = assigning && q && !isCurrent && !c.label.toLowerCase().includes(q);
-      if (assigning) {
-        return `
-          <button type="button" class="code-chip ${isCurrent ? 'current-code' : 'pickable'} ${dim ? 'dim' : ''}" data-label="${escapeHtml(c.label)}" aria-label="اعمال کد ${escapeHtml(c.label)}" ${isCurrent ? 'aria-current="true"' : ''}
-            onmousedown="event.preventDefault()"
-            onclick="event.stopPropagation(); applyInlineLabel(this.dataset.label)">
-            <span class="${isCurrent ? 'c-cur' : 'c-plus'}">${isCurrent ? '✓' : '+'}</span>
-            <span class="c-dot" style="background:${col.fg}"></span>
-            <span>${escapeHtml(c.label)}</span>
-            <span class="c-cnt">×${cnt}</span>
-          </button>
-        `;
-      }
-      return `
-        <button type="button" class="code-chip ${editing ? 'editing' : ''}" onclick="openCodeEditor(${c.id})" aria-expanded="${editing}" aria-controls="trayEditor" title="ویرایش، ادغام یا حذف">
-          <span class="c-dot" style="background:${col.fg}"></span>
-          <span>${escapeHtml(c.label)}</span>
-          <span class="c-cnt">×${cnt}</span>
-        </button>
-      `;
-    }).join('');
-  }
-
-  if (state.themesOpen) renderThemesDrawer();
-  $('codeLabelList').innerHTML = state.codes.map(c => `<option value="${escapeHtml(c.label)}"></option>`).join('');
-}
-
-function openCodeEditor(codeId) {
-  if (state.editingCodeId === codeId) {
-    closeCodeEditor();
-    return;
-  }
-  state.editingCodeId = codeId;
-  const c = state.codes.find(x => x.id === codeId);
-  if (!c) return;
-  if (state.trayCollapsed) { state.trayCollapsed = false; localStorage.setItem(TRAY_KEY, '0'); }
-  $('trayEditor').classList.remove('hidden');
-  $('editCodeLabel').value = c.label;
-  hideConfirm();
-
-  $('editCodeColors').innerHTML = COLORS.map(idx => {
-    const col = colorCss(idx);
-    return `<button type="button" class="color-opt ${c.color_idx === idx ? 'on' : ''}" style="background:${col.fg}" role="radio" aria-checked="${c.color_idx === idx}" aria-label="رنگ ${faNum(idx)}" onclick="recolorCode(${c.id}, ${idx})"></button>`;
-  }).join('');
-
-  $('editCodeTheme').innerHTML = `<option value="">بدون تم</option>` +
-    state.themes.map(t => `<option value="${t.id}" ${c.theme_id === t.id ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('');
-
-  const others = state.codes.filter(x => x.id !== c.id);
-  const mergeRow = $('mergeRow');
-  if (others.length) {
-    mergeRow.classList.remove('hidden');
-    $('mergeTargetSelect').innerHTML = others.map(o => `<option value="${o.id}">${escapeHtml(o.label)}</option>`).join('');
-  } else {
-    mergeRow.classList.add('hidden');
-  }
-
-  const quoteCnt = state.highlights.filter(h => h.code_id === c.id).length;
-  $('btnCodeQuotes').textContent = `نقل‌قول‌ها (${faNum(quoteCnt)})`;
-  $('editCodeQuotes').classList.add('hidden');
-  renderTray();
-  setTimeout(() => $('editCodeLabel').focus(), 0);
-}
-
-function closeCodeEditor() {
-  const wasOpen = state.editingCodeId;
-  state.editingCodeId = null;
-  $('trayEditor').classList.add('hidden');
-  hideConfirm();
-  if (wasOpen) renderTray();
-}
-
-// One red confirm strip serves every destructive action (delete code, merge codes).
-function askConfirm(text, buttonText, action) {
-  state.confirmAction = action;
-  $('deleteConfirmText').textContent = text;
-  $('btnConfirmAction').textContent = buttonText;
-  $('deleteConfirmBox').classList.remove('hidden');
-  $('btnConfirmAction').focus();
-}
-function hideConfirm() {
-  state.confirmAction = null;
-  $('deleteConfirmBox').classList.add('hidden');
-}
-async function runConfirmAction() {
-  const fn = state.confirmAction;
-  hideConfirm();
-  if (fn) await fn();
-}
-
-async function recolorCode(codeId, colorIdx) {
-  const c = state.codes.find(x => x.id === codeId);
-  if (!c || c.color_idx === colorIdx) return;
-  const prev = c.color_idx;
-  c.color_idx = colorIdx;
-  renderAll();
-  openCodeEditor(codeId);
-  try {
-    await api(`/api/coding/codes/${codeId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ coder_id: state.coderId, color_idx: colorIdx }),
-    });
-  } catch (e) {
-    c.color_idx = prev;  // put the old colour back so the screen matches the database
-    renderAll();
-    if (state.editingCodeId === codeId) { state.editingCodeId = null; openCodeEditor(codeId); }
-    throw e;
-  }
-}
-
-async function saveCodeEdit() {
-  const c = state.codes.find(x => x.id === state.editingCodeId);
-  if (!c) return;
-  const label = $('editCodeLabel').value.trim();
-  const themeVal = $('editCodeTheme').value;
-  const themeId = themeVal ? Number(themeVal) : null;
-  if (!label) {
-    showToast('نام کد نمی‌تواند خالی باشد', null, true);
-    $('editCodeLabel').focus();
-    return;
-  }
-  if (label === c.label && themeId === (c.theme_id ?? null)) { closeCodeEditor(); return; }
-  // Renaming onto another code's name would leave two codes with the same label: offer a merge instead.
-  const twin = state.codes.find(x => x.id !== c.id && x.label.toLowerCase() === label.toLowerCase());
-  if (twin) {
-    $('mergeTargetSelect').value = String(twin.id);
-    requestMergeEditingCode();
-    return;
-  }
-  $('btnSaveCode').disabled = true;
-  try {
-    const res = await api(`/api/coding/codes/${c.id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ coder_id: state.coderId, label, theme_id: themeId }),
-    });
-    Object.assign(c, res.code);
-  } finally {
-    $('btnSaveCode').disabled = false;
-  }
-  closeCodeEditor();
-  renderAll();
-  showToast('کد در همهٔ نقل‌قول‌ها ویرایش شد');
-}
-
-function requestMergeEditingCode() {
-  const src = state.codes.find(x => x.id === state.editingCodeId);
-  const target = state.codes.find(x => x.id === Number($('mergeTargetSelect').value));
-  if (!src || !target) return;
-  const n = state.highlights.filter(h => h.code_id === src.id).length;
-  askConfirm(
-    `«${src.label}» در «${target.label}» ادغام شود؟ ${faNum(n)} قطعه به «${target.label}» منتقل و «${src.label}» حذف می‌شود. این کار برگشت‌پذیر نیست.`,
-    'بله، ادغام شود',
-    mergeEditingCode,
-  );
-}
-
-async function mergeEditingCode() {
-  const sourceId = state.editingCodeId;
-  const targetId = Number($('mergeTargetSelect').value);
-  if (!sourceId || !targetId || sourceId === targetId) return;
-  const res = await api(`/api/coding/codes/${sourceId}/merge`, {
-    method: 'POST',
-    body: JSON.stringify({ coder_id: state.coderId, target_code_id: targetId }),
-  });
-  for (const h of state.highlights) {
-    if (h.code_id === sourceId) h.code_id = targetId;
-  }
-  state.codes = state.codes.filter(c => c.id !== sourceId);
-  closeCodeEditor();
-  renderAll();
-  showToast(`${faNum(res.moved_count)} قطعه ادغام و منتقل شد`);
-}
-
-function requestDeleteEditingCode() {
-  const id = state.editingCodeId;
-  if (!id) return;
-  const usedCount = state.highlights.filter(h => h.code_id === id).length;
-  if (usedCount === 0) {
-    confirmDeleteEditingCode();
-    return;
-  }
-  askConfirm(
-    `این کد روی ${faNum(usedCount)} قطعه استفاده شده. حذف کد و همهٔ هایلایت‌هایش؟ اگر فقط نامش اشتباه است، به‌جای حذف آن را ویرایش یا ادغام کنید.`,
-    'بله، حذف شود',
-    confirmDeleteEditingCode,
-  );
-}
-
-async function confirmDeleteEditingCode() {
-  const id = state.editingCodeId;
-  if (!id) return;
-  await api(`/api/coding/codes/${id}?coder=${state.coderId}`, { method: 'DELETE' });
-  state.codes = state.codes.filter(c => c.id !== id);
-  state.highlights = state.highlights.filter(h => h.code_id !== id);
-  closeCodeEditor();
-  renderAll();
-  showToast('کد حذف شد');
-}
-
-function toggleCodeQuotes() {
-  const box = $('editCodeQuotes');
-  if (!box.classList.contains('hidden')) {
-    box.classList.add('hidden');
-    return;
-  }
-  const matches = state.highlights.filter(h => h.code_id === state.editingCodeId);
-  box.innerHTML = matches.length
-    ? matches.map(h => `
-        <button type="button" class="quote-item" onclick="jumpToHighlight(${h.id})">
-          <strong>${escapeHtml(h.sample_id)}${h.source === 'external' ? ' · Article' : ''}</strong> — “${escapeHtml(h.quote)}”
-        </button>
-      `).join('')
-    : '<div style="font-size:12px;color:var(--muted)">هنوز نقل‌قولی با این کد ثبت نشده.</div>';
-  box.classList.remove('hidden');
-}
-
-function jumpToHighlight(hlId) {
-  const h = state.highlights.find(x => x.id === hlId);
-  if (!h) return;
-  closeCodeEditor();
-  state.currentSampleId = h.sample_id;
-  state.sourceTab = h.source === 'external' ? 'external' : 'post';
-  state.inlineDraft = null;
-  renderPostSelector();
-  renderPost();
   window.scrollTo({ top: 0 });
-  setTimeout(() => {
-    const el = document.querySelector(`[data-hl-id="${hlId}"]`);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      el.classList.add('pulse');
-      setTimeout(() => el.classList.remove('pulse'), 1400);
-    }
-  }, 50);
 }
 
-// ---- Theme Grouping Drawer ----
-function toggleThemesDrawer() {
-  state.themesOpen = !state.themesOpen;
-  $('themesDrawer').classList.toggle('hidden', !state.themesOpen);
-  $('btnThemesDrawer').classList.toggle('active', state.themesOpen);
-  $('btnThemesDrawer').setAttribute('aria-expanded', String(state.themesOpen));
-  if (state.themesOpen) renderThemesDrawer();
+function step(d) {
+  if (!S.view.length) return;
+  const i = S.view.indexOf(S.sid);
+  goTo(S.view[(i + d + S.view.length) % S.view.length]);
 }
 
-function renderThemesDrawer() {
-  const groups = [
-    ...state.themes.map(t => ({ id: t.id, name: t.name })),
-    { id: null, name: 'بدون تم' },
-  ];
-  $('themesGrid').innerHTML = groups.map(g => {
-    const members = state.codes.filter(c => (c.theme_id ?? null) === g.id);
-    return `
-      <div class="theme-card">
-        <div class="theme-card-head">
-          <span>${escapeHtml(g.name)} (${faNum(members.length)})</span>
-          ${g.id ? `<button type="button" style="font-size:11.5px;color:var(--danger);min-height:28px;padding:0 6px" onclick="deleteTheme(${g.id})" aria-label="حذف تم ${escapeHtml(g.name)}">حذف</button>` : ''}
-        </div>
-        ${members.length ? members.map(c => {
-          const col = colorCss(c.color_idx);
-          return `
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px">
-              <span class="ltr" style="display:inline-flex;align-items:center;gap:5px;min-width:0">
-                <span class="c-dot" style="background:${col.fg}"></span>
-                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.label)}</span>
-              </span>
-              <select class="theme-sel" style="min-height:30px;font-size:11.5px" onchange="assignCodeTheme(${c.id}, this.value)" aria-label="تم کد ${escapeHtml(c.label)}">
-                <option value="">بدون تم</option>
-                ${state.themes.map(t => `<option value="${t.id}" ${c.theme_id === t.id ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('')}
-              </select>
-            </div>
-          `;
-        }).join('') : '<span style="font-size:12px;color:var(--muted)">خالی</span>'}
-      </div>
-    `;
-  }).join('');
+// ---------- Text model ----------
+// Must stay identical to the original split: saved offsets are relative to these paragraphs.
+const splitParagraphs = text => String(text || '').split(/\n{2,}/).map(s => s.trim()).filter(Boolean);
+function paragraphs() {
+  const p = post(); if (!p) return [];
+  const ext = extractedOf(p.sample_id);
+  return S.source === 'external' && ext ? splitParagraphs(ext.extracted_text) : splitParagraphs(p.post_text);
 }
+const hlsHere = () => S.hls.filter(h => h.sample_id === S.sid && h.source === S.source && h.paragraph_idx >= 0);
+const codeById = id => S.codes.find(c => c.id === id) || null;
+const usage = id => S.hls.filter(h => h.code_id === id).length;
 
-async function createTheme() {
-  const name = $('newThemeName').value.trim();
-  if (!name) { $('newThemeName').focus(); return; }
-  const res = await api('/api/coding/themes', {
-    method: 'POST',
-    body: JSON.stringify({ coder_id: state.coderId, name }),
-  });
-  if (!state.themes.some(t => t.id === res.theme.id)) state.themes.push(res.theme);
-  $('newThemeName').value = '';
-  renderThemesDrawer();
-}
-
-async function deleteTheme(themeId) {
-  const theme = state.themes.find(t => t.id === themeId);
-  const members = state.codes.filter(c => c.theme_id === themeId);
-  if (members.length && !confirm(`تم «${theme?.name || ''}» حذف شود؟ ${members.length} کد آن «بدون تم» می‌شوند (خود کدها حذف نمی‌شوند).`)) return;
-  await api(`/api/coding/themes/${themeId}?coder=${state.coderId}`, { method: 'DELETE' });
-  state.themes = state.themes.filter(t => t.id !== themeId);
-  for (const c of state.codes) if (c.theme_id === themeId) c.theme_id = null;
-  renderThemesDrawer();
-  showToast('تم حذف شد');
-}
-
-async function assignCodeTheme(codeId, rawVal) {
-  const themeId = rawVal ? Number(rawVal) : null;
-  const c = state.codes.find(x => x.id === codeId);
-  if (!c) return;
-  const prev = c.theme_id ?? null;
-  c.theme_id = themeId;
-  renderThemesDrawer();
-  try {
-    await api(`/api/coding/codes/${codeId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ coder_id: state.coderId, theme_id: themeId }),
-    });
-  } catch (e) {
-    c.theme_id = prev;
-    renderThemesDrawer();
-    throw e;
+function sentenceAt(text, offset) {
+  const re = /[^.!?؟\n]+[.!?؟]*/g; let m;
+  while ((m = re.exec(text))) {
+    let a = m.index, b = m.index + m[0].length;
+    while (a < b && /\s/.test(text[a])) a++;
+    while (b > a && /\s/.test(text[b - 1])) b--;
+    if (offset >= m.index && offset <= m.index + m[0].length && b > a) return [a, b];
   }
-}
-
-// ---- Prose Rendering & In-Place Inline Coding ----
-function splitParagraphs(text) {
-  return String(text || '').split(/\n{2,}/).map(s => s.trim()).filter(Boolean);
-}
-
-function splitSentences(text) {
-  const ranges = [];
-  const re = /[^.!?\n]+[.!?]+(?:\s+|$)|[^.!?\n]+$/g;
-  let m;
-  while ((m = re.exec(text)) !== null) {
-    const trimmed = m[0].trimEnd();
-    if (trimmed.length > 0) ranges.push({ start: m.index, end: m.index + trimmed.length });
-  }
-  return ranges;
-}
-
-function activeProseContext() {
-  const p = state.posts.find(x => x.sample_id === state.currentSampleId);
-  if (!p) return { paragraphs: [], source: 'post', extSource: null };
-  const exts = state.extBySample[p.sample_id] || [];
-  const extracted = exts.find(e => e.fetch_status === 'extracted' && e.extracted_text);
-  if (state.sourceTab === 'external' && extracted) {
-    return { paragraphs: splitParagraphs(extracted.extracted_text), source: 'external', extSource: extracted };
-  }
-  return { paragraphs: splitParagraphs(p.post_text), source: 'post', extSource: exts[0] || null };
-}
-
-function renderParagraph(sampleId, source, pIdx, text) {
-  const pHls = state.highlights
-    .filter(h => h.sample_id === sampleId && h.source === source && h.paragraph_idx === pIdx)
-    .sort((a, b) => a.start_offset - b.start_offset);
-
-  const draft = state.inlineDraft &&
-    state.inlineDraft.sampleId === sampleId &&
-    state.inlineDraft.source === source &&
-    state.inlineDraft.pIdx === pIdx
-    ? state.inlineDraft
-    : null;
-
-  const sentences = splitSentences(text);
-  const cuts = new Set([0, text.length]);
-  for (const s of sentences) { cuts.add(s.start); cuts.add(s.end); }
-  for (const h of pHls) { cuts.add(Math.max(0, h.start_offset)); cuts.add(Math.min(text.length, h.end_offset)); }
-  if (draft && !draft.hlId) { cuts.add(Math.max(0, draft.start)); cuts.add(Math.min(text.length, draft.end)); }
-  const pts = [...cuts].sort((a, b) => a - b);
-
-  let html = '';
-  for (let i = 0; i < pts.length - 1; i++) {
-    const a = pts[i], b = pts[i + 1];
-    if (a === b) continue;
-    const chunk = escapeHtml(text.slice(a, b));
-    const hl = pHls.find(h => h.start_offset <= a && h.end_offset >= b);
-    const isDraftSpan = draft && !draft.hlId && draft.start <= a && draft.end >= b;
-    const sent = sentences.find(s => s.start <= a && s.end >= b);
-
-    if (hl) {
-      const code = state.codes.find(c => c.id === hl.code_id);
-      const col = colorCss(code?.color_idx);
-      const isEnd = b === hl.end_offset;
-      const showInlineHere = draft && draft.hlId === hl.id && isEnd;
-      html += `<span class="hl" data-hl-id="${hl.id}" onclick="openInlineForHighlight(event, ${hl.id})" style="background:${col.bg};border-bottom:2px solid ${col.fg}">${chunk}${isEnd && code && !showInlineHere ? `<span class="hl-tag" style="background:${col.bg};color:${col.fg}">${escapeHtml(code.label)}</span>` : ''}</span>`;
-      if (showInlineHere) html += inlineCoderHTML(draft);
-    } else if (isDraftSpan) {
-      const col = colorCss(1);
-      html += `<span class="hl" style="background:${col.bg};border-bottom:2px dashed ${col.fg}">${chunk}</span>`;
-      if (b === draft.end) html += inlineCoderHTML(draft);
-    } else if (sent) {
-      html += `<span class="sent" onclick="onSentenceTap(event, '${source}', ${pIdx}, ${sent.start}, ${sent.end})">${chunk}</span>`;
-    } else {
-      html += chunk;
-    }
-  }
-  return html;
-}
-
-const TRASH_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>';
-
-function inlineCoderHTML(draft) {
-  const existingCode = draft.hlId ? state.codes.find(c => c.id === state.highlights.find(h => h.id === draft.hlId)?.code_id) : null;
-  const initVal = draft.query !== undefined ? draft.query : (existingCode ? existingCode.label : '');
-  return `
-    <span class="inline-coder" id="inlineCoderBox" onclick="event.stopPropagation()">
-      <input id="inlineCodeInput" type="text" value="${escapeHtml(initVal)}" placeholder="کد بنویسید یا از بالا بزنید…" autocomplete="off" maxlength="120" aria-label="نام کد برای این عبارت"
-        oninput="onInlineInput(this.value)" onkeydown="onInlineKey(event)">
-      <button type="button" class="ic-btn ic-ok" onclick="submitInlineCode()" title="ذخیره کد (Enter)" aria-label="ذخیره کد">✓</button>
-      ${draft.hlId ? `<span class="ic-sep"></span><button type="button" class="ic-btn ic-trash" onclick="deleteInlineHighlight(${draft.hlId})" title="حذف این هایلایت" aria-label="حذف این هایلایت">${TRASH_SVG}</button>` : ''}
-      <button type="button" class="ic-btn ic-cancel" onclick="cancelInlineDraft()" title="بستن بدون تغییر (Esc)" aria-label="بستن">×</button>
-    </span>
-  `;
-}
-
-function onSentenceTap(event, source, pIdx, start, end) {
-  const sel = window.getSelection();
-  if (sel && !sel.isCollapsed && sel.toString().trim().length > 0) return;
-  event.stopPropagation();
-  // A drag-selection was just turned into a draft: the click that ends the drag must not replace it.
-  if (Date.now() < (onSentenceTap.suppressUntil || 0)) return;
-  if (state.editingCodeId) closeCodeEditor();
-  const { paragraphs, extSource } = activeProseContext();
-  const quote = paragraphs[pIdx].slice(start, end);
-  state.inlineDraft = {
-    sampleId: state.currentSampleId,
-    source,
-    extSourceId: source === 'external' ? extSource?.id || null : null,
-    pIdx,
-    start,
-    end,
-    quote,
-    hlId: null,
-    query: '',
-  };
-  renderProse();
-  renderTray();
-  focusInlineInput();
-}
-
-function openInlineForHighlight(event, hlId) {
-  event.stopPropagation();
-  const h = state.highlights.find(x => x.id === hlId);
-  if (!h) return;
-  if (state.editingCodeId) closeCodeEditor();
-  const code = state.codes.find(c => c.id === h.code_id);
-  state.inlineDraft = {
-    sampleId: h.sample_id,
-    source: h.source,
-    extSourceId: h.external_source_id,
-    pIdx: h.paragraph_idx,
-    start: h.start_offset,
-    end: h.end_offset,
-    quote: h.quote,
-    hlId: h.id,
-    query: code ? code.label : '',
-  };
-  renderProse();
-  renderTray();
-  focusInlineInput(true);
-}
-
-function focusInlineInput(selectAll = false) {
-  setTimeout(() => {
-    const inp = $('inlineCodeInput');
-    if (!inp) return;
-    inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    inp.focus();
-    if (selectAll) inp.select();
-  }, 15);
-}
-
-function onInlineInput(val) {
-  if (state.inlineDraft) state.inlineDraft.query = val;
-  renderTray();
-}
-
-function onInlineKey(e) {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    submitInlineCode();
-  } else if (e.key === 'Escape') {
-    cancelInlineDraft();
-  }
-}
-
-function cancelInlineDraft() {
-  state.inlineDraft = null;
-  renderProse();
-  renderTray();
-}
-
-async function ensureCodeOnServer(label) {
-  const existing = state.codes.find(c => c.label.toLowerCase() === label.toLowerCase());
-  if (existing) return existing;
-  const colorIdx = ((state.codes.length) % 6) + 1;
-  const res = await api('/api/coding/codes', {
-    method: 'POST',
-    body: JSON.stringify({ coder_id: state.coderId, label, color_idx: colorIdx }),
-  });
-  if (!state.codes.some(c => c.id === res.code.id)) state.codes.push(res.code);
-  return res.code;
-}
-
-async function applyInlineLabel(label) {
-  const clean = label.trim().slice(0, 120);
-  const draft = state.inlineDraft;
-  if (!draft) return;
-  if (!clean) { $('inlineCodeInput')?.focus(); return; }
-  if (state.saving) return;
-  if (draft.hlId) {
-    const cur = state.highlights.find(h => h.id === draft.hlId);
-    const curCode = cur && state.codes.find(c => c.id === cur.code_id);
-    if (curCode && curCode.label.toLowerCase() === clean.toLowerCase()) { cancelInlineDraft(); return; }
-  }
-  state.saving = true;
-  document.querySelectorAll('#inlineCoderBox button, #inlineCoderBox input').forEach(el => { el.disabled = true; });
-  try {
-    await saveInlineLabel(clean, draft);
-  } catch (e) {
-    document.querySelectorAll('#inlineCoderBox button, #inlineCoderBox input').forEach(el => { el.disabled = false; });
-    throw e;
-  } finally {
-    state.saving = false;
-  }
-}
-
-async function saveInlineLabel(clean, draft) {
-  const isNew = !state.codes.some(c => c.label.toLowerCase() === clean.toLowerCase());
-  const code = await ensureCodeOnServer(clean);
-  if (draft.hlId) {
-    const res = await api(`/api/coding/highlights/${draft.hlId}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ coder_id: state.coderId, code_id: code.id }),
-    });
-    const idx = state.highlights.findIndex(h => h.id === draft.hlId);
-    if (idx !== -1) state.highlights[idx] = res.highlight;
-  } else {
-    const res = await api('/api/coding/highlights', {
-      method: 'POST',
-      body: JSON.stringify({
-        coder_id: state.coderId,
-        sample_id: draft.sampleId,
-        source: draft.source,
-        external_source_id: draft.extSourceId,
-        paragraph_idx: draft.pIdx,
-        start_offset: draft.start,
-        end_offset: draft.end,
-        quote: draft.quote,
-        code_id: code.id,
-      }),
-    });
-    state.highlights.push(res.highlight);
-  }
-  state.inlineDraft = null;
-  renderAll();
-  showToast(isNew ? `کد تازهٔ «${code.label}» ساخته و اعمال شد` : `کد «${code.label}» اعمال شد`);
-}
-
-function submitInlineCode() {
-  const inp = $('inlineCodeInput');
-  if (!inp) return;
-  applyInlineLabel(inp.value);
-}
-
-async function deleteInlineHighlight(hlId) {
-  const doomed = state.highlights.find(h => h.id === hlId);
-  if (!doomed) return;
-  const codeObj = state.codes.find(c => c.id === doomed.code_id);
-  await api(`/api/coding/highlights/${hlId}?coder=${state.coderId}`, { method: 'DELETE' });
-  state.lastDeletedHighlight = { ...doomed, codeLabel: codeObj?.label || '' };
-  state.highlights = state.highlights.filter(h => h.id !== hlId);
-  state.inlineDraft = null;
-  renderAll();
-  showToast('هایلایت حذف شد', undoDeleteHighlight);
-}
-
-async function undoDeleteHighlight() {
-  const prev = state.lastDeletedHighlight;
-  if (!prev) return;
-  state.lastDeletedHighlight = null;
-  $('toast').classList.add('hidden');
-  let codeId = prev.code_id;
-  if (!state.codes.some(c => c.id === codeId) && prev.codeLabel) {
-    const code = await ensureCodeOnServer(prev.codeLabel);
-    codeId = code.id;
-  }
-  const res = await api('/api/coding/highlights', {
-    method: 'POST',
-    body: JSON.stringify({
-      coder_id: state.coderId,
-      sample_id: prev.sample_id,
-      source: prev.source,
-      external_source_id: prev.external_source_id,
-      paragraph_idx: prev.paragraph_idx,
-      start_offset: prev.start_offset,
-      end_offset: prev.end_offset,
-      quote: prev.quote,
-      code_id: codeId,
-    }),
-  });
-  state.highlights.push(res.highlight);
-  state.currentSampleId = prev.sample_id;
-  state.sourceTab = prev.source === 'external' ? 'external' : 'post';
-  renderPostSelector();
-  renderAll();
-}
-
-// Character offset of (node, offset) inside a rendered paragraph, counting only the post's own
-// text: the code-label tags and the inline coder box are UI, not part of the paragraph.
-function proseOffset(pEl, node, offset) {
-  const skip = n => n.parentElement?.closest('.hl-tag, .inline-coder');
-  const walker = document.createTreeWalker(pEl, NodeFilter.SHOW_TEXT);
-  let total = 0, t;
-  if (node.nodeType !== 3) {
-    // Element boundary: count every text node before the child at `offset`.
-    const stop = node.childNodes[offset] || null;
-    while ((t = walker.nextNode())) {
-      if (stop && (stop === t || stop.contains(t) || (stop.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING))) break;
-      if (!stop && !node.contains(t) && (node.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING)) break;
-      if (!skip(t)) total += t.nodeValue.length;
-    }
-    return total;
-  }
-  while ((t = walker.nextNode())) {
-    if (t === node) return total + (skip(t) ? 0 : offset);
-    if (!skip(t)) total += t.nodeValue.length;
-  }
-  return total;
-}
-
-// Custom mouse/touch text selection inside #proseBody
-function onProseSelection(ev) {
-  if (ev?.target?.closest?.('.inline-coder') || state.saving) return;
-  const sel = window.getSelection();
-  if (!sel || sel.isCollapsed || !sel.rangeCount) return;
-  const range = sel.getRangeAt(0);
-  const startP = (range.startContainer.nodeType === 1 ? range.startContainer : range.startContainer.parentElement).closest('p[data-p-idx]');
-  const endP = (range.endContainer.nodeType === 1 ? range.endContainer : range.endContainer.parentElement).closest('p[data-p-idx]');
-  if (!startP || !$('proseBody').contains(startP)) return;
-  if (startP !== endP) {
-    showToast('برای کدگذاری، انتخاب باید داخل یک پاراگراف باشد');
-    return;
-  }
-
-  const pIdx = Number(startP.dataset.pIdx);
-  const { paragraphs, source, extSource } = activeProseContext();
-  const pText = paragraphs[pIdx] || '';
-  // Exact position of the selection (indexOf found the first copy of a repeated phrase instead).
-  let a = proseOffset(startP, range.startContainer, range.startOffset);
-  let b = proseOffset(startP, range.endContainer, range.endOffset);
-  if (b < a) [a, b] = [b, a];
-  while (a < b && /\s/.test(pText[a])) a++;
-  while (b > a && /\s/.test(pText[b - 1])) b--;
-  if (b - a < 3) return;
-  const idx = a, text = pText.slice(a, b);
-  onSentenceTap.suppressUntil = Date.now() + 400;
-
-  if (state.editingCodeId) closeCodeEditor();
-  state.inlineDraft = {
-    sampleId: state.currentSampleId,
-    source,
-    extSourceId: source === 'external' ? extSource?.id || null : null,
-    pIdx,
-    start: idx,
-    end: idx + text.length,
-    quote: text,
-    hlId: null,
-    query: '',
-  };
-  sel.removeAllRanges();
-  renderProse();
-  renderTray();
-  focusInlineInput();
-}
-$('proseBody').addEventListener('mouseup', onProseSelection);
-// Phones select with a long press and handles, which never fires mouseup: wait for the handles to settle.
-$('proseBody').addEventListener('touchend', () => {
-  clearTimeout(onProseSelection._t);
-  onProseSelection._t = setTimeout(onProseSelection, 450);
-});
-
-document.addEventListener('click', e => {
-  if (Date.now() < (onSentenceTap.suppressUntil || 0)) return;
-  if (state.inlineDraft && !state.saving && !$('inlineCoderBox')?.contains(e.target) && !$('trayBox')?.contains(e.target)) {
-    state.inlineDraft = null;
-    renderProse();
-    renderTray();
-  }
-});
-
-// Keyboard: Esc closes whatever is open; ←/→ move between posts (RTL: ← is next) when not typing.
-document.addEventListener('keydown', e => {
-  if (!$('studioScreen').classList.contains('active')) return;
-  if (e.key === 'Escape') {
-    if (!$('deleteConfirmBox').classList.contains('hidden')) { hideConfirm(); return; }
-    if (state.inlineDraft) { cancelInlineDraft(); return; }
-    if (state.editingCodeId) { closeCodeEditor(); return; }
-    return;
-  }
-  if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
-  if (e.target.closest?.('input, select, textarea, [contenteditable]')) return;
-  if (state.inlineDraft || state.editingCodeId) return;
-  if (e.key === 'ArrowLeft') { e.preventDefault(); stepPost(1); }
-  else if (e.key === 'ArrowRight') { e.preventDefault(); stepPost(-1); }
-});
-
-// ---- Post View & External Sources ----
-function setSourceTab(tab) {
-  state.sourceTab = tab;
-  state.inlineDraft = null;
-  renderAll();
+  return null;
 }
 
 function renderProse() {
-  const { paragraphs, source } = activeProseContext();
-  const body = $('proseBody');
-  body.innerHTML = '';
-  paragraphs.forEach((text, pIdx) => {
-    const p = document.createElement('p');
-    p.dataset.pIdx = pIdx;
-    p.innerHTML = renderParagraph(state.currentSampleId, source, pIdx, text);
-    body.appendChild(p);
+  const paras = paragraphs();
+  const hls = hlsHere();
+  const box = $('prose');
+  if (!post()) { box.innerHTML = `<div class="empty" style="direction:rtl"><span>پستی با این فیلتر نیست.</span><button type="button" class="btn" data-action="clear-filter">نمایش همه</button></div>`; return; }
+  if (!paras.length) { box.innerHTML = '<p class="muted" style="direction:rtl">این پست متنی ندارد.</p>'; return; }
+  const mark = S.sel || S.seg;
+  box.innerHTML = paras.map((text, p) => {
+    const mine = hls.filter(h => h.paragraph_idx === p);
+    const cuts = new Set([0, text.length]);
+    for (const h of mine) { cuts.add(Math.max(0, Math.min(text.length, h.start_offset))); cuts.add(Math.max(0, Math.min(text.length, h.end_offset))); }
+    if (S.sel && S.sel.p === p) { cuts.add(S.sel.start); cuts.add(S.sel.end); }
+    const pts = [...cuts].sort((a, b) => a - b);
+    let html = '';
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], b = pts[i + 1]; if (a === b) continue;
+      const chunk = esc(text.slice(a, b));
+      const cover = mine.filter(h => h.start_offset <= a && h.end_offset >= b);
+      const inSel = S.sel && S.sel.p === p && S.sel.start <= a && S.sel.end >= b;
+      if (cover.length) {
+        const last = cover[cover.length - 1], c = col(codeById(last.code_id)?.color_idx);
+        const names = cover.map(h => codeById(h.code_id)?.label || '?').join(', ');
+        const active = S.seg && S.seg.p === p && cover.some(h => h.start_offset === S.seg.start && h.end_offset === S.seg.end);
+        html += `<span class="hl${cover.length > 1 ? ' multi' : ''}${active ? ' active' : ''}${inSel ? ' draft' : ''}" data-ids="${cover.map(h => h.id).join(',')}" style="background:${c.bg};border-bottom:2px solid ${c.fg}" title="${esc(names)}">${chunk}</span>`;
+      } else if (inSel) {
+        html += `<span class="draft">${chunk}</span>`;
+      } else html += chunk;
+    }
+    return `<p data-p="${p}">${html}</p>`;
+  }).join('');
+  void mark;
+}
+
+// Offset of a DOM point inside a paragraph. The paragraph's text content equals the stored text
+// exactly (nothing but highlight spans is ever inserted), so this is a plain character count.
+function offsetIn(pEl, node, off) {
+  const r = document.createRange();
+  r.selectNodeContents(pEl);
+  try { r.setEnd(node, off); } catch { return null; }
+  return r.toString().length;
+}
+
+function captureSelection() {
+  const sel = getSelection();
+  if (!sel || sel.isCollapsed || !sel.rangeCount) return false;
+  const r = sel.getRangeAt(0);
+  const pA = (r.startContainer.nodeType === 1 ? r.startContainer : r.startContainer.parentElement)?.closest('#prose p[data-p]');
+  const pB = (r.endContainer.nodeType === 1 ? r.endContainer : r.endContainer.parentElement)?.closest('#prose p[data-p]');
+  if (!pA || !pB) return false;
+  if (pA !== pB) { toast('برای کدگذاری، فقط داخل یک پاراگراف انتخاب کنید'); return true; }
+  const p = Number(pA.dataset.p), text = paragraphs()[p] || '';
+  let a = offsetIn(pA, r.startContainer, r.startOffset), b = offsetIn(pA, r.endContainer, r.endOffset);
+  if (a == null || b == null) return false;
+  while (a < b && /\s/.test(text[a])) a++;
+  while (b > a && /\s/.test(text[b - 1])) b--;
+  if (b - a < 2) return false;
+  sel.removeAllRanges();
+  startSelection(p, a, b);
+  return true;
+}
+
+function startSelection(p, a, b) {
+  const text = paragraphs()[p] || '';
+  const ext = S.source === 'external' ? extractedOf(S.sid) : null;
+  S.sel = { sampleId: S.sid, source: S.source, extId: ext?.id ?? null, p, start: a, end: b, quote: text.slice(a, b) };
+  S.seg = null; S.query = ''; S.active = 0; S.tab = 'code';
+  renderProse(); renderPanel(); openSheet();
+  focusCombo();
+}
+
+function openSegment(ids) {
+  const hs = ids.map(id => S.hls.find(h => h.id === id)).filter(Boolean);
+  if (!hs.length) return;
+  // the smallest covering highlight defines the segment that was clicked
+  const h = hs.reduce((m, x) => (x.end_offset - x.start_offset < m.end_offset - m.start_offset ? x : m));
+  S.seg = { sampleId: h.sample_id, source: h.source, extId: h.external_source_id, p: h.paragraph_idx, start: h.start_offset, end: h.end_offset, quote: h.quote, replaceId: null };
+  S.sel = null; S.query = ''; S.active = 0; S.tab = 'code';
+  renderProse(); renderPanel(); openSheet();
+}
+
+function clearCoding() {
+  S.sel = null; S.seg = null; S.query = '';
+  if (S.tab === 'code') S.tab = 'book';
+  renderProse(); renderPanel();
+}
+
+// mouse & touch selection
+$('prose').addEventListener('mouseup', () => setTimeout(() => {
+  if (captureSelection()) return;
+}, 0));
+document.addEventListener('selectionchange', () => {
+  if (!matchMedia('(hover: none)').matches) return;            // phones/tablets only
+  clearTimeout(captureSelection._t);
+  captureSelection._t = setTimeout(captureSelection, 700);      // wait until the handles stop moving
+});
+$('prose').addEventListener('click', e => {
+  const sel = getSelection();
+  if (sel && !sel.isCollapsed) return;
+  const hl = e.target.closest('.hl');
+  if (hl) { openSegment(hl.dataset.ids.split(',').map(Number)); return; }
+  const pEl = e.target.closest('p[data-p]');
+  if (!pEl || !sel || !sel.anchorNode || !pEl.contains(sel.anchorNode)) return;
+  const off = offsetIn(pEl, sel.anchorNode, sel.anchorOffset);
+  const text = paragraphs()[Number(pEl.dataset.p)] || '';
+  const s = off == null ? null : sentenceAt(text, off);
+  if (s) startSelection(Number(pEl.dataset.p), s[0], s[1]);
+});
+
+// ---------- Panel ----------
+function setTab(t) { S.tab = t; renderPanel(); }
+
+function renderPanel() {
+  const coding = Boolean(S.sel || S.seg);
+  if (!coding && S.tab === 'code') S.tab = 'book';
+  $('tabCode').classList.toggle('hidden', !coding);
+  document.querySelectorAll('#panelTabs [data-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === S.tab)));
+  $('bookCount').textContent = `(${fa(S.codes.length)})`;
+  $('bookCountMobile').textContent = `(${fa(S.codes.length)})`;
+  $('codeList').innerHTML = S.codes.map(c => `<option value="${esc(c.label)}"></option>`).join('');
+  const body = $('panelBody');
+  if (S.tab === 'code') body.innerHTML = codingPanel();
+  else if (S.tab === 'themes') body.innerHTML = themesPanel();
+  else body.innerHTML = bookPanel();
+  if (S.tab === 'code') renderOptions();
+}
+
+// Options for the "which code?" box: matches first, then a "create" row when the text is new.
+function options() {
+  const q = S.query.trim();
+  const onSeg = S.seg ? segHls().map(h => h.code_id) : [];
+  let list = S.codes.map(c => ({ code: c, n: usage(c.id) }));
+  if (q) {
+    const ql = q.toLowerCase();
+    list = list.filter(x => x.code.label.toLowerCase().includes(ql))
+      .sort((a, b) => (b.code.label.toLowerCase().startsWith(ql) - a.code.label.toLowerCase().startsWith(ql)) || b.n - a.n);
+  } else list.sort((a, b) => b.n - a.n || a.code.label.localeCompare(b.code.label));
+  const opts = list.map(x => ({ kind: 'code', code: x.code, n: x.n, disabled: onSeg.includes(x.code.id) && !S.seg?.replaceId }));
+  if (q && !S.codes.some(c => same(c.label, q))) opts.push({ kind: 'create', label: q.slice(0, 120) });
+  return opts;
+}
+
+const segHls = () => S.seg ? S.hls.filter(h => h.sample_id === S.seg.sampleId && h.source === S.seg.source && h.paragraph_idx === S.seg.p && h.start_offset === S.seg.start && h.end_offset === S.seg.end) : [];
+
+function codingPanel() {
+  const t = S.sel || S.seg;
+  let top = `<div class="panel-title"><span>${S.sel ? 'کد برای این بخش' : 'بخش کدگذاری‌شده'}</span><button type="button" class="btn small ghost" data-action="cancel-coding">بستن <span class="muted">Esc</span></button></div>
+    <div class="quote">${esc(t.quote)}</div>`;
+  if (S.seg) {
+    const hs = segHls();
+    top += `<div class="cur-codes">${hs.map(h => {
+      const c = codeById(h.code_id), k = col(c?.color_idx);
+      const swapping = S.seg.replaceId === h.id;
+      return `<div class="cur-code"${swapping ? ' style="border-color:var(--accent)"' : ''}>
+        <span class="code-tag" style="background:${k.bg};color:${k.fg}">${esc(c?.label || '?')}</span>
+        <button type="button" class="btn small ghost" data-action="swap" data-id="${h.id}" aria-pressed="${swapping}">${swapping ? 'لغو تعویض' : 'تعویض'}</button>
+        <button type="button" class="btn small danger" data-action="remove-hl" data-id="${h.id}" aria-label="برداشتن کد ${esc(c?.label || '')} از این بخش">برداشتن</button>
+      </div>`;
+    }).join('')}</div>
+    <div class="hint">${S.seg.replaceId ? 'کد جایگزین را انتخاب کنید:' : 'افزودن کد دیگری به همین بخش:'}</div>`;
+  }
+  return top + `<div class="combo">
+      <input class="field" id="comboInput" role="combobox" aria-expanded="true" aria-controls="comboList" aria-autocomplete="list"
+        placeholder="جستجو یا نام کد تازه…" maxlength="120" autocomplete="off" value="${esc(S.query)}">
+      <ul class="opts" id="comboList" role="listbox" aria-label="کدها"></ul>
+      <div class="hint"><kbd>↑</kbd><kbd>↓</kbd> انتخاب · <kbd>Enter</kbd> اعمال · <kbd>Esc</kbd> بستن</div>
+    </div>`;
+}
+
+function renderOptions() {
+  const list = $('comboList'); if (!list) return;
+  const opts = options();
+  const enabled = opts.map((o, i) => (o.disabled ? -1 : i)).filter(i => i >= 0);
+  if (!enabled.includes(S.active)) S.active = enabled[0] ?? -1;
+  list.innerHTML = opts.length ? opts.map((o, i) => {
+    if (o.kind === 'create') return `<li class="opt create" role="option" id="opt${i}" data-i="${i}" aria-selected="${i === S.active}"><span>+</span><span class="lbl">ساخت کد تازهٔ «${esc(o.label)}»</span></li>`;
+    const k = col(o.code.color_idx);
+    return `<li class="opt${o.disabled ? ' on-seg' : ''}" role="option" id="opt${i}" data-i="${i}" aria-selected="${i === S.active}" aria-disabled="${o.disabled}">
+      <span class="dot" style="background:${k.fg}"></span><span class="lbl">${esc(o.code.label)}</span><span class="cnt">${o.disabled ? 'روی همین بخش' : '×' + o.n}</span></li>`;
+  }).join('') : `<li class="hint" style="padding:6px 4px">هنوز کدی ندارید؛ نام اولین کد را بنویسید و Enter بزنید.</li>`;
+  $('comboInput')?.setAttribute('aria-activedescendant', S.active >= 0 ? `opt${S.active}` : '');
+  list.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
+}
+
+function focusCombo() { setTimeout(() => { const i = $('comboInput'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }, 20); }
+
+async function chooseOption(i) {
+  const o = options()[i];
+  if (!o || o.disabled) return;
+  await run(async () => {
+    const code = o.kind === 'create' ? await createCode(o.label) : o.code;
+    if (S.seg?.replaceId) {
+      const res = await api(`/api/coding/highlights/${S.seg.replaceId}`, { method: 'PATCH', body: JSON.stringify({ coder_id: S.coderId, code_id: code.id }) });
+      const h = normHl(res.highlight);
+      S.hls = S.hls.map(x => (x.id === h.id ? h : x));
+      S.seg.replaceId = null;
+      toast(`کد به «${code.label}» تغییر کرد`);
+      S.query = ''; renderAll(); focusCombo();
+      return;
+    }
+    const t = S.sel || S.seg;
+    const res = await api('/api/coding/highlights', { method: 'POST', body: JSON.stringify({
+      coder_id: S.coderId, sample_id: t.sampleId, source: t.source, external_source_id: t.extId,
+      paragraph_idx: t.p, start_offset: t.start, end_offset: t.end, quote: t.quote, code_id: code.id }) });
+    const h = normHl(res.highlight);
+    S.hls.push(h);
+    const wasNew = o.kind === 'create';
+    if (S.sel) { S.sel = null; S.tab = 'book'; closeSheet(); } else { S.query = ''; }
+    renderAll();
+    toast(wasNew ? `کد تازهٔ «${code.label}» ساخته و اعمال شد` : `«${code.label}» اعمال شد`, { undo: () => removeHl(h.id, { silent: true }) });
+    if (S.seg) focusCombo();
   });
 }
 
-function renderPost() {
-  const p = state.posts.find(x => x.sample_id === state.currentSampleId);
-  if (!p) {
-    $('proseBody').innerHTML = `<div class="empty-box" style="direction:rtl"><span>پستی با این فیلتر نیست.</span><button type="button" class="pill-btn" onclick="$('filterSelect').value='all'; applyPostFilter()">نمایش همهٔ پست‌ها</button></div>`;
-    $('postSegmentsList').innerHTML = '';
-    $('postSegCount').textContent = '';
+async function createCode(label) {
+  const clean = label.trim().slice(0, 120);
+  const existing = S.codes.find(c => same(c.label, clean));
+  if (existing) return existing;
+  const used = new Set(S.codes.map(c => c.color_idx));
+  const color = COLORS.find(c => !used.has(c)) || (S.codes.length % 6) + 1;
+  const res = await api('/api/coding/codes', { method: 'POST', body: JSON.stringify({ coder_id: S.coderId, label: clean, color_idx: color }) });
+  const c = normCode(res.code);
+  if (!S.codes.some(x => x.id === c.id)) S.codes.push(c);
+  return c;
+}
+
+async function removeHl(id, { silent = false } = {}) {
+  const h = S.hls.find(x => x.id === id); if (!h) return;
+  await api(`/api/coding/highlights/${id}?coder=${S.coderId}`, { method: 'DELETE' });
+  S.hls = S.hls.filter(x => x.id !== id);
+  if (S.seg && !segHls().length) { S.seg = null; S.tab = 'book'; }
+  renderAll();
+  if (!silent) {
+    const label = codeById(h.code_id)?.label || '';
+    toast(`«${label}» از این بخش برداشته شد`, { undo: async () => {
+      const code = codeById(h.code_id) || await createCode(label);
+      const res = await api('/api/coding/highlights', { method: 'POST', body: JSON.stringify({
+        coder_id: S.coderId, sample_id: h.sample_id, source: h.source, external_source_id: h.external_source_id,
+        paragraph_idx: h.paragraph_idx, start_offset: h.start_offset, end_offset: h.end_offset, quote: h.quote, code_id: code.id }) });
+      S.hls.push(normHl(res.highlight)); renderAll();
+    } });
+  }
+}
+
+// ---------- Codebook ----------
+function bookPanel() {
+  const q = S.bookQuery.trim().toLowerCase();
+  const list = S.codes.filter(c => !q || c.label.toLowerCase().includes(q)).sort((a, b) => a.label.localeCompare(b.label));
+  const canCreate = q && !S.codes.some(c => same(c.label, q));
+  return `<div class="book-search">
+      <input class="field" id="bookSearch" placeholder="جستجو یا افزودن کد…" value="${esc(S.bookQuery)}" maxlength="120" style="direction:ltr;text-align:left" aria-label="جستجو در کدها">
+      ${canCreate ? `<button type="button" class="btn small" data-action="book-create">+ ساخت کد «${esc(S.bookQuery.trim())}»</button>` : ''}
+    </div>
+    ${S.codes.length ? '' : '<div class="empty">هنوز کدی نساخته‌اید. بخشی از متن را انتخاب کنید و اولین کد را بنویسید.</div>'}
+    <ul class="book">${list.map(c => bookRow(c)).join('')}</ul>`;
+}
+
+function bookRow(c) {
+  const k = col(c.color_idx), n = usage(c.id), open = S.openCode === c.id;
+  const theme = S.themes.find(t => t.id === c.theme_id);
+  let html = `<li class="book-row${open ? ' open' : ''}">
+    <button type="button" class="book-main" data-action="toggle-code" data-id="${c.id}" aria-expanded="${open}">
+      <span class="dot" style="background:${k.fg}"></span><span class="lbl">${esc(c.label)}</span>
+      ${theme ? `<span class="pill" style="direction:rtl">${esc(theme.name)}</span>` : ''}<span class="cnt">×${n}</span></button>`;
+  if (open) {
+    const quotes = S.hls.filter(h => h.code_id === c.id);
+    const others = S.codes.filter(x => x.id !== c.id);
+    html += `<div class="book-edit">
+      <div class="row"><input class="field" id="renameInput" value="${esc(c.label)}" maxlength="120" style="direction:ltr" aria-label="نام کد">
+        <button type="button" class="btn small primary" data-action="rename" data-id="${c.id}">ذخیرهٔ نام</button></div>
+      <div class="row"><span class="hint">رنگ:</span><div class="swatches" role="radiogroup" aria-label="رنگ">${COLORS.map(i =>
+        `<button type="button" class="swatch" role="radio" aria-checked="${c.color_idx === i}" aria-label="رنگ ${fa(i)}" style="background:${col(i).fg}" data-action="recolor" data-id="${c.id}" data-color="${i}"></button>`).join('')}</div></div>
+      <div class="row"><span class="hint">تم:</span><select class="field" data-action="set-theme" data-id="${c.id}" aria-label="تم">
+        <option value="">بدون تم</option>${S.themes.map(t => `<option value="${t.id}"${t.id === c.theme_id ? ' selected' : ''}>${esc(t.name)}</option>`).join('')}</select></div>
+      ${others.length ? `<div class="row"><span class="hint">ادغام در:</span><select class="field" id="mergeTarget" style="direction:ltr" aria-label="کد مقصد">${others.map(o => `<option value="${o.id}">${esc(o.label)}</option>`).join('')}</select>
+        <button type="button" class="btn small" data-action="merge" data-id="${c.id}">ادغام</button></div>` : ''}
+      <div class="row" style="justify-content:space-between"><span class="hint">${fa(quotes.length)} بخش با این کد</span>
+        <button type="button" class="btn small danger" data-action="delete-code" data-id="${c.id}">حذف کد</button></div>
+      ${quotes.length ? `<div class="quotes">${quotes.map(h => `<button type="button" data-action="jump" data-id="${h.id}"><b>${esc(h.sample_id)}${h.source === 'external' ? ' · link' : ''}</b> — “${esc(h.quote)}”</button>`).join('')}</div>` : ''}
+    </div>`;
+  }
+  return html + '</li>';
+}
+
+async function renameCode(id) {
+  const c = codeById(id); const label = $('renameInput').value.trim().slice(0, 120);
+  if (!c) return;
+  if (!label) { toast('نام کد نمی‌تواند خالی باشد', { error: true }); return; }
+  if (label === c.label) return;
+  const twin = S.codes.find(x => x.id !== id && same(x.label, label));
+  if (twin) {
+    // Two codes may not share a name: renaming onto an existing one means merging into it.
+    const ok = await confirmBox('این نام قبلاً هست', `کد «${twin.label}» از قبل وجود دارد. «${c.label}» در «${twin.label}» ادغام شود؟ همهٔ ${fa(usage(id))} بخش آن به «${twin.label}» منتقل می‌شود.`, 'ادغام شود');
+    if (ok) await run(() => doMerge(id, twin.id));
     return;
   }
-  const st = postStatusOf(p.sample_id);
-  const exts = state.extBySample[p.sample_id] || [];
-  const extracted = exts.find(e => e.fetch_status === 'extracted' && e.extracted_text);
-  const firstExt = extracted || exts[0] || null;
-  if (state.sourceTab === 'external' && !extracted) state.sourceTab = 'post';
+  await run(async () => {
+    const res = await api(`/api/coding/codes/${id}`, { method: 'PATCH', body: JSON.stringify({ coder_id: S.coderId, label }) });
+    Object.assign(c, normCode(res.code));
+    renderAll(); toast('نام کد عوض شد (در همهٔ بخش‌ها)');
+  });
+}
 
-  $('postSampleId').textContent = p.sample_id;
-  $('postAuthorName').textContent = p.author_name || 'Unknown';
-  $('postAuthorType').textContent = p.author_type || 'profile';
-  $('postHeadline').textContent = p.author_headline || '';
-  $('postDate').textContent = p.posted_at || '';
-  $('postLinkedInUrl').href = p.post_url || '#';
-  $('postExtBadge').classList.toggle('hidden', !p.has_external_link);
+async function patchCode(id, patch, msg) {
+  await run(async () => {
+    const res = await api(`/api/coding/codes/${id}`, { method: 'PATCH', body: JSON.stringify({ coder_id: S.coderId, ...patch }) });
+    Object.assign(codeById(id), normCode(res.code));
+    renderAll(); if (msg) toast(msg);
+  });
+}
 
-  // External Bar
-  const extBar = $('extBar');
-  const fallback = $('extFallbackBox');
-  if (p.has_external_link || exts.length) {
-    extBar.classList.remove('hidden');
-    $('sourceSwitcher').classList.toggle('hidden', !extracted);
-    $('segPost').classList.toggle('on', state.sourceTab === 'post');
-    $('segExt').classList.toggle('on', state.sourceTab === 'external');
-    $('segPost').setAttribute('aria-pressed', String(state.sourceTab === 'post'));
-    $('segExt').setAttribute('aria-pressed', String(state.sourceTab === 'external'));
-    $('extOriginalUrl').href = firstExt?.resolved_url || firstExt?.original_url || p.newsletter_url || p.post_url || '#';
-    $('chkLinkReviewed').checked = Boolean(st.link_reviewed);
+async function doMerge(srcId, dstId) {
+  const res = await api(`/api/coding/codes/${srcId}/merge`, { method: 'POST', body: JSON.stringify({ coder_id: S.coderId, target_code_id: dstId }) });
+  S.hls.forEach(h => { if (h.code_id === srcId) h.code_id = dstId; });
+  S.codes = S.codes.filter(c => c.id !== srcId);
+  S.openCode = dstId;
+  renderAll(); toast(`${fa(Number(res.moved_count) || 0)} بخش ادغام شد`);
+}
 
-    if (firstExt) {
-      const statusLabel = {
-        extracted: 'متن مقاله استخراج شد',
-        login_required: 'لینک نیازمند ورود در مرورگر است',
-        paywalled: 'سایت دارای محدودیت اشتراک است',
-        pdf_or_media: 'فایل PDF یا رسانه',
-        metadata_only: 'فقط عنوان صفحه در دسترس است',
-        failed: 'دسترسی مستقیم امکان‌پذیر نبود',
-      }[firstExt.fetch_status] || firstExt.fetch_status;
-      $('extMetaInfo').innerHTML = `<strong>${escapeHtml(firstExt.domain || 'link')}</strong>${firstExt.title ? ` — ${escapeHtml(firstExt.title)}` : ''} · <span>${statusLabel}</span>`;
-    } else {
-      $('extMetaInfo').textContent = p.newsletter_title || 'External link attached';
-    }
+async function mergeCode(id) {
+  const src = codeById(id), dst = codeById(Number($('mergeTarget')?.value));
+  if (!src || !dst) return;
+  const ok = await confirmBox('ادغام کد', `«${src.label}» در «${dst.label}» ادغام شود؟ ${fa(usage(id))} بخش به «${dst.label}» منتقل و «${src.label}» حذف می‌شود. این کار برگشت‌پذیر نیست.`, 'ادغام شود');
+  if (ok) await run(() => doMerge(id, dst.id));
+}
 
-    if (!extracted) {
-      fallback.classList.remove('hidden');
-      $('extFallbackMsg').textContent = 'اگر نکتهٔ مهمی داخل لینک بیرونی بود، با دکمهٔ «لینک اصلی» باز کنید و در صورت نیاز کدش را اینجا ثبت کنید:';
-    } else {
-      fallback.classList.add('hidden');
-    }
-  } else {
-    extBar.classList.add('hidden');
-    fallback.classList.add('hidden');
+async function deleteCode(id) {
+  const c = codeById(id); if (!c) return;
+  const n = usage(id);
+  if (n) {
+    const ok = await confirmBox('حذف کد', `«${c.label}» روی ${fa(n)} بخش استفاده شده و همهٔ آن‌ها هم پاک می‌شوند. اگر فقط نام اشتباه است، به‌جای حذف آن را تغییر نام دهید یا ادغام کنید.`, 'حذف شود');
+    if (!ok) return;
   }
+  await run(async () => {
+    await api(`/api/coding/codes/${id}?coder=${S.coderId}`, { method: 'DELETE' });
+    S.codes = S.codes.filter(x => x.id !== id);
+    S.hls = S.hls.filter(h => h.code_id !== id);
+    S.openCode = null;
+    if (S.seg && !segHls().length) { S.seg = null; S.tab = 'book'; }
+    renderAll(); toast('کد حذف شد');
+  });
+}
 
+// ---------- Themes ----------
+function themesPanel() {
+  const groups = [...S.themes.map(t => ({ id: t.id, name: t.name })), { id: null, name: 'بدون تم' }];
+  return `<div class="row"><input class="field" id="themeInput" placeholder="نام تم تازه…" maxlength="120" aria-label="نام تم تازه">
+      <button type="button" class="btn small" data-action="add-theme">+ تم</button></div>
+    <div class="hint">کدها را زیر تم‌ها دسته‌بندی کنید. تم هر کد را از همین‌جا یا از ویرایش کد عوض کنید.</div>
+    ${groups.map(g => {
+      const members = S.codes.filter(c => (c.theme_id ?? null) === g.id);
+      if (g.id === null && !members.length) return '';
+      return `<div class="theme-group"><h4><span>${esc(g.name)} <span class="muted">(${fa(members.length)})</span></span>
+        ${g.id ? `<button type="button" class="btn small ghost danger" data-action="delete-theme" data-id="${g.id}">حذف تم</button>` : ''}</h4>
+        ${members.map(c => `<div class="row" style="direction:ltr"><span class="dot" style="background:${col(c.color_idx).fg}"></span>
+          <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font:13px var(--mono)">${esc(c.label)}</span>
+          <select class="field" style="width:auto;min-height:32px;font-size:12px;direction:rtl" data-action="set-theme" data-id="${c.id}" aria-label="تم ${esc(c.label)}">
+            <option value="">بدون تم</option>${S.themes.map(t => `<option value="${t.id}"${t.id === c.theme_id ? ' selected' : ''}>${esc(t.name)}</option>`).join('')}</select></div>`).join('') || '<span class="hint">خالی</span>'}
+      </div>`;
+    }).join('')}`;
+}
+
+async function addTheme() {
+  const name = $('themeInput').value.trim().slice(0, 120);
+  if (!name) { $('themeInput').focus(); return; }
+  await run(async () => {
+    const res = await api('/api/coding/themes', { method: 'POST', body: JSON.stringify({ coder_id: S.coderId, name }) });
+    const t = normTheme(res.theme);
+    if (!S.themes.some(x => x.id === t.id)) S.themes.push(t);
+    renderPanel(); toast(`تم «${t.name}» ساخته شد`); $('themeInput')?.focus();
+  });
+}
+
+async function deleteTheme(id) {
+  const t = S.themes.find(x => x.id === id); if (!t) return;
+  const n = S.codes.filter(c => c.theme_id === id).length;
+  if (n && !(await confirmBox('حذف تم', `تم «${t.name}» حذف شود؟ ${fa(n)} کد آن «بدون تم» می‌شوند (خود کدها می‌مانند).`, 'حذف شود'))) return;
+  await run(async () => {
+    await api(`/api/coding/themes/${id}?coder=${S.coderId}`, { method: 'DELETE' });
+    S.themes = S.themes.filter(x => x.id !== id);
+    S.codes.forEach(c => { if (c.theme_id === id) c.theme_id = null; });
+    renderAll(); toast('تم حذف شد');
+  });
+}
+
+// ---------- Post rendering ----------
+function renderPost() {
+  const p = post();
+  const st = p ? statusOf(p.sample_id) : null;
+  $('pSid').textContent = p?.sample_id || '';
+  $('pAuthor').textContent = p?.author_name || '';
+  $('pType').textContent = p?.author_type || '';
+  $('pHeadline').textContent = p?.author_headline || '';
+  $('pDate').textContent = p?.posted_at ? String(p.posted_at).slice(0, 10) : '';
+  $('pUrl').href = p?.post_url || '#';
+  $('pUrl').classList.toggle('hidden', !p?.post_url);
+  const exts = p ? S.extBySample[p.sample_id] || [] : [];
+  const ext = p ? extractedOf(p.sample_id) : null;
+  const hasLink = Boolean(p && (p.has_external_link || exts.length));
+  $('pExt').classList.toggle('hidden', !hasLink);
+  $('sourceBar').classList.toggle('hidden', !hasLink);
+  if (S.source === 'external' && !ext) S.source = 'post';
+  $('sourceSeg').classList.toggle('hidden', !ext);
+  document.querySelectorAll('#sourceSeg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.source === S.source)));
+  if (hasLink) {
+    const first = ext || exts[0];
+    $('extUrl').href = first?.resolved_url || first?.original_url || p.newsletter_url || p.post_url || '#';
+    $('linkReviewed').checked = Boolean(st.link_reviewed);
+    const label = { extracted: 'متن مقاله استخراج شد', login_required: 'نیاز به ورود دارد', paywalled: 'پشت دیوار اشتراک', pdf_or_media: 'PDF یا رسانه', metadata_only: 'فقط عنوان', failed: 'دسترسی ممکن نبود' }[first?.fetch_status] || '';
+    $('sourceInfo').innerHTML = first ? `<b>${esc(first.domain || 'link')}</b>${first.title ? ' — ' + esc(first.title) : ''}${label ? ` · <span style="direction:rtl;unicode-bidi:isolate">${label}</span>` : ''}` : esc(p.newsletter_title || '');
+  }
+  $('manualBox').classList.toggle('hidden', !hasLink || Boolean(ext));
+  $('howTo').classList.toggle('hidden', !p);
   renderProse();
 
-  // Per-post coded segments
-  const hls = state.highlights.filter(h => h.sample_id === p.sample_id);
-  $('postSegCount').textContent = faNum(hls.length);
-  $('postSegmentsList').innerHTML = hls.length
-    ? hls.map(h => {
-        const code = state.codes.find(c => c.id === h.code_id);
-        const col = colorCss(code?.color_idx);
-        return `
-          <div class="seg-row">
-            <button type="button" class="seg-jump" ${h.paragraph_idx >= 0 ? `onclick="jumpToHighlight(${h.id})" title="نمایش در متن"` : 'disabled style="cursor:default;opacity:1"'}>
-              <span style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;border-radius:999px;background:${col.bg};color:${col.fg};font-family:var(--mono);font-size:11.5px;flex:none">
-                ${escapeHtml(code?.label || '')}
-              </span>
-              ${h.source === 'external' ? '<span style="font-size:11px;color:var(--muted);flex:none">[Link]</span>' : ''}
-              <span class="seg-quote">“${escapeHtml(h.quote)}”</span>
-            </button>
-            <button type="button" class="seg-del" onclick="deleteInlineHighlight(${h.id})" title="حذف این هایلایت" aria-label="حذف این هایلایت">${TRASH_SVG}</button>
-          </div>
-        `;
-      }).join('')
-    : '<div style="font-size:12.5px;color:var(--muted)">هنوز عبارتی در این پست کدگذاری نشده.</div>';
+  const hs = p ? S.hls.filter(h => h.sample_id === p.sample_id) : [];
+  $('segCount').textContent = fa(hs.length);
+  $('segList').innerHTML = hs.length ? hs.map(h => {
+    const c = codeById(h.code_id), k = col(c?.color_idx);
+    return `<div class="seg-item"><button type="button" class="jump" data-action="jump" data-id="${h.id}" ${h.paragraph_idx < 0 ? 'disabled style="opacity:1"' : ''}>
+      <span class="code-tag" style="background:${k.bg};color:${k.fg}">${esc(c?.label || '?')}</span>
+      ${h.source === 'external' ? '<span class="pill">link</span>' : ''}<span class="q">“${esc(h.quote)}”</span></button>
+      <button type="button" class="btn small ghost danger" data-action="remove-hl" data-id="${h.id}" aria-label="برداشتن این کد">برداشتن</button></div>`;
+  }).join('') : '<div class="hint">هنوز بخشی از این پست کدگذاری نشده.</div>';
 
-  const markBtn = $('btnMarkCoded');
-  markBtn.classList.toggle('done', Boolean(st.is_coded));
-  markBtn.textContent = st.is_coded ? 'کدگذاری شد ✓' : 'علامت: کدگذاری شد';
-  markBtn.setAttribute('aria-pressed', String(Boolean(st.is_coded)));
+  const mb = $('markBtn');
+  mb.disabled = !p;
+  mb.setAttribute('aria-pressed', String(Boolean(st?.is_coded)));
+  mb.innerHTML = (st?.is_coded ? '✓ ' : '') + '<span class="long">کدگذاری این پست </span>تمام شد';
 }
 
-async function addManualExternalCode() {
-  const label = $('extManualCode').value.trim().slice(0, 120);
-  const quote = $('extManualQuote').value.trim() || 'External linked resource';
-  if (!label) { showToast('اول نام کد را بنویسید', null, true); $('extManualCode').focus(); return; }
-  if (state.saving) return;
-  state.saving = true;
-  try {
-    await saveManualExternalCode(label, quote);
-  } finally {
-    state.saving = false;
-  }
+function renderNav() {
+  $('postSel').innerHTML = S.view.map(sid => {
+    const p = S.posts.find(x => x.sample_id === sid);
+    return `<option value="${esc(sid)}"${sid === S.sid ? ' selected' : ''}>${statusOf(sid).is_coded ? '✓ ' : ''}${esc(sid)}${p?.has_external_link ? ' 🔗' : ''}</option>`;
+  }).join('') || '<option value="">—</option>';
+  const done = S.posts.filter(p => statusOf(p.sample_id).is_coded).length;
+  $('progressChip').textContent = `${fa(done)} از ${fa(S.posts.length)} پست تمام شده`;
 }
 
-async function saveManualExternalCode(label, quote) {
-  const exts = state.extBySample[state.currentSampleId] || [];
-  const code = await ensureCodeOnServer(label);
-  const res = await api('/api/coding/highlights', {
-    method: 'POST',
-    body: JSON.stringify({
-      coder_id: state.coderId,
-      sample_id: state.currentSampleId,
-      source: 'external',
-      external_source_id: exts[0]?.id || null,
-      paragraph_idx: -1,
-      start_offset: 0,
-      end_offset: 0,
-      quote,
-      code_id: code.id,
-    }),
+function renderAll() { renderPost(); renderNav(); renderPanel(); }
+
+async function saveStatus(patch) {
+  const sid = S.sid; if (!sid) return;
+  const next = { ...statusOf(sid), ...patch };
+  await run(async () => {
+    const res = await api('/api/coding/post-status', { method: 'PUT', body: JSON.stringify({
+      coder_id: S.coderId, sample_id: sid, is_coded: Boolean(next.is_coded), link_reviewed: Boolean(next.link_reviewed), coder_notes: next.coder_notes || '' }) });
+    S.status[sid] = res.status || next;
+    renderPost(); renderNav();
   });
-  state.highlights.push(res.highlight);
-  $('extManualCode').value = '';
-  $('extManualQuote').value = '';
-  renderAll();
-  showToast('کد از لینک ثبت شد');
-}
-
-async function savePostStatus(patch) {
-  const sid = state.currentSampleId;
-  const cur = postStatusOf(sid);
-  const next = { ...cur, ...patch };
-  state.statusBySample[sid] = next;
-  renderPost();
-  renderPostSelector();
-  try {
-    await putPostStatus(sid, next);
-  } catch (e) {
-    state.statusBySample[sid] = cur;  // undo the tick so it doesn't look saved
-    if (state.currentSampleId === sid) renderPost();
-    renderPostSelector();
-    throw e;
-  }
-}
-
-async function putPostStatus(sid, next) {
-  await api('/api/coding/post-status', {
-    method: 'PUT',
-    body: JSON.stringify({
-      coder_id: state.coderId,
-      sample_id: sid,
-      is_coded: Boolean(next.is_coded),
-      link_reviewed: Boolean(next.link_reviewed),
-      coder_notes: next.coder_notes || '',
-    }),
-  });
-}
-
-function toggleMarkCoded() {
-  if (!state.currentSampleId) return;
-  const st = postStatusOf(state.currentSampleId);
-  savePostStatus({ is_coded: !st.is_coded });
-  if (!st.is_coded) showToast('این پست کدگذاری‌شده علامت خورد');
-}
-
-function toggleLinkReviewed(val) {
-  savePostStatus({ link_reviewed: val });
-}
-
-function renderAll() {
-  renderTray();
   renderPost();
 }
 
-boot();
+async function manualAdd() {
+  const label = $('manualCode').value.trim(), quote = $('manualQuote').value.trim() || 'External linked resource';
+  if (!label) { toast('اول نام کد را بنویسید', { error: true }); $('manualCode').focus(); return; }
+  await run(async () => {
+    const code = await createCode(label);
+    const exts = S.extBySample[S.sid] || [];
+    const res = await api('/api/coding/highlights', { method: 'POST', body: JSON.stringify({
+      coder_id: S.coderId, sample_id: S.sid, source: 'external', external_source_id: exts[0]?.id ?? null,
+      paragraph_idx: -1, start_offset: 0, end_offset: 0, quote, code_id: code.id }) });
+    S.hls.push(normHl(res.highlight));
+    $('manualCode').value = ''; $('manualQuote').value = '';
+    renderAll(); toast('کد لینک ثبت شد');
+  });
+}
+
+function jumpTo(id) {
+  const h = S.hls.find(x => x.id === id); if (!h) return;
+  if (h.sample_id !== S.sid) { if (!S.view.includes(h.sample_id)) { $('filterSel').value = 'all'; applyFilter(); } goTo(h.sample_id); }
+  S.source = h.source === 'external' ? 'external' : 'post';
+  if (h.paragraph_idx >= 0) openSegment([h.id]); else renderAll();
+  setTimeout(() => {
+    const el = [...document.querySelectorAll('#prose .hl')].find(x => x.dataset.ids.split(',').map(Number).includes(id));
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('pulse'); }
+  }, 30);
+}
+
+// ---------- Mobile sheet ----------
+const isMobile = () => matchMedia('(max-width: 900px)').matches;
+function openSheet() { if (isMobile()) $('panel').classList.add('open'); }
+function closeSheet() { $('panel').classList.remove('open'); }
+
+// ---------- Event wiring (one delegated handler; no ids in inline JS) ----------
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-action]');
+  const tab = e.target.closest('[data-tab]');
+  if (tab) { setTab(tab.dataset.tab); return; }
+  if (!t) return;
+  const id = t.dataset.id != null ? Number(t.dataset.id) : null;
+  switch (t.dataset.action) {
+    case 'toggle-theme': toggleTheme(); break;
+    case 'logout': logout(); break;
+    case 'reload-picker': showPicker({ push: false }); break;
+    case 'open-coder': openCoder(id); break;
+    case 'reload-coder': openCoder(S.coderId, { push: false }); break;
+    case 'to-picker': showPicker(); break;
+    case 'source': S.source = t.dataset.source; S.sel = S.seg = null; renderAll(); break;
+    case 'clear-filter': $('filterSel').value = 'all'; applyFilter(); break;
+    case 'mark': saveStatus({ is_coded: !statusOf(S.sid).is_coded }); break;
+    case 'prev': step(-1); break;
+    case 'next': step(1); break;
+    case 'manual-add': manualAdd(); break;
+    case 'cancel-coding': clearCoding(); closeSheet(); break;
+    case 'swap': S.seg.replaceId = S.seg.replaceId === id ? null : id; S.query = ''; renderPanel(); focusCombo(); break;
+    case 'remove-hl': run(() => removeHl(id)); break;
+    case 'jump': jumpTo(id); break;
+    case 'toggle-code': S.openCode = S.openCode === id ? null : id; renderPanel(); if (S.openCode) setTimeout(() => $('renameInput')?.focus(), 20); break;
+    case 'rename': renameCode(id); break;
+    case 'recolor': if (codeById(id)?.color_idx !== Number(t.dataset.color)) patchCode(id, { color_idx: Number(t.dataset.color) }); break;
+    case 'merge': mergeCode(id); break;
+    case 'delete-code': deleteCode(id); break;
+    case 'book-create': run(async () => { const c = await createCode(S.bookQuery); S.bookQuery = ''; S.openCode = c.id; renderPanel(); toast(`کد «${c.label}» ساخته شد`); }); break;
+    case 'add-theme': addTheme(); break;
+    case 'delete-theme': deleteTheme(id); break;
+    case 'open-book': S.tab = S.sel || S.seg ? S.tab : 'book'; renderPanel(); $('panel').classList.add('open'); break;
+    case 'close-sheet': closeSheet(); break;
+  }
+});
+
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.matches('[data-action="set-theme"]')) {
+    const id = Number(t.dataset.id), v = t.value ? Number(t.value) : null;
+    patchCode(id, { theme_id: v }, v ? 'تم کد تغییر کرد' : 'کد بدون تم شد');
+  } else if (t.id === 'filterSel') applyFilter();
+  else if (t.id === 'postSel') goTo(t.value);
+  else if (t.id === 'linkReviewed') saveStatus({ link_reviewed: t.checked });
+});
+
+document.addEventListener('input', e => {
+  if (e.target.id === 'comboInput') { S.query = e.target.value; S.active = 0; renderOptions(); }
+  else if (e.target.id === 'bookSearch') {
+    S.bookQuery = e.target.value;
+    const pos = e.target.selectionStart;
+    renderPanel();
+    const i = $('bookSearch'); i.focus(); i.setSelectionRange(pos, pos);
+  }
+});
+
+$('panelBody').addEventListener('mousedown', e => { if (e.target.closest('.opt')) e.preventDefault(); });
+$('panelBody').addEventListener('click', e => {
+  const o = e.target.closest('.opt');
+  if (o) chooseOption(Number(o.dataset.i));
+});
+
+document.addEventListener('keydown', e => {
+  if (!$('studioScreen').classList.contains('active') || $('dlg').open) return;
+  const t = e.target;
+  if (t.id === 'comboInput') {
+    const opts = options();
+    const enabled = opts.map((o, i) => (o.disabled ? -1 : i)).filter(i => i >= 0);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!enabled.length) return;
+      const k = enabled.indexOf(S.active);
+      S.active = enabled[(k + (e.key === 'ArrowDown' ? 1 : -1) + enabled.length) % enabled.length];
+      renderOptions();
+    } else if (e.key === 'Enter') { e.preventDefault(); if (S.active >= 0) chooseOption(S.active); }
+    else if (e.key === 'Escape') { e.preventDefault(); clearCoding(); closeSheet(); }
+    return;
+  }
+  if (t.id === 'renameInput' && e.key === 'Enter') { e.preventDefault(); renameCode(S.openCode); return; }
+  if (t.id === 'themeInput' && e.key === 'Enter') { e.preventDefault(); addTheme(); return; }
+  if (t.id === 'bookSearch' && e.key === 'Enter') { e.preventDefault(); if (S.bookQuery.trim() && !S.codes.some(c => same(c.label, S.bookQuery))) document.querySelector('[data-action="book-create"]')?.click(); return; }
+  if ((t.id === 'manualCode' || t.id === 'manualQuote') && e.key === 'Enter') { e.preventDefault(); manualAdd(); return; }
+  if (e.key === 'Escape') {
+    if (S.sel || S.seg) { clearCoding(); closeSheet(); }
+    else if (S.openCode) { S.openCode = null; renderPanel(); }
+    else closeSheet();
+    return;
+  }
+  if (e.ctrlKey || e.metaKey || e.altKey || t.closest('input, select, textarea, button, a')) return;
+  if (e.key === 'ArrowLeft') { e.preventDefault(); step(1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); step(-1); }
+});
+
+// ---------- Boot ----------
+(async () => {
+  try { await api('/api/coding/me'); }
+  catch { showScreen('loginScreen'); return; }
+  await route();
+})();
 </script>
 </body>
 </html>

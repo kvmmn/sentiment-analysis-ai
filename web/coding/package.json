@@ -5,7 +5,8 @@
   "description": "Team Qualitative Coding Studio for Saintiment (50 stratified posts + external sources in Neon).",
   "engines": { "node": "24.x" },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test:ui": "node tests/ui.e2e.cjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.0",
