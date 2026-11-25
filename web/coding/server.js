@@ -236,6 +236,34 @@ app.patch('/api/coding/codes/:id', requireSession, async (req, res, next) => {
   }
 });
 
+app.post('/api/coding/codes/:id/merge', requireSession, async (req, res, next) => {
+  const sourceId = Number(req.params.id);
+  const coderId = parseCoderId(req.body?.coder_id);
+  const targetId = Number(req.body?.target_code_id);
+  if (!sourceId || !coderId || !targetId || sourceId === targetId) {
+    return res.status(400).json({ error: 'bad_request' });
+  }
+  try {
+    const found = await sql()`
+      SELECT id FROM coding_codes
+      WHERE coder_id = ${coderId} AND id IN (${sourceId}, ${targetId})`;
+    if (found.length !== 2) return res.status(404).json({ error: 'not_found' });
+
+    const moved = await sql()`
+      UPDATE coding_highlights
+      SET code_id = ${targetId}, updated_at = now()
+      WHERE coder_id = ${coderId} AND code_id = ${sourceId}
+      RETURNING id`;
+    await sql()`
+      DELETE FROM coding_codes
+      WHERE id = ${sourceId} AND coder_id = ${coderId}`;
+
+    res.json({ ok: true, moved_count: moved.length, source_id: sourceId, target_code_id: targetId });
+  } catch (e) {
+    next(e);
+  }
+});
+
 app.delete('/api/coding/codes/:id', requireSession, async (req, res, next) => {
   const codeId = Number(req.params.id);
   const coderId = parseCoderId(req.query.coder ?? req.body?.coder_id);

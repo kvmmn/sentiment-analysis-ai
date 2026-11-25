@@ -161,8 +161,15 @@ a:hover { text-decoration: underline; }
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 10%, var(--bg));
 }
+.code-chip.current-code {
+  border-style: solid;
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 12%, var(--bg));
+  font-weight: 600;
+}
 .code-chip.dim { opacity: 0.35; }
 .c-plus { font-weight: 700; color: var(--accent); font-size: 13px; line-height: 1; }
+.c-cur { font-weight: 700; color: var(--ok); font-size: 12px; line-height: 1; }
 .c-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .c-cnt { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
 
@@ -283,13 +290,31 @@ a:hover { text-decoration: underline; }
   font-family: var(--mono); font-size: 13px; line-height: 1.3; padding: 3px 0; color: var(--fg);
 }
 .inline-coder .ic-btn {
-  width: 24px; height: 24px; border-radius: 50%; display: inline-grid; place-items: center;
-  font-size: 12px; font-weight: 700;
+  width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center;
+  font-size: 12px; font-weight: 700; flex: none;
 }
 .inline-coder .ic-ok { background: var(--fg); color: var(--bg); }
-.inline-coder .ic-del { color: var(--danger); }
-.inline-coder .ic-del:hover, .inline-coder .ic-cancel:hover { background: var(--sunk); }
+.inline-coder .ic-sep { width: 1px; height: 14px; background: var(--line); margin: 0 2px; flex: none; }
+.inline-coder .ic-trash { color: var(--danger); }
+.inline-coder .ic-trash:hover, .inline-coder .ic-cancel:hover { background: var(--sunk); }
 .inline-coder .ic-cancel { color: var(--muted); }
+
+.confirm-strip {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 10px; border-radius: 9px;
+  border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent);
+  background: color-mix(in srgb, var(--danger) 8%, var(--bg));
+  font-size: 12.5px;
+}
+.btn-danger-solid {
+  min-height: 30px; padding: 0 11px; border-radius: 8px;
+  background: var(--danger); color: #ffffff; font-size: 12px; font-weight: 600;
+}
+.seg-del {
+  width: 28px; height: 28px; border-radius: 7px; display: inline-grid; place-items: center;
+  color: var(--muted); flex: none;
+}
+.seg-del:hover { color: var(--danger); background: var(--sunk); }
 
 /* Post Coded Segments & Manual External Fallback */
 .segments-sec {
@@ -344,8 +369,16 @@ a:hover { text-decoration: underline; }
 .toast {
   position: fixed; bottom: 68px; left: 50%; transform: translateX(-50%);
   background: var(--fg); color: var(--bg); padding: 7px 14px; border-radius: 999px;
-  font-size: 12.5px; z-index: 40; pointer-events: none;
+  font-size: 12.5px; z-index: 40; pointer-events: auto;
+  display: inline-flex; align-items: center; gap: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
 }
+.toast-undo {
+  background: color-mix(in srgb, var(--bg) 18%, transparent);
+  color: var(--bg); font-weight: 700; font-size: 12px;
+  padding: 3px 10px; border-radius: 999px;
+}
+.toast-undo:hover { background: color-mix(in srgb, var(--bg) 30%, transparent); }
 .app-nav { border-bottom: 1px solid var(--line); background: var(--bg); }
 .app-nav-inner { max-width: 740px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .app-brand { font-weight: 700; font-size: 13.5px; color: var(--fg); letter-spacing: -0.01em; text-decoration: none; }
@@ -429,18 +462,30 @@ a:hover { text-decoration: underline; }
         <!-- Inline Code Chip Editor (opens cleanly inside tray) -->
         <div id="trayEditor" class="tray-editor hidden">
           <div class="editor-row">
-            <input id="editCodeLabel" class="editor-input" type="text" placeholder="نام کد...">
+            <input id="editCodeLabel" class="editor-input" type="text" placeholder="نام کد..." onkeydown="if(event.key==='Enter'){event.preventDefault();saveCodeEdit();}">
             <div id="editCodeColors" class="color-dots"></div>
             <select id="editCodeTheme" class="theme-sel"></select>
           </div>
+          <div id="mergeRow" class="editor-row hidden" style="font-size:12px;color:var(--muted)">
+            <span>ادغام با:</span>
+            <select id="mergeTargetSelect" class="theme-sel" style="flex:1;min-width:140px;direction:ltr"></select>
+            <button type="button" class="pill-btn" onclick="mergeEditingCode()">ادغام و انتقال قطعات</button>
+          </div>
           <div class="editor-row" style="justify-content:space-between">
             <div style="display:flex;gap:6px">
-              <button class="pill-btn active" onclick="saveCodeEdit()">ذخیره</button>
-              <button class="pill-btn" onclick="toggleCodeQuotes()">نقل‌قول‌ها</button>
+              <button type="button" class="pill-btn active" onclick="saveCodeEdit()">ذخیره</button>
+              <button type="button" class="pill-btn" id="btnCodeQuotes" onclick="toggleCodeQuotes()">نقل‌قول‌ها</button>
             </div>
             <div style="display:flex;gap:6px">
-              <button class="pill-btn" style="color:var(--danger)" onclick="deleteEditingCode()">حذف کد</button>
-              <button class="pill-btn" onclick="closeCodeEditor()">بستن</button>
+              <button type="button" class="pill-btn" style="color:var(--danger)" onclick="requestDeleteEditingCode()">حذف کد</button>
+              <button type="button" class="pill-btn" onclick="closeCodeEditor()">بستن</button>
+            </div>
+          </div>
+          <div id="deleteConfirmBox" class="confirm-strip hidden">
+            <span id="deleteConfirmText"></span>
+            <div style="display:flex;gap:6px">
+              <button type="button" class="btn-danger-solid" onclick="confirmDeleteEditingCode()">بله، حذف شود</button>
+              <button type="button" class="pill-btn" style="min-height:30px" onclick="$('deleteConfirmBox').classList.add('hidden')">انصراف</button>
             </div>
           </div>
           <div id="editCodeQuotes" class="quotes-box hidden"></div>
@@ -569,7 +614,8 @@ let state = {
   editingCodeId: null,
   trayCollapsed: localStorage.getItem(TRAY_KEY) === '1',
   themesOpen: false,
-  inlineDraft: null, // { sampleId, source, extSourceId, pIdx, start, end, quote, hlId, suggestIdx }
+  inlineDraft: null, // { sampleId, source, extSourceId, pIdx, start, end, quote, hlId }
+  lastDeletedHighlight: null,
   pendingCalls: 0,
 };
 
@@ -587,12 +633,23 @@ function toggleTheme() {
 }
 applyTheme(localStorage.getItem(THEME_KEY));
 
-function showToast(msg) {
+function showToast(msg, undoFn = null) {
   const el = $('toast');
-  el.textContent = msg;
+  el.innerHTML = '';
+  const txt = document.createElement('span');
+  txt.textContent = msg;
+  el.appendChild(txt);
+  if (undoFn) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'toast-undo';
+    btn.textContent = 'بازگشت';
+    btn.onclick = undoFn;
+    el.appendChild(btn);
+  }
   el.classList.remove('hidden');
   clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => el.classList.add('hidden'), 2200);
+  showToast._t = setTimeout(() => el.classList.add('hidden'), undoFn ? 6500 : 2200);
 }
 
 function setSync(mode) {
@@ -818,11 +875,14 @@ function renderTray() {
     countByCode[h.code_id] = (countByCode[h.code_id] || 0) + 1;
   }
   const assigning = Boolean(state.inlineDraft);
+  const currentHl = assigning && state.inlineDraft.hlId
+    ? state.highlights.find(h => h.id === state.inlineDraft.hlId)
+    : null;
   const q = assigning ? (state.inlineDraft.query || '').trim().toLowerCase() : '';
 
   $('trayBox').classList.toggle('assign-mode', assigning);
   $('traySummary').textContent = assigning
-    ? `روی یک کد بزنید تا روی عبارت انتخاب‌شده اعمال شود (${faNum(state.codes.length)})`
+    ? (currentHl ? 'کد فعلی مشخص است — برای تعویض روی کد دیگری بزنید' : `روی یک کد بزنید تا روی عبارت انتخاب‌شده اعمال شود (${faNum(state.codes.length)})`)
     : `${faNum(state.codes.length)} کد · ${faNum(state.highlights.length)} قطعه`;
   $('btnToggleTray').textContent = state.trayCollapsed && !assigning
     ? `نمایش همه کدها (${faNum(state.codes.length)}) ▼`
@@ -838,13 +898,14 @@ function renderTray() {
       const col = colorCss(c.color_idx);
       const cnt = countByCode[c.id] || 0;
       const editing = !assigning && state.editingCodeId === c.id;
-      const dim = assigning && q && !c.label.toLowerCase().includes(q);
+      const isCurrent = Boolean(currentHl && currentHl.code_id === c.id);
+      const dim = assigning && q && !isCurrent && !c.label.toLowerCase().includes(q);
       if (assigning) {
         return `
-          <button type="button" class="code-chip pickable ${dim ? 'dim' : ''}" data-label="${escapeHtml(c.label)}"
+          <button type="button" class="code-chip ${isCurrent ? 'current-code' : 'pickable'} ${dim ? 'dim' : ''}" data-label="${escapeHtml(c.label)}"
             onmousedown="event.preventDefault()"
             onclick="event.stopPropagation(); applyInlineLabel(this.dataset.label)">
-            <span class="c-plus">+</span>
+            <span class="${isCurrent ? 'c-cur' : 'c-plus'}">${isCurrent ? '✓' : '+'}</span>
             <span class="c-dot" style="background:${col.fg}"></span>
             <span>${escapeHtml(c.label)}</span>
             <span class="c-cnt">×${cnt}</span>
@@ -874,6 +935,7 @@ function openCodeEditor(codeId) {
   if (!c) return;
   $('trayEditor').classList.remove('hidden');
   $('editCodeLabel').value = c.label;
+  $('deleteConfirmBox').classList.add('hidden');
 
   $('editCodeColors').innerHTML = COLORS.map(idx => {
     const col = colorCss(idx);
@@ -883,6 +945,17 @@ function openCodeEditor(codeId) {
   $('editCodeTheme').innerHTML = `<option value="">بدون تم</option>` +
     state.themes.map(t => `<option value="${t.id}" ${c.theme_id === t.id ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('');
 
+  const others = state.codes.filter(x => x.id !== c.id);
+  const mergeRow = $('mergeRow');
+  if (others.length) {
+    mergeRow.classList.remove('hidden');
+    $('mergeTargetSelect').innerHTML = others.map(o => `<option value="${o.id}">${escapeHtml(o.label)}</option>`).join('');
+  } else {
+    mergeRow.classList.add('hidden');
+  }
+
+  const quoteCnt = state.highlights.filter(h => h.code_id === c.id).length;
+  $('btnCodeQuotes').textContent = `نقل‌قول‌ها (${faNum(quoteCnt)})`;
   $('editCodeQuotes').classList.add('hidden');
   renderTray();
 }
@@ -890,6 +963,7 @@ function openCodeEditor(codeId) {
 function closeCodeEditor() {
   state.editingCodeId = null;
   $('trayEditor').classList.add('hidden');
+  $('deleteConfirmBox').classList.add('hidden');
   renderTray();
 }
 
@@ -919,10 +993,39 @@ async function saveCodeEdit() {
   Object.assign(c, res.code);
   closeCodeEditor();
   renderAll();
-  showToast('کد ویرایش شد');
+  showToast('کد در همهٔ نقل‌قول‌ها ویرایش شد');
 }
 
-async function deleteEditingCode() {
+async function mergeEditingCode() {
+  const sourceId = state.editingCodeId;
+  const targetId = Number($('mergeTargetSelect').value);
+  if (!sourceId || !targetId || sourceId === targetId) return;
+  const res = await api(`/api/coding/codes/${sourceId}/merge`, {
+    method: 'POST',
+    body: JSON.stringify({ coder_id: state.coderId, target_code_id: targetId }),
+  });
+  for (const h of state.highlights) {
+    if (h.code_id === sourceId) h.code_id = targetId;
+  }
+  state.codes = state.codes.filter(c => c.id !== sourceId);
+  closeCodeEditor();
+  renderAll();
+  showToast(`${faNum(res.moved_count)} قطعه ادغام و منتقل شد`);
+}
+
+function requestDeleteEditingCode() {
+  const id = state.editingCodeId;
+  if (!id) return;
+  const usedCount = state.highlights.filter(h => h.code_id === id).length;
+  if (usedCount === 0) {
+    confirmDeleteEditingCode();
+    return;
+  }
+  $('deleteConfirmText').textContent = `این کد روی ${faNum(usedCount)} قطعه استفاده شده. حذف کد و همهٔ هایلایت‌هایش؟`;
+  $('deleteConfirmBox').classList.remove('hidden');
+}
+
+async function confirmDeleteEditingCode() {
   const id = state.editingCodeId;
   if (!id) return;
   await api(`/api/coding/codes/${id}?coder=${state.coderId}`, { method: 'DELETE' });
@@ -1116,6 +1219,8 @@ function renderParagraph(sampleId, source, pIdx, text) {
   return html;
 }
 
+const TRASH_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>';
+
 function inlineCoderHTML(draft) {
   const existingCode = draft.hlId ? state.codes.find(c => c.id === state.highlights.find(h => h.id === draft.hlId)?.code_id) : null;
   const initVal = draft.query !== undefined ? draft.query : (existingCode ? existingCode.label : '');
@@ -1123,8 +1228,9 @@ function inlineCoderHTML(draft) {
     <span class="inline-coder" id="inlineCoderBox" onclick="event.stopPropagation()">
       <input id="inlineCodeInput" type="text" value="${escapeHtml(initVal)}" placeholder="کد بنویسید یا از بالا بزنید…" autocomplete="off"
         oninput="onInlineInput(this.value)" onkeydown="onInlineKey(event)">
-      <button type="button" class="ic-btn ic-ok" onclick="submitInlineCode()" title="ثبت">✓</button>
-      ${draft.hlId ? `<button type="button" class="ic-btn ic-del" onclick="deleteInlineHighlight(${draft.hlId})" title="حذف هایلایت">×</button>` : `<button type="button" class="ic-btn ic-cancel" onclick="cancelInlineDraft()" title="بستن">×</button>`}
+      <button type="button" class="ic-btn ic-ok" onclick="submitInlineCode()" title="ذخیره کد">✓</button>
+      ${draft.hlId ? `<span class="ic-sep"></span><button type="button" class="ic-btn ic-trash" onclick="deleteInlineHighlight(${draft.hlId})" title="حذف این هایلایت" aria-label="حذف این هایلایت">${TRASH_SVG}</button>` : ''}
+      <button type="button" class="ic-btn ic-cancel" onclick="cancelInlineDraft()" title="بستن بدون تغییر" aria-label="بستن">×</button>
     </span>
   `;
 }
@@ -1257,9 +1363,45 @@ function submitInlineCode() {
 }
 
 async function deleteInlineHighlight(hlId) {
+  const doomed = state.highlights.find(h => h.id === hlId);
+  if (!doomed) return;
+  const codeObj = state.codes.find(c => c.id === doomed.code_id);
+  state.lastDeletedHighlight = { ...doomed, codeLabel: codeObj?.label || '' };
   await api(`/api/coding/highlights/${hlId}?coder=${state.coderId}`, { method: 'DELETE' });
   state.highlights = state.highlights.filter(h => h.id !== hlId);
   state.inlineDraft = null;
+  renderAll();
+  showToast('هایلایت حذف شد', undoDeleteHighlight);
+}
+
+async function undoDeleteHighlight() {
+  const prev = state.lastDeletedHighlight;
+  if (!prev) return;
+  state.lastDeletedHighlight = null;
+  $('toast').classList.add('hidden');
+  let codeId = prev.code_id;
+  if (!state.codes.some(c => c.id === codeId) && prev.codeLabel) {
+    const code = await ensureCodeOnServer(prev.codeLabel);
+    codeId = code.id;
+  }
+  const res = await api('/api/coding/highlights', {
+    method: 'POST',
+    body: JSON.stringify({
+      coder_id: state.coderId,
+      sample_id: prev.sample_id,
+      source: prev.source,
+      external_source_id: prev.external_source_id,
+      paragraph_idx: prev.paragraph_idx,
+      start_offset: prev.start_offset,
+      end_offset: prev.end_offset,
+      quote: prev.quote,
+      code_id: codeId,
+    }),
+  });
+  state.highlights.push(res.highlight);
+  state.currentSampleId = prev.sample_id;
+  state.sourceTab = prev.source === 'external' ? 'external' : 'post';
+  renderPostSelector();
   renderAll();
 }
 
@@ -1399,7 +1541,7 @@ function renderPost() {
               ${h.source === 'external' ? '<span style="font-size:11px;color:var(--muted);flex:none">[Link]</span>' : ''}
               <span class="seg-quote">“${escapeHtml(h.quote)}”</span>
             </button>
-            <button type="button" style="color:var(--muted);padding:0 6px" onclick="deleteInlineHighlight(${h.id})">×</button>
+            <button type="button" class="seg-del" onclick="deleteInlineHighlight(${h.id})" title="حذف این هایلایت" aria-label="حذف این هایلایت">${TRASH_SVG}</button>
           </div>
         `;
       }).join('')
