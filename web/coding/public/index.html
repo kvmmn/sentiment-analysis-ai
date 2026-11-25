@@ -1,0 +1,1456 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Saintiment Coding Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap"></noscript>
+<style>
+:root {
+  --bg: #fafaf9;
+  --surface: #ffffff;
+  --sunk: #f5f5f4;
+  --fg: #1c1917;
+  --muted: #78716c;
+  --faint: #a8a29e;
+  --line: #e7e5e4;
+  --accent: #2563eb;
+  --ok: #16a34a;
+  --warn: #b45309;
+  --danger: #dc2626;
+  --c1: #2563eb; --c1-bg: rgba(37, 99, 235, 0.12);
+  --c2: #0d9488; --c2-bg: rgba(13, 148, 136, 0.13);
+  --c3: #d97706; --c3-bg: rgba(217, 119, 6, 0.13);
+  --c4: #7c3aed; --c4-bg: rgba(124, 58, 237, 0.12);
+  --c5: #db2777; --c5-bg: rgba(219, 39, 119, 0.12);
+  --c6: #16a34a; --c6-bg: rgba(22, 163, 74, 0.12);
+  --font: "Vazirmatn", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --prose-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c0a09; --surface: #171513; --sunk: #1e1b18; --fg: #f5f5f4; --muted: #a8a29e; --faint: #78716c; --line: #292524;
+    --accent: #60a5fa; --ok: #4ade80; --warn: #fbbf24; --danger: #f87171;
+    --c1: #60a5fa; --c1-bg: rgba(96, 165, 250, 0.20);
+    --c2: #2dd4bf; --c2-bg: rgba(45, 212, 191, 0.19);
+    --c3: #fbbf24; --c3-bg: rgba(251, 191, 36, 0.19);
+    --c4: #a78bfa; --c4-bg: rgba(167, 139, 250, 0.20);
+    --c5: #f472b6; --c5-bg: rgba(244, 114, 182, 0.20);
+    --c6: #4ade80; --c6-bg: rgba(74, 222, 128, 0.19);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c0a09; --surface: #171513; --sunk: #1e1b18; --fg: #f5f5f4; --muted: #a8a29e; --faint: #78716c; --line: #292524;
+  --accent: #60a5fa; --ok: #4ade80; --warn: #fbbf24; --danger: #f87171;
+  --c1: #60a5fa; --c1-bg: rgba(96, 165, 250, 0.20);
+  --c2: #2dd4bf; --c2-bg: rgba(45, 212, 191, 0.19);
+  --c3: #fbbf24; --c3-bg: rgba(251, 191, 36, 0.19);
+  --c4: #a78bfa; --c4-bg: rgba(167, 139, 250, 0.20);
+  --c5: #f472b6; --c5-bg: rgba(244, 114, 182, 0.20);
+  --c6: #4ade80; --c6-bg: rgba(74, 222, 128, 0.19);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); }
+body { font: 400 14px/1.7 var(--font); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; cursor: pointer; padding: 0; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.ltr { direction: ltr; unicode-bidi: isolate; }
+.hidden { display: none !important; }
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* Login */
+#loginScreen.active { display: grid; place-items: center; min-height: 100dvh; padding: 20px; }
+.login-box { width: 100%; max-width: 340px; display: grid; gap: 14px; text-align: center; }
+.login-box h1 { margin: 0; font-size: 20px; font-weight: 700; }
+.login-box p { margin: 0; font-size: 13px; color: var(--muted); }
+.login-box input {
+  font-size: 16px; padding: 13px 14px; border: 1px solid var(--line); border-radius: 12px;
+  background: var(--surface); text-align: center; direction: ltr;
+}
+.login-box input:focus { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+.btn-solid {
+  background: var(--fg); color: var(--bg); border-radius: 12px; padding: 12px 16px;
+  font-weight: 700; min-height: 44px;
+}
+.btn-solid:disabled { opacity: 0.5; }
+.err { color: var(--danger); font-size: 13px; min-height: 1.4em; }
+
+/* Coder Picker */
+.picker-wrap { max-width: 680px; margin: 0 auto; padding: 18px 16px 40px; }
+.top-nav { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0 18px; }
+.top-nav h1 { margin: 0; font-size: 18px; font-weight: 700; }
+.icon-btn {
+  min-width: 38px; min-height: 38px; display: inline-grid; place-items: center;
+  border-radius: 10px; color: var(--muted); padding: 0 8px; font-size: 13px;
+}
+.icon-btn:hover { background: var(--sunk); color: var(--fg); }
+.coder-list { display: grid; gap: 10px; }
+.coder-card {
+  display: grid; gap: 10px; text-align: start; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; transition: border-color .15s;
+}
+.coder-card:hover { border-color: var(--faint); }
+.coder-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.coder-name { font-size: 17px; font-weight: 700; }
+.coder-meta { font-size: 13px; color: var(--muted); }
+.bar { height: 4px; background: var(--line); border-radius: 4px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--ok); transition: width .2s; }
+.picker-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding-top: 20px; font-size: 13px; color: var(--muted); }
+
+/* Studio Sticky Header + Code Tray */
+.studio-head {
+  position: sticky; top: 0; z-index: 20;
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.studio-head-inner { max-width: 740px; margin: 0 auto; padding: 10px 16px; display: grid; gap: 8px; }
+.head-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.head-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.head-title h2 { margin: 0; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.head-actions { display: flex; align-items: center; gap: 6px; flex-none: 1; }
+.pill-btn {
+  min-height: 34px; padding: 0 11px; border-radius: 9px; border: 1px solid var(--line);
+  background: var(--surface); font-size: 12.5px; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.pill-btn:hover { background: var(--sunk); }
+.pill-btn.active { border-color: var(--accent); color: var(--accent); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex: none; }
+.dot.wait { background: var(--warn); }
+.dot.bad { background: var(--danger); }
+
+/* Code Tray */
+.tray-box {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+  padding: 9px 12px; display: grid; gap: 8px;
+}
+.tray-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); }
+.tray-chips { display: flex; flex-wrap: wrap; gap: 6px; max-height: 160px; overflow-y: auto; padding: 2px 0; }
+.tray-chips.collapsed { display: none; }
+.code-chip {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 30px;
+  padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--bg); font-size: 12.5px; direction: ltr; transition: border-color .12s, background .12s;
+}
+.code-chip:hover { background: var(--sunk); }
+.code-chip.editing { border-color: var(--accent); background: var(--sunk); font-weight: 600; }
+.c-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.c-cnt { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+/* Inline Tray Editor & Theme Drawer */
+.tray-editor {
+  border-top: 1px solid var(--line); padding-top: 9px; display: grid; gap: 8px;
+}
+.editor-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.editor-input {
+  flex: 1; min-width: 150px; min-height: 34px; padding: 4px 10px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--bg); font-size: 13px; direction: ltr;
+}
+.editor-input:focus { outline: 1.5px solid var(--accent); border-color: transparent; }
+.color-dots { display: inline-flex; align-items: center; gap: 5px; }
+.color-opt {
+  width: 18px; height: 18px; border-radius: 50%; border: 2px solid transparent; transition: transform .1s;
+}
+.color-opt.on { border-color: var(--fg); transform: scale(1.15); }
+.theme-sel {
+  min-height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--bg); font-size: 12.5px;
+}
+.quotes-box { display: grid; gap: 5px; max-height: 150px; overflow-y: auto; }
+.quote-item {
+  text-align: left; direction: ltr; padding: 7px 10px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--bg); font-size: 12.5px; line-height: 1.5;
+}
+.quote-item:hover { border-color: var(--accent); }
+
+.themes-drawer {
+  border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 10px;
+  max-height: 55vh; overflow-y: auto;
+}
+.themes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.theme-card {
+  border: 1px solid var(--line); border-radius: 10px; background: var(--bg); padding: 10px; display: grid; gap: 7px;
+}
+.theme-card-head { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; font-weight: 600; }
+
+/* Main Editorial Reading Column */
+.studio-main { max-width: 740px; margin: 0 auto; padding: 20px 16px 110px; display: grid; gap: 16px; }
+.post-card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px 20px; display: grid; gap: 18px;
+}
+@media (min-width: 640px) { .post-card { padding: 30px 34px; gap: 22px; } }
+
+.post-meta {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 10px;
+  padding-bottom: 14px; border-bottom: 1px solid var(--line);
+}
+.author-block { display: grid; gap: 3px; text-align: left; direction: ltr; min-width: 0; }
+.author-top { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.sid-badge {
+  font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 2px 7px;
+  border-radius: 6px; background: var(--sunk); color: var(--fg);
+}
+.author-name { font-size: 15px; font-weight: 700; }
+.meta-tag {
+  font-size: 11.5px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted);
+}
+.meta-tag.ext { border-color: color-mix(in srgb, var(--warn) 40%, transparent); color: var(--warn); background: color-mix(in srgb, var(--warn) 10%, transparent); }
+.author-headline { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+.post-date-link { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); direction: ltr; }
+
+/* External Link Bar */
+.ext-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 10px 12px; border-radius: 12px; background: var(--sunk); border: 1px solid var(--line);
+}
+.seg-switch { display: inline-flex; padding: 2px; border-radius: 9px; background: var(--bg); border: 1px solid var(--line); }
+.seg-btn {
+  min-height: 32px; padding: 0 12px; border-radius: 7px; font-size: 12.5px; font-weight: 500; color: var(--muted);
+}
+.seg-btn.on { background: var(--fg); color: var(--bg); }
+.ext-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12.5px; }
+.ext-check {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 10px;
+  border-radius: 8px; background: var(--surface); border: 1px solid var(--line); cursor: pointer;
+}
+.ext-info { font-size: 12.5px; color: var(--muted); direction: ltr; text-align: left; line-height: 1.5; }
+
+/* Editorial Prose Body */
+.prose {
+  direction: ltr; text-align: left; font-family: var(--prose-font);
+  font-size: 16.5px; line-height: 1.92; letter-spacing: 0.004em;
+  display: grid; gap: 18px; user-select: text;
+}
+.prose p { margin: 0; overflow-wrap: anywhere; }
+.sent {
+  border-radius: 4px; cursor: pointer; transition: background-color 110ms ease;
+}
+.sent:hover { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+
+.hl {
+  border-radius: 4px; padding: 1px 3px; cursor: pointer;
+  box-decoration-break: clone; -webkit-box-decoration-break: clone;
+  transition: filter 120ms ease, box-shadow 120ms ease;
+}
+.hl:hover { filter: brightness(0.94); }
+.hl.pulse { box-shadow: 0 0 0 2px var(--accent); }
+.hl-tag {
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  padding: 0 5px; margin-left: 4px; border-radius: 4px; vertical-align: 1px;
+}
+
+/* ULTRA-MINIMAL IN-PLACE INLINE CODING PILL (appears right at end of phrase) */
+.inline-coder {
+  position: relative; display: inline-flex; align-items: center; gap: 4px;
+  margin-left: 6px; vertical-align: baseline;
+  background: var(--surface); border: 1.5px solid var(--accent);
+  border-radius: 999px; padding: 2px 5px 2px 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  direction: ltr; z-index: 15;
+}
+.inline-coder input {
+  width: 155px; max-width: 44vw; border: 0; outline: 0; background: transparent;
+  font-family: var(--mono); font-size: 13px; line-height: 1.3; padding: 3px 0; color: var(--fg);
+}
+.inline-coder .ic-btn {
+  width: 24px; height: 24px; border-radius: 50%; display: inline-grid; place-items: center;
+  font-size: 12px; font-weight: 700;
+}
+.inline-coder .ic-ok { background: var(--fg); color: var(--bg); }
+.inline-coder .ic-del { color: var(--danger); }
+.inline-coder .ic-del:hover, .inline-coder .ic-cancel:hover { background: var(--sunk); }
+.inline-coder .ic-cancel { color: var(--muted); }
+
+.ic-suggest {
+  position: absolute; top: calc(100% + 5px); left: 0; min-width: 210px; max-width: 280px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10); padding: 4px; display: grid; gap: 2px; z-index: 25;
+}
+.ic-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 6px 9px; border-radius: 7px; font-size: 12.5px; text-align: left;
+  font-family: var(--mono);
+}
+.ic-opt:hover, .ic-opt.hi { background: var(--sunk); }
+
+/* Post Coded Segments & Manual External Fallback */
+.segments-sec {
+  border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 8px;
+}
+.seg-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 7px 10px; border-radius: 9px; background: var(--bg); border: 1px solid var(--line);
+  font-size: 12.5px; direction: ltr;
+}
+.seg-jump {
+  display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; text-align: left;
+}
+.seg-quote { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.ext-fallback {
+  border: 1px dashed var(--line); border-radius: 11px; padding: 12px 14px; display: grid; gap: 8px;
+  background: var(--bg); font-size: 13px;
+}
+
+/* Sticky Bottom Navigation Bar */
+.studio-foot {
+  position: fixed; bottom: 0; inset-x: 0; z-index: 20;
+  background: color-mix(in srgb, var(--bg) 95%, transparent);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line);
+}
+.studio-foot-inner {
+  max-width: 740px; margin: 0 auto; padding: 8px 16px calc(8px + env(safe-area-inset-bottom));
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.foot-nav { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.jump-sel {
+  min-height: 38px; padding: 0 8px; border-radius: 9px; border: 1px solid var(--line);
+  background: var(--surface); font-size: 12.5px; max-width: 145px;
+}
+.mark-btn {
+  min-height: 40px; padding: 0 14px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--surface); font-size: 13px; font-weight: 600; white-space: nowrap;
+}
+.mark-btn.done {
+  background: color-mix(in srgb, var(--ok) 15%, transparent);
+  border-color: color-mix(in srgb, var(--ok) 45%, transparent);
+  color: var(--ok);
+}
+.nav-arrow {
+  min-width: 42px; min-height: 40px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--surface); font-size: 15px; font-weight: 600; display: inline-grid; place-items: center;
+}
+.nav-arrow.primary { background: var(--fg); color: var(--bg); border-color: transparent; }
+
+.toast {
+  position: fixed; bottom: 68px; left: 50%; transform: translateX(-50%);
+  background: var(--fg); color: var(--bg); padding: 7px 14px; border-radius: 999px;
+  font-size: 12.5px; z-index: 40; pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<!-- 1. Login Screen -->
+<section id="loginScreen" class="screen">
+  <form class="login-box" onsubmit="doLogin(event)">
+    <h1>Saintiment Coding Studio</h1>
+    <p>ورود با رمز تیم (مشترک با صفحهٔ Swipe)</p>
+    <input id="pwInput" type="password" placeholder="Password" autocomplete="current-password" required>
+    <button id="pwBtn" type="submit" class="btn-solid">ورود</button>
+    <div id="pwErr" class="err"></div>
+  </form>
+</section>
+
+<!-- 2. Coder Picker Screen -->
+<section id="pickerScreen" class="screen">
+  <div class="picker-wrap">
+    <div class="top-nav">
+      <h1>کدگذاری کیفی (۵۰ پست نمونه)</h1>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button class="icon-btn" onclick="toggleTheme()" title="تغییر تم">◐</button>
+        <button class="icon-btn" onclick="doLogout()">خروج</button>
+      </div>
+    </div>
+
+    <div id="coderCards" class="coder-list"></div>
+
+    <div class="picker-foot">
+      <a href="/">← بازگشت به Swipe Review</a>
+      <a href="/api/coding/export" download="saintiment_coding_50_export.json">دانلود خروجی کامل (JSON) ↓</a>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Coding Workspace Screen -->
+<section id="studioScreen" class="screen">
+  <header class="studio-head">
+    <div class="studio-head-inner">
+      <div class="head-bar">
+        <div class="head-title">
+          <button class="icon-btn" onclick="backToPicker()" title="بازگشت">→</button>
+          <h2 id="coderHeaderTitle">کاوه</h2>
+          <span id="syncDot" class="dot" title="ذخیره‌شده در Neon"></span>
+        </div>
+        <div class="head-actions">
+          <button id="btnThemesDrawer" class="pill-btn" onclick="toggleThemesDrawer()">دسته‌بندی تم‌ها</button>
+          <button class="icon-btn" onclick="toggleTheme()" title="تغییر تم">◐</button>
+        </div>
+      </div>
+
+      <!-- Sticky Code Tray (Full list visible + Collapse/Expand toggle) -->
+      <div class="tray-box">
+        <div class="tray-bar">
+          <span id="traySummary">۰ کد · ۰ قطعه</span>
+          <button id="btnToggleTray" class="pill-btn" style="min-height:28px;padding:0 9px;font-size:12px" onclick="toggleTrayCollapse()">
+            جمع کردن ▲
+          </button>
+        </div>
+
+        <div id="trayChips" class="tray-chips"></div>
+
+        <!-- Inline Code Chip Editor (opens cleanly inside tray) -->
+        <div id="trayEditor" class="tray-editor hidden">
+          <div class="editor-row">
+            <input id="editCodeLabel" class="editor-input" type="text" placeholder="نام کد...">
+            <div id="editCodeColors" class="color-dots"></div>
+            <select id="editCodeTheme" class="theme-sel"></select>
+          </div>
+          <div class="editor-row" style="justify-content:space-between">
+            <div style="display:flex;gap:6px">
+              <button class="pill-btn active" onclick="saveCodeEdit()">ذخیره</button>
+              <button class="pill-btn" onclick="toggleCodeQuotes()">نقل‌قول‌ها</button>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button class="pill-btn" style="color:var(--danger)" onclick="deleteEditingCode()">حذف کد</button>
+              <button class="pill-btn" onclick="closeCodeEditor()">بستن</button>
+            </div>
+          </div>
+          <div id="editCodeQuotes" class="quotes-box hidden"></div>
+        </div>
+
+        <!-- Stage 2 Theme Grouping Drawer -->
+        <div id="themesDrawer" class="themes-drawer hidden">
+          <div class="editor-row" style="justify-content:space-between">
+            <span style="font-size:12.5px;font-weight:600">گروه‌بندی کدها زیر تم‌ها (مرحلهٔ بعد)</span>
+            <div style="display:flex;gap:6px">
+              <input id="newThemeName" class="editor-input" style="min-width:130px;direction:auto" type="text" placeholder="نام تم جدید...">
+              <button class="pill-btn" onclick="createTheme()">+ تم</button>
+            </div>
+          </div>
+          <div id="themesGrid" class="themes-grid"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="studio-main">
+    <article class="post-card">
+      <div class="post-meta">
+        <div class="author-block">
+          <div class="author-top">
+            <span id="postSampleId" class="sid-badge">S01</span>
+            <span id="postAuthorName" class="author-name"></span>
+            <span id="postAuthorType" class="meta-tag"></span>
+            <span id="postExtBadge" class="meta-tag ext hidden">لینک بیرونی</span>
+          </div>
+          <div id="postHeadline" class="author-headline"></div>
+        </div>
+        <div class="post-date-link">
+          <span id="postDate"></span>
+          <span>·</span>
+          <a id="postLinkedInUrl" href="#" target="_blank" rel="noopener">LinkedIn ↗</a>
+        </div>
+      </div>
+
+      <!-- External Source Switcher (shown when post has external link / article) -->
+      <div id="extBar" class="ext-bar hidden">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;width:100%">
+          <div id="sourceSwitcher" class="seg-switch">
+            <button id="segPost" class="seg-btn on" onclick="setSourceTab('post')">متن پست</button>
+            <button id="segExt" class="seg-btn" onclick="setSourceTab('external')">مقالهٔ استخراج‌شده</button>
+          </div>
+          <div class="ext-actions">
+            <a id="extOriginalUrl" class="pill-btn" href="#" target="_blank" rel="noopener">لینک اصلی ↗</a>
+            <label class="ext-check">
+              <input id="chkLinkReviewed" type="checkbox" onchange="toggleLinkReviewed(this.checked)">
+              <span>لینک بررسی شد</span>
+            </label>
+          </div>
+        </div>
+        <div id="extMetaInfo" class="ext-info"></div>
+      </div>
+
+      <!-- High-Readability Prose Body (Post OR Extracted External Article) -->
+      <div id="proseBody" class="prose"></div>
+
+      <!-- Secondary Fallback when external link could not be extracted -->
+      <div id="extFallbackBox" class="ext-fallback hidden">
+        <div id="extFallbackMsg" style="color:var(--muted)"></div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <input id="extManualQuote" class="editor-input" style="flex:2;min-width:170px" type="text" placeholder="نقل‌قول یا نکتهٔ کلیدی از لینک...">
+          <input id="extManualCode" class="editor-input" style="flex:1;min-width:130px" type="text" placeholder="کد (مثلاً policy-gap)...">
+          <button class="pill-btn active" onclick="addManualExternalCode()">ثبت کد از لینک</button>
+        </div>
+      </div>
+
+      <!-- Compact List of Coded Segments on This Post -->
+      <div class="segments-sec">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)">
+          <span>کدهای ثبت‌شده روی این پست</span>
+          <span id="postSegCount"></span>
+        </div>
+        <div id="postSegmentsList" style="display:grid;gap:6px"></div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="studio-foot">
+    <div class="studio-foot-inner">
+      <div class="foot-nav">
+        <select id="filterSelect" class="jump-sel" onchange="applyPostFilter()">
+          <option value="all">همه (۵۰)</option>
+          <option value="uncoded">کدگذاری‌نشده</option>
+          <option value="coded">کدگذاری‌شده</option>
+          <option value="link">لینک‌دار</option>
+        </select>
+        <select id="postSelect" class="jump-sel" onchange="jumpToPost(this.value)"></select>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button id="btnMarkCoded" class="mark-btn" onclick="toggleMarkCoded()">کدگذاری شد</button>
+        <button class="nav-arrow" onclick="stepPost(-1)" aria-label="قبلی">→</button>
+        <button class="nav-arrow primary" onclick="stepPost(1)" aria-label="بعدی">←</button>
+      </div>
+    </div>
+  </footer>
+</section>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const THEME_KEY = 'saintiment_theme';
+const TRAY_KEY = 'saintiment_coding_tray_collapsed';
+const CODER_KEY = 'saintiment_coding_last_coder';
+
+const COLORS = [1, 2, 3, 4, 5, 6];
+let state = {
+  coderId: null,
+  coderName: '',
+  posts: [],
+  extBySample: {},
+  themes: [],
+  codes: [],
+  highlights: [],
+  statusBySample: {},
+  filteredIds: [],
+  currentSampleId: null,
+  sourceTab: 'post', // 'post' | 'external'
+  editingCodeId: null,
+  trayCollapsed: localStorage.getItem(TRAY_KEY) === '1',
+  themesOpen: false,
+  inlineDraft: null, // { sampleId, source, extSourceId, pIdx, start, end, quote, hlId, suggestIdx }
+  pendingCalls: 0,
+};
+
+// ---- Theme ----
+function applyTheme(t) {
+  if (t) document.documentElement.setAttribute('data-theme', t);
+  else document.documentElement.removeAttribute('data-theme');
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') ||
+    (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+}
+applyTheme(localStorage.getItem(THEME_KEY));
+
+function showToast(msg) {
+  const el = $('toast');
+  el.textContent = msg;
+  el.classList.remove('hidden');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => el.classList.add('hidden'), 2200);
+}
+
+function setSync(mode) {
+  const d = $('syncDot');
+  d.className = 'dot' + (mode === 'ok' ? '' : ' ' + mode);
+}
+
+async function api(url, opts = {}) {
+  state.pendingCalls++;
+  setSync('wait');
+  try {
+    const res = await fetch(url, {
+      ...opts,
+      headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    });
+    if (res.status === 401) {
+      showScreen('loginScreen');
+      throw new Error('unauthorized');
+    }
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || ('HTTP ' + res.status));
+    }
+    setSync('ok');
+    return await res.json();
+  } catch (e) {
+    if (e.message !== 'unauthorized') setSync('bad');
+    throw e;
+  } finally {
+    state.pendingCalls = Math.max(0, state.pendingCalls - 1);
+    if (state.pendingCalls === 0 && !$('syncDot').classList.contains('bad')) setSync('ok');
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === id));
+}
+
+function escapeHtml(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function colorCss(idx) {
+  const n = Math.min(6, Math.max(1, Number(idx) || 1));
+  return { fg: `var(--c${n})`, bg: `var(--c${n}-bg)` };
+}
+
+function faNum(n) {
+  return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+}
+
+// ---- Auth & Picker ----
+async function boot() {
+  try {
+    await api('/api/coding/me');
+    await loadCoders();
+  } catch {
+    showScreen('loginScreen');
+    setTimeout(() => $('pwInput').focus(), 50);
+  }
+}
+
+async function doLogin(e) {
+  e.preventDefault();
+  $('pwErr').textContent = '';
+  $('pwBtn').disabled = true;
+  try {
+    await api('/api/coding/login', { method: 'POST', body: JSON.stringify({ password: $('pwInput').value }) });
+    $('pwInput').value = '';
+    await loadCoders();
+  } catch {
+    $('pwErr').textContent = 'رمز اشتباه است';
+  } finally {
+    $('pwBtn').disabled = false;
+  }
+}
+
+async function doLogout() {
+  await api('/api/coding/logout', { method: 'POST' }).catch(() => {});
+  showScreen('loginScreen');
+}
+
+async function loadCoders() {
+  showScreen('pickerScreen');
+  const data = await api('/api/coding/coders');
+  const box = $('coderCards');
+  box.innerHTML = data.coders.map(c => {
+    const pct = c.total_posts ? (c.coded_count / c.total_posts) * 100 : 0;
+    return `
+      <button class="coder-card" onclick="openCoder(${c.id}, '${escapeHtml(c.name)}')">
+        <div class="coder-top">
+          <span class="coder-name">${faNum(c.id)}. ${escapeHtml(c.name)}</span>
+          <span class="coder-meta">${faNum(c.coded_count)} از ${faNum(c.total_posts)} پست</span>
+        </div>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+        <div class="coder-meta">${faNum(c.codes_count)} کد یکتا · ${faNum(c.highlights_count)} قطعه کدگذاری‌شده</div>
+      </button>
+    `;
+  }).join('');
+}
+
+async function openCoder(coderId, name) {
+  state.coderId = coderId;
+  state.coderName = name;
+  localStorage.setItem(CODER_KEY, String(coderId));
+  $('coderHeaderTitle').textContent = `${faNum(coderId)}. ${name}`;
+  showScreen('studioScreen');
+
+  const ws = await api(`/api/coding/workspace?coder=${coderId}`);
+  state.posts = ws.posts;
+  state.extBySample = {};
+  for (const ex of ws.external_sources) {
+    (state.extBySample[ex.sample_id] ||= []).push(ex);
+  }
+  state.themes = ws.themes;
+  state.codes = ws.codes;
+  state.highlights = ws.highlights;
+  state.statusBySample = {};
+  for (const st of ws.post_status) {
+    state.statusBySample[st.sample_id] = st;
+  }
+  state.editingCodeId = null;
+  state.inlineDraft = null;
+  applyPostFilter(true);
+  renderAll();
+}
+
+function backToPicker() {
+  state.inlineDraft = null;
+  loadCoders();
+}
+
+// ---- Filtering & Navigation ----
+function postStatusOf(sampleId) {
+  return state.statusBySample[sampleId] || { sample_id: sampleId, is_coded: false, link_reviewed: false, coder_notes: '' };
+}
+
+function applyPostFilter(pickFirstUncoded = false) {
+  const f = $('filterSelect').value;
+  state.filteredIds = state.posts.filter(p => {
+    const st = postStatusOf(p.sample_id);
+    if (f === 'uncoded') return !st.is_coded;
+    if (f === 'coded') return st.is_coded;
+    if (f === 'link') return p.has_external_link;
+    return true;
+  }).map(p => p.sample_id);
+
+  if (!state.filteredIds.includes(state.currentSampleId)) {
+    if (pickFirstUncoded) {
+      const firstUncoded = state.posts.find(p => !postStatusOf(p.sample_id).is_coded);
+      state.currentSampleId = firstUncoded ? firstUncoded.sample_id : (state.filteredIds[0] || state.posts[0]?.sample_id);
+    } else {
+      state.currentSampleId = state.filteredIds[0] || state.posts[0]?.sample_id || null;
+    }
+    state.sourceTab = 'post';
+    state.inlineDraft = null;
+  }
+  renderPostSelector();
+  renderPost();
+}
+
+function renderPostSelector() {
+  const sel = $('postSelect');
+  sel.innerHTML = state.filteredIds.map(sid => {
+    const st = postStatusOf(sid);
+    const mark = st.is_coded ? '✓ ' : '';
+    const p = state.posts.find(x => x.sample_id === sid);
+    const link = p?.has_external_link ? ' 🔗' : '';
+    return `<option value="${sid}" ${sid === state.currentSampleId ? 'selected' : ''}>${mark}${sid}${link}</option>`;
+  }).join('') || '<option value="">موردی نیست</option>';
+}
+
+function jumpToPost(sid) {
+  if (!sid) return;
+  state.currentSampleId = sid;
+  state.sourceTab = 'post';
+  state.inlineDraft = null;
+  renderPostSelector();
+  renderPost();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function stepPost(delta) {
+  if (!state.filteredIds.length) return;
+  const idx = state.filteredIds.indexOf(state.currentSampleId);
+  const nextIdx = (idx + delta + state.filteredIds.length) % state.filteredIds.length;
+  jumpToPost(state.filteredIds[nextIdx]);
+}
+
+// ---- Top Code Tray ----
+function toggleTrayCollapse() {
+  state.trayCollapsed = !state.trayCollapsed;
+  localStorage.setItem(TRAY_KEY, state.trayCollapsed ? '1' : '0');
+  renderTray();
+}
+
+function renderTray() {
+  const countByCode = {};
+  for (const h of state.highlights) {
+    countByCode[h.code_id] = (countByCode[h.code_id] || 0) + 1;
+  }
+  $('traySummary').textContent = `${faNum(state.codes.length)} کد · ${faNum(state.highlights.length)} قطعه`;
+  $('btnToggleTray').textContent = state.trayCollapsed
+    ? `نمایش همه کدها (${faNum(state.codes.length)}) ▼`
+    : 'جمع کردن ▲';
+
+  const chips = $('trayChips');
+  chips.classList.toggle('collapsed', state.trayCollapsed);
+
+  if (!state.codes.length) {
+    chips.innerHTML = '<span style="font-size:12px;color:var(--muted)">هنوز کدی ثبت نشده — روی هر جمله کلیک کنید و کدش را همان‌جا تایپ کنید.</span>';
+  } else {
+    chips.innerHTML = state.codes.map(c => {
+      const col = colorCss(c.color_idx);
+      const cnt = countByCode[c.id] || 0;
+      const editing = state.editingCodeId === c.id;
+      return `
+        <button type="button" class="code-chip ${editing ? 'editing' : ''}" onclick="openCodeEditor(${c.id})">
+          <span class="c-dot" style="background:${col.fg}"></span>
+          <span>${escapeHtml(c.label)}</span>
+          <span class="c-cnt">×${cnt}</span>
+        </button>
+      `;
+    }).join('');
+  }
+
+  if (state.themesOpen) renderThemesDrawer();
+}
+
+function openCodeEditor(codeId) {
+  if (state.editingCodeId === codeId) {
+    closeCodeEditor();
+    return;
+  }
+  state.editingCodeId = codeId;
+  const c = state.codes.find(x => x.id === codeId);
+  if (!c) return;
+  $('trayEditor').classList.remove('hidden');
+  $('editCodeLabel').value = c.label;
+
+  $('editCodeColors').innerHTML = COLORS.map(idx => {
+    const col = colorCss(idx);
+    return `<button type="button" class="color-opt ${c.color_idx === idx ? 'on' : ''}" style="background:${col.fg}" onclick="recolorCode(${c.id}, ${idx})"></button>`;
+  }).join('');
+
+  $('editCodeTheme').innerHTML = `<option value="">بدون تم</option>` +
+    state.themes.map(t => `<option value="${t.id}" ${c.theme_id === t.id ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('');
+
+  $('editCodeQuotes').classList.add('hidden');
+  renderTray();
+}
+
+function closeCodeEditor() {
+  state.editingCodeId = null;
+  $('trayEditor').classList.add('hidden');
+  renderTray();
+}
+
+async function recolorCode(codeId, colorIdx) {
+  const c = state.codes.find(x => x.id === codeId);
+  if (!c) return;
+  c.color_idx = colorIdx;
+  renderAll();
+  openCodeEditor(codeId);
+  await api(`/api/coding/codes/${codeId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ coder_id: state.coderId, color_idx: colorIdx }),
+  });
+}
+
+async function saveCodeEdit() {
+  const c = state.codes.find(x => x.id === state.editingCodeId);
+  if (!c) return;
+  const label = $('editCodeLabel').value.trim();
+  const themeVal = $('editCodeTheme').value;
+  const themeId = themeVal ? Number(themeVal) : null;
+  if (!label) return;
+  const res = await api(`/api/coding/codes/${c.id}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ coder_id: state.coderId, label, theme_id: themeId }),
+  });
+  Object.assign(c, res.code);
+  closeCodeEditor();
+  renderAll();
+  showToast('کد ویرایش شد');
+}
+
+async function deleteEditingCode() {
+  const id = state.editingCodeId;
+  if (!id) return;
+  await api(`/api/coding/codes/${id}?coder=${state.coderId}`, { method: 'DELETE' });
+  state.codes = state.codes.filter(c => c.id !== id);
+  state.highlights = state.highlights.filter(h => h.code_id !== id);
+  closeCodeEditor();
+  renderAll();
+  showToast('کد حذف شد');
+}
+
+function toggleCodeQuotes() {
+  const box = $('editCodeQuotes');
+  if (!box.classList.contains('hidden')) {
+    box.classList.add('hidden');
+    return;
+  }
+  const matches = state.highlights.filter(h => h.code_id === state.editingCodeId);
+  box.innerHTML = matches.length
+    ? matches.map(h => `
+        <button type="button" class="quote-item" onclick="jumpToHighlight(${h.id})">
+          <strong>${h.sample_id}${h.source === 'external' ? ' · Article' : ''}</strong> — “${escapeHtml(h.quote)}”
+        </button>
+      `).join('')
+    : '<div style="font-size:12px;color:var(--muted)">هنوز نقل‌قولی با این کد ثبت نشده.</div>';
+  box.classList.remove('hidden');
+}
+
+function jumpToHighlight(hlId) {
+  const h = state.highlights.find(x => x.id === hlId);
+  if (!h) return;
+  closeCodeEditor();
+  state.currentSampleId = h.sample_id;
+  state.sourceTab = h.source === 'external' ? 'external' : 'post';
+  state.inlineDraft = null;
+  renderPostSelector();
+  renderPost();
+  setTimeout(() => {
+    const el = document.querySelector(`[data-hl-id="${hlId}"]`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('pulse');
+      setTimeout(() => el.classList.remove('pulse'), 1400);
+    }
+  }, 50);
+}
+
+// ---- Theme Grouping Drawer ----
+function toggleThemesDrawer() {
+  state.themesOpen = !state.themesOpen;
+  $('themesDrawer').classList.toggle('hidden', !state.themesOpen);
+  $('btnThemesDrawer').classList.toggle('active', state.themesOpen);
+  if (state.themesOpen) renderThemesDrawer();
+}
+
+function renderThemesDrawer() {
+  const groups = [
+    ...state.themes.map(t => ({ id: t.id, name: t.name })),
+    { id: null, name: 'بدون تم' },
+  ];
+  $('themesGrid').innerHTML = groups.map(g => {
+    const members = state.codes.filter(c => (c.theme_id ?? null) === g.id);
+    return `
+      <div class="theme-card">
+        <div class="theme-card-head">
+          <span>${escapeHtml(g.name)} (${faNum(members.length)})</span>
+          ${g.id ? `<button style="font-size:11.5px;color:var(--danger)" onclick="deleteTheme(${g.id})">حذف</button>` : ''}
+        </div>
+        ${members.length ? members.map(c => {
+          const col = colorCss(c.color_idx);
+          return `
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:12px">
+              <span class="ltr" style="display:inline-flex;align-items:center;gap:5px;min-width:0">
+                <span class="c-dot" style="background:${col.fg}"></span>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.label)}</span>
+              </span>
+              <select class="theme-sel" style="min-height:26px;font-size:11.5px" onchange="assignCodeTheme(${c.id}, this.value)">
+                <option value="">بدون تم</option>
+                ${state.themes.map(t => `<option value="${t.id}" ${c.theme_id === t.id ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('')}
+              </select>
+            </div>
+          `;
+        }).join('') : '<span style="font-size:12px;color:var(--muted)">خالی</span>'}
+      </div>
+    `;
+  }).join('');
+}
+
+async function createTheme() {
+  const name = $('newThemeName').value.trim();
+  if (!name) return;
+  const res = await api('/api/coding/themes', {
+    method: 'POST',
+    body: JSON.stringify({ coder_id: state.coderId, name }),
+  });
+  if (!state.themes.some(t => t.id === res.theme.id)) state.themes.push(res.theme);
+  $('newThemeName').value = '';
+  renderThemesDrawer();
+}
+
+async function deleteTheme(themeId) {
+  await api(`/api/coding/themes/${themeId}?coder=${state.coderId}`, { method: 'DELETE' });
+  state.themes = state.themes.filter(t => t.id !== themeId);
+  for (const c of state.codes) if (c.theme_id === themeId) c.theme_id = null;
+  renderThemesDrawer();
+}
+
+async function assignCodeTheme(codeId, rawVal) {
+  const themeId = rawVal ? Number(rawVal) : null;
+  const c = state.codes.find(x => x.id === codeId);
+  if (!c) return;
+  c.theme_id = themeId;
+  await api(`/api/coding/codes/${codeId}`, {
+    method: 'PATCH',
+    body: JSON.stringify({ coder_id: state.coderId, theme_id: themeId }),
+  });
+  renderThemesDrawer();
+}
+
+// ---- Prose Rendering & In-Place Inline Coding ----
+function splitParagraphs(text) {
+  return String(text || '').split(/\n{2,}/).map(s => s.trim()).filter(Boolean);
+}
+
+function splitSentences(text) {
+  const ranges = [];
+  const re = /[^.!?\n]+[.!?]+(?:\s+|$)|[^.!?\n]+$/g;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const trimmed = m[0].trimEnd();
+    if (trimmed.length > 0) ranges.push({ start: m.index, end: m.index + trimmed.length });
+  }
+  return ranges;
+}
+
+function activeProseContext() {
+  const p = state.posts.find(x => x.sample_id === state.currentSampleId);
+  if (!p) return { paragraphs: [], source: 'post', extSource: null };
+  const exts = state.extBySample[p.sample_id] || [];
+  const extracted = exts.find(e => e.fetch_status === 'extracted' && e.extracted_text);
+  if (state.sourceTab === 'external' && extracted) {
+    return { paragraphs: splitParagraphs(extracted.extracted_text), source: 'external', extSource: extracted };
+  }
+  return { paragraphs: splitParagraphs(p.post_text), source: 'post', extSource: exts[0] || null };
+}
+
+function renderParagraph(sampleId, source, pIdx, text) {
+  const pHls = state.highlights
+    .filter(h => h.sample_id === sampleId && h.source === source && h.paragraph_idx === pIdx)
+    .sort((a, b) => a.start_offset - b.start_offset);
+
+  const draft = state.inlineDraft &&
+    state.inlineDraft.sampleId === sampleId &&
+    state.inlineDraft.source === source &&
+    state.inlineDraft.pIdx === pIdx
+    ? state.inlineDraft
+    : null;
+
+  const sentences = splitSentences(text);
+  const cuts = new Set([0, text.length]);
+  for (const s of sentences) { cuts.add(s.start); cuts.add(s.end); }
+  for (const h of pHls) { cuts.add(Math.max(0, h.start_offset)); cuts.add(Math.min(text.length, h.end_offset)); }
+  if (draft && !draft.hlId) { cuts.add(Math.max(0, draft.start)); cuts.add(Math.min(text.length, draft.end)); }
+  const pts = [...cuts].sort((a, b) => a - b);
+
+  let html = '';
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1];
+    if (a === b) continue;
+    const chunk = escapeHtml(text.slice(a, b));
+    const hl = pHls.find(h => h.start_offset <= a && h.end_offset >= b);
+    const isDraftSpan = draft && !draft.hlId && draft.start <= a && draft.end >= b;
+    const sent = sentences.find(s => s.start <= a && s.end >= b);
+
+    if (hl) {
+      const code = state.codes.find(c => c.id === hl.code_id);
+      const col = colorCss(code?.color_idx);
+      const isEnd = b === hl.end_offset;
+      const showInlineHere = draft && draft.hlId === hl.id && isEnd;
+      html += `<span class="hl" data-hl-id="${hl.id}" onclick="openInlineForHighlight(event, ${hl.id})" style="background:${col.bg};border-bottom:2px solid ${col.fg}">${chunk}${isEnd && code && !showInlineHere ? `<span class="hl-tag" style="background:${col.bg};color:${col.fg}">${escapeHtml(code.label)}</span>` : ''}</span>`;
+      if (showInlineHere) html += inlineCoderHTML(draft);
+    } else if (isDraftSpan) {
+      const col = colorCss(1);
+      html += `<span class="hl" style="background:${col.bg};border-bottom:2px dashed ${col.fg}">${chunk}</span>`;
+      if (b === draft.end) html += inlineCoderHTML(draft);
+    } else if (sent) {
+      html += `<span class="sent" onclick="onSentenceTap(event, '${source}', ${pIdx}, ${sent.start}, ${sent.end})">${chunk}</span>`;
+    } else {
+      html += chunk;
+    }
+  }
+  return html;
+}
+
+function inlineCoderHTML(draft) {
+  const existingCode = draft.hlId ? state.codes.find(c => c.id === state.highlights.find(h => h.id === draft.hlId)?.code_id) : null;
+  const initVal = draft.query !== undefined ? draft.query : (existingCode ? existingCode.label : '');
+  return `
+    <span class="inline-coder" id="inlineCoderBox" onclick="event.stopPropagation()">
+      <input id="inlineCodeInput" type="text" value="${escapeHtml(initVal)}" placeholder="کد بنویسید…" autocomplete="off"
+        oninput="onInlineInput(this.value)" onkeydown="onInlineKey(event)">
+      <button type="button" class="ic-btn ic-ok" onclick="submitInlineCode()" title="ثبت">✓</button>
+      ${draft.hlId ? `<button type="button" class="ic-btn ic-del" onclick="deleteInlineHighlight(${draft.hlId})" title="حذف هایلایت">×</button>` : `<button type="button" class="ic-btn ic-cancel" onclick="cancelInlineDraft()" title="بستن">×</button>`}
+      <span id="inlineSuggestBox" class="ic-suggest hidden"></span>
+    </span>
+  `;
+}
+
+function onSentenceTap(event, source, pIdx, start, end) {
+  const sel = window.getSelection();
+  if (sel && !sel.isCollapsed && sel.toString().trim().length > 0) return;
+  event.stopPropagation();
+  const { paragraphs, extSource } = activeProseContext();
+  const quote = paragraphs[pIdx].slice(start, end);
+  state.inlineDraft = {
+    sampleId: state.currentSampleId,
+    source,
+    extSourceId: source === 'external' ? extSource?.id || null : null,
+    pIdx,
+    start,
+    end,
+    quote,
+    hlId: null,
+    query: '',
+    suggestIdx: -1,
+  };
+  renderProse();
+  focusInlineInput();
+}
+
+function openInlineForHighlight(event, hlId) {
+  event.stopPropagation();
+  const h = state.highlights.find(x => x.id === hlId);
+  if (!h) return;
+  const code = state.codes.find(c => c.id === h.code_id);
+  state.inlineDraft = {
+    sampleId: h.sample_id,
+    source: h.source,
+    extSourceId: h.external_source_id,
+    pIdx: h.paragraph_idx,
+    start: h.start_offset,
+    end: h.end_offset,
+    quote: h.quote,
+    hlId: h.id,
+    query: code ? code.label : '',
+    suggestIdx: -1,
+  };
+  renderProse();
+  focusInlineInput(true);
+}
+
+function focusInlineInput(selectAll = false) {
+  setTimeout(() => {
+    const inp = $('inlineCodeInput');
+    if (!inp) return;
+    inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    inp.focus();
+    if (selectAll) inp.select();
+    renderInlineSuggestions(inp.value);
+  }, 15);
+}
+
+function matchingCodes(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return state.codes.slice(0, 6);
+  return state.codes.filter(c => c.label.toLowerCase().includes(q)).slice(0, 6);
+}
+
+function renderInlineSuggestions(query) {
+  const box = $('inlineSuggestBox');
+  if (!box) return;
+  const list = matchingCodes(query);
+  if (!list.length) {
+    box.classList.add('hidden');
+    return;
+  }
+  box.innerHTML = list.map((c, idx) => {
+    const col = colorCss(c.color_idx);
+    const hi = state.inlineDraft && state.inlineDraft.suggestIdx === idx ? 'hi' : '';
+    return `
+      <button type="button" class="ic-opt ${hi}" data-label="${escapeHtml(c.label)}" onmousedown="event.preventDefault(); applyInlineLabel(this.dataset.label)">
+        <span style="display:inline-flex;align-items:center;gap:6px">
+          <span class="c-dot" style="background:${col.fg}"></span>
+          <span>${escapeHtml(c.label)}</span>
+        </span>
+      </button>
+    `;
+  }).join('');
+  box.classList.remove('hidden');
+}
+
+function onInlineInput(val) {
+  if (state.inlineDraft) {
+    state.inlineDraft.query = val;
+    state.inlineDraft.suggestIdx = -1;
+  }
+  renderInlineSuggestions(val);
+}
+
+function onInlineKey(e) {
+  const list = matchingCodes(e.target.value);
+  if (e.key === 'ArrowDown' && list.length) {
+    e.preventDefault();
+    state.inlineDraft.suggestIdx = (state.inlineDraft.suggestIdx + 1) % list.length;
+    renderInlineSuggestions(e.target.value);
+  } else if (e.key === 'ArrowUp' && list.length) {
+    e.preventDefault();
+    state.inlineDraft.suggestIdx = (state.inlineDraft.suggestIdx - 1 + list.length) % list.length;
+    renderInlineSuggestions(e.target.value);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (state.inlineDraft.suggestIdx >= 0 && list[state.inlineDraft.suggestIdx]) {
+      applyInlineLabel(list[state.inlineDraft.suggestIdx].label);
+    } else {
+      submitInlineCode();
+    }
+  } else if (e.key === 'Escape') {
+    cancelInlineDraft();
+  }
+}
+
+function cancelInlineDraft() {
+  state.inlineDraft = null;
+  renderProse();
+}
+
+async function ensureCodeOnServer(label) {
+  const existing = state.codes.find(c => c.label.toLowerCase() === label.toLowerCase());
+  if (existing) return existing;
+  const colorIdx = ((state.codes.length) % 6) + 1;
+  const res = await api('/api/coding/codes', {
+    method: 'POST',
+    body: JSON.stringify({ coder_id: state.coderId, label, color_idx: colorIdx }),
+  });
+  if (!state.codes.some(c => c.id === res.code.id)) state.codes.push(res.code);
+  return res.code;
+}
+
+async function applyInlineLabel(label) {
+  const clean = label.trim();
+  const draft = state.inlineDraft;
+  if (!clean || !draft) return;
+
+  const code = await ensureCodeOnServer(clean);
+  if (draft.hlId) {
+    const res = await api(`/api/coding/highlights/${draft.hlId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ coder_id: state.coderId, code_id: code.id }),
+    });
+    const idx = state.highlights.findIndex(h => h.id === draft.hlId);
+    if (idx !== -1) state.highlights[idx] = res.highlight;
+  } else {
+    const res = await api('/api/coding/highlights', {
+      method: 'POST',
+      body: JSON.stringify({
+        coder_id: state.coderId,
+        sample_id: draft.sampleId,
+        source: draft.source,
+        external_source_id: draft.extSourceId,
+        paragraph_idx: draft.pIdx,
+        start_offset: draft.start,
+        end_offset: draft.end,
+        quote: draft.quote,
+        code_id: code.id,
+      }),
+    });
+    state.highlights.push(res.highlight);
+  }
+  state.inlineDraft = null;
+  renderAll();
+}
+
+function submitInlineCode() {
+  const inp = $('inlineCodeInput');
+  if (!inp) return;
+  applyInlineLabel(inp.value);
+}
+
+async function deleteInlineHighlight(hlId) {
+  await api(`/api/coding/highlights/${hlId}?coder=${state.coderId}`, { method: 'DELETE' });
+  state.highlights = state.highlights.filter(h => h.id !== hlId);
+  state.inlineDraft = null;
+  renderAll();
+}
+
+// Custom mouse/touch text selection inside #proseBody
+$('proseBody').addEventListener('mouseup', () => {
+  const sel = window.getSelection();
+  if (!sel || sel.isCollapsed) return;
+  const text = sel.toString().trim();
+  if (text.length < 3) return;
+  const range = sel.getRangeAt(0);
+  const startP = (range.startContainer.nodeType === 1 ? range.startContainer : range.startContainer.parentElement).closest('p[data-p-idx]');
+  const endP = (range.endContainer.nodeType === 1 ? range.endContainer : range.endContainer.parentElement).closest('p[data-p-idx]');
+  if (!startP || startP !== endP) return;
+
+  const pIdx = Number(startP.dataset.pIdx);
+  const { paragraphs, source, extSource } = activeProseContext();
+  const pText = paragraphs[pIdx] || '';
+  const idx = pText.indexOf(text);
+  if (idx === -1) return;
+
+  state.inlineDraft = {
+    sampleId: state.currentSampleId,
+    source,
+    extSourceId: source === 'external' ? extSource?.id || null : null,
+    pIdx,
+    start: idx,
+    end: idx + text.length,
+    quote: text,
+    hlId: null,
+    query: '',
+    suggestIdx: -1,
+  };
+  sel.removeAllRanges();
+  renderProse();
+  focusInlineInput();
+});
+
+document.addEventListener('click', e => {
+  if (state.inlineDraft && !$('inlineCoderBox')?.contains(e.target)) {
+    state.inlineDraft = null;
+    renderProse();
+  }
+});
+
+// ---- Post View & External Sources ----
+function setSourceTab(tab) {
+  state.sourceTab = tab;
+  state.inlineDraft = null;
+  renderPost();
+}
+
+function renderProse() {
+  const { paragraphs, source } = activeProseContext();
+  const body = $('proseBody');
+  body.innerHTML = '';
+  paragraphs.forEach((text, pIdx) => {
+    const p = document.createElement('p');
+    p.dataset.pIdx = pIdx;
+    p.innerHTML = renderParagraph(state.currentSampleId, source, pIdx, text);
+    body.appendChild(p);
+  });
+}
+
+function renderPost() {
+  const p = state.posts.find(x => x.sample_id === state.currentSampleId);
+  if (!p) {
+    $('proseBody').innerHTML = '<p style="color:var(--muted)">پستی در این فیلتر نیست.</p>';
+    return;
+  }
+  const st = postStatusOf(p.sample_id);
+  const exts = state.extBySample[p.sample_id] || [];
+  const extracted = exts.find(e => e.fetch_status === 'extracted' && e.extracted_text);
+  const firstExt = extracted || exts[0] || null;
+  if (state.sourceTab === 'external' && !extracted) state.sourceTab = 'post';
+
+  $('postSampleId').textContent = p.sample_id;
+  $('postAuthorName').textContent = p.author_name || 'Unknown';
+  $('postAuthorType').textContent = p.author_type || 'profile';
+  $('postHeadline').textContent = p.author_headline || '';
+  $('postDate').textContent = p.posted_at || '';
+  $('postLinkedInUrl').href = p.post_url || '#';
+  $('postExtBadge').classList.toggle('hidden', !p.has_external_link);
+
+  // External Bar
+  const extBar = $('extBar');
+  const fallback = $('extFallbackBox');
+  if (p.has_external_link || exts.length) {
+    extBar.classList.remove('hidden');
+    $('sourceSwitcher').classList.toggle('hidden', !extracted);
+    $('segPost').classList.toggle('on', state.sourceTab === 'post');
+    $('segExt').classList.toggle('on', state.sourceTab === 'external');
+    $('extOriginalUrl').href = firstExt?.resolved_url || firstExt?.original_url || p.newsletter_url || p.post_url || '#';
+    $('chkLinkReviewed').checked = Boolean(st.link_reviewed);
+
+    if (firstExt) {
+      const statusLabel = {
+        extracted: 'متن مقاله استخراج شد',
+        login_required: 'لینک نیازمند ورود در مرورگر است',
+        paywalled: 'سایت دارای محدودیت اشتراک است',
+        pdf_or_media: 'فایل PDF یا رسانه',
+        metadata_only: 'فقط عنوان صفحه در دسترس است',
+        failed: 'دسترسی مستقیم امکان‌پذیر نبود',
+      }[firstExt.fetch_status] || firstExt.fetch_status;
+      $('extMetaInfo').innerHTML = `<strong>${escapeHtml(firstExt.domain || 'link')}</strong>${firstExt.title ? ` — ${escapeHtml(firstExt.title)}` : ''} · <span>${statusLabel}</span>`;
+    } else {
+      $('extMetaInfo').textContent = p.newsletter_title || 'External link attached';
+    }
+
+    if (!extracted) {
+      fallback.classList.remove('hidden');
+      $('extFallbackMsg').textContent = 'اگر نکتهٔ مهمی داخل لینک بیرونی بود، با دکمهٔ «لینک اصلی» باز کنید و در صورت نیاز کدش را اینجا ثبت کنید:';
+    } else {
+      fallback.classList.add('hidden');
+    }
+  } else {
+    extBar.classList.add('hidden');
+    fallback.classList.add('hidden');
+  }
+
+  renderProse();
+
+  // Per-post coded segments
+  const hls = state.highlights.filter(h => h.sample_id === p.sample_id);
+  $('postSegCount').textContent = faNum(hls.length);
+  $('postSegmentsList').innerHTML = hls.length
+    ? hls.map(h => {
+        const code = state.codes.find(c => c.id === h.code_id);
+        const col = colorCss(code?.color_idx);
+        return `
+          <div class="seg-row">
+            <button type="button" class="seg-jump" onclick="${h.paragraph_idx >= 0 ? `jumpToHighlight(${h.id})` : ''}">
+              <span style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;border-radius:999px;background:${col.bg};color:${col.fg};font-family:var(--mono);font-size:11.5px;flex:none">
+                ${escapeHtml(code?.label || '')}
+              </span>
+              ${h.source === 'external' ? '<span style="font-size:11px;color:var(--muted);flex:none">[Link]</span>' : ''}
+              <span class="seg-quote">“${escapeHtml(h.quote)}”</span>
+            </button>
+            <button type="button" style="color:var(--muted);padding:0 6px" onclick="deleteInlineHighlight(${h.id})">×</button>
+          </div>
+        `;
+      }).join('')
+    : '<div style="font-size:12.5px;color:var(--muted)">هنوز عبارتی در این پست کدگذاری نشده.</div>';
+
+  const markBtn = $('btnMarkCoded');
+  markBtn.classList.toggle('done', Boolean(st.is_coded));
+  markBtn.textContent = st.is_coded ? 'کدگذاری شد ✓' : 'کدگذاری شد';
+}
+
+async function addManualExternalCode() {
+  const label = $('extManualCode').value.trim();
+  const quote = $('extManualQuote').value.trim() || 'External linked resource';
+  if (!label) return;
+  const exts = state.extBySample[state.currentSampleId] || [];
+  const code = await ensureCodeOnServer(label);
+  const res = await api('/api/coding/highlights', {
+    method: 'POST',
+    body: JSON.stringify({
+      coder_id: state.coderId,
+      sample_id: state.currentSampleId,
+      source: 'external',
+      external_source_id: exts[0]?.id || null,
+      paragraph_idx: -1,
+      start_offset: 0,
+      end_offset: 0,
+      quote,
+      code_id: code.id,
+    }),
+  });
+  state.highlights.push(res.highlight);
+  $('extManualCode').value = '';
+  $('extManualQuote').value = '';
+  renderAll();
+  showToast('کد از لینک ثبت شد');
+}
+
+async function savePostStatus(patch) {
+  const sid = state.currentSampleId;
+  const cur = postStatusOf(sid);
+  const next = { ...cur, ...patch };
+  state.statusBySample[sid] = next;
+  renderPost();
+  renderPostSelector();
+  await api('/api/coding/post-status', {
+    method: 'PUT',
+    body: JSON.stringify({
+      coder_id: state.coderId,
+      sample_id: sid,
+      is_coded: Boolean(next.is_coded),
+      link_reviewed: Boolean(next.link_reviewed),
+      coder_notes: next.coder_notes || '',
+    }),
+  });
+}
+
+function toggleMarkCoded() {
+  const st = postStatusOf(state.currentSampleId);
+  savePostStatus({ is_coded: !st.is_coded });
+}
+
+function toggleLinkReviewed(val) {
+  savePostStatus({ link_reviewed: val });
+}
+
+function renderAll() {
+  renderTray();
+  renderPost();
+}
+
+boot();
+</script>
+</body>
+</html>
