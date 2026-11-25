@@ -148,6 +148,21 @@ a:hover { text-decoration: underline; }
 }
 .code-chip:hover { background: var(--sunk); }
 .code-chip.editing { border-color: var(--accent); background: var(--sunk); font-weight: 600; }
+.tray-box.assign-mode {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
+}
+.code-chip.pickable {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+}
+.code-chip.pickable:hover {
+  border-style: solid;
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+}
+.code-chip.dim { opacity: 0.35; }
+.c-plus { font-weight: 700; color: var(--accent); font-size: 13px; line-height: 1; }
 .c-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .c-cnt { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
 
@@ -276,18 +291,6 @@ a:hover { text-decoration: underline; }
 .inline-coder .ic-del:hover, .inline-coder .ic-cancel:hover { background: var(--sunk); }
 .inline-coder .ic-cancel { color: var(--muted); }
 
-.ic-suggest {
-  position: absolute; top: calc(100% + 5px); left: 0; min-width: 210px; max-width: 280px;
-  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10); padding: 4px; display: grid; gap: 2px; z-index: 25;
-}
-.ic-opt {
-  display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  padding: 6px 9px; border-radius: 7px; font-size: 12.5px; text-align: left;
-  font-family: var(--mono);
-}
-.ic-opt:hover, .ic-opt.hi { background: var(--sunk); }
-
 /* Post Coded Segments & Manual External Fallback */
 .segments-sec {
   border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 8px;
@@ -413,7 +416,7 @@ a:hover { text-decoration: underline; }
       </div>
 
       <!-- Sticky Code Tray (Full list visible + Collapse/Expand toggle) -->
-      <div class="tray-box">
+      <div id="trayBox" class="tray-box">
         <div class="tray-bar">
           <span id="traySummary">۰ کد · ۰ قطعه</span>
           <button id="btnToggleTray" class="pill-btn" style="min-height:28px;padding:0 9px;font-size:12px" onclick="toggleTrayCollapse()">
@@ -791,7 +794,7 @@ function jumpToPost(sid) {
   state.sourceTab = 'post';
   state.inlineDraft = null;
   renderPostSelector();
-  renderPost();
+  renderAll();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -814,13 +817,19 @@ function renderTray() {
   for (const h of state.highlights) {
     countByCode[h.code_id] = (countByCode[h.code_id] || 0) + 1;
   }
-  $('traySummary').textContent = `${faNum(state.codes.length)} کد · ${faNum(state.highlights.length)} قطعه`;
-  $('btnToggleTray').textContent = state.trayCollapsed
+  const assigning = Boolean(state.inlineDraft);
+  const q = assigning ? (state.inlineDraft.query || '').trim().toLowerCase() : '';
+
+  $('trayBox').classList.toggle('assign-mode', assigning);
+  $('traySummary').textContent = assigning
+    ? `روی یک کد بزنید تا روی عبارت انتخاب‌شده اعمال شود (${faNum(state.codes.length)})`
+    : `${faNum(state.codes.length)} کد · ${faNum(state.highlights.length)} قطعه`;
+  $('btnToggleTray').textContent = state.trayCollapsed && !assigning
     ? `نمایش همه کدها (${faNum(state.codes.length)}) ▼`
     : 'جمع کردن ▲';
 
   const chips = $('trayChips');
-  chips.classList.toggle('collapsed', state.trayCollapsed);
+  chips.classList.toggle('collapsed', state.trayCollapsed && !assigning);
 
   if (!state.codes.length) {
     chips.innerHTML = '<span style="font-size:12px;color:var(--muted)">هنوز کدی ثبت نشده — روی هر جمله کلیک کنید و کدش را همان‌جا تایپ کنید.</span>';
@@ -828,7 +837,20 @@ function renderTray() {
     chips.innerHTML = state.codes.map(c => {
       const col = colorCss(c.color_idx);
       const cnt = countByCode[c.id] || 0;
-      const editing = state.editingCodeId === c.id;
+      const editing = !assigning && state.editingCodeId === c.id;
+      const dim = assigning && q && !c.label.toLowerCase().includes(q);
+      if (assigning) {
+        return `
+          <button type="button" class="code-chip pickable ${dim ? 'dim' : ''}" data-label="${escapeHtml(c.label)}"
+            onmousedown="event.preventDefault()"
+            onclick="event.stopPropagation(); applyInlineLabel(this.dataset.label)">
+            <span class="c-plus">+</span>
+            <span class="c-dot" style="background:${col.fg}"></span>
+            <span>${escapeHtml(c.label)}</span>
+            <span class="c-cnt">×${cnt}</span>
+          </button>
+        `;
+      }
       return `
         <button type="button" class="code-chip ${editing ? 'editing' : ''}" onclick="openCodeEditor(${c.id})">
           <span class="c-dot" style="background:${col.fg}"></span>
@@ -1099,11 +1121,10 @@ function inlineCoderHTML(draft) {
   const initVal = draft.query !== undefined ? draft.query : (existingCode ? existingCode.label : '');
   return `
     <span class="inline-coder" id="inlineCoderBox" onclick="event.stopPropagation()">
-      <input id="inlineCodeInput" type="text" value="${escapeHtml(initVal)}" placeholder="کد بنویسید…" autocomplete="off"
+      <input id="inlineCodeInput" type="text" value="${escapeHtml(initVal)}" placeholder="کد بنویسید یا از بالا بزنید…" autocomplete="off"
         oninput="onInlineInput(this.value)" onkeydown="onInlineKey(event)">
       <button type="button" class="ic-btn ic-ok" onclick="submitInlineCode()" title="ثبت">✓</button>
       ${draft.hlId ? `<button type="button" class="ic-btn ic-del" onclick="deleteInlineHighlight(${draft.hlId})" title="حذف هایلایت">×</button>` : `<button type="button" class="ic-btn ic-cancel" onclick="cancelInlineDraft()" title="بستن">×</button>`}
-      <span id="inlineSuggestBox" class="ic-suggest hidden"></span>
     </span>
   `;
 }
@@ -1112,6 +1133,7 @@ function onSentenceTap(event, source, pIdx, start, end) {
   const sel = window.getSelection();
   if (sel && !sel.isCollapsed && sel.toString().trim().length > 0) return;
   event.stopPropagation();
+  if (state.editingCodeId) closeCodeEditor();
   const { paragraphs, extSource } = activeProseContext();
   const quote = paragraphs[pIdx].slice(start, end);
   state.inlineDraft = {
@@ -1124,9 +1146,9 @@ function onSentenceTap(event, source, pIdx, start, end) {
     quote,
     hlId: null,
     query: '',
-    suggestIdx: -1,
   };
   renderProse();
+  renderTray();
   focusInlineInput();
 }
 
@@ -1134,6 +1156,7 @@ function openInlineForHighlight(event, hlId) {
   event.stopPropagation();
   const h = state.highlights.find(x => x.id === hlId);
   if (!h) return;
+  if (state.editingCodeId) closeCodeEditor();
   const code = state.codes.find(c => c.id === h.code_id);
   state.inlineDraft = {
     sampleId: h.sample_id,
@@ -1145,9 +1168,9 @@ function openInlineForHighlight(event, hlId) {
     quote: h.quote,
     hlId: h.id,
     query: code ? code.label : '',
-    suggestIdx: -1,
   };
   renderProse();
+  renderTray();
   focusInlineInput(true);
 }
 
@@ -1158,64 +1181,18 @@ function focusInlineInput(selectAll = false) {
     inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
     inp.focus();
     if (selectAll) inp.select();
-    renderInlineSuggestions(inp.value);
   }, 15);
 }
 
-function matchingCodes(query) {
-  const q = query.trim().toLowerCase();
-  if (!q) return state.codes.slice(0, 6);
-  return state.codes.filter(c => c.label.toLowerCase().includes(q)).slice(0, 6);
-}
-
-function renderInlineSuggestions(query) {
-  const box = $('inlineSuggestBox');
-  if (!box) return;
-  const list = matchingCodes(query);
-  if (!list.length) {
-    box.classList.add('hidden');
-    return;
-  }
-  box.innerHTML = list.map((c, idx) => {
-    const col = colorCss(c.color_idx);
-    const hi = state.inlineDraft && state.inlineDraft.suggestIdx === idx ? 'hi' : '';
-    return `
-      <button type="button" class="ic-opt ${hi}" data-label="${escapeHtml(c.label)}" onmousedown="event.preventDefault(); applyInlineLabel(this.dataset.label)">
-        <span style="display:inline-flex;align-items:center;gap:6px">
-          <span class="c-dot" style="background:${col.fg}"></span>
-          <span>${escapeHtml(c.label)}</span>
-        </span>
-      </button>
-    `;
-  }).join('');
-  box.classList.remove('hidden');
-}
-
 function onInlineInput(val) {
-  if (state.inlineDraft) {
-    state.inlineDraft.query = val;
-    state.inlineDraft.suggestIdx = -1;
-  }
-  renderInlineSuggestions(val);
+  if (state.inlineDraft) state.inlineDraft.query = val;
+  renderTray();
 }
 
 function onInlineKey(e) {
-  const list = matchingCodes(e.target.value);
-  if (e.key === 'ArrowDown' && list.length) {
+  if (e.key === 'Enter') {
     e.preventDefault();
-    state.inlineDraft.suggestIdx = (state.inlineDraft.suggestIdx + 1) % list.length;
-    renderInlineSuggestions(e.target.value);
-  } else if (e.key === 'ArrowUp' && list.length) {
-    e.preventDefault();
-    state.inlineDraft.suggestIdx = (state.inlineDraft.suggestIdx - 1 + list.length) % list.length;
-    renderInlineSuggestions(e.target.value);
-  } else if (e.key === 'Enter') {
-    e.preventDefault();
-    if (state.inlineDraft.suggestIdx >= 0 && list[state.inlineDraft.suggestIdx]) {
-      applyInlineLabel(list[state.inlineDraft.suggestIdx].label);
-    } else {
-      submitInlineCode();
-    }
+    submitInlineCode();
   } else if (e.key === 'Escape') {
     cancelInlineDraft();
   }
@@ -1224,6 +1201,7 @@ function onInlineKey(e) {
 function cancelInlineDraft() {
   state.inlineDraft = null;
   renderProse();
+  renderTray();
 }
 
 async function ensureCodeOnServer(label) {
@@ -1302,6 +1280,7 @@ $('proseBody').addEventListener('mouseup', () => {
   const idx = pText.indexOf(text);
   if (idx === -1) return;
 
+  if (state.editingCodeId) closeCodeEditor();
   state.inlineDraft = {
     sampleId: state.currentSampleId,
     source,
@@ -1312,17 +1291,18 @@ $('proseBody').addEventListener('mouseup', () => {
     quote: text,
     hlId: null,
     query: '',
-    suggestIdx: -1,
   };
   sel.removeAllRanges();
   renderProse();
+  renderTray();
   focusInlineInput();
 });
 
 document.addEventListener('click', e => {
-  if (state.inlineDraft && !$('inlineCoderBox')?.contains(e.target)) {
+  if (state.inlineDraft && !$('inlineCoderBox')?.contains(e.target) && !$('trayBox')?.contains(e.target)) {
     state.inlineDraft = null;
     renderProse();
+    renderTray();
   }
 });
 
@@ -1330,7 +1310,7 @@ document.addEventListener('click', e => {
 function setSourceTab(tab) {
   state.sourceTab = tab;
   state.inlineDraft = null;
-  renderPost();
+  renderAll();
 }
 
 function renderProse() {
