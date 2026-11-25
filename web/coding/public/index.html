@@ -522,7 +522,10 @@ a:hover { text-decoration: underline; }
   <footer class="studio-foot">
     <div class="studio-foot-inner">
       <div class="foot-nav">
-        <select id="filterSelect" class="jump-sel" onchange="applyPostFilter()">
+        <button id="btnFilterToggle" type="button" class="icon-btn" style="border:1px solid var(--line);background:var(--surface)" onclick="togglePostFilter()" aria-label="فیلتر پست‌ها" title="فیلتر پست‌ها">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+        </button>
+        <select id="filterSelect" class="jump-sel hidden" onchange="applyPostFilter()">
           <option value="all">همه (۵۰)</option>
           <option value="uncoded">کدگذاری‌نشده</option>
           <option value="coded">کدگذاری‌شده</option>
@@ -730,8 +733,25 @@ function postStatusOf(sampleId) {
   return state.statusBySample[sampleId] || { sample_id: sampleId, is_coded: false, link_reviewed: false, coder_notes: '' };
 }
 
+function syncFilterButton() {
+  const open = !$('filterSelect').classList.contains('hidden');
+  const active = $('filterSelect').value !== 'all';
+  const btn = $('btnFilterToggle');
+  if (!btn) return;
+  btn.style.borderColor = (open || active) ? 'var(--accent)' : 'var(--line)';
+  btn.style.color = (open || active) ? 'var(--accent)' : 'var(--muted)';
+}
+
+function togglePostFilter() {
+  const sel = $('filterSelect');
+  sel.classList.toggle('hidden');
+  syncFilterButton();
+  if (!sel.classList.contains('hidden')) sel.focus();
+}
+
 function applyPostFilter(pickFirstUncoded = false) {
   const f = $('filterSelect').value;
+  syncFilterButton();
   state.filteredIds = state.posts.filter(p => {
     const st = postStatusOf(p.sample_id);
     if (f === 'uncoded') return !st.is_coded;
