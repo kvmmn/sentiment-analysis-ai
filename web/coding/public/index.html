@@ -63,6 +63,11 @@ html, body { margin: 0; background: var(--bg); color: var(--fg); }
 body { font: 400 14px/1.7 var(--font); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { background: none; border: 0; cursor: pointer; padding: 0; }
+button:disabled { cursor: default; opacity: .55; }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; scroll-behavior: auto !important; } }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 .ltr { direction: ltr; unicode-bidi: isolate; }
@@ -121,7 +126,23 @@ a:hover { text-decoration: underline; }
 .head-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .head-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
 .head-title h2 { margin: 0; font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.head-actions { display: flex; align-items: center; gap: 6px; flex-none: 1; }
+.head-actions { display: flex; align-items: center; gap: 6px; flex: none; }
+.sync { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.sync-label { display: none; }
+.sync.wait .sync-label, .sync.bad .sync-label { display: inline; }
+.sync.bad .sync-label { color: var(--danger); }
+.tray-hint { font-size: 12px; color: var(--muted); direction: rtl; }
+.tray-hint b { font-family: var(--mono); color: var(--fg); direction: ltr; unicode-bidi: isolate; }
+.editor-label { font-size: 12px; color: var(--muted); }
+.empty-box { display: grid; gap: 12px; justify-items: center; text-align: center; padding: 28px 12px; color: var(--muted); }
+.skel { display: grid; gap: 10px; padding: 4px 0; }
+.skel i { display: block; height: 12px; border-radius: 6px; background: var(--sunk); animation: pulse 1.2s ease-in-out infinite; }
+.skel i:nth-child(1) { width: 90%; } .skel i:nth-child(2) { width: 96%; } .skel i:nth-child(3) { width: 70%; }
+@keyframes pulse { 50% { opacity: .45; } }
+.kbd-hint { font-size: 11.5px; color: var(--muted); text-align: center; }
+.kbd-hint kbd { font: 500 11px var(--mono); padding: 0 5px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+@media (hover: none) { .kbd-hint { display: none; } }
+@media (max-width: 480px) { #postPos { display: none; } }
 .pill-btn {
   min-height: 34px; padding: 0 11px; border-radius: 9px; border: 1px solid var(--line);
   background: var(--surface); font-size: 12.5px; font-weight: 500;
@@ -185,9 +206,9 @@ a:hover { text-decoration: underline; }
 .editor-input:focus { outline: 1.5px solid var(--accent); border-color: transparent; }
 .color-dots { display: inline-flex; align-items: center; gap: 5px; }
 .color-opt {
-  width: 18px; height: 18px; border-radius: 50%; border: 2px solid transparent; transition: transform .1s;
+  width: 26px; height: 26px; border-radius: 50%; border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--line); transition: transform .1s;
 }
-.color-opt.on { border-color: var(--fg); transform: scale(1.15); }
+.color-opt.on { box-shadow: 0 0 0 2px var(--fg); }
 .theme-sel {
   min-height: 34px; padding: 0 8px; border-radius: 8px; border: 1px solid var(--line);
   background: var(--bg); font-size: 12.5px;
@@ -337,7 +358,7 @@ a:hover { text-decoration: underline; }
 
 /* Sticky Bottom Navigation Bar */
 .studio-foot {
-  position: fixed; bottom: 0; inset-x: 0; z-index: 20;
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 20;
   background: color-mix(in srgb, var(--bg) 95%, transparent);
   backdrop-filter: blur(8px);
   border-top: 1px solid var(--line);
@@ -367,12 +388,13 @@ a:hover { text-decoration: underline; }
 .nav-arrow.primary { background: var(--fg); color: var(--bg); border-color: transparent; }
 
 .toast {
-  position: fixed; bottom: 68px; left: 50%; transform: translateX(-50%);
+  position: fixed; bottom: calc(72px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); max-width: calc(100% - 32px);
   background: var(--fg); color: var(--bg); padding: 7px 14px; border-radius: 999px;
   font-size: 12.5px; z-index: 40; pointer-events: auto;
   display: inline-flex; align-items: center; gap: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
 }
+.toast.error { background: var(--danger); color: #fff; }
 .toast-undo {
   background: color-mix(in srgb, var(--bg) 18%, transparent);
   color: var(--bg); font-weight: 700; font-size: 12px;
@@ -385,7 +407,7 @@ a:hover { text-decoration: underline; }
 .app-brand:hover { text-decoration: none; }
 .app-nav-links { display: flex; align-items: center; gap: 4px; overflow-x: auto; scrollbar-width: none; }
 .app-nav-links::-webkit-scrollbar { display: none; }
-.app-nav-link { padding: 5px 11px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); white-space: nowrap; text-decoration: none; }
+.app-nav-link { display: inline-flex; align-items: center; min-height: 34px; padding: 5px 11px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--muted); white-space: nowrap; text-decoration: none; }
 .app-nav-link:hover { color: var(--fg); background: var(--sunk); text-decoration: none; }
 .app-nav-link.on { background: var(--fg); color: var(--bg); font-weight: 600; }
 </style>
@@ -406,10 +428,10 @@ a:hover { text-decoration: underline; }
 <section id="loginScreen" class="screen">
   <form class="login-box" onsubmit="doLogin(event)">
     <h1>Saintiment Coding Studio</h1>
-    <p>ورود با رمز تیم (مشترک با صفحهٔ Swipe)</p>
-    <input id="pwInput" type="password" placeholder="Password" autocomplete="current-password" required>
+    <label for="pwInput"><p>ورود با رمز تیم (مشترک با صفحهٔ غربالگری)</p></label>
+    <input id="pwInput" type="password" placeholder="Password" autocomplete="current-password" required aria-describedby="pwErr">
     <button id="pwBtn" type="submit" class="btn-solid">ورود</button>
-    <div id="pwErr" class="err"></div>
+    <div id="pwErr" class="err" role="alert"></div>
   </form>
 </section>
 
@@ -419,12 +441,12 @@ a:hover { text-decoration: underline; }
     <div class="top-nav">
       <h1>کدگذاری کیفی (۵۰ پست نمونه)</h1>
       <div style="display:flex;align-items:center;gap:6px">
-        <button class="icon-btn" onclick="toggleTheme()" title="تغییر تم">◐</button>
-        <button class="icon-btn" onclick="doLogout()">خروج</button>
+        <button type="button" class="icon-btn" onclick="toggleTheme()" title="حالت روشن/تیره" aria-label="حالت روشن/تیره"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+        <button type="button" class="icon-btn" onclick="doLogout()">خروج</button>
       </div>
     </div>
 
-    <div id="coderCards" class="coder-list"></div>
+    <div id="coderCards" class="coder-list" aria-busy="true"><div class="coder-card skel" aria-hidden="true"><i></i><i></i></div><div class="coder-card skel" aria-hidden="true"><i></i><i></i></div><div class="coder-card skel" aria-hidden="true"><i></i><i></i></div></div>
 
     <div class="picker-foot" style="justify-content:flex-end">
       <a href="/api/coding/export" download="saintiment_coding_50_export.json">دانلود خروجی کامل (JSON) ↓</a>
@@ -438,42 +460,42 @@ a:hover { text-decoration: underline; }
     <div class="studio-head-inner">
       <div class="head-bar">
         <div class="head-title">
-          <button class="icon-btn" onclick="backToPicker()" title="بازگشت">→</button>
-          <h2 id="coderHeaderTitle">کاوه</h2>
-          <span id="syncDot" class="dot" title="ذخیره‌شده در Neon"></span>
+          <button type="button" class="icon-btn" onclick="backToPicker()" title="بازگشت به کدگذارها" aria-label="بازگشت به کدگذارها">→</button>
+          <h2 id="coderHeaderTitle">…</h2>
+          <span id="sync" class="sync" role="status" aria-live="polite"><span id="syncDot" class="dot" title="ذخیره شد" aria-hidden="true"></span><span id="syncLabel" class="sync-label">ذخیره شد</span></span>
         </div>
         <div class="head-actions">
-          <button id="btnThemesDrawer" class="pill-btn" onclick="toggleThemesDrawer()">دسته‌بندی تم‌ها</button>
-          <button class="icon-btn" onclick="toggleTheme()" title="تغییر تم">◐</button>
+          <button type="button" id="btnThemesDrawer" class="pill-btn" onclick="toggleThemesDrawer()" aria-expanded="false" aria-controls="themesDrawer">دسته‌بندی تم‌ها</button>
+          <button type="button" class="icon-btn" onclick="toggleTheme()" title="حالت روشن/تیره" aria-label="حالت روشن/تیره"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
         </div>
       </div>
 
       <!-- Sticky Code Tray (Full list visible + Collapse/Expand toggle) -->
       <div id="trayBox" class="tray-box">
         <div class="tray-bar">
-          <span id="traySummary">۰ کد · ۰ قطعه</span>
-          <button id="btnToggleTray" class="pill-btn" style="min-height:28px;padding:0 9px;font-size:12px" onclick="toggleTrayCollapse()">
+          <span id="traySummary" aria-live="polite">۰ کد · ۰ قطعه</span>
+          <button type="button" id="btnToggleTray" class="pill-btn" style="min-height:28px;padding:0 9px;font-size:12px" onclick="toggleTrayCollapse()">
             جمع کردن ▲
           </button>
         </div>
 
-        <div id="trayChips" class="tray-chips"></div>
+        <div id="trayChips" class="tray-chips" role="group" aria-label="کدها"></div>
 
         <!-- Inline Code Chip Editor (opens cleanly inside tray) -->
         <div id="trayEditor" class="tray-editor hidden">
           <div class="editor-row">
-            <input id="editCodeLabel" class="editor-input" type="text" placeholder="نام کد..." onkeydown="if(event.key==='Enter'){event.preventDefault();saveCodeEdit();}">
-            <div id="editCodeColors" class="color-dots"></div>
-            <select id="editCodeTheme" class="theme-sel"></select>
+            <input id="editCodeLabel" class="editor-input" type="text" placeholder="نام کد..." aria-label="نام کد" maxlength="120" onkeydown="if(event.key==='Enter'){event.preventDefault();saveCodeEdit();}">
+            <div id="editCodeColors" class="color-dots" role="radiogroup" aria-label="رنگ کد"></div>
+            <select id="editCodeTheme" class="theme-sel" aria-label="تم"></select>
           </div>
           <div id="mergeRow" class="editor-row hidden" style="font-size:12px;color:var(--muted)">
             <span>ادغام با:</span>
-            <select id="mergeTargetSelect" class="theme-sel" style="flex:1;min-width:140px;direction:ltr"></select>
-            <button type="button" class="pill-btn" onclick="mergeEditingCode()">ادغام و انتقال قطعات</button>
+            <select id="mergeTargetSelect" class="theme-sel" style="flex:1;min-width:140px;direction:ltr" aria-label="کد مقصد ادغام"></select>
+            <button type="button" class="pill-btn" onclick="requestMergeEditingCode()">ادغام…</button>
           </div>
           <div class="editor-row" style="justify-content:space-between">
             <div style="display:flex;gap:6px">
-              <button type="button" class="pill-btn active" onclick="saveCodeEdit()">ذخیره</button>
+              <button type="button" class="pill-btn active" id="btnSaveCode" onclick="saveCodeEdit()">ذخیره</button>
               <button type="button" class="pill-btn" id="btnCodeQuotes" onclick="toggleCodeQuotes()">نقل‌قول‌ها</button>
             </div>
             <div style="display:flex;gap:6px">
@@ -481,11 +503,11 @@ a:hover { text-decoration: underline; }
               <button type="button" class="pill-btn" onclick="closeCodeEditor()">بستن</button>
             </div>
           </div>
-          <div id="deleteConfirmBox" class="confirm-strip hidden">
+          <div id="deleteConfirmBox" class="confirm-strip hidden" role="alertdialog" aria-labelledby="deleteConfirmText">
             <span id="deleteConfirmText"></span>
             <div style="display:flex;gap:6px">
-              <button type="button" class="btn-danger-solid" onclick="confirmDeleteEditingCode()">بله، حذف شود</button>
-              <button type="button" class="pill-btn" style="min-height:30px" onclick="$('deleteConfirmBox').classList.add('hidden')">انصراف</button>
+              <button type="button" class="btn-danger-solid" id="btnConfirmAction" onclick="runConfirmAction()">بله، حذف شود</button>
+              <button type="button" class="pill-btn" style="min-height:30px" onclick="hideConfirm()">انصراف</button>
             </div>
           </div>
           <div id="editCodeQuotes" class="quotes-box hidden"></div>
@@ -496,8 +518,8 @@ a:hover { text-decoration: underline; }
           <div class="editor-row" style="justify-content:space-between">
             <span style="font-size:12.5px;font-weight:600">گروه‌بندی کدها زیر تم‌ها (مرحلهٔ بعد)</span>
             <div style="display:flex;gap:6px">
-              <input id="newThemeName" class="editor-input" style="min-width:130px;direction:auto" type="text" placeholder="نام تم جدید...">
-              <button class="pill-btn" onclick="createTheme()">+ تم</button>
+              <input id="newThemeName" class="editor-input" style="min-width:130px;direction:auto" type="text" placeholder="نام تم جدید..." aria-label="نام تم جدید" maxlength="120" onkeydown="if(event.key==='Enter'){event.preventDefault();createTheme();}">
+              <button type="button" class="pill-btn" onclick="createTheme()">+ تم</button>
             </div>
           </div>
           <div id="themesGrid" class="themes-grid"></div>
@@ -529,8 +551,8 @@ a:hover { text-decoration: underline; }
       <div id="extBar" class="ext-bar hidden">
         <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;width:100%">
           <div id="sourceSwitcher" class="seg-switch">
-            <button id="segPost" class="seg-btn on" onclick="setSourceTab('post')">متن پست</button>
-            <button id="segExt" class="seg-btn" onclick="setSourceTab('external')">مقالهٔ استخراج‌شده</button>
+            <button type="button" id="segPost" class="seg-btn on" onclick="setSourceTab('post')" aria-pressed="true">متن پست</button>
+            <button type="button" id="segExt" class="seg-btn" onclick="setSourceTab('external')" aria-pressed="false">مقالهٔ استخراج‌شده</button>
           </div>
           <div class="ext-actions">
             <a id="extOriginalUrl" class="pill-btn" href="#" target="_blank" rel="noopener">لینک اصلی ↗</a>
@@ -544,15 +566,17 @@ a:hover { text-decoration: underline; }
       </div>
 
       <!-- High-Readability Prose Body (Post OR Extracted External Article) -->
+      <div id="proseHint" class="tray-hint">برای کدگذاری روی یک جمله بزنید، یا بخشی از متن را با ماوس/انگشت انتخاب کنید.</div>
       <div id="proseBody" class="prose"></div>
 
       <!-- Secondary Fallback when external link could not be extracted -->
       <div id="extFallbackBox" class="ext-fallback hidden">
         <div id="extFallbackMsg" style="color:var(--muted)"></div>
         <div style="display:flex;flex-wrap:wrap;gap:6px">
-          <input id="extManualQuote" class="editor-input" style="flex:2;min-width:170px" type="text" placeholder="نقل‌قول یا نکتهٔ کلیدی از لینک...">
-          <input id="extManualCode" class="editor-input" style="flex:1;min-width:130px" type="text" placeholder="کد (مثلاً policy-gap)...">
-          <button class="pill-btn active" onclick="addManualExternalCode()">ثبت کد از لینک</button>
+          <input id="extManualQuote" class="editor-input" style="flex:2;min-width:170px" type="text" placeholder="نقل‌قول یا نکتهٔ کلیدی از لینک..." aria-label="نقل‌قول از لینک" maxlength="2000">
+          <input id="extManualCode" class="editor-input" style="flex:1;min-width:130px" type="text" placeholder="کد (مثلاً policy-gap)..." aria-label="کد" maxlength="120" list="codeLabelList" onkeydown="if(event.key==='Enter'){event.preventDefault();addManualExternalCode();}">
+          <datalist id="codeLabelList"></datalist>
+          <button type="button" class="pill-btn active" onclick="addManualExternalCode()">ثبت کد از لینک</button>
         </div>
       </div>
 
@@ -573,24 +597,25 @@ a:hover { text-decoration: underline; }
         <button id="btnFilterToggle" type="button" class="icon-btn" style="border:1px solid var(--line);background:var(--surface)" onclick="togglePostFilter()" aria-label="فیلتر پست‌ها" title="فیلتر پست‌ها">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
         </button>
-        <select id="filterSelect" class="jump-sel hidden" onchange="applyPostFilter()">
+        <select id="filterSelect" class="jump-sel hidden" onchange="applyPostFilter()" aria-label="فیلتر پست‌ها">
           <option value="all">همه (۵۰)</option>
           <option value="uncoded">کدگذاری‌نشده</option>
           <option value="coded">کدگذاری‌شده</option>
           <option value="link">لینک‌دار</option>
         </select>
-        <select id="postSelect" class="jump-sel" onchange="jumpToPost(this.value)"></select>
+        <select id="postSelect" class="jump-sel" onchange="jumpToPost(this.value)" aria-label="رفتن به پست"></select>
+        <span id="postPos" class="tray-hint" style="white-space:nowrap"></span>
       </div>
       <div style="display:flex;align-items:center;gap:6px">
-        <button id="btnMarkCoded" class="mark-btn" onclick="toggleMarkCoded()">کدگذاری شد</button>
-        <button class="nav-arrow" onclick="stepPost(-1)" aria-label="قبلی">→</button>
-        <button class="nav-arrow primary" onclick="stepPost(1)" aria-label="بعدی">←</button>
+        <button type="button" id="btnMarkCoded" class="mark-btn" onclick="toggleMarkCoded()" aria-pressed="false">کدگذاری شد</button>
+        <button type="button" class="nav-arrow" onclick="stepPost(-1)" aria-label="پست قبلی" title="پست قبلی (→)">→</button>
+        <button type="button" class="nav-arrow primary" onclick="stepPost(1)" aria-label="پست بعدی" title="پست بعدی (←)">←</button>
       </div>
     </div>
   </footer>
 </section>
 
-<div id="toast" class="toast hidden"></div>
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -617,6 +642,8 @@ let state = {
   inlineDraft: null, // { sampleId, source, extSourceId, pIdx, start, end, quote, hlId }
   lastDeletedHighlight: null,
   pendingCalls: 0,
+  saving: false,        // guards double submit of a code (Enter pressed twice → duplicate highlight)
+  confirmAction: null,  // what the red confirm strip does when accepted
 };
 
 // ---- Theme ----
@@ -633,9 +660,10 @@ function toggleTheme() {
 }
 applyTheme(localStorage.getItem(THEME_KEY));
 
-function showToast(msg, undoFn = null) {
+function showToast(msg, undoFn = null, isError = false) {
   const el = $('toast');
   el.innerHTML = '';
+  el.classList.toggle('error', isError);
   const txt = document.createElement('span');
   txt.textContent = msg;
   el.appendChild(txt);
@@ -649,13 +677,30 @@ function showToast(msg, undoFn = null) {
   }
   el.classList.remove('hidden');
   clearTimeout(showToast._t);
-  showToast._t = setTimeout(() => el.classList.add('hidden'), undoFn ? 6500 : 2200);
+  showToast._t = setTimeout(() => el.classList.add('hidden'), undoFn ? 6500 : isError ? 4500 : 2200);
 }
 
 function setSync(mode) {
   const d = $('syncDot');
+  const label = mode === 'ok' ? 'ذخیره شد' : mode === 'wait' ? 'در حال ذخیره…' : 'ذخیره نشد';
   d.className = 'dot' + (mode === 'ok' ? '' : ' ' + mode);
+  d.title = label;
+  $('sync').className = 'sync' + (mode === 'ok' ? '' : ' ' + mode);
+  $('syncLabel').textContent = label;
 }
+
+// Any save that fails tells the user instead of failing silently in the console.
+const ERROR_TEXT = {
+  unauthorized: 'نشست شما تمام شده؛ دوباره وارد شوید',
+  missing_label: 'نام کد نمی‌تواند خالی باشد',
+  not_found: 'این مورد دیگر وجود ندارد؛ صفحه را تازه کنید',
+  bad_code: 'این کد دیگر وجود ندارد؛ صفحه را تازه کنید',
+};
+function reportError(e) {
+  const msg = ERROR_TEXT[e?.message] || (e instanceof TypeError ? 'اتصال برقرار نشد؛ اینترنت را بررسی کنید' : 'ذخیره نشد؛ دوباره تلاش کنید');
+  showToast(msg, null, true);
+}
+window.addEventListener('unhandledrejection', ev => { ev.preventDefault(); reportError(ev.reason); });
 
 async function api(url, opts = {}) {
   state.pendingCalls++;
@@ -665,8 +710,9 @@ async function api(url, opts = {}) {
       ...opts,
       headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
     });
-    if (res.status === 401) {
+    if (res.status === 401 && !url.endsWith('/login') && !url.endsWith('/me')) {
       showScreen('loginScreen');
+      setTimeout(() => $('pwInput').focus(), 50);
       throw new Error('unauthorized');
     }
     if (!res.ok) {
@@ -708,46 +754,80 @@ function faNum(n) {
 }
 
 // ---- Auth & Picker ----
+function coderFromHash() {
+  const m = location.hash.match(/^#coder-([123])$/);
+  return m ? Number(m[1]) : null;
+}
+
+// Opens whatever the URL asks for: #coder-N is a coder's workspace, otherwise the picker.
+async function route() {
+  const id = coderFromHash();
+  if (id) return openCoder(id, { push: false });
+  return loadCoders({ push: false });
+}
+
 async function boot() {
+  let authed = false;
   try {
     await api('/api/coding/me');
-    await loadCoders();
+    authed = true;
   } catch {
     showScreen('loginScreen');
     setTimeout(() => $('pwInput').focus(), 50);
   }
+  if (authed) await route();
 }
 
 async function doLogin(e) {
   e.preventDefault();
   $('pwErr').textContent = '';
   $('pwBtn').disabled = true;
+  $('pwBtn').textContent = 'در حال ورود…';
+  let ok = false;
   try {
     await api('/api/coding/login', { method: 'POST', body: JSON.stringify({ password: $('pwInput').value }) });
-    $('pwInput').value = '';
-    await loadCoders();
-  } catch {
-    $('pwErr').textContent = 'رمز اشتباه است';
+    ok = true;
+  } catch (err) {
+    $('pwErr').textContent = err.message === 'wrong_password' ? 'رمز اشتباه است' :
+      err instanceof TypeError ? 'اتصال برقرار نشد؛ اینترنت را بررسی کنید' : 'خطای سرور؛ کمی بعد دوباره تلاش کنید';
   } finally {
     $('pwBtn').disabled = false;
+    $('pwBtn').textContent = 'ورود';
+  }
+  if (ok) {
+    $('pwInput').value = '';
+    await route();
   }
 }
 
 async function doLogout() {
   await api('/api/coding/logout', { method: 'POST' }).catch(() => {});
+  history.replaceState(null, '', location.pathname);
   showScreen('loginScreen');
+  setTimeout(() => $('pwInput').focus(), 50);
 }
 
-async function loadCoders() {
+async function loadCoders({ push = true } = {}) {
+  if (push && location.hash) history.pushState(null, '', location.pathname);
   showScreen('pickerScreen');
-  const data = await api('/api/coding/coders');
   const box = $('coderCards');
+  let data;
+  try {
+    data = await api('/api/coding/coders');
+  } catch (e) {
+    if (e.message !== 'unauthorized') {
+      box.innerHTML = `<div class="empty-box" role="alert"><span>فهرست کدگذارها بارگذاری نشد.</span><button type="button" class="pill-btn" onclick="loadCoders({ push: false })">دوباره تلاش کنید</button></div>`;
+    }
+    return;
+  }
+  box.removeAttribute('aria-busy');
+  const last = Number(localStorage.getItem(CODER_KEY));
   box.innerHTML = data.coders.map(c => {
     const pct = c.total_posts ? (c.coded_count / c.total_posts) * 100 : 0;
     return `
-      <button class="coder-card" onclick="openCoder(${c.id}, '${escapeHtml(c.name)}')">
+      <button type="button" class="coder-card" data-coder="${Number(c.id)}" style="${c.id === last ? 'border-color:var(--accent)' : ''}">
         <div class="coder-top">
-          <span class="coder-name">${faNum(c.id)}. ${escapeHtml(c.name)}</span>
+          <span class="coder-name">${faNum(c.id)}. ${escapeHtml(c.name)}${c.id === last ? ' <span style="font-size:11.5px;font-weight:500;color:var(--accent)">آخرین بار</span>' : ''}</span>
           <span class="coder-meta">${faNum(c.coded_count)} از ${faNum(c.total_posts)} پست</span>
         </div>
         <div class="bar"><i style="width:${pct}%"></i></div>
@@ -755,16 +835,44 @@ async function loadCoders() {
       </button>
     `;
   }).join('');
+  for (const c of data.coders) CODER_NAMES[c.id] = c.name;
 }
+const CODER_NAMES = {};
+$('coderCards').addEventListener('click', e => {
+  const b = e.target.closest('[data-coder]');
+  if (b) openCoder(Number(b.dataset.coder));
+});
 
-async function openCoder(coderId, name) {
+async function openCoder(coderId, { push = true } = {}) {
+  if (push && location.hash !== `#coder-${coderId}`) history.pushState(null, '', `#coder-${coderId}`);
   state.coderId = coderId;
-  state.coderName = name;
+  state.coderName = CODER_NAMES[coderId] || '';
   localStorage.setItem(CODER_KEY, String(coderId));
-  $('coderHeaderTitle').textContent = `${faNum(coderId)}. ${name}`;
+  $('coderHeaderTitle').textContent = state.coderName ? `${faNum(coderId)}. ${state.coderName}` : `کدگذار ${faNum(coderId)}`;
+  if (!state.coderName) {
+    api('/api/coding/coders').then(d => {
+      for (const c of d.coders) CODER_NAMES[c.id] = c.name;
+      if (state.coderId === coderId && CODER_NAMES[coderId]) {
+        state.coderName = CODER_NAMES[coderId];
+        $('coderHeaderTitle').textContent = `${faNum(coderId)}. ${state.coderName}`;
+      }
+    }).catch(() => {});
+  }
   showScreen('studioScreen');
+  closeCodeEditor();
+  $('proseBody').innerHTML = '<div class="skel" aria-label="در حال بارگذاری…"><i></i><i></i><i></i></div>';
+  $('postSegmentsList').innerHTML = '';
 
-  const ws = await api(`/api/coding/workspace?coder=${coderId}`);
+  let ws;
+  try {
+    ws = await api(`/api/coding/workspace?coder=${coderId}`);
+  } catch (e) {
+    if (e.message !== 'unauthorized') {
+      $('proseBody').innerHTML = `<div class="empty-box" role="alert" style="direction:rtl"><span>داده‌های کدگذاری بارگذاری نشد.</span><button type="button" class="pill-btn" onclick="openCoder(${Number(coderId)}, { push: false })">دوباره تلاش کنید</button></div>`;
+    }
+    return;
+  }
+  if (state.coderId !== coderId) return;
   state.posts = ws.posts;
   state.extBySample = {};
   for (const ex of ws.external_sources) {
@@ -785,8 +893,14 @@ async function openCoder(coderId, name) {
 
 function backToPicker() {
   state.inlineDraft = null;
+  closeCodeEditor();
   loadCoders();
 }
+window.addEventListener('popstate', () => {
+  if ($('loginScreen').classList.contains('active')) return;
+  state.inlineDraft = null;
+  route();
+});
 
 // ---- Filtering & Navigation ----
 function postStatusOf(sampleId) {
@@ -800,6 +914,7 @@ function syncFilterButton() {
   if (!btn) return;
   btn.style.borderColor = (open || active) ? 'var(--accent)' : 'var(--line)';
   btn.style.color = (open || active) ? 'var(--accent)' : 'var(--muted)';
+  btn.setAttribute('aria-expanded', String(open));
 }
 
 function togglePostFilter() {
@@ -841,8 +956,13 @@ function renderPostSelector() {
     const mark = st.is_coded ? '✓ ' : '';
     const p = state.posts.find(x => x.sample_id === sid);
     const link = p?.has_external_link ? ' 🔗' : '';
-    return `<option value="${sid}" ${sid === state.currentSampleId ? 'selected' : ''}>${mark}${sid}${link}</option>`;
+    return `<option value="${escapeHtml(sid)}" ${sid === state.currentSampleId ? 'selected' : ''}>${mark}${escapeHtml(sid)}${link}</option>`;
   }).join('') || '<option value="">موردی نیست</option>';
+  const pos = state.filteredIds.indexOf(state.currentSampleId);
+  const codedCount = state.posts.filter(p => postStatusOf(p.sample_id).is_coded).length;
+  $('postPos').textContent = state.filteredIds.length
+    ? `${faNum(pos + 1)}/${faNum(state.filteredIds.length)} · ${faNum(codedCount)} انجام‌شده`
+    : '';
 }
 
 function jumpToPost(sid) {
@@ -881,9 +1001,18 @@ function renderTray() {
   const q = assigning ? (state.inlineDraft.query || '').trim().toLowerCase() : '';
 
   $('trayBox').classList.toggle('assign-mode', assigning);
-  $('traySummary').textContent = assigning
-    ? (currentHl ? 'کد فعلی مشخص است — برای تعویض روی کد دیگری بزنید' : `روی یک کد بزنید تا روی عبارت انتخاب‌شده اعمال شود (${faNum(state.codes.length)})`)
-    : `${faNum(state.codes.length)} کد · ${faNum(state.highlights.length)} قطعه`;
+  const typed = assigning ? (state.inlineDraft.query || '').trim() : '';
+  const exact = typed ? state.codes.find(c => c.label.toLowerCase() === typed.toLowerCase()) : null;
+  if (assigning && typed) {
+    // Tell the coder, before they press Enter, whether it reuses a code or makes a new one.
+    $('traySummary').innerHTML = exact
+      ? `Enter ← همان کد موجود <b class="ltr">${escapeHtml(exact.label)}</b> اعمال می‌شود`
+      : `Enter ← کد جدید <b class="ltr">${escapeHtml(typed)}</b> ساخته می‌شود`;
+  } else {
+    $('traySummary').textContent = assigning
+      ? (currentHl ? 'کد فعلی با ✓ مشخص است؛ برای تعویض روی کد دیگری بزنید یا نام تازه بنویسید' : `یک کد را بزنید یا نام کد تازه را بنویسید (${faNum(state.codes.length)} کد)`)
+      : `${faNum(state.codes.length)} کد · ${faNum(state.highlights.length)} قطعه · برای ویرایش، ادغام یا حذف روی کد بزنید`;
+  }
   $('btnToggleTray').textContent = state.trayCollapsed && !assigning
     ? `نمایش همه کدها (${faNum(state.codes.length)}) ▼`
     : 'جمع کردن ▲';
@@ -902,7 +1031,7 @@ function renderTray() {
       const dim = assigning && q && !isCurrent && !c.label.toLowerCase().includes(q);
       if (assigning) {
         return `
-          <button type="button" class="code-chip ${isCurrent ? 'current-code' : 'pickable'} ${dim ? 'dim' : ''}" data-label="${escapeHtml(c.label)}"
+          <button type="button" class="code-chip ${isCurrent ? 'current-code' : 'pickable'} ${dim ? 'dim' : ''}" data-label="${escapeHtml(c.label)}" aria-label="اعمال کد ${escapeHtml(c.label)}" ${isCurrent ? 'aria-current="true"' : ''}
             onmousedown="event.preventDefault()"
             onclick="event.stopPropagation(); applyInlineLabel(this.dataset.label)">
             <span class="${isCurrent ? 'c-cur' : 'c-plus'}">${isCurrent ? '✓' : '+'}</span>
@@ -913,7 +1042,7 @@ function renderTray() {
         `;
       }
       return `
-        <button type="button" class="code-chip ${editing ? 'editing' : ''}" onclick="openCodeEditor(${c.id})">
+        <button type="button" class="code-chip ${editing ? 'editing' : ''}" onclick="openCodeEditor(${c.id})" aria-expanded="${editing}" aria-controls="trayEditor" title="ویرایش، ادغام یا حذف">
           <span class="c-dot" style="background:${col.fg}"></span>
           <span>${escapeHtml(c.label)}</span>
           <span class="c-cnt">×${cnt}</span>
@@ -923,6 +1052,7 @@ function renderTray() {
   }
 
   if (state.themesOpen) renderThemesDrawer();
+  $('codeLabelList').innerHTML = state.codes.map(c => `<option value="${escapeHtml(c.label)}"></option>`).join('');
 }
 
 function openCodeEditor(codeId) {
@@ -933,13 +1063,14 @@ function openCodeEditor(codeId) {
   state.editingCodeId = codeId;
   const c = state.codes.find(x => x.id === codeId);
   if (!c) return;
+  if (state.trayCollapsed) { state.trayCollapsed = false; localStorage.setItem(TRAY_KEY, '0'); }
   $('trayEditor').classList.remove('hidden');
   $('editCodeLabel').value = c.label;
-  $('deleteConfirmBox').classList.add('hidden');
+  hideConfirm();
 
   $('editCodeColors').innerHTML = COLORS.map(idx => {
     const col = colorCss(idx);
-    return `<button type="button" class="color-opt ${c.color_idx === idx ? 'on' : ''}" style="background:${col.fg}" onclick="recolorCode(${c.id}, ${idx})"></button>`;
+    return `<button type="button" class="color-opt ${c.color_idx === idx ? 'on' : ''}" style="background:${col.fg}" role="radio" aria-checked="${c.color_idx === idx}" aria-label="رنگ ${faNum(idx)}" onclick="recolorCode(${c.id}, ${idx})"></button>`;
   }).join('');
 
   $('editCodeTheme').innerHTML = `<option value="">بدون تم</option>` +
@@ -958,25 +1089,53 @@ function openCodeEditor(codeId) {
   $('btnCodeQuotes').textContent = `نقل‌قول‌ها (${faNum(quoteCnt)})`;
   $('editCodeQuotes').classList.add('hidden');
   renderTray();
+  setTimeout(() => $('editCodeLabel').focus(), 0);
 }
 
 function closeCodeEditor() {
+  const wasOpen = state.editingCodeId;
   state.editingCodeId = null;
   $('trayEditor').classList.add('hidden');
+  hideConfirm();
+  if (wasOpen) renderTray();
+}
+
+// One red confirm strip serves every destructive action (delete code, merge codes).
+function askConfirm(text, buttonText, action) {
+  state.confirmAction = action;
+  $('deleteConfirmText').textContent = text;
+  $('btnConfirmAction').textContent = buttonText;
+  $('deleteConfirmBox').classList.remove('hidden');
+  $('btnConfirmAction').focus();
+}
+function hideConfirm() {
+  state.confirmAction = null;
   $('deleteConfirmBox').classList.add('hidden');
-  renderTray();
+}
+async function runConfirmAction() {
+  const fn = state.confirmAction;
+  hideConfirm();
+  if (fn) await fn();
 }
 
 async function recolorCode(codeId, colorIdx) {
   const c = state.codes.find(x => x.id === codeId);
-  if (!c) return;
+  if (!c || c.color_idx === colorIdx) return;
+  const prev = c.color_idx;
   c.color_idx = colorIdx;
   renderAll();
   openCodeEditor(codeId);
-  await api(`/api/coding/codes/${codeId}`, {
-    method: 'PATCH',
-    body: JSON.stringify({ coder_id: state.coderId, color_idx: colorIdx }),
-  });
+  try {
+    await api(`/api/coding/codes/${codeId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ coder_id: state.coderId, color_idx: colorIdx }),
+    });
+  } catch (e) {
+    c.color_idx = prev;  // put the old colour back so the screen matches the database
+    renderAll();
+    if (state.editingCodeId === codeId) { state.editingCodeId = null; openCodeEditor(codeId); }
+    throw e;
+  }
 }
 
 async function saveCodeEdit() {
@@ -985,15 +1144,44 @@ async function saveCodeEdit() {
   const label = $('editCodeLabel').value.trim();
   const themeVal = $('editCodeTheme').value;
   const themeId = themeVal ? Number(themeVal) : null;
-  if (!label) return;
-  const res = await api(`/api/coding/codes/${c.id}`, {
-    method: 'PATCH',
-    body: JSON.stringify({ coder_id: state.coderId, label, theme_id: themeId }),
-  });
-  Object.assign(c, res.code);
+  if (!label) {
+    showToast('نام کد نمی‌تواند خالی باشد', null, true);
+    $('editCodeLabel').focus();
+    return;
+  }
+  if (label === c.label && themeId === (c.theme_id ?? null)) { closeCodeEditor(); return; }
+  // Renaming onto another code's name would leave two codes with the same label: offer a merge instead.
+  const twin = state.codes.find(x => x.id !== c.id && x.label.toLowerCase() === label.toLowerCase());
+  if (twin) {
+    $('mergeTargetSelect').value = String(twin.id);
+    requestMergeEditingCode();
+    return;
+  }
+  $('btnSaveCode').disabled = true;
+  try {
+    const res = await api(`/api/coding/codes/${c.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ coder_id: state.coderId, label, theme_id: themeId }),
+    });
+    Object.assign(c, res.code);
+  } finally {
+    $('btnSaveCode').disabled = false;
+  }
   closeCodeEditor();
   renderAll();
   showToast('کد در همهٔ نقل‌قول‌ها ویرایش شد');
+}
+
+function requestMergeEditingCode() {
+  const src = state.codes.find(x => x.id === state.editingCodeId);
+  const target = state.codes.find(x => x.id === Number($('mergeTargetSelect').value));
+  if (!src || !target) return;
+  const n = state.highlights.filter(h => h.code_id === src.id).length;
+  askConfirm(
+    `«${src.label}» در «${target.label}» ادغام شود؟ ${faNum(n)} قطعه به «${target.label}» منتقل و «${src.label}» حذف می‌شود. این کار برگشت‌پذیر نیست.`,
+    'بله، ادغام شود',
+    mergeEditingCode,
+  );
 }
 
 async function mergeEditingCode() {
@@ -1021,8 +1209,11 @@ function requestDeleteEditingCode() {
     confirmDeleteEditingCode();
     return;
   }
-  $('deleteConfirmText').textContent = `این کد روی ${faNum(usedCount)} قطعه استفاده شده. حذف کد و همهٔ هایلایت‌هایش؟`;
-  $('deleteConfirmBox').classList.remove('hidden');
+  askConfirm(
+    `این کد روی ${faNum(usedCount)} قطعه استفاده شده. حذف کد و همهٔ هایلایت‌هایش؟ اگر فقط نامش اشتباه است، به‌جای حذف آن را ویرایش یا ادغام کنید.`,
+    'بله، حذف شود',
+    confirmDeleteEditingCode,
+  );
 }
 
 async function confirmDeleteEditingCode() {
@@ -1046,7 +1237,7 @@ function toggleCodeQuotes() {
   box.innerHTML = matches.length
     ? matches.map(h => `
         <button type="button" class="quote-item" onclick="jumpToHighlight(${h.id})">
-          <strong>${h.sample_id}${h.source === 'external' ? ' · Article' : ''}</strong> — “${escapeHtml(h.quote)}”
+          <strong>${escapeHtml(h.sample_id)}${h.source === 'external' ? ' · Article' : ''}</strong> — “${escapeHtml(h.quote)}”
         </button>
       `).join('')
     : '<div style="font-size:12px;color:var(--muted)">هنوز نقل‌قولی با این کد ثبت نشده.</div>';
@@ -1062,6 +1253,7 @@ function jumpToHighlight(hlId) {
   state.inlineDraft = null;
   renderPostSelector();
   renderPost();
+  window.scrollTo({ top: 0 });
   setTimeout(() => {
     const el = document.querySelector(`[data-hl-id="${hlId}"]`);
     if (el) {
@@ -1077,6 +1269,7 @@ function toggleThemesDrawer() {
   state.themesOpen = !state.themesOpen;
   $('themesDrawer').classList.toggle('hidden', !state.themesOpen);
   $('btnThemesDrawer').classList.toggle('active', state.themesOpen);
+  $('btnThemesDrawer').setAttribute('aria-expanded', String(state.themesOpen));
   if (state.themesOpen) renderThemesDrawer();
 }
 
@@ -1091,7 +1284,7 @@ function renderThemesDrawer() {
       <div class="theme-card">
         <div class="theme-card-head">
           <span>${escapeHtml(g.name)} (${faNum(members.length)})</span>
-          ${g.id ? `<button style="font-size:11.5px;color:var(--danger)" onclick="deleteTheme(${g.id})">حذف</button>` : ''}
+          ${g.id ? `<button type="button" style="font-size:11.5px;color:var(--danger);min-height:28px;padding:0 6px" onclick="deleteTheme(${g.id})" aria-label="حذف تم ${escapeHtml(g.name)}">حذف</button>` : ''}
         </div>
         ${members.length ? members.map(c => {
           const col = colorCss(c.color_idx);
@@ -1101,7 +1294,7 @@ function renderThemesDrawer() {
                 <span class="c-dot" style="background:${col.fg}"></span>
                 <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(c.label)}</span>
               </span>
-              <select class="theme-sel" style="min-height:26px;font-size:11.5px" onchange="assignCodeTheme(${c.id}, this.value)">
+              <select class="theme-sel" style="min-height:30px;font-size:11.5px" onchange="assignCodeTheme(${c.id}, this.value)" aria-label="تم کد ${escapeHtml(c.label)}">
                 <option value="">بدون تم</option>
                 ${state.themes.map(t => `<option value="${t.id}" ${c.theme_id === t.id ? 'selected' : ''}>${escapeHtml(t.name)}</option>`).join('')}
               </select>
@@ -1115,7 +1308,7 @@ function renderThemesDrawer() {
 
 async function createTheme() {
   const name = $('newThemeName').value.trim();
-  if (!name) return;
+  if (!name) { $('newThemeName').focus(); return; }
   const res = await api('/api/coding/themes', {
     method: 'POST',
     body: JSON.stringify({ coder_id: state.coderId, name }),
@@ -1126,22 +1319,33 @@ async function createTheme() {
 }
 
 async function deleteTheme(themeId) {
+  const theme = state.themes.find(t => t.id === themeId);
+  const members = state.codes.filter(c => c.theme_id === themeId);
+  if (members.length && !confirm(`تم «${theme?.name || ''}» حذف شود؟ ${members.length} کد آن «بدون تم» می‌شوند (خود کدها حذف نمی‌شوند).`)) return;
   await api(`/api/coding/themes/${themeId}?coder=${state.coderId}`, { method: 'DELETE' });
   state.themes = state.themes.filter(t => t.id !== themeId);
   for (const c of state.codes) if (c.theme_id === themeId) c.theme_id = null;
   renderThemesDrawer();
+  showToast('تم حذف شد');
 }
 
 async function assignCodeTheme(codeId, rawVal) {
   const themeId = rawVal ? Number(rawVal) : null;
   const c = state.codes.find(x => x.id === codeId);
   if (!c) return;
+  const prev = c.theme_id ?? null;
   c.theme_id = themeId;
-  await api(`/api/coding/codes/${codeId}`, {
-    method: 'PATCH',
-    body: JSON.stringify({ coder_id: state.coderId, theme_id: themeId }),
-  });
   renderThemesDrawer();
+  try {
+    await api(`/api/coding/codes/${codeId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ coder_id: state.coderId, theme_id: themeId }),
+    });
+  } catch (e) {
+    c.theme_id = prev;
+    renderThemesDrawer();
+    throw e;
+  }
 }
 
 // ---- Prose Rendering & In-Place Inline Coding ----
@@ -1226,11 +1430,11 @@ function inlineCoderHTML(draft) {
   const initVal = draft.query !== undefined ? draft.query : (existingCode ? existingCode.label : '');
   return `
     <span class="inline-coder" id="inlineCoderBox" onclick="event.stopPropagation()">
-      <input id="inlineCodeInput" type="text" value="${escapeHtml(initVal)}" placeholder="کد بنویسید یا از بالا بزنید…" autocomplete="off"
+      <input id="inlineCodeInput" type="text" value="${escapeHtml(initVal)}" placeholder="کد بنویسید یا از بالا بزنید…" autocomplete="off" maxlength="120" aria-label="نام کد برای این عبارت"
         oninput="onInlineInput(this.value)" onkeydown="onInlineKey(event)">
-      <button type="button" class="ic-btn ic-ok" onclick="submitInlineCode()" title="ذخیره کد">✓</button>
+      <button type="button" class="ic-btn ic-ok" onclick="submitInlineCode()" title="ذخیره کد (Enter)" aria-label="ذخیره کد">✓</button>
       ${draft.hlId ? `<span class="ic-sep"></span><button type="button" class="ic-btn ic-trash" onclick="deleteInlineHighlight(${draft.hlId})" title="حذف این هایلایت" aria-label="حذف این هایلایت">${TRASH_SVG}</button>` : ''}
-      <button type="button" class="ic-btn ic-cancel" onclick="cancelInlineDraft()" title="بستن بدون تغییر" aria-label="بستن">×</button>
+      <button type="button" class="ic-btn ic-cancel" onclick="cancelInlineDraft()" title="بستن بدون تغییر (Esc)" aria-label="بستن">×</button>
     </span>
   `;
 }
@@ -1239,6 +1443,8 @@ function onSentenceTap(event, source, pIdx, start, end) {
   const sel = window.getSelection();
   if (sel && !sel.isCollapsed && sel.toString().trim().length > 0) return;
   event.stopPropagation();
+  // A drag-selection was just turned into a draft: the click that ends the drag must not replace it.
+  if (Date.now() < (onSentenceTap.suppressUntil || 0)) return;
   if (state.editingCodeId) closeCodeEditor();
   const { paragraphs, extSource } = activeProseContext();
   const quote = paragraphs[pIdx].slice(start, end);
@@ -1323,10 +1529,30 @@ async function ensureCodeOnServer(label) {
 }
 
 async function applyInlineLabel(label) {
-  const clean = label.trim();
+  const clean = label.trim().slice(0, 120);
   const draft = state.inlineDraft;
-  if (!clean || !draft) return;
+  if (!draft) return;
+  if (!clean) { $('inlineCodeInput')?.focus(); return; }
+  if (state.saving) return;
+  if (draft.hlId) {
+    const cur = state.highlights.find(h => h.id === draft.hlId);
+    const curCode = cur && state.codes.find(c => c.id === cur.code_id);
+    if (curCode && curCode.label.toLowerCase() === clean.toLowerCase()) { cancelInlineDraft(); return; }
+  }
+  state.saving = true;
+  document.querySelectorAll('#inlineCoderBox button, #inlineCoderBox input').forEach(el => { el.disabled = true; });
+  try {
+    await saveInlineLabel(clean, draft);
+  } catch (e) {
+    document.querySelectorAll('#inlineCoderBox button, #inlineCoderBox input').forEach(el => { el.disabled = false; });
+    throw e;
+  } finally {
+    state.saving = false;
+  }
+}
 
+async function saveInlineLabel(clean, draft) {
+  const isNew = !state.codes.some(c => c.label.toLowerCase() === clean.toLowerCase());
   const code = await ensureCodeOnServer(clean);
   if (draft.hlId) {
     const res = await api(`/api/coding/highlights/${draft.hlId}`, {
@@ -1354,6 +1580,7 @@ async function applyInlineLabel(label) {
   }
   state.inlineDraft = null;
   renderAll();
+  showToast(isNew ? `کد تازهٔ «${code.label}» ساخته و اعمال شد` : `کد «${code.label}» اعمال شد`);
 }
 
 function submitInlineCode() {
@@ -1366,8 +1593,8 @@ async function deleteInlineHighlight(hlId) {
   const doomed = state.highlights.find(h => h.id === hlId);
   if (!doomed) return;
   const codeObj = state.codes.find(c => c.id === doomed.code_id);
-  state.lastDeletedHighlight = { ...doomed, codeLabel: codeObj?.label || '' };
   await api(`/api/coding/highlights/${hlId}?coder=${state.coderId}`, { method: 'DELETE' });
+  state.lastDeletedHighlight = { ...doomed, codeLabel: codeObj?.label || '' };
   state.highlights = state.highlights.filter(h => h.id !== hlId);
   state.inlineDraft = null;
   renderAll();
@@ -1405,22 +1632,55 @@ async function undoDeleteHighlight() {
   renderAll();
 }
 
+// Character offset of (node, offset) inside a rendered paragraph, counting only the post's own
+// text: the code-label tags and the inline coder box are UI, not part of the paragraph.
+function proseOffset(pEl, node, offset) {
+  const skip = n => n.parentElement?.closest('.hl-tag, .inline-coder');
+  const walker = document.createTreeWalker(pEl, NodeFilter.SHOW_TEXT);
+  let total = 0, t;
+  if (node.nodeType !== 3) {
+    // Element boundary: count every text node before the child at `offset`.
+    const stop = node.childNodes[offset] || null;
+    while ((t = walker.nextNode())) {
+      if (stop && (stop === t || stop.contains(t) || (stop.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING))) break;
+      if (!stop && !node.contains(t) && (node.compareDocumentPosition(t) & Node.DOCUMENT_POSITION_FOLLOWING)) break;
+      if (!skip(t)) total += t.nodeValue.length;
+    }
+    return total;
+  }
+  while ((t = walker.nextNode())) {
+    if (t === node) return total + (skip(t) ? 0 : offset);
+    if (!skip(t)) total += t.nodeValue.length;
+  }
+  return total;
+}
+
 // Custom mouse/touch text selection inside #proseBody
-$('proseBody').addEventListener('mouseup', () => {
+function onProseSelection(ev) {
+  if (ev?.target?.closest?.('.inline-coder') || state.saving) return;
   const sel = window.getSelection();
-  if (!sel || sel.isCollapsed) return;
-  const text = sel.toString().trim();
-  if (text.length < 3) return;
+  if (!sel || sel.isCollapsed || !sel.rangeCount) return;
   const range = sel.getRangeAt(0);
   const startP = (range.startContainer.nodeType === 1 ? range.startContainer : range.startContainer.parentElement).closest('p[data-p-idx]');
   const endP = (range.endContainer.nodeType === 1 ? range.endContainer : range.endContainer.parentElement).closest('p[data-p-idx]');
-  if (!startP || startP !== endP) return;
+  if (!startP || !$('proseBody').contains(startP)) return;
+  if (startP !== endP) {
+    showToast('برای کدگذاری، انتخاب باید داخل یک پاراگراف باشد');
+    return;
+  }
 
   const pIdx = Number(startP.dataset.pIdx);
   const { paragraphs, source, extSource } = activeProseContext();
   const pText = paragraphs[pIdx] || '';
-  const idx = pText.indexOf(text);
-  if (idx === -1) return;
+  // Exact position of the selection (indexOf found the first copy of a repeated phrase instead).
+  let a = proseOffset(startP, range.startContainer, range.startOffset);
+  let b = proseOffset(startP, range.endContainer, range.endOffset);
+  if (b < a) [a, b] = [b, a];
+  while (a < b && /\s/.test(pText[a])) a++;
+  while (b > a && /\s/.test(pText[b - 1])) b--;
+  if (b - a < 3) return;
+  const idx = a, text = pText.slice(a, b);
+  onSentenceTap.suppressUntil = Date.now() + 400;
 
   if (state.editingCodeId) closeCodeEditor();
   state.inlineDraft = {
@@ -1438,14 +1698,37 @@ $('proseBody').addEventListener('mouseup', () => {
   renderProse();
   renderTray();
   focusInlineInput();
+}
+$('proseBody').addEventListener('mouseup', onProseSelection);
+// Phones select with a long press and handles, which never fires mouseup: wait for the handles to settle.
+$('proseBody').addEventListener('touchend', () => {
+  clearTimeout(onProseSelection._t);
+  onProseSelection._t = setTimeout(onProseSelection, 450);
 });
 
 document.addEventListener('click', e => {
-  if (state.inlineDraft && !$('inlineCoderBox')?.contains(e.target) && !$('trayBox')?.contains(e.target)) {
+  if (Date.now() < (onSentenceTap.suppressUntil || 0)) return;
+  if (state.inlineDraft && !state.saving && !$('inlineCoderBox')?.contains(e.target) && !$('trayBox')?.contains(e.target)) {
     state.inlineDraft = null;
     renderProse();
     renderTray();
   }
+});
+
+// Keyboard: Esc closes whatever is open; ←/→ move between posts (RTL: ← is next) when not typing.
+document.addEventListener('keydown', e => {
+  if (!$('studioScreen').classList.contains('active')) return;
+  if (e.key === 'Escape') {
+    if (!$('deleteConfirmBox').classList.contains('hidden')) { hideConfirm(); return; }
+    if (state.inlineDraft) { cancelInlineDraft(); return; }
+    if (state.editingCodeId) { closeCodeEditor(); return; }
+    return;
+  }
+  if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+  if (e.target.closest?.('input, select, textarea, [contenteditable]')) return;
+  if (state.inlineDraft || state.editingCodeId) return;
+  if (e.key === 'ArrowLeft') { e.preventDefault(); stepPost(1); }
+  else if (e.key === 'ArrowRight') { e.preventDefault(); stepPost(-1); }
 });
 
 // ---- Post View & External Sources ----
@@ -1470,7 +1753,9 @@ function renderProse() {
 function renderPost() {
   const p = state.posts.find(x => x.sample_id === state.currentSampleId);
   if (!p) {
-    $('proseBody').innerHTML = '<p style="color:var(--muted)">پستی در این فیلتر نیست.</p>';
+    $('proseBody').innerHTML = `<div class="empty-box" style="direction:rtl"><span>پستی با این فیلتر نیست.</span><button type="button" class="pill-btn" onclick="$('filterSelect').value='all'; applyPostFilter()">نمایش همهٔ پست‌ها</button></div>`;
+    $('postSegmentsList').innerHTML = '';
+    $('postSegCount').textContent = '';
     return;
   }
   const st = postStatusOf(p.sample_id);
@@ -1495,6 +1780,8 @@ function renderPost() {
     $('sourceSwitcher').classList.toggle('hidden', !extracted);
     $('segPost').classList.toggle('on', state.sourceTab === 'post');
     $('segExt').classList.toggle('on', state.sourceTab === 'external');
+    $('segPost').setAttribute('aria-pressed', String(state.sourceTab === 'post'));
+    $('segExt').setAttribute('aria-pressed', String(state.sourceTab === 'external'));
     $('extOriginalUrl').href = firstExt?.resolved_url || firstExt?.original_url || p.newsletter_url || p.post_url || '#';
     $('chkLinkReviewed').checked = Boolean(st.link_reviewed);
 
@@ -1534,7 +1821,7 @@ function renderPost() {
         const col = colorCss(code?.color_idx);
         return `
           <div class="seg-row">
-            <button type="button" class="seg-jump" onclick="${h.paragraph_idx >= 0 ? `jumpToHighlight(${h.id})` : ''}">
+            <button type="button" class="seg-jump" ${h.paragraph_idx >= 0 ? `onclick="jumpToHighlight(${h.id})" title="نمایش در متن"` : 'disabled style="cursor:default;opacity:1"'}>
               <span style="display:inline-flex;align-items:center;gap:5px;padding:1px 8px;border-radius:999px;background:${col.bg};color:${col.fg};font-family:var(--mono);font-size:11.5px;flex:none">
                 ${escapeHtml(code?.label || '')}
               </span>
@@ -1549,13 +1836,24 @@ function renderPost() {
 
   const markBtn = $('btnMarkCoded');
   markBtn.classList.toggle('done', Boolean(st.is_coded));
-  markBtn.textContent = st.is_coded ? 'کدگذاری شد ✓' : 'کدگذاری شد';
+  markBtn.textContent = st.is_coded ? 'کدگذاری شد ✓' : 'علامت: کدگذاری شد';
+  markBtn.setAttribute('aria-pressed', String(Boolean(st.is_coded)));
 }
 
 async function addManualExternalCode() {
-  const label = $('extManualCode').value.trim();
+  const label = $('extManualCode').value.trim().slice(0, 120);
   const quote = $('extManualQuote').value.trim() || 'External linked resource';
-  if (!label) return;
+  if (!label) { showToast('اول نام کد را بنویسید', null, true); $('extManualCode').focus(); return; }
+  if (state.saving) return;
+  state.saving = true;
+  try {
+    await saveManualExternalCode(label, quote);
+  } finally {
+    state.saving = false;
+  }
+}
+
+async function saveManualExternalCode(label, quote) {
   const exts = state.extBySample[state.currentSampleId] || [];
   const code = await ensureCodeOnServer(label);
   const res = await api('/api/coding/highlights', {
@@ -1586,6 +1884,17 @@ async function savePostStatus(patch) {
   state.statusBySample[sid] = next;
   renderPost();
   renderPostSelector();
+  try {
+    await putPostStatus(sid, next);
+  } catch (e) {
+    state.statusBySample[sid] = cur;  // undo the tick so it doesn't look saved
+    if (state.currentSampleId === sid) renderPost();
+    renderPostSelector();
+    throw e;
+  }
+}
+
+async function putPostStatus(sid, next) {
   await api('/api/coding/post-status', {
     method: 'PUT',
     body: JSON.stringify({
@@ -1599,8 +1908,10 @@ async function savePostStatus(patch) {
 }
 
 function toggleMarkCoded() {
+  if (!state.currentSampleId) return;
   const st = postStatusOf(state.currentSampleId);
   savePostStatus({ is_coded: !st.is_coded });
+  if (!st.is_coded) showToast('این پست کدگذاری‌شده علامت خورد');
 }
 
 function toggleLinkReviewed(val) {
