@@ -700,7 +700,13 @@ function reportError(e) {
   const msg = ERROR_TEXT[e?.message] || (e instanceof TypeError ? 'اتصال برقرار نشد؛ اینترنت را بررسی کنید' : 'ذخیره نشد؛ دوباره تلاش کنید');
   showToast(msg, null, true);
 }
-window.addEventListener('unhandledrejection', ev => { ev.preventDefault(); reportError(ev.reason); });
+// Only failed requests made by this page count. Browser extensions (wallets, password managers…)
+// run code in the page too, and their own failed promises must not show up as "not saved".
+window.addEventListener('unhandledrejection', ev => {
+  if (!ev.reason?.fromApi) return;
+  ev.preventDefault();
+  reportError(ev.reason);
+});
 
 async function api(url, opts = {}) {
   state.pendingCalls++;
@@ -723,6 +729,7 @@ async function api(url, opts = {}) {
     return await res.json();
   } catch (e) {
     if (e.message !== 'unauthorized') setSync('bad');
+    e.fromApi = true;
     throw e;
   } finally {
     state.pendingCalls = Math.max(0, state.pendingCalls - 1);
