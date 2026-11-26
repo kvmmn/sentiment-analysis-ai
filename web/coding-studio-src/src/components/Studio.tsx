@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Backend } from '@/lib/backend';
 import type { Source } from '@/lib/types';
 import { useStudio } from '@/lib/useStudio';
-import { csvCell, download, fa } from '@/lib/text';
+import { csvCell, download, fa, safeStorage } from '@/lib/text';
 import { PostList, matches, type Filter } from './PostList';
 import { Reader, type Draft } from './Reader';
 import { Codebook, type ConfirmReq } from './Codebook';
@@ -40,6 +40,8 @@ export function Studio({ backend, coderId, coderName, initialPost, onBack, onUna
   const [panel, setPanel] = useState<null | 'posts' | 'codes'>(null);
   const [focusCode, setFocusCode] = useState<number | null>(null);
   const [menu, setMenu] = useState(false);
+  const [showTags, setShowTags] = useState(() => safeStorage()?.getItem('saintiment_coding_tags') !== 'off');
+  const toggleTags = () => setShowTags(v => { safeStorage()?.setItem('saintiment_coding_tags', v ? 'off' : 'on'); return !v; });
 
   // choose a post once data arrives
   useEffect(() => {
@@ -94,6 +96,7 @@ export function Studio({ backend, coderId, coderName, initialPost, onBack, onUna
       else if (e.key === 'ArrowRight') { e.preventDefault(); step(-1); }
       else if (e.key.toLowerCase() === 'm') { e.preventDefault(); toggleDone(); }
       else if (e.key === '?') { e.preventDefault(); setHelp(true); }
+      else if (e.key.toLowerCase() === 'l') { e.preventDefault(); toggleTags(); }
       else if (e.key === '/') { e.preventDefault(); setPanel('codes'); setTimeout(() => (document.querySelector('[aria-label="جست‌وجوی کد"]') as HTMLInputElement | null)?.focus(), 30); }
     };
     window.addEventListener('keydown', fn);
@@ -142,6 +145,9 @@ export function Studio({ backend, coderId, coderName, initialPost, onBack, onUna
           <button type="button" className="icon" onClick={() => studio.undo()} aria-label="بازگردانی" title="بازگردانی (Ctrl+Z)">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 14l5-5-5-5" /><path d="M20 9H9a5 5 0 0 0 0 10h3" /></svg>
           </button>
+          <button type="button" className="icon" onClick={toggleTags} aria-pressed={showTags} aria-label="نمایش نام کدها در متن" title={showTags ? 'پنهان کردن نام کدها در متن (L)' : 'نمایش نام کدها در متن (L)'}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ opacity: showTags ? 1 : .45 }}><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z" /><circle cx="7.5" cy="7.5" r="1.5" /></svg>
+          </button>
           <button type="button" className="icon hidden sm:grid" onClick={() => setHelp(true)} aria-label="میان‌برها" title="میان‌برها (?)">?</button>
           <ThemeToggle />
           <div className="relative">
@@ -184,7 +190,7 @@ export function Studio({ backend, coderId, coderName, initialPost, onBack, onUna
                     </div>
                   )}
                   <FocusStyle codeId={focusCode} ws={ws} />
-                  <Reader key={post.sample_id} studio={studio} post={post} draft={draft} setDraft={setDraft} flashHlId={flash} sourceTab={sourceTab} setSourceTab={setSourceTab} />
+                  <Reader key={post.sample_id} studio={studio} post={post} draft={draft} setDraft={setDraft} flashHlId={flash} sourceTab={sourceTab} setSourceTab={setSourceTab} showTags={showTags} />
                 </div>
               ) : <p className="p-8 text-[var(--muted)]">پستی برای نمایش نیست.</p>}
             </div>

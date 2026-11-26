@@ -9,11 +9,12 @@ interface Props {
   codeById: Map<number, Code>;
   draft: { start: number; end: number } | null;
   activeHlIds: Set<number>;
+  showTags: boolean;
   onSentence: (pIdx: number, start: number, end: number, el: HTMLElement) => void;
   onHighlight: (hlId: number, el: HTMLElement) => void;
 }
 
-function ParagraphImpl({ pIdx, text, hls, codeById, draft, activeHlIds, onSentence, onHighlight }: Props) {
+function ParagraphImpl({ pIdx, text, hls, codeById, draft, activeHlIds, showTags, onSentence, onHighlight }: Props) {
   const sentences = splitSentences(text);
   const cuts = new Set([0, text.length]);
   for (const s of sentences) { cuts.add(s.start); cuts.add(s.end); }
@@ -41,22 +42,28 @@ function ParagraphImpl({ pIdx, text, hls, codeById, draft, activeHlIds, onSenten
       const bands = fgs.map((f, k) => `${f} ${k * step}% ${(k + 1) * step}%`).join(', ');
       const active = covering.some(h => activeHlIds.has(h.id));
       out.push(
-        <span key={a} data-hl={top.id}
+        <span key={a} data-hl={top.id} title={covering.map(h => codeById.get(h.code_id)?.label).filter(Boolean).join(' · ')}
           className={`hl cursor-pointer ${active ? 'hl-active' : ''}`}
           style={{ backgroundColor: col.bg, backgroundImage: `linear-gradient(to right, ${bands})`, backgroundSize: `100% ${fgs.length > 1 ? 3 : 2}px`, backgroundPosition: 'bottom', backgroundRepeat: 'no-repeat' }}
           onClick={e => { if (window.getSelection()?.isCollapsed !== false) onHighlight(top.id, e.currentTarget); }}>
           {chunk}
         </span>,
       );
-      for (const h of covering.filter(h => h.end_offset === b)) {
-        const code = codeById.get(h.code_id);
-        const c = colorVar(code?.color_idx);
+      const ending = covering.filter(h => h.end_offset === b);
+      if (showTags && ending.length) {
+        // Small superscript labels in each code's colour; one group per passage end.
         out.push(
-          <button key={`t${h.id}`} type="button" data-skip contentEditable={false}
-            className="hl-tag" style={{ color: c.fg, borderColor: c.fg }}
-            onClick={e => onHighlight(h.id, e.currentTarget)} aria-label={`ویرایش هایلایت ${code?.label ?? ''}`}>
-            {code?.label ?? '…'}
-          </button>,
+          <sup key={`t${b}`} data-skip contentEditable={false} className="hl-tags">
+            {ending.map(h => {
+              const code = codeById.get(h.code_id);
+              return (
+                <button key={h.id} type="button" className="hl-tag" style={{ color: colorVar(code?.color_idx).fg }}
+                  onClick={e => onHighlight(h.id, e.currentTarget)} aria-label={`ویرایش کدهای این عبارت: ${code?.label ?? ''}`}>
+                  {code?.label ?? '…'}
+                </button>
+              );
+            })}
+          </sup>,
         );
       }
     } else if (inDraft) {

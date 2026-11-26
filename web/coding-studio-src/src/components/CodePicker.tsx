@@ -7,131 +7,118 @@ interface Props {
   codes: Code[]; // "recently used" order
   counts: Map<number, number>;
   applied: Set<number>; // codes already on this exact passage
-  quote: string;
   onToggle: (ref: CodeRef, on: boolean) => void;
-  onRemoveAll?: () => void;
   onClose: () => void;
   focusToken?: unknown; // changes when the same passage is clicked again
+  dropUp?: boolean; // suggestions open upward when the bar sits above the passage
 }
 
-type Opt = { kind: 'code'; code: Code } | { kind: 'new'; label: string };
+const RECENT = 6;
 
-// Multi-tag picker: every pick toggles one code on the passage and the picker stays open.
-export function CodePicker({ codes, counts, applied, quote, onToggle, onRemoveAll, onClose, focusToken }: Props) {
+// Compact tag bar: tags already on the passage (pinned), recent tags one tap away, and one input.
+// Suggestions appear only while typing, so the text around the passage stays visible.
+export function CodePicker({ codes, counts, applied, onToggle, onClose, focusToken, dropUp }: Props) {
   const [q, setQ] = useState('');
   const [active, setActive] = useState(0);
   const input = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
-  // Order is fixed at open time so rows do not jump while codes are toggled.
-  const firstApplied = useRef(applied);
-  const order = useRef(codes.map(c => c.id));
-  const stable = useMemo(() => {
-    const pos = (id: number) => { const i = order.current.indexOf(id); return i < 0 ? 1e9 + id : i; };
-    return [...codes].sort((a, b) => pos(a.id) - pos(b.id));
-  }, [codes]);
 
   useEffect(() => { input.current?.focus({ preventScroll: true }); }, [focusToken]);
 
-  const opts = useMemo<Opt[]>(() => {
-    const query = q.trim().toLowerCase();
-    const list = query ? stable.filter(c => c.label.toLowerCase().includes(query)) : stable;
-    const exact = query ? list.find(c => c.label.toLowerCase() === query) : undefined;
-    let sorted: Code[];
-    if (exact) sorted = [exact, ...list.filter(c => c !== exact)];
-    else if (query) sorted = [...list].sort((a, b) => Number(!a.label.toLowerCase().startsWith(query)) - Number(!b.label.toLowerCase().startsWith(query)));
-    else sorted = [...list.filter(c => firstApplied.current.has(c.id)), ...list.filter(c => !firstApplied.current.has(c.id))];
-    const out: Opt[] = sorted.map(code => ({ kind: 'code', code }));
-    if (query && !exact) out.push({ kind: 'new', label: q.trim() });
-    return out;
-  }, [q, stable]);
+  // Recent row is fixed at open time so chips do not jump while toggling.
+  const recentIds = useRef(codes.filter(c => !applied.has(c.id)).slice(0, RECENT).map(c => c.id));
+  const byId = useMemo(() => new Map(codes.map(c => [c.id, c])), [codes]);
+  const pinned = codes.filter(c => applied.has(c.id));
+  const recent = recentIds.current.map(id => byId.get(id)).filter((c): c is Code => Boolean(c) && !applied.has(c!.id));
 
-  useEffect(() => { setActive(0); }, [q]);
-  useEffect(() => { listRef.current?.querySelector<HTMLElement>(`[data-i="${active}"]`)?.scrollIntoView({ block: 'nearest' }); }, [active]);
+  const query = q.trim().toLowerCase();
+  const matches = useMemo(() => {
+    if (!query) return [];
+    const list = codes.filter(c => c.label.toLowerCase().includes(query));
+    return list.sort((a, b) =>
+      Number(a.label.toLowerCase() !== query) - Number(b.label.toLowerCase() !== query) ||
+      Number(!a.label.toLowerCase().startsWith(query)) - Number(!b.label.toLowerCase().startsWith(query))).slice(0, 6);
+  }, [codes, query]);
+  const exact = matches.find(c => c.label.toLowerCase() === query);
+  const rows: ({ kind: 'code'; code: Code } | { kind: 'new'; label: string })[] = [
+    ...matches.map(code => ({ kind: 'code' as const, code })),
+    ...(query && !exact ? [{ kind: 'new' as const, label: q.trim() }] : []),
+  ];
+  useEffect(() => { setActive(0); }, [query]);
 
-  const pick = (o: Opt | undefined) => {
-    if (!o) return;
-    if (o.kind === 'new') { onToggle({ label: o.label }, true); setQ(''); return; }
-    onToggle({ id: o.code.id }, !applied.has(o.code.id));
-    if (q) setQ('');
+  const pickRow = (i: number) => {
+    const r = rows[i];
+    if (!r) return;
+    if (r.kind === 'new') onToggle({ label: r.label }, true);
+    else onToggle({ id: r.code.id }, !applied.has(r.code.id));
+    setQ('');
   };
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Escape') { e.preventDefault(); onClose(); return; }
-    if (e.key === 'ArrowDown') { e.preventDefault(); setActive(a => Math.min(opts.length - 1, a + 1)); return; }
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActive(a => Math.min(rows.length - 1, a + 1)); return; }
     if (e.key === 'ArrowUp') { e.preventDefault(); setActive(a => Math.max(0, a - 1)); return; }
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (!q && e.shiftKey) { onClose(); return; }
-      if (!q && !opts.length) return;
-      pick(opts[active]);
-      return;
-    }
-    if (!q && /^[1-9]$/.test(e.key) && !e.altKey && !e.ctrlKey && !e.metaKey) {
-      const o = opts[Number(e.key) - 1];
-      if (o) { e.preventDefault(); setActive(Number(e.key) - 1); pick(o); }
+    if (e.key === 'Enter') { e.preventDefault(); if (q) pickRow(active); else onClose(); return; }
+    if (!q && e.key === 'Backspace' && pinned.length) { e.preventDefault(); onToggle({ id: pinned[pinned.length - 1].id }, false); return; }
+    if (!q && /^[1-6]$/.test(e.key) && !e.altKey && !e.ctrlKey && !e.metaKey) {
+      const c = recent[Number(e.key) - 1];
+      if (c) { e.preventDefault(); onToggle({ id: c.id }, true); }
     }
   };
 
-  const hint = (() => {
-    const o = opts[active];
-    if (!o) return codes.length ? 'کدی با این نام نیست' : 'نام اولین کد را بنویسید';
-    if (o.kind === 'new') return `Enter: ساخت و افزودن «${o.label}»`;
-    return applied.has(o.code.id) ? `Enter: برداشتن «${o.code.label}»` : `Enter: افزودن «${o.code.label}»`;
-  })();
+  const chip = (c: Code, on: boolean, n?: number) => {
+    const col = colorVar(c.color_idx);
+    return (
+      <button key={c.id} type="button" onClick={() => onToggle({ id: c.id }, !on)}
+        title={on ? `برداشتن ${c.label}` : `افزودن ${c.label}`} aria-pressed={on}
+        dir="ltr" className={`tag-chip ${on ? 'tag-chip-on' : ''}`}
+        style={on ? { background: col.bg, color: col.fg, borderColor: 'transparent' } : { borderColor: 'var(--line)' }}>
+        {!on && <i className="h-1.5 w-1.5 rounded-full" style={{ background: col.fg }} />}
+        <span className="max-w-[130px] truncate">{c.label}</span>
+        {on ? <span aria-hidden="true" className="opacity-60">×</span> : n ? <kbd className="kbd-mini">{fa(n)}</kbd> : null}
+      </button>
+    );
+  };
 
   return (
-    <div className="flex max-h-[min(440px,72dvh)] flex-col" onMouseDown={e => e.stopPropagation()}>
-      <div className="border-b border-[var(--line)] px-3 pb-2 pt-3">
-        <p className="ltr mb-2 line-clamp-2 text-[12px] italic text-[var(--muted)]" dir="auto">“{quote}”</p>
+    <div className="grid gap-1.5 p-1.5" onMouseDown={e => e.stopPropagation()}>
+      {pinned.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1" aria-label="کدهای این عبارت">{pinned.map(c => chip(c, true))}</div>
+      )}
+      {!q && recent.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1" aria-label="کدهای اخیر">
+          {recent.map((c, i) => chip(c, false, i + 1))}
+        </div>
+      )}
+      <div className="relative">
         <input
           ref={input} value={q} onChange={e => setQ(e.target.value)} onKeyDown={onKey}
           dir="auto" maxLength={120}
-          placeholder={codes.length ? 'جست‌وجو یا نام کد تازه…' : 'نام کد…'}
-          aria-label="نام کد" role="combobox" aria-expanded="true" aria-controls="code-options"
-          aria-activedescendant={opts[active] ? `opt-${active}` : undefined}
-          className="w-full rounded-[4px] border border-[var(--line)] bg-[var(--paper)] px-3 py-2 text-[14px] outline-none focus:border-[var(--accent)]"
+          placeholder={pinned.length ? 'کد دیگر…' : 'نام کد…'}
+          aria-label="نام کد" role="combobox" aria-expanded={rows.length > 0} aria-controls="code-options"
+          aria-activedescendant={rows.length ? `opt-${active}` : undefined}
+          className="h-8 w-full rounded-[4px] border border-[var(--line)] bg-[var(--paper)] pe-7 ps-2.5 text-[13px] outline-none focus:border-[var(--accent)]"
         />
-        <div className="mt-1.5 flex items-baseline justify-between gap-2 text-[11.5px] text-[var(--muted)]">
-          <span aria-live="polite">{hint}</span>
-          <span className="whitespace-nowrap">{applied.size ? `${fa(applied.size)} کد روی این عبارت` : 'چند کد هم می‌شود'}</span>
-        </div>
-      </div>
-      <div ref={listRef} id="code-options" role="listbox" aria-multiselectable="true" className="min-h-0 flex-1 overflow-y-auto p-1.5">
-        {opts.map((o, i) => {
-          const on = i === active;
-          if (o.kind === 'new') {
-            return (
-              <button key="new" id={`opt-${i}`} data-i={i} role="option" aria-selected={false} type="button"
-                onMouseEnter={() => setActive(i)} onClick={() => pick(o)}
-                className={`flex w-full items-center gap-2 rounded-[4px] px-2.5 py-2 text-start text-[13px] ${on ? 'bg-[var(--sunk)]' : ''}`}>
-                <span className="grid h-[18px] w-[18px] place-items-center rounded-[3px] border border-dashed border-[var(--muted)] text-[13px] leading-none">+</span>
-                <span>ساخت و افزودن</span>
-                <b className="ltr font-mono text-[12.5px]">{o.label}</b>
+        <button type="button" onClick={onClose} aria-label="بستن" title="بستن (Esc)" className="absolute inset-y-0 end-1 grid w-6 place-items-center text-[14px] text-[var(--faint)] hover:text-[var(--ink)]">×</button>
+        {rows.length > 0 && (
+          <div id="code-options" role="listbox" className={`pop absolute inset-x-0 z-10 p-1 ${dropUp ? 'bottom-[calc(100%+4px)]' : 'top-[calc(100%+4px)]'}`}>
+            {rows.map((r, i) => (
+              <button key={r.kind === 'new' ? 'new' : r.code.id} id={`opt-${i}`} role="option" type="button"
+                aria-selected={r.kind === 'code' && applied.has(r.code.id)}
+                onMouseEnter={() => setActive(i)} onClick={() => pickRow(i)}
+                className={`flex w-full items-center gap-2 rounded-[3px] px-2 py-1 text-start text-[12.5px] ${i === active ? 'bg-[var(--sunk)]' : ''}`}>
+                {r.kind === 'new' ? (
+                  <><span className="text-[var(--muted)]">+ کد تازه</span><b className="ltr font-mono">{r.label}</b></>
+                ) : (
+                  <>
+                    <i className="h-2 w-2 flex-none rounded-full" style={{ background: colorVar(r.code.color_idx).fg }} />
+                    <span className="ltr min-w-0 flex-1 truncate font-mono" dir="ltr">{r.code.label}</span>
+                    {applied.has(r.code.id) ? <span className="text-[11px] text-[var(--ok)]">✓</span> : <span className="text-[11px] text-[var(--faint)]">{fa(counts.get(r.code.id))}</span>}
+                  </>
+                )}
               </button>
-            );
-          }
-          const col = colorVar(o.code.color_idx);
-          const checked = applied.has(o.code.id);
-          return (
-            <button key={o.code.id} id={`opt-${i}`} data-i={i} role="option" aria-selected={checked} type="button"
-              onMouseEnter={() => setActive(i)} onClick={() => pick(o)}
-              className={`flex w-full items-center gap-2 rounded-[4px] px-2.5 py-1.5 text-start text-[13px] ${on ? 'bg-[var(--sunk)]' : ''}`}>
-              <span className="grid h-[18px] w-[18px] flex-none place-items-center rounded-[3px] border-2 text-[11px] font-bold leading-none text-white"
-                style={{ borderColor: col.fg, background: checked ? col.fg : 'transparent' }} aria-hidden="true">{checked ? '✓' : ''}</span>
-              <span className="ltr min-w-0 flex-1 truncate font-mono text-[12.5px]" dir="ltr">{o.code.label}</span>
-              <span className="text-[11px] tabular-nums text-[var(--faint)]">{fa(counts.get(o.code.id))}</span>
-              {!q && i < 9 && <kbd className="kbd">{fa(i + 1)}</kbd>}
-            </button>
-          );
-        })}
-      </div>
-      <div className="flex items-center justify-between gap-2 border-t border-[var(--line)] px-3 py-2 text-[12px]">
-        {onRemoveAll && applied.size > 0 ? (
-          <button type="button" onClick={onRemoveAll} className="font-semibold text-[var(--danger)] hover:underline">
-            {applied.size > 1 ? 'برداشتن همهٔ کدها' : 'حذف این هایلایت'}
-          </button>
-        ) : <span className="text-[var(--faint)]">Enter افزودن/برداشتن</span>}
-        <button type="button" onClick={onClose} className="btn py-1">تمام <kbd className="kbd ms-1 border-transparent bg-transparent text-inherit opacity-70">Esc</kbd></button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
