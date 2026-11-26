@@ -1,0 +1,26 @@
+{
+  "name": "saintiment-coding-studio-src",
+  "private": true,
+  "version": "2.0.0",
+  "description": "Source of the Coding Studio v2 page. Builds one self-contained HTML file into ../coding/public/index.html.",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.app.json --noEmit",
+    "build": "rm -rf dist && parcel build index.html --dist-dir dist --no-source-maps --no-cache && html-inline dist/index.html > ../coding/public/index.html"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@parcel/config-default": "^2.16.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "autoprefixer": "^10.7.0",
+    "html-inline": "^1.2.0",
+    "parcel": "^2.16.4",
+    "parcel-resolver-tspaths": "^0.0.9",
+    "postcss": "^8.5.33",
+    "tailwindcss": "3.4.1",
+    "typescript": "~7.0.2"
+  }
+}
