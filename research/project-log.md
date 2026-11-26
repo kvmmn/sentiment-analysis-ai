@@ -892,3 +892,14 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 **Demo mode:** when the API does not answer (for example inside a claude.ai artifact), the page runs on six placeholder posts labelled as demo text. They are not from the study sample. On `/code` a failed API call shows a retry screen instead of switching to demo data silently.
 
 **Verification:** headless Chromium against the built page: demo mode at desktop and phone sizes; a mocked API returning string ids (wrong password message, apply, add a second code to the same passage, failed colour change rolled back, delete and undo); and the real `server.js` started locally without a database (page served at `/code/`, login accepted, coder list reports the database error). Not yet tested against the Neon database; the branch preview uses the real database.
+
+## 62. Coding Studio v2: lighter tagging and calmer text (2026-11-26)
+
+**Request (Kaveh, 2026-11-26):** the live page felt crowded. Rework font proportions, highlight styling and how each phrase's codes are shown. Tapping a word opened a large menu that covered the text; instead open only a small typing box so the text stays visible, and keep codes that were used before ready at the top of that box.
+
+**Change (`web/coding-studio-src`, rebuilt into `web/coding/public/index.html`):**
+- The code list popup is replaced by a compact bar (300 px): codes already on the phrase as removable chips, then up to six recent codes as one-tap chips (keys 1–6), then one input. Suggestions appear only while typing (at most six rows). The bar sits above the phrase when there is room, so the following lines stay readable; on phones it is a slim bar at the bottom. Enter on an empty input closes it; Backspace removes one of the phrase's codes.
+- Code names in the text are small superscript labels in each code's colour instead of bordered boxes. The tag button in the header (or L) hides them; hovering a highlight still shows its codes.
+- Reading text 17 px with line height 1.95 (was 18 px / 1.85); highlight tints slightly lighter; the active phrase gets a thin accent outline.
+
+**Verification:** headless Chromium on the built page in demo mode at desktop and phone sizes (bar placement, recent-code keys, new code, suggestion pick, Backspace, label toggle) and against a mocked API with string ids (adding a second code to a phrase, failed save rolled back, delete and undo). Not tested against Neon from here.

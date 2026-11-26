@@ -18,16 +18,17 @@ interface Props {
   flashHlId: number | null;
   sourceTab: Source;
   setSourceTab: (s: Source) => void;
+  showTags: boolean;
 }
 
 
-export function Reader({ studio, post, draft, setDraft, flashHlId, sourceTab, setSourceTab }: Props) {
+export function Reader({ studio, post, draft, setDraft, flashHlId, sourceTab, setSourceTab, showTags }: Props) {
   const toast = useToast();
   const { ws, derived } = studio;
   const wrap = useRef<HTMLDivElement>(null);
   const pop = useRef<HTMLDivElement>(null);
   const lastPointer = useRef<'mouse' | 'touch'>('mouse');
-  const [popPos, setPopPos] = useState<{ top: number; left: number } | null>(null);
+  const [popPos, setPopPos] = useState<{ top?: number; bottom?: number; left: number } | null>(null);
   const [narrow, setNarrow] = useState(() => window.matchMedia('(max-width: 639px)').matches);
 
   useEffect(() => {
@@ -113,9 +114,14 @@ export function Reader({ studio, post, draft, setDraft, flashHlId, sourceTab, se
     if (!draft || !wrap.current || narrow) { setPopPos(null); return; }
     const w = wrap.current.getBoundingClientRect();
     const a = draft.anchor;
-    const width = Math.min(320, w.width - 16);
+    const width = Math.min(300, w.width - 16);
     const left = Math.max(8, Math.min(w.width - width - 8, a.left - w.left + a.width / 2 - width / 2));
-    setPopPos({ top: a.bottom - w.top + 8, left });
+    const scroller = document.getElementById('reader-scroll')?.getBoundingClientRect();
+    const roomAbove = a.top - (scroller?.top ?? 0);
+    // Sit above the passage (anchored by its bottom edge, so it grows upward) to keep the following lines
+    // readable; near the top edge fall back to below.
+    if (roomAbove > 150) setPopPos({ bottom: w.bottom - a.top + 6, left });
+    else setPopPos({ top: a.bottom - w.top + 6, left });
   }, [draft, narrow]);
 
   useEffect(() => {
@@ -152,10 +158,9 @@ export function Reader({ studio, post, draft, setDraft, flashHlId, sourceTab, se
       codes={pickerCodes}
       counts={derived!.countByCode}
       applied={applied}
-      quote={draft.quote}
       focusToken={draft.anchor}
+      dropUp={narrow || popPos?.bottom !== undefined}
       onClose={() => setDraft(null)}
-      onRemoveAll={() => { const ids = rangeHls.filter(h => h.id > 0).map(h => h.id); setDraft(null); studio.deleteHighlights(ids); }}
       onToggle={toggle}
     />
   );
@@ -273,18 +278,18 @@ export function Reader({ studio, post, draft, setDraft, flashHlId, sourceTab, se
           {paragraphs.length ? paragraphs.map((t, i) => (
             <Paragraph key={`${source}-${i}`} pIdx={i} text={t} hls={hlsByP.get(i) || []} codeById={derived!.codeById}
               draft={draft && draft.pIdx === i && draft.source === source && !rangeHls.length ? draft : null}
-              activeHlIds={activeIds}
+              activeHlIds={activeIds} showTags={showTags}
               onSentence={onSentence} onHighlight={onHighlight} />
           )) : <p className="text-[var(--muted)]">این پست متنی ندارد.</p>}
         </div>
         {picker && !narrow && popPos && (
-          <div ref={pop} role="dialog" aria-label="انتخاب کد" className="pop absolute z-40 w-[320px] max-w-[calc(100%-16px)]" style={{ top: popPos.top, left: popPos.left }}>
+          <div ref={pop} role="dialog" aria-label="انتخاب کد" className="pop absolute z-40 w-[300px] max-w-[calc(100%-16px)]" style={{ top: popPos.top, bottom: popPos.bottom, left: popPos.left }}>
             {picker}
           </div>
         )}
       </div>
       {picker && narrow && (
-        <div ref={pop} role="dialog" aria-label="انتخاب کد" className="sheet fixed inset-x-0 bottom-0 z-[60] rounded-t-[10px] pb-[env(safe-area-inset-bottom)]">
+        <div ref={pop} role="dialog" aria-label="انتخاب کد" className="sheet fixed inset-x-0 bottom-0 z-[60] pb-[env(safe-area-inset-bottom)]">
           {picker}
         </div>
       )}
