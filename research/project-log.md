@@ -929,3 +929,11 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 **Change:** the three families are self-hosted in `web/coding/public/fonts/` (woff2 variable fonts from `@fontsource-variable` 5.3, SIL OFL 1.1 licences included) with one `fonts.css` that defines `--font-ui` (Vazirmatn, Persian and Latin interface), `--font-read` (Source Serif 4, post text) and `--font-mono` (JetBrains Mono, ids and keys). Screening and kept posts (`/`, `/kept`), the Coding Studio (`/code/`) and the compare page all load `/code/fonts/fonts.css` and use those tokens, with system fallbacks. No page calls Google Fonts any more. Fonts are cached for 7 days.
 
 **Verification:** headless Chromium on all three pages: body font resolves to Vazirmatn, the expected faces load from `/code/fonts/`, no failed requests or page errors; `web/swipe` tests 8/8 pass.
+
+## 66. Estedad for all Persian text (2026-11-27)
+
+**Request (Kaveh, 2026-11-27):** all Persian fonts must be Estedad, as agreed earlier (the docs pages already use it).
+
+**Change:** the shared self-hosted set (section 65) now uses Estedad (`@fontsource-variable/estedad` 5.3, SIL OFL 1.1) instead of Vazirmatn for `--font-ui`, and as the Persian fallback in `--font-read` and `--font-mono`, so Persian code names in monospace or serif contexts also render in Estedad. Vazirmatn files removed. Applies to `/`, `/kept`, `/code/` and `/code/compare.html`.
+
+**Verification:** headless Chromium on all three pages: body font Estedad, Estedad Arabic and Latin faces load from `/code/fonts/`, no failed requests or page errors; `web/swipe` tests 8/8.
