@@ -444,13 +444,16 @@ app.use('/code/fonts', express.static(path.join(PUBLIC_DIR, 'fonts'), {
 }));
 app.use('/code/fonts', (req, res) => res.status(404).end());
 // Compare page: all coders side by side. Clean address /code/compare; the old .html address redirects.
-app.get(['/code/compare', '/code/compare/'], (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'compare.html')));
+// HTML is never cached: on Vercel every file has the same old Last-Modified date, so a cached page
+// could otherwise survive a deploy. Fonts and other assets keep their own cache rules.
+const HTML_HEADERS = { 'Cache-Control': 'no-store, max-age=0' };
+const noStoreHtml = (res, file) => { if (file.endsWith('.html')) res.set(HTML_HEADERS); };
+const sendHtml = (res, name) => res.sendFile(path.join(PUBLIC_DIR, name), { headers: HTML_HEADERS, etag: false, lastModified: false });
+app.get(['/code/compare', '/code/compare/'], (req, res) => sendHtml(res, 'compare.html'));
 app.get('/code/compare.html', (req, res) => res.redirect(301, '/code/compare'));
-app.use('/code', express.static(PUBLIC_DIR, { maxAge: 0 }));
-app.use(express.static(PUBLIC_DIR, { maxAge: 0 }));
-app.get(['/code', '/code/{*splat}', '/{*splat}'], (req, res) => {
-  res.sendFile(path.join(PUBLIC_DIR, 'index.html'));
-});
+app.use('/code', express.static(PUBLIC_DIR, { maxAge: 0, setHeaders: noStoreHtml }));
+app.use(express.static(PUBLIC_DIR, { maxAge: 0, setHeaders: noStoreHtml }));
+app.get(['/code', '/code/{*splat}', '/{*splat}'], (req, res) => sendHtml(res, 'index.html'));
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {

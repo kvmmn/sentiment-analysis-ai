@@ -265,8 +265,10 @@ app.use('/api', (req, res) => res.status(404).json({ error: 'not_found' }));
 // The UI is a single static page. In services mode it isn't emitted to the CDN,
 // so Express serves it (the file is bundled into the function).
 const PUBLIC_DIR = path.join(path.dirname(THIS_FILE), 'public');
-app.use(express.static(PUBLIC_DIR, { maxAge: 0 }));
-app.get('/{*splat}', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'index.html')));
+// HTML is never cached (on Vercel every file has the same old Last-Modified date, so a cached page could survive a deploy).
+const HTML_HEADERS = { 'Cache-Control': 'no-store, max-age=0' };
+app.use(express.static(PUBLIC_DIR, { maxAge: 0, setHeaders: (res, file) => { if (file.endsWith('.html')) res.set(HTML_HEADERS); } }));
+app.get('/{*splat}', (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'index.html'), { headers: HTML_HEADERS, etag: false, lastModified: false }));
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {

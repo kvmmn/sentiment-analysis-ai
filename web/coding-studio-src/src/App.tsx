@@ -160,7 +160,7 @@ function CoderPicker({ backend, onPick, onLogout, onUnauthorized }: { backend: B
               <button key={c.id} type="button" onClick={() => onPick(c.id)}
                 className={`coder-card grid gap-2.5 rounded-[6px] border bg-[var(--card)] p-4 text-start transition ${c.id === last ? 'border-[var(--ink)]' : 'border-[var(--line)] hover:border-[var(--faint)]'}`}>
                 <span className="flex items-baseline justify-between gap-2">
-                  <span className="text-[17px] font-bold">{c.name}{c.id === last && <span className="ms-2 text-[11.5px] font-normal text-[var(--muted)]">آخرین بار</span>}</span>
+                  <span className="text-[17px] font-bold">{c.name}{c.id === last && <>{' '}<span className="ms-2 text-[11.5px] font-normal text-[var(--muted)]">آخرین بار</span></>}</span>
                   <span className="text-[13px] tabular-nums text-[var(--muted)]">{fa(c.coded_count)} / {fa(c.total_posts)}</span>
                 </span>
                 <span className="h-[3px] overflow-hidden rounded-full bg-[var(--line)]"><i className="block h-full bg-[var(--ok)]" style={{ width: `${pct}%` }} /></span>

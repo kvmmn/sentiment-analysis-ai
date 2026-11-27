@@ -957,3 +957,16 @@ The compare entry has one distinct style everywhere (accent outline pill with a 
 **Cause:** not the font. The four menu links were written back to back with no space between them (`…غربالگری</a><a>منتخب‌ها…`). Browsers shape Arabic-script text across inline element boundaries, so the last letter of one link joined to the first letter of the next: «ی» took its initial (dotted) form and «م» got a joining stroke. Rendering the font on its own with WebKit (Safari's engine) and Chromium was correct.
 
 **Fix:** the menu is now a flex container (each link is shaped on its own) and the links are separated by whitespace. A browser check that looks, on every page, for Persian letters in neighbouring elements with nothing between them now finds no cases on the coding home, the studio, the shortcut help or the compare page; the swipe pages' menu already had spaces.
+
+## 69. Joined letters on the coding home, and pages surviving a deploy in the browser
+
+**Report (Kaveh, 2026-11-27, screenshot of /code):** «مرتضی» showed as «مرتضیر» next to the «آخرین بار» tag, and the page had neither the compare card nor the compare button.
+
+**Causes:**
+- Same letter-joining problem as §68: the coder name and the «آخرین بار» tag were neighbouring elements with no space (React drops the line break), so «ی» joined to «آ».
+- Production was already serving the new page (checked with a fresh request), so the browser was showing an older copy. HTML was sent with `max-age=0` plus an ETag and Last-Modified header, and on Vercel every file carries the same 2018 Last-Modified date, so a browser could keep a stale page.
+
+**Fix:**
+- Added a space between name and tag.
+- All HTML from both services (screening, kept, coding, compare) is now sent with `Cache-Control: no-store`, so every load fetches the current page. Fonts keep their own rules (§65).
+- The letter-joining check (§68) now runs on desktop and phone widths, with a last-used coder set, through the code book, the post list, the export menu, the shortcut help, several posts, the code picker and the compare page filters. It reports nothing after the fix and does catch the old «مرتضی | آخرین بار» case. A text scan of the swipe page templates found no adjacent Persian elements without a space.
