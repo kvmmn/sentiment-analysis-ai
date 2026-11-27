@@ -18,6 +18,7 @@ body{background:var(--bg);color:var(--ink);font:14px/1.65 var(--font-ui,system-u
 button,input{font:inherit;color:inherit}
 .top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 16px;background:var(--panel);border-bottom:1px solid var(--line);min-height:50px}
 .top h1{font-size:15px;margin:0 0 0 6px}
+.nav{display:flex;gap:2px}
 .nav a{padding:3px 8px;border-radius:4px;color:var(--muted);text-decoration:none;font-size:12.5px}
 .nav a:hover{background:var(--sunk);color:var(--ink)}
 .nav a[aria-current]{color:var(--ink);font-weight:600}
@@ -102,7 +103,12 @@ kbd{font:11px var(--font-mono,ui-monospace,monospace);border:1px solid var(--lin
 <body>
 <div class="top">
   <h1>مقایسهٔ کدگذاری‌ها</h1>
-  <nav class="nav" aria-label="بخش‌های پروژه"><a href="/">غربالگری</a><a href="/kept">منتخب‌ها</a><a href="/code/">کدگذاری</a><a href="/code/compare" aria-current="page">مقایسه</a></nav>
+  <nav class="nav" aria-label="بخش‌های پروژه">
+    <a href="/">غربالگری</a>
+    <a href="/kept">منتخب‌ها</a>
+    <a href="/code/">کدگذاری</a>
+    <a href="/code/compare" aria-current="page">مقایسه</a>
+  </nav>
   <span class="spacer"></span>
   <div id="coderChips" style="display:flex;gap:6px"></div>
   <div class="seg" role="group" aria-label="کدام بخش‌ها">

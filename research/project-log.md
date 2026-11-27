@@ -949,3 +949,11 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 The compare entry has one distinct style everywhere (accent outline pill with a three-column icon), separate from the plain menu links.
 
 **Verification:** local server with the real export shape mocked: `/code/compare` 200, `/code/compare.html` 301 to it; clicking the studio button opens the compare page on the current post; desktop and 390 px screenshots; no page errors; typecheck clean; `web/swipe` tests 8/8.
+
+## 68. Broken Persian letters in the compare page menu
+
+**Report (Kaveh, 2026-11-27, screenshot):** in the compare page's top menu the last «ی» of «غربالگری» and «کدگذاری» showed with two dots and detached, and «منتخب‌ها»/«مقایسه» started with a stray joining stroke.
+
+**Cause:** not the font. The four menu links were written back to back with no space between them (`…غربالگری</a><a>منتخب‌ها…`). Browsers shape Arabic-script text across inline element boundaries, so the last letter of one link joined to the first letter of the next: «ی» took its initial (dotted) form and «م» got a joining stroke. Rendering the font on its own with WebKit (Safari's engine) and Chromium was correct.
+
+**Fix:** the menu is now a flex container (each link is shaped on its own) and the links are separated by whitespace. A browser check that looks, on every page, for Persian letters in neighbouring elements with nothing between them now finds no cases on the coding home, the studio, the shortcut help or the compare page; the swipe pages' menu already had spaces.
