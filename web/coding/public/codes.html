@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نقشهٔ کدها · Saintiment</title>
+<link rel="preload" href="/code/fonts/estedad-arabic-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/code/fonts/source-serif-4-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/code/fonts/fonts.css?v=2">
+<style>
+:root{
+  --bg:#f6f5f2;--panel:#fff;--sunk:#efede8;--line:#e4e1da;--ink:#1d2127;--muted:#6a6e75;--faint:#9a9da3;--accent:#0b6e69;
+  /* code colours: same palette as the Coding Studio (color_idx 1..6) */
+  --c1:#2457c5;--c2:#086b64;--c3:#8f4f00;--c4:#6a43c7;--c5:#b0204f;--c6:#3f6b0e;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.7 var(--font-ui,system-ui,sans-serif)}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 16px;background:var(--panel);border-bottom:1px solid var(--line);min-height:50px}
+.top h1{font-size:15px;margin:0 0 0 6px}
+.nav{display:flex;gap:2px;flex-wrap:wrap}
+.nav a{padding:3px 8px;border-radius:4px;color:var(--muted);text-decoration:none;font-size:12.5px}
+.nav a:hover{background:var(--sunk);color:var(--ink)}
+.nav a[aria-current]{color:var(--ink);font-weight:600}
+.spacer{flex:1}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{display:inline-flex;align-items:center;gap:7px;padding:4px 13px;border:1.5px solid var(--line);border-radius:999px;background:var(--panel);cursor:pointer;font-size:13px;text-decoration:none}
+.tab[aria-current=true]{border-color:var(--cc);background:color-mix(in srgb,var(--cc) 10%,#fff);font-weight:650}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 11px;border:1px solid var(--line);border-radius:999px;background:var(--panel);cursor:pointer;font-size:12.5px}
+main{max-width:1180px;margin:0 auto;padding:22px 20px 80px}
+.head{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.head h2{margin:0;font-size:24px;display:flex;align-items:center;gap:10px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-size:12.5px;color:var(--muted)}
+.stat b{color:var(--ink);font-size:16px;margin-inline-end:5px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.tools input[type=search]{flex:1;min-width:200px;max-width:380px;border:1px solid var(--line);border-radius:7px;padding:6px 11px;background:var(--panel)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--panel)}
+.seg button{border:0;background:none;padding:5px 11px;cursor:pointer;font-size:12.5px;color:var(--muted)}
+.seg button+button{border-inline-start:1px solid var(--line)}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+/* overview map */
+.map{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:26px}
+.map h3{margin:0 0 10px;font-size:13.5px}
+.mrow{display:grid;grid-template-columns:200px 1fr;gap:12px;padding:8px 0;border-top:1px dashed var(--line);align-items:start}
+.mrow:first-of-type{border-top:0}
+.mth{font-weight:650;font-size:13px;line-height:1.6}
+.mth small{display:block;font-weight:400;color:var(--muted);font-size:11.5px}
+.pills{display:flex;flex-wrap:wrap;gap:5px}
+.pill{direction:ltr;border:1px solid color-mix(in srgb,var(--k) 35%,#fff);border-left:3px solid var(--k);background:color-mix(in srgb,var(--k) 8%,#fff);color:var(--k);border-radius:5px;padding:0 7px;line-height:22px;cursor:pointer;font-family:var(--font-read,Georgia,serif);white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.pill:hover{background:color-mix(in srgb,var(--k) 18%,#fff)}
+.pill.zero{opacity:.55;border-style:dashed}
+/* theme sections */
+section.theme{margin:0 0 30px}
+section.theme>h3{display:flex;align-items:baseline;gap:10px;font-size:17px;margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+section.theme>h3 small{font-weight:400;color:var(--muted);font-size:12.5px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}
+.code{background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--k);border-radius:9px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.code.flash{animation:flash 1.4s ease}
+@keyframes flash{0%,50%{box-shadow:0 0 0 3px var(--k)}100%{box-shadow:none}}
+.label{direction:ltr;text-align:left;font:600 16px/1.45 var(--font-read,Georgia,serif);color:var(--ink);overflow-wrap:anywhere}
+.meta{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted);align-items:center}
+.meta .n{background:color-mix(in srgb,var(--k) 10%,#fff);color:var(--k);border-radius:4px;padding:0 7px;font-weight:600}
+.sids{display:flex;flex-wrap:wrap;gap:4px}
+.sid{font:12px/20px var(--font-mono,ui-monospace,monospace);padding:0 6px;border-radius:4px;background:var(--sunk);text-decoration:none;color:var(--ink)}
+.sid:hover{background:var(--ink);color:#fff}
+details{border-top:1px dashed var(--line);padding-top:6px}
+summary{cursor:pointer;font-size:12.5px;color:var(--muted);user-select:none}
+summary:hover{color:var(--ink)}
+.q{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;padding:6px 0;border-bottom:1px solid var(--sunk)}
+.q:last-child{border-bottom:0}
+.qt{direction:ltr;text-align:left;font:13.5px/1.6 var(--font-read,Georgia,serif);color:#3a3f46}
+.empty{color:var(--muted);font-size:13px}
+.center{display:grid;place-items:center;min-height:calc(100vh - 51px)}
+.login{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px;width:320px;display:grid;gap:10px}
+.login input{border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+.login button,.btn{border:0;border-radius:6px;padding:8px 12px;background:var(--ink);color:#fff;cursor:pointer}
+.err{color:#c92a2a;font-size:12.5px;min-height:1em}
+mark{background:#fde68a;color:inherit;border-radius:2px}
+@media (max-width:700px){.mrow{grid-template-columns:1fr}.grid{grid-template-columns:1fr}main{padding:16px 12px 60px}}
+@media print{.top,.tools,#syncBtn{display:none}body{background:#fff}.code{break-inside:avoid}details{display:none}}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>نقشهٔ کدها</h1>
+  <nav class="nav" aria-label="بخش‌های پروژه">
+    <a href="/">غربالگری</a>
+    <a href="/kept">منتخب‌ها</a>
+    <a href="/code/">کدگذاری</a>
+    <a href="/code/compare">مقایسه</a>
+    <a href="/code/codes" aria-current="page">نقشهٔ کدها</a>
+  </nav>
+  <span class="spacer"></span>
+  <div class="tabs" id="tabs" role="tablist" aria-label="کدگذار"></div>
+  <button type="button" class="chip" id="syncBtn" title="داده‌ها مستقیم از پایگاه داده خوانده می‌شود؛ هر ۳۰ ثانیه و هر بار که به این زبانه برمی‌گردید خودکار به‌روز می‌شود">⟳ <span id="syncTxt">—</span></button>
+</div>
+<main id="app"><div class="center empty">در حال بارگذاری…</div></main>
+
+<script>
+(() => {
+const CC = { 1:'#2563c9', 2:'#c2410c', 3:'#15803d' };   // coder colours, as on the compare page
+const app = document.getElementById('app');
+const S = { data:null, coder:null, q:'', sort:'theme', open:false };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fa = n => Number(n).toLocaleString('fa-IR');
+const num = v => v == null ? null : Number(v);
+const kcol = idx => `var(--c${[1,2,3,4,5,6].includes(Number(idx)) ? Number(idx) : 1})`;
+
+async function api(path, opts) {
+  const r = await fetch(path, { credentials:'same-origin', headers:{'Content-Type':'application/json'}, ...opts });
+  if (r.status === 401) { const e = new Error('unauthorized'); e.status = 401; throw e; }
+  if (!r.ok || !(r.headers.get('content-type') || '').includes('json')) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+function showLogin(msg) {
+  app.innerHTML = `<div class="center"><form class="login" id="lf"><b>ورود تیم</b>
+    <input type="password" id="pw" placeholder="رمز تیم" autocomplete="current-password" required>
+    <button type="submit">ورود</button><div class="err" id="le">${esc(msg || '')}</div></form></div>`;
+  document.getElementById('lf').onsubmit = async e => {
+    e.preventDefault();
+    try { await api('/api/coding/login', { method:'POST', body:JSON.stringify({ password:document.getElementById('pw').value }) }); load(); }
+    catch (err) { document.getElementById('le').textContent = err.status === 401 ? 'رمز اشتباه است.' : 'خطا در اتصال: ' + err.message; }
+  };
+}
+
+// ---- data ----
+let lastSig = '', lastAt = 0, busy = false;
+const sig = d => JSON.stringify([d.coders, d.codes, d.themes, d.highlights.map(h => [h.id, h.code_id, h.sample_id, h.quote])]);
+function prepare(d) {
+  const coders = d.coders.map(c => ({ id:num(c.id), name:c.name }));
+  const themes = d.themes.map(t => ({ id:num(t.id), coder_id:num(t.coder_id), name:t.name, sort:num(t.sort_order) || 0 }));
+  const codes = d.codes.map(c => ({ id:num(c.id), coder_id:num(c.coder_id), label:c.label, color:num(c.color_idx), theme_id:num(c.theme_id), hs:[] }));
+  const byId = new Map(codes.map(c => [c.id, c]));
+  for (const h of d.highlights) { const c = byId.get(num(h.code_id)); if (c) c.hs.push({ sid:h.sample_id, quote:h.quote || '', source:h.source }); }
+  for (const c of codes) { c.hs.sort((a, b) => a.sid.localeCompare(b.sid)); c.posts = [...new Set(c.hs.map(h => h.sid))]; }
+  S.data = { coders, themes, codes };
+}
+function hashCoder() { const m = location.hash.match(/c=(\d+)/); return m ? Number(m[1]) : null; }
+
+async function load() {
+  app.innerHTML = '<div class="center empty">در حال بارگذاری…</div>';
+  try {
+    const d = await api('/api/coding/export');
+    lastSig = sig(d); lastAt = Date.now(); prepare(d);
+    const want = hashCoder();
+    S.coder = S.data.coders.some(c => c.id === want) ? want : S.data.coders[0]?.id;
+    render(); syncText();
+  } catch (e) {
+    if (e.status === 401) return showLogin();
+    app.innerHTML = `<div class="center"><div class="login"><b>داده‌ها بارگذاری نشد</b><div class="err">${esc(e.message)}</div><button class="btn" id="rt">تلاش دوباره</button></div></div>`;
+    document.getElementById('rt').onclick = load;
+  }
+}
+// Live sync with the database (new codes, renamed or deleted codes, new highlights).
+async function refresh(force) {
+  if (!S.data || busy) return;
+  busy = true;
+  try {
+    const d = await api('/api/coding/export'); lastAt = Date.now();
+    const sg = sig(d);
+    if (force || sg !== lastSig) { lastSig = sg; prepare(d); const y = scrollY; render(); scrollTo(0, y); }
+    syncText();
+  } catch (e) {
+    if (e.status === 401) return showLogin('نشست منقضی شده؛ دوباره وارد شوید.');
+    syncText(true);
+  } finally { busy = false; }
+}
+function syncText(err) {
+  const el = document.getElementById('syncTxt');
+  if (err) { el.textContent = 'به‌روزرسانی نشد'; el.style.color = '#c92a2a'; return; }
+  el.style.color = ''; el.textContent = 'به‌روز ' + new Date(lastAt).toLocaleTimeString('fa-IR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+}
+setInterval(() => { if (document.visibilityState === 'visible') refresh(); }, 30000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && Date.now() - lastAt > 5000) refresh(); });
+window.addEventListener('focus', () => { if (Date.now() - lastAt > 5000) refresh(); });
+document.getElementById('syncBtn').onclick = () => refresh(true);
+window.addEventListener('hashchange', () => { const c = hashCoder(); if (S.data && c && c !== S.coder && S.data.coders.some(x => x.id === c)) { S.coder = c; render(); scrollTo(0, 0); } });
+
+// ---- view ----
+const hi = (text, q) => {
+  const t = esc(text); if (!q) return t;
+  const i = text.toLowerCase().indexOf(q.toLowerCase()); if (i < 0) return t;
+  return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + q.length)) + '</mark>' + esc(text.slice(i + q.length));
+};
+const studioLink = (sid) => `/code/#coder-${S.coder}/${encodeURIComponent(sid)}`;
+
+function groups(codes) {
+  const D = S.data, mine = D.themes.filter(t => t.coder_id === S.coder).sort((a, b) => a.sort - b.sort || a.id - b.id);
+  const order = { theme: (a, b) => b.hs.length - a.hs.length || a.label.localeCompare(b.label), freq: (a, b) => b.hs.length - a.hs.length || a.label.localeCompare(b.label), abc: (a, b) => a.label.localeCompare(b.label) }[S.sort];
+  if (S.sort !== 'theme') return [{ name: S.sort === 'freq' ? 'همهٔ کدها، پرتکرارترین اول' : 'همهٔ کدها، به ترتیب الفبا', codes:[...codes].sort(order) }];
+  const out = mine.map(t => ({ name:t.name, codes:codes.filter(c => c.theme_id === t.id).sort(order) }));
+  const none = codes.filter(c => !c.theme_id || !mine.some(t => t.id === c.theme_id)).sort(order);
+  if (none.length) out.push({ name:'بدون تم', none:true, codes:none });
+  return out;
+}
+
+function render() {
+  const D = S.data; if (!D) return;
+  document.getElementById('tabs').innerHTML = D.coders.map(c => `<a class="tab" role="tab" href="#c=${c.id}" aria-current="${c.id === S.coder}" style="--cc:${CC[c.id] || '#555'}"><span class="dot" style="background:${CC[c.id] || '#555'}"></span>${esc(c.name)}</a>`).join('');
+  const coder = D.coders.find(c => c.id === S.coder);
+  if (!coder) { app.innerHTML = '<p class="empty">کدگذاری پیدا نشد.</p>'; return; }
+  const all = D.codes.filter(c => c.coder_id === S.coder);
+  const q = S.q.trim();
+  const codes = q ? all.filter(c => c.label.toLowerCase().includes(q.toLowerCase()) || c.hs.some(h => h.quote.toLowerCase().includes(q.toLowerCase()))) : all;
+  const nH = all.reduce((s, c) => s + c.hs.length, 0);
+  const nP = new Set(all.flatMap(c => c.posts)).size;
+  const nT = D.themes.filter(t => t.coder_id === S.coder).length;
+  const unused = all.filter(c => !c.hs.length).length;
+  const G = groups(codes);
+
+  const map = G.filter(g => g.codes.length).map(g => {
+    const max = Math.max(1, ...g.codes.map(c => c.hs.length));
+    return `<div class="mrow"><div class="mth">${esc(g.name)}<small>${fa(g.codes.length)} کد · ${fa(g.codes.reduce((s, c) => s + c.hs.length, 0))} قطعه</small></div>
+      <div class="pills">${g.codes.map(c => `<span class="pill${c.hs.length ? '' : ' zero'}" style="--k:${kcol(c.color)};font-size:${(12 + 5 * c.hs.length / max).toFixed(1)}px" data-go="${c.id}" title="${esc(c.label)} · ${c.hs.length} قطعه">${esc(c.label)}</span>`).join('')}</div></div>`;
+  }).join('');
+
+  const card = c => `<article class="code" id="code-${c.id}" style="--k:${kcol(c.color)}">
+      <div class="label" dir="auto">${hi(c.label, q)}</div>
+      <div class="meta"><span class="n">${fa(c.hs.length)} قطعه</span> <span>در ${fa(c.posts.length)} پست</span></div>
+      ${c.posts.length ? `<div class="sids">${c.posts.map(s => `<a class="sid" href="${studioLink(s)}" title="باز کردن ${esc(s)} در صفحهٔ کدگذاری">${esc(s)}</a>`).join('')}</div>` : '<div class="empty">هنوز در هیچ پستی استفاده نشده</div>'}
+      ${c.hs.length ? `<details${S.open || (q && c.hs.some(h => h.quote.toLowerCase().includes(q.toLowerCase()))) ? ' open' : ''}><summary>نقل‌قول‌ها (${fa(c.hs.length)})</summary>
+        ${c.hs.map(h => `<div class="q"><a class="sid" href="${studioLink(h.sid)}">${esc(h.sid)}</a> <div class="qt">${hi(h.quote, q) || '<span class="empty">—</span>'}</div></div>`).join('')}</details>` : ''}
+    </article>`;
+
+  app.innerHTML = `
+    <div class="head"><h2><span class="dot" style="background:${CC[coder.id] || '#555'};width:14px;height:14px"></span> نقشهٔ کدهای ${esc(coder.name)}</h2></div>
+    <div class="stats">
+      <span class="stat"><b>${fa(all.length)}</b> کد</span>
+      <span class="stat"><b>${fa(nT)}</b> تم</span>
+      <span class="stat"><b>${fa(nH)}</b> قطعهٔ کدگذاری‌شده</span>
+      <span class="stat"><b>${fa(nP)}</b> پست</span>
+      ${unused ? `<span class="stat"><b>${fa(unused)}</b> کد بدون استفاده</span>` : ''}
+    </div>
+    <div class="tools">
+      <input type="search" id="q" placeholder="جست‌وجو در نام کدها و نقل‌قول‌ها…" value="${esc(S.q)}">
+      <div class="seg" role="group" aria-label="مرتب‌سازی">
+        <button type="button" data-sort="theme" aria-pressed="${S.sort === 'theme'}">بر اساس تم</button>
+        <button type="button" data-sort="freq" aria-pressed="${S.sort === 'freq'}">پرتکرارها</button>
+        <button type="button" data-sort="abc" aria-pressed="${S.sort === 'abc'}">الفبایی</button>
+      </div>
+      <div class="seg"><button type="button" id="openAll" aria-pressed="${S.open}">همهٔ نقل‌قول‌ها باز</button></div>
+      <a class="chip" href="/code/#coder-${coder.id}">رفتن به صفحهٔ کدگذاری ${esc(coder.name)}</a>
+    </div>
+    ${all.length ? `
+      <div class="map"><h3>نمای کلی <span class="empty">· اندازهٔ هر کد به تعداد قطعه‌هایش بستگی دارد؛ روی هر کد بزنید تا جزئیاتش بیاید</span></h3>${map || '<p class="empty">چیزی با این جست‌وجو پیدا نشد.</p>'}</div>
+      ${G.filter(g => g.codes.length).map(g => `<section class="theme"><h3>${esc(g.name)} <small>${fa(g.codes.length)} کد</small></h3><div class="grid">${g.codes.map(card).join('')}</div></section>`).join('')}
+    ` : '<p class="empty">این کدگذار هنوز کدی نساخته است.</p>'}`;
+  wire();
+}
+
+function wire() {
+  const qi = document.getElementById('q');
+  qi.oninput = () => { S.q = qi.value; const pos = qi.selectionStart; render(); const n = document.getElementById('q'); n.focus(); n.setSelectionRange(pos, pos); };
+  app.querySelectorAll('[data-sort]').forEach(b => b.onclick = () => { S.sort = b.dataset.sort; render(); });
+  document.getElementById('openAll').onclick = () => { S.open = !S.open; render(); };
+  app.querySelectorAll('[data-go]').forEach(p => p.onclick = () => {
+    const el = document.getElementById('code-' + p.dataset.go); if (!el) return;
+    el.scrollIntoView({ block:'center', behavior:'smooth' });
+    el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+  });
+}
+
+load();
+})();
+</script>
+</body>
+</html>

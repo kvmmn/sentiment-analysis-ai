@@ -9,7 +9,7 @@ import { Codebook, type ConfirmReq } from './Codebook';
 import { ConfirmDialog, ShortcutsDialog } from './Dialogs';
 import { useToast } from './Toasts';
 import { ThemeToggle } from './ThemeToggle';
-import { AppNav, CompareLink } from './AppNav';
+import { AppNav, CodesLink, CompareLink } from './AppNav';
 
 interface Props {
   backend: Backend;
@@ -140,13 +140,14 @@ export function Studio({ backend, coderId, coderName, initialPost, onBack, onUna
         {backend.mode === 'demo' && <span className="demo-badge" title="داده‌ها ساختگی‌اند و فقط در همین مرورگر می‌مانند"><span className="hidden sm:inline">حالت </span>نمایشی</span>}
         {backend.mode === 'remote' && <AppNav className="ms-2 hidden 2xl:flex" />}
         <div className="ms-auto flex items-center gap-0.5 sm:gap-1">
+          {backend.mode === 'remote' && <CodesLink coderId={coderId} label="نقشهٔ کدها" compact className="max-sm:px-2" />}
           {backend.mode === 'remote' && <CompareLink post={post?.sample_id} label="مقایسه" compact className="me-1 max-sm:px-2" />}
           <button type="button" className="icon-text lg:hidden" onClick={() => setPanel(panel === 'posts' ? null : 'posts')} aria-expanded={panel === 'posts'}>پست‌ها</button>
           <button type="button" className="icon-text xl:hidden" onClick={() => setPanel(panel === 'codes' ? null : 'codes')} aria-expanded={panel === 'codes'}>کدنامه</button>
           <button type="button" className="icon" onClick={() => studio.undo()} aria-label="بازگردانی" title="بازگردانی (Ctrl+Z)">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 14l5-5-5-5" /><path d="M20 9H9a5 5 0 0 0 0 10h3" /></svg>
           </button>
-          <button type="button" className="icon" onClick={toggleTags} aria-pressed={showTags} aria-label="نمایش نام کدها در متن" title={showTags ? 'پنهان کردن نام کدها در متن (L)' : 'نمایش نام کدها در متن (L)'}>
+          <button type="button" className="icon max-sm:hidden" onClick={toggleTags} aria-pressed={showTags} aria-label="نمایش نام کدها در متن" title={showTags ? 'پنهان کردن نام کدها در متن (L)' : 'نمایش نام کدها در متن (L)'}>
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ opacity: showTags ? 1 : .45 }}><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z" /><circle cx="7.5" cy="7.5" r="1.5" /></svg>
           </button>
           <button type="button" className="icon hidden sm:grid" onClick={() => setHelp(true)} aria-label="میان‌برها" title="میان‌برها (?)">?</button>
