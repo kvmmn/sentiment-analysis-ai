@@ -970,3 +970,23 @@ The compare entry has one distinct style everywhere (accent outline pill with a 
 - Added a space between name and tag.
 - All HTML from both services (screening, kept, coding, compare) is now sent with `Cache-Control: no-store`, so every load fetches the current page. Fonts keep their own rules (§65).
 - The letter-joining check (§68) now runs on desktop and phone widths, with a last-used coder set, through the code book, the post list, the export menu, the shortcut help, several posts, the code picker and the compare page filters. It reports nothing after the fix and does catch the old «مرتضی | آخرین بار» case. A text scan of the swipe page templates found no adjacent Persian elements without a space.
+
+## 70. Code map: every code of one coder on one page
+
+**Request (Kaveh, 2026-11-27):** a feature where each coder can see their whole set of codes on one page, with each code's full text, separate from the post texts.
+
+**What:** new page `/code/codes` (`web/coding/public/codes.html`, read-only, reads `/api/coding/export`). It has one tab per coder (`#c=1`, `#c=2`, `#c=3`). For the chosen coder it shows:
+- totals: codes, themes, coded segments, posts, unused codes;
+- an overview map: one row per theme, with each code as a pill sized by how often it is used; clicking a pill jumps to that code's card;
+- a card per code, grouped under its theme ("بدون تم" last), with the full label (never truncated), its colour from the Studio palette, segment and post counts, the post ids (each opens the post in that coder's studio at `/code/#coder-N/SID`), and the quotes, which can be collapsed;
+- search across labels and quotes, sorting by theme, frequency or A–Z, and an "open all quotes" toggle. When printed, cards are not split across pages.
+
+It refreshes from the database every 30 s, on focus and with ⟳, like the compare page. HTML is no-store.
+
+**Access:**
+- a «نقشهٔ کدها» button in each coder's studio top bar, which opens that coder's map;
+- a highlighted card and a top-bar button on the coding home;
+- «نقشهٔ کدها» in the menus of the compare page and the screening/kept pages.
+On phones the studio hides the inline-label toggle so the bar fits.
+
+**Verification:** with the API mocked from a full export, at 1600 px and 390 px, through every coder tab, search, the three sort orders and the quotes toggle: the letter-joining check (§68–69) reports nothing; `/code/codes` returns 200 no-store; typecheck clean; `web/swipe` tests 8/8.

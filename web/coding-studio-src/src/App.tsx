@@ -5,7 +5,7 @@ import { fa, safeStorage } from '@/lib/text';
 import { ToastProvider } from '@/components/Toasts';
 import { Studio } from '@/components/Studio';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { AppNav, CompareIcon, CompareLink, COMPARE_URL } from '@/components/AppNav';
+import { AppNav, CODES_URL, CodesLink, CompareIcon, CompareLink, COMPARE_URL, MapIcon } from '@/components/AppNav';
 
 const LAST_CODER = 'saintiment_coding_last_coder';
 
@@ -124,6 +124,7 @@ function CoderPicker({ backend, onPick, onLogout, onUnauthorized }: { backend: B
         {backend.mode === 'demo' && <span className="demo-badge">حالت نمایشی</span>}
         {backend.mode === 'remote' && <AppNav className="ms-3 hidden sm:flex" />}
         {backend.mode === 'remote' && <CompareLink className="ms-1" />}
+        {backend.mode === 'remote' && <CodesLink className="ms-1 max-md:hidden" />}
         <div className="ms-auto flex items-center gap-1">
           <ThemeToggle />
           {backend.mode === 'remote' && <button type="button" className="icon-text" onClick={onLogout}>خروج</button>}
@@ -147,6 +148,16 @@ function CoderPicker({ backend, onPick, onLogout, onUnauthorized }: { backend: B
               <span className="grid gap-1">
                 <span className="text-[16px] font-bold">مقایسهٔ کدگذاری‌ها</span>
                 <span className="text-[12.5px] leading-6 text-[var(--muted)]">کدهای همهٔ کدگذارها کنار هم، پست به پست: چه کسی کجا را با چه کدی علامت زده</span>
+              </span>
+              <span className="text-[18px] text-[var(--accent)]" aria-hidden="true">←</span>
+            </a>
+          )}
+          {backend.mode === 'remote' && (
+            <a href={CODES_URL} className="compare-card">
+              <span className="ic"><MapIcon size={20} /></span>
+              <span className="grid gap-1">
+                <span className="text-[16px] font-bold">نقشهٔ کدها</span>
+                <span className="text-[12.5px] leading-6 text-[var(--muted)]">همهٔ کدهای هر کدگذار با متن کامل، دسته‌بندی‌شده بر اساس تم، جدا از متن پست‌ها</span>
               </span>
               <span className="text-[18px] text-[var(--accent)]" aria-hidden="true">←</span>
             </a>

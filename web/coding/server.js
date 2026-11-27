@@ -451,6 +451,8 @@ const noStoreHtml = (res, file) => { if (file.endsWith('.html')) res.set(HTML_HE
 const sendHtml = (res, name) => res.sendFile(path.join(PUBLIC_DIR, name), { headers: HTML_HEADERS, etag: false, lastModified: false });
 app.get(['/code/compare', '/code/compare/'], (req, res) => sendHtml(res, 'compare.html'));
 app.get('/code/compare.html', (req, res) => res.redirect(301, '/code/compare'));
+// Code map: every code of one coder on one page, apart from the post texts.
+app.get(['/code/codes', '/code/codes/'], (req, res) => sendHtml(res, 'codes.html'));
 app.use('/code', express.static(PUBLIC_DIR, { maxAge: 0, setHeaders: noStoreHtml }));
 app.use(express.static(PUBLIC_DIR, { maxAge: 0, setHeaders: noStoreHtml }));
 app.get(['/code', '/code/{*splat}', '/{*splat}'], (req, res) => sendHtml(res, 'index.html'));
