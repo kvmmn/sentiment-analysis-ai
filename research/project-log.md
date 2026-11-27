@@ -919,3 +919,13 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 **Change:** `web/coding/public/compare.html` (`/code/compare.html`), read-only, from the existing `/api/coding/export`. Per post: text with one coloured underline per coder, a tint where two or more coders overlap, code names inline at the end of each highlight; a table with one row per passage (overlapping highlights grouped) and one column per coder; pairwise Jaccard overlap; each coder's memo. Filters for coders and shared/single passages. Re-reads the database every 30 s while visible and on focus, redrawing only when something changed. Link added to the Coding Studio navigation.
 
 **Verification:** headless Chromium against a mocked export (rendering, selection, filters, live change picked up by sync). Real-database check run locally against Neon; see the PR.
+
+## 65. One self-hosted typeface set for every page (2026-11-27)
+
+**Request (Kaveh, 2026-11-27):** fonts and typefaces looked mixed up across the app; make them consistent, clean and stable on every page.
+
+**Cause:** the screening page loaded Vazirmatn from Google Fonts, the Coding Studio loaded Vazirmatn, Source Serif 4 and JetBrains Mono from Google Fonts at runtime, and the new compare page used system fonts and Georgia. Where Google Fonts is slow or blocked, pages fell back to different system fonts.
+
+**Change:** the three families are self-hosted in `web/coding/public/fonts/` (woff2 variable fonts from `@fontsource-variable` 5.3, SIL OFL 1.1 licences included) with one `fonts.css` that defines `--font-ui` (Vazirmatn, Persian and Latin interface), `--font-read` (Source Serif 4, post text) and `--font-mono` (JetBrains Mono, ids and keys). Screening and kept posts (`/`, `/kept`), the Coding Studio (`/code/`) and the compare page all load `/code/fonts/fonts.css` and use those tokens, with system fallbacks. No page calls Google Fonts any more. Fonts are cached for 7 days.
+
+**Verification:** headless Chromium on all three pages: body font resolves to Vazirmatn, the expected faces load from `/code/fonts/`, no failed requests or page errors; `web/swipe` tests 8/8 pass.

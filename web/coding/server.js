@@ -435,6 +435,9 @@ app.get('/api/coding/export', requireSession, async (req, res, next) => {
 app.use('/api/coding', (req, res) => res.status(404).json({ error: 'not_found' }));
 
 const PUBLIC_DIR = path.join(path.dirname(THIS_FILE), 'public');
+// Shared self-hosted fonts for every page of the app (swipe pages load them from /code/fonts too).
+app.use('/code/fonts', express.static(path.join(PUBLIC_DIR, 'fonts'), { maxAge: '7d' }));
+app.use('/code/fonts', (req, res) => res.status(404).end());
 app.use('/code', express.static(PUBLIC_DIR, { maxAge: 0 }));
 app.use(express.static(PUBLIC_DIR, { maxAge: 0 }));
 app.get(['/code', '/code/{*splat}', '/{*splat}'], (req, res) => {
