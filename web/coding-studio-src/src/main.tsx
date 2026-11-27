@@ -15,7 +15,7 @@ if (location.pathname.startsWith('/code')) {
   }
   const font = document.createElement('link');
   font.rel = 'stylesheet';
-  font.href = '/code/fonts/fonts.css';
+  font.href = '/code/fonts/fonts.css?v=2';
   document.head.appendChild(font);
 }
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);
