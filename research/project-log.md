@@ -903,3 +903,19 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 - Reading text 17 px with line height 1.95 (was 18 px / 1.85); highlight tints slightly lighter; the active phrase gets a thin accent outline.
 
 **Verification:** headless Chromium on the built page in demo mode at desktop and phone sizes (bar placement, recent-code keys, new code, suggestion pick, Backspace, label toggle) and against a mocked API with string ids (adding a second code to a phrase, failed save rolled back, delete and undo). Not tested against Neon from here.
+
+## 63. Iman's initial coding imported into Coding Studio (2026-11-27)
+
+**Request (Kaveh, 2026-11-27):** Iman finished the initial coding of the 50-post sample in the Google Sheet `saintiment_initial_coding_50_2026-11-25` (tab `Iman`); move it exactly into the Coding Studio so it can be reviewed there.
+
+**Mapping:** each `"quote" [code]` line of `initial_codes` became one code and one highlight on the exact quote in the stored post text; `primary_theme` became the theme of the codes used in that post (no code was used under two themes); `primary_theme`, `stance_sentiment`, `stakeholder_role`, `relevance_flag` and `coder_notes` were copied verbatim into the post memo; a post counts as coded when Iman filled anything. Two quotes (S23, S48) cross a paragraph break and were stored as two highlights each with the same code, because a highlight lives inside one paragraph. The Sheet's text has `"\n \n"` where the database has `"\n\n"`; matching ignores that whitespace difference.
+
+**Result:** coder 2 (Iman) has 5 themes, 126 codes, 130 highlights and 48 post statuses; S35 and S50 are empty in the Sheet. A verification pass found 0 wrong offsets and nothing missing or extra against the Sheet. The script refused to run if Iman already had data. Script and parsed Sheet are local only (`_local/work/2026-11-27-iman-coding-import/`).
+
+## 64. Coding Studio: page comparing all coders (2026-11-27)
+
+**Request (Kaveh, 2026-11-27, team meeting):** a page that merges everyone's coding per post so the team can see who coded which passage with which code; readable, eye-catching codes, live with the database.
+
+**Change:** `web/coding/public/compare.html` (`/code/compare.html`), read-only, from the existing `/api/coding/export`. Per post: text with one coloured underline per coder, a tint where two or more coders overlap, code names inline at the end of each highlight; a table with one row per passage (overlapping highlights grouped) and one column per coder; pairwise Jaccard overlap; each coder's memo. Filters for coders and shared/single passages. Re-reads the database every 30 s while visible and on focus, redrawing only when something changed. Link added to the Coding Studio navigation.
+
+**Verification:** headless Chromium against a mocked export (rendering, selection, filters, live change picked up by sync). Real-database check run locally against Neon; see the PR.

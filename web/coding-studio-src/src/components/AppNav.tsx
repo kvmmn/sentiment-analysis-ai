@@ -5,6 +5,7 @@ export function AppNav({ className = '' }: { className?: string }) {
       <a href="/" className="rounded-[4px] px-2 py-1 text-[var(--muted)] hover:bg-[var(--sunk)] hover:text-[var(--ink)]">غربالگری</a>
       <a href="/kept" className="rounded-[4px] px-2 py-1 text-[var(--muted)] hover:bg-[var(--sunk)] hover:text-[var(--ink)]">منتخب‌ها</a>
       <a href="/code/" aria-current="page" className="rounded-[4px] px-2 py-1 font-semibold text-[var(--ink)]">کدگذاری</a>
+      <a href="/code/compare.html" className="rounded-[4px] px-2 py-1 text-[var(--muted)] hover:bg-[var(--sunk)] hover:text-[var(--ink)]">مقایسه</a>
     </nav>
   );
 }
