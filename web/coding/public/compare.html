@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مقایسهٔ کدگذاری‌ها · Saintiment</title>
+<style>
+:root{
+  --bg:#f7f6f3;--panel:#fff;--sunk:#f0eee9;--line:#e3e0d8;--ink:#1f2328;--muted:#6b6f76;--accent:#3b5bdb;
+  --c1:#2f6fdf;--c1t:rgba(47,111,223,.13);
+  --c2:#d9480f;--c2t:rgba(217,72,15,.13);
+  --c3:#2b8a3e;--c3t:rgba(43,138,62,.14);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.6 system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+button,input,select{font:inherit;color:inherit}
+a{color:inherit}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:var(--panel);border-bottom:1px solid var(--line)}
+.top h1{font-size:15px;margin:0 0 0 8px}
+.nav a{padding:3px 8px;border-radius:4px;color:var(--muted);text-decoration:none;font-size:12.5px}
+.nav a:hover{background:var(--sunk);color:var(--ink)}
+.nav a[aria-current]{color:var(--ink);font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;background:var(--panel);cursor:pointer;font-size:12.5px;user-select:none}
+.chip[aria-pressed=false]{opacity:.45;text-decoration:line-through}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{border:0;background:var(--panel);padding:3px 10px;cursor:pointer;font-size:12.5px}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+.spacer{flex:1}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr) 400px;height:calc(100vh - 50px)}
+.posts{border-left:1px solid var(--line);overflow:auto;background:var(--panel)}
+.posts button{display:flex;width:100%;align-items:center;gap:8px;border:0;border-bottom:1px solid var(--sunk);background:none;padding:7px 12px;text-align:start;cursor:pointer}
+.posts button:hover{background:var(--sunk)}
+.posts button[aria-current=true]{background:#eef1fb;box-shadow:inset -3px 0 0 var(--accent)}
+.posts .sid{font-weight:600;font-variant-numeric:tabular-nums;min-width:30px}
+.posts .bars{display:flex;gap:3px;flex:1;justify-content:flex-end}
+.posts .n{font-size:11px;min-width:22px;text-align:center;border-radius:3px;padding:0 3px;font-variant-numeric:tabular-nums}
+.posts .ov{font-size:11px;color:var(--muted);min-width:34px;text-align:end}
+.reader{overflow:auto;padding:20px 28px 60px}
+.meta{color:var(--muted);font-size:12.5px;margin-bottom:12px;display:flex;gap:12px;flex-wrap:wrap}
+.text{direction:ltr;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px 26px;font-size:16px;line-height:2.35;max-width:820px}
+.text p{margin:0 0 14px;white-space:pre-wrap}
+.s{cursor:pointer;border-radius:2px;padding-bottom:9px;background-repeat:no-repeat}
+.s.sel{outline:2px solid var(--ink);outline-offset:1px}
+.s.dim{opacity:.35}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:10px 0 0;max-width:820px}
+.side{border-right:1px solid var(--line);overflow:auto;background:var(--panel);padding:14px}
+.side h2{font-size:13px;margin:16px 0 8px;color:var(--muted);font-weight:600}
+.side h2:first-child{margin-top:0}
+.box{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--bg)}
+.empty{color:var(--muted);font-size:12.5px}
+.hit{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line)}
+.hit:last-child{border-bottom:0}
+.who{font-weight:600;font-size:12.5px;white-space:nowrap}
+.code{display:inline-block;margin:2px 0 2px 4px;padding:0 7px;border-radius:4px;font-size:12px;line-height:20px;border:1px solid}
+.theme{color:var(--muted);font-size:11.5px}
+.q{direction:ltr;text-align:left;font-size:12.5px;color:#333;margin-top:2px}
+.cols{display:grid;gap:10px}
+.col{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.col>header{display:flex;align-items:center;gap:8px;padding:6px 10px;font-weight:600;font-size:13px;background:var(--sunk)}
+.col>header .cnt{margin-inline-start:auto;font-weight:400;color:var(--muted);font-size:12px}
+.col ul{list-style:none;margin:0;padding:0}
+.col li{padding:7px 10px;border-top:1px solid var(--sunk);cursor:pointer}
+.col li:hover{background:var(--bg)}
+.col li.shared .q::before{content:"◆ ";color:var(--muted)}
+.memo{white-space:pre-wrap;direction:ltr;text-align:left;font-size:12px;color:var(--muted);padding:7px 10px;border-top:1px solid var(--sunk);background:#fbfaf7}
+.stat{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;font-size:12.5px;align-items:center}
+.meter{height:6px;background:var(--sunk);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ink);opacity:.6}
+.center{display:grid;place-items:center;height:calc(100vh - 50px)}
+.login{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px;width:320px;display:grid;gap:10px}
+.login input{border:1px solid var(--line);border-radius:6px;padding:8px 10px}
+.login button,.btn{border:0;border-radius:6px;padding:8px 12px;background:var(--ink);color:#fff;cursor:pointer}
+.err{color:#c92a2a;font-size:12.5px;min-height:1em}
+.flash{animation:flash 1.2s ease}
+@keyframes flash{0%,40%{outline:3px solid #fab005;outline-offset:2px}100%{outline:0 solid transparent}}
+@media (max-width:1100px){.layout{grid-template-columns:180px minmax(0,1fr)}.side{grid-column:1/-1;border-right:0;border-top:1px solid var(--line)}.layout{height:auto}.posts,.reader,.side{max-height:none}}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>مقایسهٔ کدگذاری‌ها</h1>
+  <nav class="nav" aria-label="بخش‌های پروژه"><a href="/">غربالگری</a><a href="/kept">منتخب‌ها</a><a href="/code/">کدگذاری</a><a href="/code/compare.html" aria-current="page">مقایسه</a></nav>
+  <span class="spacer"></span>
+  <div id="coderChips" style="display:flex;gap:6px"></div>
+  <div class="seg" role="group" aria-label="نمایش">
+    <button type="button" data-mode="all" aria-pressed="true">همه</button>
+    <button type="button" data-mode="shared" aria-pressed="false" title="فقط جاهایی که حداقل دو نفر کد گذاشته‌اند">مشترک</button>
+    <button type="button" data-mode="single" aria-pressed="false" title="فقط جاهایی که فقط یک نفر کد گذاشته">تک‌نفره</button>
+  </div>
+</div>
+<div id="app"><div class="center empty">در حال بارگذاری…</div></div>
+
+<script>
+(() => {
+const COLORS = {1:['var(--c1)','var(--c1t)','#2f6fdf'],2:['var(--c2)','var(--c2t)','#d9480f'],3:['var(--c3)','var(--c3t)','#2b8a3e']};
+const CODE_COLORS = ['#5c7cfa','#e8590c','#2f9e44','#ae3ec9','#1098ad','#f08c00'];
+const app = document.getElementById('app');
+const state = { data:null, sid:null, on:new Set([1,2,3]), mode:'all', selKey:null };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const paras = t => String(t || '').split(/\n{2,}/).map(s => s.trim()).filter(Boolean);
+const num = v => v == null ? null : Number(v);
+
+async function api(path, opts) {
+  const r = await fetch(path, { credentials:'same-origin', headers:{'Content-Type':'application/json'}, ...opts });
+  if (r.status === 401) { const e = new Error('unauthorized'); e.status = 401; throw e; }
+  const ct = r.headers.get('content-type') || '';
+  if (!r.ok || !ct.includes('json')) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
+function showLogin(msg) {
+  app.innerHTML = `<div class="center"><form class="login" id="lf"><b>ورود تیم</b>
+    <input type="password" id="pw" placeholder="رمز تیم" autocomplete="current-password" required>
+    <button type="submit">ورود</button><div class="err" id="le">${esc(msg||'')}</div></form></div>`;
+  document.getElementById('lf').onsubmit = async e => {
+    e.preventDefault();
+    try { await api('/api/coding/login', { method:'POST', body:JSON.stringify({ password:document.getElementById('pw').value }) }); load(); }
+    catch (err) { document.getElementById('le').textContent = err.status === 401 ? 'رمز اشتباه است.' : 'خطا در اتصال: ' + err.message; }
+  };
+}
+
+async function load() {
+  app.innerHTML = '<div class="center empty">در حال بارگذاری…</div>';
+  try {
+    const d = await api('/api/coding/export');
+    prepare(d);
+    const h = decodeURIComponent(location.hash.slice(1));
+    state.sid = state.data.posts.some(p => p.sample_id === h) ? h : state.data.posts[0]?.sample_id;
+    render();
+  } catch (e) {
+    if (e.status === 401) return showLogin();
+    app.innerHTML = `<div class="center"><div class="login"><b>داده‌ها بارگذاری نشد</b><div class="err">${esc(e.message)}</div><button class="btn" id="rt">تلاش دوباره</button></div></div>`;
+    document.getElementById('rt').onclick = load;
+  }
+}
+
+function prepare(d) {
+  const coders = d.coders.map(c => ({ id:num(c.id), name:c.name, name_en:c.name_en }));
+  const codes = new Map(d.codes.map(c => [num(c.id), { ...c, id:num(c.id), coder_id:num(c.coder_id), theme_id:num(c.theme_id), color_idx:num(c.color_idx) }]));
+  const themes = new Map(d.themes.map(t => [num(t.id), t.name]));
+  const hls = d.highlights.map(h => ({ ...h, id:num(h.id), coder_id:num(h.coder_id), code_id:num(h.code_id), paragraph_idx:num(h.paragraph_idx), start_offset:num(h.start_offset), end_offset:num(h.end_offset) }));
+  const byPost = new Map();
+  for (const h of hls) { if (!byPost.has(h.sample_id)) byPost.set(h.sample_id, []); byPost.get(h.sample_id).push(h); }
+  const status = new Map(d.post_status.map(s => [num(s.coder_id) + '|' + s.sample_id, s]));
+  state.data = { coders, codes, themes, posts:d.posts, byPost, status, ext:d.external_sources || [] };
+  for (const p of d.posts) p._stats = stats(p);
+}
+
+// Character coverage per coder for the post body; used for overlap stats and segment rendering.
+function coverage(post, coderFilter) {
+  const P = paras(post.post_text);
+  const hs = (state.data.byPost.get(post.sample_id) || []).filter(h => h.source === 'post' && h.paragraph_idx >= 0 && h.paragraph_idx < P.length && (!coderFilter || coderFilter.has(h.coder_id)));
+  return { P, hs };
+}
+
+function stats(post) {
+  const { P, hs } = coverage(post);
+  const sets = {1:new Set(),2:new Set(),3:new Set()};
+  for (const h of hs) for (let i = h.start_offset; i < h.end_offset; i++) sets[h.coder_id]?.add(h.paragraph_idx + ':' + i);
+  const pair = (a, b) => { const A = sets[a], B = sets[b]; if (!A.size || !B.size) return null; let inter = 0; for (const x of A) if (B.has(x)) inter++; return inter / (A.size + B.size - inter); };
+  const counts = {}; for (const c of [1,2,3]) counts[c] = (state.data.byPost.get(post.sample_id) || []).filter(h => h.coder_id === c).length;
+  return { counts, pairs:{ '1-2':pair(1,2), '1-3':pair(1,3), '2-3':pair(2,3) }, coded:[1,2,3].filter(c => sets[c].size).length };
+}
+
+function segments(text, hs) {
+  const cuts = new Set([0, text.length]);
+  for (const h of hs) { cuts.add(Math.max(0, Math.min(text.length, h.start_offset))); cuts.add(Math.max(0, Math.min(text.length, h.end_offset))); }
+  const pts = [...cuts].sort((a, b) => a - b), out = [];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1]; if (a === b) continue;
+    const cover = hs.filter(h => h.start_offset <= a && h.end_offset >= b);
+    out.push({ a, b, cover });
+  }
+  return out;
+}
+
+function segStyle(coderIds) {
+  const ids = [...coderIds].sort();
+  const layers = [], sizes = [], pos = [];
+  // one 3px band per coder at a fixed height, so each coder's line stays in the same place
+  for (const c of [1,2,3]) {
+    if (!ids.includes(c)) continue;
+    layers.push(`linear-gradient(${COLORS[c][2]},${COLORS[c][2]})`); sizes.push('100% 3px'); pos.push(`0 calc(100% - ${(c - 1) * 4}px)`);
+  }
+  if (ids.length === 1) { layers.push(`linear-gradient(${COLORS[ids[0]][2]}22,${COLORS[ids[0]][2]}22)`); sizes.push('100% calc(100% - 12px)'); pos.push('0 0'); }
+  if (ids.length >= 2) { layers.push('linear-gradient(#fab00533,#fab00533)'); sizes.push('100% calc(100% - 12px)'); pos.push('0 0'); }
+  return `background-image:${layers.join(',')};background-size:${sizes.join(',')};background-position:${pos.join(',')}`;
+}
+
+function coderName(id) { const c = state.data.coders.find(x => x.id === id); return c ? c.name : 'کدگذار ' + id; }
+function codeChip(code) {
+  if (!code) return '<span class="code" style="border-color:#ccc">؟</span>';
+  const col = CODE_COLORS[((code.color_idx || 1) - 1) % 6];
+  return `<span class="code" style="border-color:${col}55;background:${col}14;color:#222">${esc(code.label)}</span>`;
+}
+function themeOf(code) { return code && code.theme_id ? state.data.themes.get(code.theme_id) || '' : ''; }
+function pct(v) { return v == null ? '–' : Math.round(v * 100) + '%'; }
+
+function renderChips() {
+  const el = document.getElementById('coderChips');
+  el.innerHTML = state.data.coders.map(c => `<span class="chip" role="button" tabindex="0" data-c="${c.id}" aria-pressed="${state.on.has(c.id)}"><span class="dot" style="background:${COLORS[c.id]?.[2] || '#999'}"></span>${esc(c.name)}</span>`).join('');
+  el.querySelectorAll('.chip').forEach(ch => ch.onclick = ch.onkeydown = e => {
+    if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    const id = Number(ch.dataset.c); state.on.has(id) ? state.on.delete(id) : state.on.add(id); render();
+  });
+}
+document.querySelectorAll('.seg button').forEach(b => b.onclick = () => {
+  state.mode = b.dataset.mode; document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b)); render();
+});
+
+function render() {
+  if (!state.data) return;
+  renderChips();
+  const D = state.data, post = D.posts.find(p => p.sample_id === state.sid);
+  const list = D.posts.map(p => {
+    const s = p._stats, pr = [s.pairs['1-2'], s.pairs['1-3'], s.pairs['2-3']].filter(v => v != null);
+    const avg = pr.length ? pr.reduce((a, b) => a + b, 0) / pr.length : null;
+    return `<button type="button" data-sid="${esc(p.sample_id)}" aria-current="${p.sample_id === state.sid}">
+      <span class="sid">${esc(p.sample_id)}</span>
+      <span class="bars">${[1,2,3].map(c => `<span class="n" title="${esc(coderName(c))}: ${s.counts[c]} هایلایت" style="background:${s.counts[c] ? COLORS[c][2] + '22' : 'transparent'};color:${s.counts[c] ? COLORS[c][2] : '#bbb'}">${s.counts[c] || '·'}</span>`).join('')}</span>
+      <span class="ov" title="میانگین هم‌پوشانی متن هایلایت‌شده بین کدگذارهایی که هر دو این پست را کد کرده‌اند">${avg == null ? '' : pct(avg)}</span></button>`;
+  }).join('');
+  app.innerHTML = `<div class="layout"><aside class="posts" aria-label="پست‌ها">${list}</aside>
+    <main class="reader" id="reader">${post ? renderPost(post) : '<p class="empty">پستی نیست.</p>'}</main>
+    <aside class="side" id="side">${post ? renderSide(post) : ''}</aside></div>`;
+  app.querySelectorAll('.posts button').forEach(b => b.onclick = () => { state.sid = b.dataset.sid; state.selKey = null; history.replaceState(null, '', '#' + encodeURIComponent(state.sid)); render(); document.getElementById('reader').scrollTop = 0; });
+  app.querySelectorAll('.s').forEach(s => s.onclick = () => { state.selKey = s.dataset.k; renderSelOnly(post); });
+  app.querySelectorAll('[data-hl]').forEach(li => li.onclick = () => jumpTo(Number(li.dataset.hl)));
+  app.querySelector('.posts button[aria-current=true]')?.scrollIntoView({ block:'nearest' });
+}
+
+function renderPost(post) {
+  const { P, hs } = coverage(post, state.on);
+  const body = P.map((t, pi) => {
+    const segs = segments(t, hs.filter(h => h.paragraph_idx === pi));
+    return '<p>' + segs.map(sg => {
+      const ids = new Set(sg.cover.map(h => h.coder_id));
+      const txt = esc(t.slice(sg.a, sg.b));
+      if (!ids.size) return txt;
+      const hide = (state.mode === 'shared' && ids.size < 2) || (state.mode === 'single' && ids.size !== 1);
+      const k = `${pi}:${sg.a}:${sg.b}`;
+      const tip = [...ids].map(c => coderName(c) + ': ' + sg.cover.filter(h => h.coder_id === c).map(h => D().codes.get(h.code_id)?.label || '؟').join('، ')).join(' | ');
+      return `<span class="s${hide ? ' dim' : ''}${state.selKey === k ? ' sel' : ''}" data-k="${k}" data-hls="${sg.cover.map(h => h.id).join(',')}" title="${esc(tip)}" style="${segStyle(ids)}">${txt}</span>`;
+    }).join('') + '</p>';
+  }).join('');
+  const s = post._stats;
+  return `<div class="meta"><b style="color:var(--ink)">${esc(post.sample_id)}</b><span>${esc(post.author_type || '')}</span><span>${esc((post.posted_at || '').slice(0, 10))}</span>${post.post_url ? `<a href="${esc(post.post_url)}" target="_blank" rel="noopener">لینک پست ↗</a>` : ''}<span>${s.coded} از ۳ نفر این پست را هایلایت کرده‌اند</span></div>
+    <div class="text" id="ptext">${body}</div>
+    <div class="legend">${D().coders.map(c => `<span><span class="dot" style="background:${COLORS[c.id][2]}"></span> خط ${esc(c.name)}</span>`).join('')}<span><span class="dot" style="background:#fab00577"></span> زمینهٔ زرد: دو نفر یا بیشتر</span><span>روی هر عبارت بزنید تا کدهای همه دیده شود.</span></div>`;
+}
+const D = () => state.data;
+
+function selBox(post) {
+  if (!state.selKey) return '<div class="box empty">روی یک عبارت هایلایت‌شده در متن بزنید تا ببینید هر نفر چه کدی گذاشته است.</div>';
+  const el = document.querySelector(`.s[data-k="${state.selKey}"]`);
+  const ids = (el?.dataset.hls || '').split(',').filter(Boolean).map(Number);
+  const hs = (D().byPost.get(post.sample_id) || []).filter(h => ids.includes(h.id));
+  const by = new Map(); for (const h of hs) { if (!by.has(h.coder_id)) by.set(h.coder_id, []); by.get(h.coder_id).push(h); }
+  return '<div class="box">' + [...by.entries()].sort((a, b) => a[0] - b[0]).map(([c, list]) => `<div class="hit"><span class="who" style="color:${COLORS[c][2]}">${esc(coderName(c))}</span><div>${list.map(h => { const code = D().codes.get(h.code_id); return codeChip(code) + (themeOf(code) ? `<span class="theme">${esc(themeOf(code))}</span>` : ''); }).join('<br>')}<div class="q">“${esc(list[0].quote)}”</div></div></div>`).join('') + '</div>';
+}
+
+function renderSelOnly(post) {
+  document.querySelectorAll('.s.sel').forEach(x => x.classList.remove('sel'));
+  document.querySelector(`.s[data-k="${state.selKey}"]`)?.classList.add('sel');
+  document.getElementById('selBox').innerHTML = selBox(post);
+}
+
+function renderSide(post) {
+  const all = (D().byPost.get(post.sample_id) || []);
+  const { P } = coverage(post);
+  // a highlight is "shared" when another visible coder covers any of its characters
+  const overlaps = (h) => all.some(o => o.coder_id !== h.coder_id && state.on.has(o.coder_id) && o.source === h.source && o.paragraph_idx === h.paragraph_idx && h.paragraph_idx >= 0 && o.start_offset < h.end_offset && o.end_offset > h.start_offset);
+  const s = post._stats;
+  const pairRow = (a, b) => { const v = s.pairs[`${a}-${b}`]; return `<span>${esc(coderName(a))} و ${esc(coderName(b))}</span><span class="meter"><i style="width:${v == null ? 0 : Math.round(v * 100)}%"></i></span><span>${pct(v)}</span>`; };
+  const cols = D().coders.filter(c => state.on.has(c.id)).map(c => {
+    const hs = all.filter(h => h.coder_id === c.id).sort((a, b) => (a.source === b.source ? 0 : a.source === 'post' ? -1 : 1) || a.paragraph_idx - b.paragraph_idx || a.start_offset - b.start_offset);
+    const st = D().status.get(c.id + '|' + post.sample_id);
+    const items = hs.map(h => { const code = D().codes.get(h.code_id); return `<li data-hl="${h.id}" class="${overlaps(h) ? 'shared' : ''}" title="${h.paragraph_idx < 0 ? 'بدون جای مشخص در متن' : 'نمایش در متن'}">${codeChip(code)}${themeOf(code) ? `<span class="theme">${esc(themeOf(code))}</span>` : ''}${h.source === 'external' ? ' <span class="theme">(منبع بیرونی)</span>' : ''}<div class="q">“${esc(h.quote)}”</div></li>`; }).join('');
+    return `<section class="col"><header><span class="dot" style="background:${COLORS[c.id][2]}"></span>${esc(c.name)}<span class="cnt">${hs.length} هایلایت${st?.is_coded ? ' · کدگذاری‌شده' : ''}</span></header>
+      <ul>${items || '<li class="empty" style="cursor:default">هنوز کدی برای این پست ندارد.</li>'}</ul>
+      ${st?.coder_notes ? `<div class="memo">${esc(st.coder_notes)}</div>` : ''}</section>`;
+  }).join('');
+  return `<h2>عبارت انتخاب‌شده</h2><div id="selBox">${selBox(post)}</div>
+    <h2>هم‌پوشانی متنِ هایلایت‌شده (Jaccard)</h2><div class="stat">${pairRow(1,2)}${pairRow(1,3)}${pairRow(2,3)}</div>
+    <h2>کدهای هر نفر در این پست <span class="theme">(◆ = با دیگری هم‌پوشانی دارد)</span></h2><div class="cols">${cols}</div>`;
+}
+
+function jumpTo(id) {
+  const el = [...document.querySelectorAll('.s')].find(s => s.dataset.hls.split(',').map(Number).includes(id));
+  if (!el) return;
+  state.selKey = el.dataset.k; renderSelOnly(D().posts.find(p => p.sample_id === state.sid));
+  el.scrollIntoView({ block:'center', behavior:'smooth' });
+  el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+}
+
+window.addEventListener('keydown', e => {
+  if (!state.data || e.target.closest('input')) return;
+  const i = state.data.posts.findIndex(p => p.sample_id === state.sid);
+  const next = e.key === 'ArrowDown' || e.key === 'j' ? i + 1 : e.key === 'ArrowUp' || e.key === 'k' ? i - 1 : null;
+  if (next == null || next < 0 || next >= state.data.posts.length) return;
+  e.preventDefault(); state.sid = state.data.posts[next].sample_id; state.selKey = null; history.replaceState(null, '', '#' + state.sid); render();
+});
+
+load();
+})();
+</script>
+</body>
+</html>
