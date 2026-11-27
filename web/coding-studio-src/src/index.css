@@ -13,9 +13,9 @@
   --c5: #b0204f; --c5-bg: rgba(192, 38, 94, .09);
   --c6: #3f6b0e; --c6-bg: rgba(84, 140, 22, .12);
   --sel: rgba(11, 110, 105, .2);
-  --ui: "Vazirmatn", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --serif: "Source Serif 4", "Iowan Old Style", Georgia, "Vazirmatn", serif;
-  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ui: var(--font-ui, "Vazirmatn", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif);
+  --serif: var(--font-read, "Source Serif 4", "Iowan Old Style", Georgia, "Vazirmatn", serif);
+  --mono: var(--font-mono, "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace);
   color-scheme: light;
 }
 .dark {
