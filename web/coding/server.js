@@ -443,6 +443,9 @@ app.use('/code/fonts', express.static(path.join(PUBLIC_DIR, 'fonts'), {
   setHeaders: (res, file) => { if (file.endsWith('.css')) res.set('Cache-Control', 'no-cache'); },
 }));
 app.use('/code/fonts', (req, res) => res.status(404).end());
+// Compare page: all coders side by side. Clean address /code/compare; the old .html address redirects.
+app.get(['/code/compare', '/code/compare/'], (req, res) => res.sendFile(path.join(PUBLIC_DIR, 'compare.html')));
+app.get('/code/compare.html', (req, res) => res.redirect(301, '/code/compare'));
 app.use('/code', express.static(PUBLIC_DIR, { maxAge: 0 }));
 app.use(express.static(PUBLIC_DIR, { maxAge: 0 }));
 app.get(['/code', '/code/{*splat}', '/{*splat}'], (req, res) => {

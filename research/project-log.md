@@ -937,3 +937,15 @@ YAML for each new file loads back to the same JSON object. The Q01–Q48 and 105
 **Change:** the shared self-hosted set (section 65) now uses Estedad (`@fontsource-variable/estedad` 5.3, SIL OFL 1.1) instead of Vazirmatn for `--font-ui`, and as the Persian fallback in `--font-read` and `--font-mono`, so Persian code names in monospace or serif contexts also render in Estedad. Vazirmatn files removed. Applies to `/`, `/kept`, `/code/` and `/code/compare.html`.
 
 **Verification:** headless Chromium on all three pages: body font Estedad, Estedad Arabic and Latin faces load from `/code/fonts/`, no failed requests or page errors; `web/swipe` tests 8/8.
+
+## 67. Compare page: own address and a distinct entry from the coding screens
+
+**Request (Kaveh, 2026-11-27):** the compare page should have a clear, distinct link and access from the coding pages.
+
+**Change:** the compare page now has its own address, `/code/compare` (the old `/code/compare.html` redirects there; `#S06`-style deep links still work). It is reachable from:
+- the coding home (`/code/`): a highlighted card above the coder list, plus a pill button in the top bar;
+- inside a coder's studio: an always-visible "مقایسه" button in the top bar that opens the compare page on the same post (on phones it shows the icon only);
+- the screening and kept-posts top menu ("مقایسه").
+The compare entry has one distinct style everywhere (accent outline pill with a three-column icon), separate from the plain menu links.
+
+**Verification:** local server with the real export shape mocked: `/code/compare` 200, `/code/compare.html` 301 to it; clicking the studio button opens the compare page on the current post; desktop and 390 px screenshots; no page errors; typecheck clean; `web/swipe` tests 8/8.

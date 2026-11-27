@@ -5,7 +5,7 @@ import { fa, safeStorage } from '@/lib/text';
 import { ToastProvider } from '@/components/Toasts';
 import { Studio } from '@/components/Studio';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { AppNav } from '@/components/AppNav';
+import { AppNav, CompareIcon, CompareLink, COMPARE_URL } from '@/components/AppNav';
 
 const LAST_CODER = 'saintiment_coding_last_coder';
 
@@ -122,7 +122,8 @@ function CoderPicker({ backend, onPick, onLogout, onUnauthorized }: { backend: B
       <header className="flex h-12 items-center gap-2 border-b border-[var(--line)] bg-[var(--card)] px-4">
         <span className="ltr font-mono text-[12.5px] text-[var(--muted)]">Saintiment / code</span>
         {backend.mode === 'demo' && <span className="demo-badge">حالت نمایشی</span>}
-        {backend.mode === 'remote' && <AppNav className="ms-3 flex" />}
+        {backend.mode === 'remote' && <AppNav className="ms-3 hidden sm:flex" />}
+        {backend.mode === 'remote' && <CompareLink className="ms-1" />}
         <div className="ms-auto flex items-center gap-1">
           <ThemeToggle />
           {backend.mode === 'remote' && <button type="button" className="icon-text" onClick={onLogout}>خروج</button>}
@@ -140,6 +141,17 @@ function CoderPicker({ backend, onPick, onLogout, onUnauthorized }: { backend: B
           <button type="button" className="link mt-6 text-[13px]" onClick={exportJson}>دانلود خروجی کامل (JSON) ↓</button>
         </section>
         <section className="grid content-start gap-3" aria-busy={!coders}>
+          {backend.mode === 'remote' && (
+            <a href={COMPARE_URL} className="compare-card">
+              <span className="ic"><CompareIcon size={20} /></span>
+              <span className="grid gap-1">
+                <span className="text-[16px] font-bold">مقایسهٔ کدگذاری‌ها</span>
+                <span className="text-[12.5px] leading-6 text-[var(--muted)]">کدهای همهٔ کدگذارها کنار هم، پست به پست: چه کسی کجا را با چه کدی علامت زده</span>
+              </span>
+              <span className="text-[18px] text-[var(--accent)]" aria-hidden="true">←</span>
+            </a>
+          )}
+          <h2 className="mt-2 text-[12.5px] font-semibold text-[var(--muted)]">کدگذاری: یک کدگذار را انتخاب کنید</h2>
           {err && <div className="grid gap-2"><p className="text-[var(--danger)]">{err}</p><button type="button" className="btn w-fit" onClick={load}>تلاش دوباره</button></div>}
           {!coders && !err && [0, 1, 2].map(i => <div key={i} className="h-[92px] animate-pulse rounded-[6px] bg-[var(--sunk)]" />)}
           {coders?.map(c => {
