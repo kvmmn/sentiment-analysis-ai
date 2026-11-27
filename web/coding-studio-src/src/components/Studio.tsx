@@ -9,7 +9,7 @@ import { Codebook, type ConfirmReq } from './Codebook';
 import { ConfirmDialog, ShortcutsDialog } from './Dialogs';
 import { useToast } from './Toasts';
 import { ThemeToggle } from './ThemeToggle';
-import { AppNav } from './AppNav';
+import { AppNav, CompareLink } from './AppNav';
 
 interface Props {
   backend: Backend;
@@ -140,6 +140,7 @@ export function Studio({ backend, coderId, coderName, initialPost, onBack, onUna
         {backend.mode === 'demo' && <span className="demo-badge" title="داده‌ها ساختگی‌اند و فقط در همین مرورگر می‌مانند"><span className="hidden sm:inline">حالت </span>نمایشی</span>}
         {backend.mode === 'remote' && <AppNav className="ms-2 hidden 2xl:flex" />}
         <div className="ms-auto flex items-center gap-0.5 sm:gap-1">
+          {backend.mode === 'remote' && <CompareLink post={post?.sample_id} label="مقایسه" compact className="me-1 max-sm:px-2" />}
           <button type="button" className="icon-text lg:hidden" onClick={() => setPanel(panel === 'posts' ? null : 'posts')} aria-expanded={panel === 'posts'}>پست‌ها</button>
           <button type="button" className="icon-text xl:hidden" onClick={() => setPanel(panel === 'codes' ? null : 'codes')} aria-expanded={panel === 'codes'}>کدنامه</button>
           <button type="button" className="icon" onClick={() => studio.undo()} aria-label="بازگردانی" title="بازگردانی (Ctrl+Z)">
