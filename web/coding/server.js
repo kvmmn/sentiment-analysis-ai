@@ -436,7 +436,12 @@ app.use('/api/coding', (req, res) => res.status(404).json({ error: 'not_found' }
 
 const PUBLIC_DIR = path.join(path.dirname(THIS_FILE), 'public');
 // Shared self-hosted fonts for every page of the app (swipe pages load them from /code/fonts too).
-app.use('/code/fonts', express.static(path.join(PUBLIC_DIR, 'fonts'), { maxAge: '7d' }));
+// Font files have unique names and are cached for 7 days; fonts.css is revalidated on every load
+// so a change of typeface reaches everyone at once.
+app.use('/code/fonts', express.static(path.join(PUBLIC_DIR, 'fonts'), {
+  maxAge: '7d',
+  setHeaders: (res, file) => { if (file.endsWith('.css')) res.set('Cache-Control', 'no-cache'); },
+}));
 app.use('/code/fonts', (req, res) => res.status(404).end());
 app.use('/code', express.static(PUBLIC_DIR, { maxAge: 0 }));
 app.use(express.static(PUBLIC_DIR, { maxAge: 0 }));
