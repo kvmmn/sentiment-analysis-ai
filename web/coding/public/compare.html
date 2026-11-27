@@ -384,6 +384,11 @@ window.addEventListener('keydown', e => {
   e.preventDefault(); goto(D().posts[n].sample_id);
 });
 
+window.addEventListener('hashchange', () => {
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (D() && h !== S.sid && D().posts.some(p => p.sample_id === h)) { S.sid = h; S.sel = null; render(); }
+});
+
 load();
 })();
 </script>
